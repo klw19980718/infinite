@@ -1,0 +1,97 @@
+@import "tailwindcss";
+
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-mono);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+  --radius: 0.625rem;
+  --background: #FFFFFF;
+  --foreground: #212121;
+  --card: #FFFFFF;
+  --card-foreground: #212121;
+  --popover: #FFFFFF;
+  --popover-foreground: #212121;
+  --primary: rgba(0, 151, 167, 1);
+  --primary-foreground: rgba(255, 255, 255, 1);
+  --secondary: #F5F5F5;
+  --secondary-foreground: #212121;
+  --muted: #E0E0E0;
+  --muted-foreground: #757575;
+  --accent: #FFFFFF;
+  --accent-foreground: #212121;
+  --destructive: #E63946;
+  --border: #E0E0E0;
+  --input: #E0E0E0;
+  --ring: rgba(0, 151, 167, 0.8);
+  --info: #2196F3;
+  --success: #4CAF50;
+  --warning: #FFC107;
+}
+
+.dark {
+  --background: #121212;
+  --foreground: #FFFFFF;
+  --card: #1E1E1E;
+  --card-foreground: #FFFFFF;
+  --popover: #1E1E1E;
+  --popover-foreground: #FFFFFF;
+  --primary: rgba(0, 151, 167, 0.8);
+  --primary-foreground: #FFFFFF;
+  --secondary: #2D2D2D;
+  --secondary-foreground: #FFFFFF;
+  --muted: #424242;
+  --muted-foreground: #BDBDBD;
+  --accent: #1E1E1E;
+  --accent-foreground: #FFFFFF;
+  --destructive: #E63946;
+  --border: #424242;
+  --input: #424242;
+  --ring: rgba(0, 151, 167, 0.8);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
