@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
 import { AlertTriangle } from 'lucide-react';
 
 export default function NotFound() {
@@ -17,11 +16,9 @@ export default function NotFound() {
       <p className="text-lg text-gray-600 dark:text-gray-400 mb-10 max-w-md">
         Oops! The page you're looking for doesn't seem to exist.
       </p>
-      <Button asChild size="lg">
         <Link href="/">
           Go Back Home
         </Link>
-      </Button>
     </div>
   );
 } 

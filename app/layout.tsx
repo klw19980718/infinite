@@ -1,13 +1,7 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import Script from 'next/script';
-import { Navbar } from '@/components/Navbar';
-import ClerkProviderWithLocale from '@/components/auth/clerk-provider';
-import { ToastProvider } from '@/components/ui/toast-provider';
-import { UserProvider } from '@/lib/providers';
-import { metadata, schemaData } from '@/lib/seo-config';
 
-export { metadata };
 
 export default function RootLayout({
   children,
@@ -19,28 +13,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="bg-background text-foreground">
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
-        />
-        <ClerkProviderWithLocale>
-          <ToastProvider>
-            <UserProvider>
-              <>
-                <Navbar />
-                <main className="min-h-[calc(100vh-80px)]">
-                  {children}
-                </main>
-              </>
-            </UserProvider>
-          </ToastProvider>
-        </ClerkProviderWithLocale>
-        <Script
-          id="analytics"
-          strategy="afterInteractive"
-          src="/js/cy1.js"
-        />
-
+        <>
+          <main className="min-h-[calc(100vh-80px)]">
+            {children}
+          </main>
+        </>
       </body>
     </html>
   )
