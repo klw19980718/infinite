@@ -32,6 +32,7 @@
 
 :root {
   --radius: 0.625rem;
+  --font-inter: 'Inter', system-ui, sans-serif;
   --background: #FFFFFF;
   --foreground: #212121;
   --card: #FFFFFF;
@@ -85,7 +86,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
   }
   
 }

@@ -23,6 +23,7 @@ module.exports = {
     },
     extend: {
       fontFamily: {
+        sans: ['var(--font-inter)', 'Inter', 'system-ui', 'sans-serif'],
         playfair: ['var(--font-playfair)'],
         inter: ['var(--font-inter)'],
         fredoka: ['Fredoka One', 'cursive'],

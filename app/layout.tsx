@@ -1,6 +1,10 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import Script from 'next/script';
+import Nav from '@/components/nav'
+import { Inter } from 'next/font/google'
+
+const inter = Inter({ subsets: ['latin'] })
 
 
 export default function RootLayout({
@@ -12,8 +16,9 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body className="bg-background text-foreground">
+      <body className={`${inter.className} bg-background text-foreground`}>
         <>
+          <Nav />
           <main className="min-h-[calc(100vh-80px)]">
             {children}
           </main>
