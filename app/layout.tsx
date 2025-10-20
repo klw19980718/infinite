@@ -15,7 +15,7 @@ export default function RootLayout({
   const GA_TRACKING_ID = 'G-BST9KGD31X';
 
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <body className={`${inter.className} bg-background text-foreground`}>
         <>
           <Nav />

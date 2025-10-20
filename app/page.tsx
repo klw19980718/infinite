@@ -1,5 +1,5 @@
 
-import { AuroraHero, HowItWorks, Highlights, UnderTheHood, FAQ } from '@/components/home';
+import { AuroraHero, HowItWorks, Highlights, UnderTheHood, FAQ, Specs } from '@/components/home';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -30,6 +30,7 @@ export default function Home() {
       <HowItWorks />
       <Highlights />
       <UnderTheHood />
+      <Specs />
       <FAQ />
     </main>
   );

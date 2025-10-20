@@ -1,66 +1,184 @@
+'use client';
+
 import Link from 'next/link';
+import { motion } from 'framer-motion';
+import { FiArrowRight, FiUpload, FiDownload, FiPlay } from 'react-icons/fi';
 
 export function HowItWorks() {
   const steps = [
     {
-      title: "Choose — Workflow",
+      icon: FiPlay,
+      title: "Choose Workflow",
       description: "Pick image-to-video generator or video-to-video lip-sync based on your project.",
       link: "/image-to-video/",
-      linkText: "image-to-video generator"
+      linkText: "image-to-video generator",
+      gradient: "from-chart-3 to-primary"
     },
     {
-      title: "Upload — Source & Audio",
+      icon: FiUpload,
+      title: "Upload Source & Audio",
       description: "Add a video or single image plus your audio (voiceover, podcast, dialogue).",
-      details: "Supported formats: MP4 / JPG / PNG / WAV / MP3."
+      details: "Supported formats: MP4 / JPG / PNG / WAV / MP3.",
+      gradient: "from-chart-3 to-primary"
     },
     {
+      icon: FiDownload,
       title: "Generate & Export",
       description: "Hit Generate. Our sparse-frame engine aligns lip shapes, expressions, head movement, and posture to your audio and keeps identity consistent—even in long sequences.",
-      details: "Download your result in 480p or 720p (1080p on the roadmap) as MP4.",
+      details: "Download your result in 480p、720p、1080p as MP4.",
       link: "/examples",
-      linkText: "See our AI video examples"
+      gradient: "from-chart-3 to-primary"
     }
   ];
 
   return (
-    <section className="py-16 bg-muted/30">
-      <div className="container mx-auto px-4">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
-          How It Works
-        </h2>
+    <section className="py-20 bg-gradient-to-b from-background to-secondary/20 relative overflow-hidden">
+      {/* Background decoration */}
+      <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
+      <div className="absolute top-1/4 right-1/4 w-64 h-64 bg-primary/10 rounded-full blur-3xl"></div>
+      
+      <div className="container mx-auto px-6 relative z-10">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-20"
+        >
+          <h2 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-foreground via-primary to-chart-2 bg-clip-text text-transparent mb-4">
+            How It Works
+          </h2>
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+            Three simple steps to create stunning talking videos
+          </p>
+        </motion.div>
         
-        <div className="grid md:grid-cols-3 gap-8">
-          {steps.map((step, index) => (
-            <div key={index} className="text-center space-y-4">
-              <div className="w-12 h-12 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xl font-bold mx-auto">
-                {index + 1}
-              </div>
-              
-              <h3 className="text-xl font-semibold">{step.title}</h3>
-              
-              <p className="text-muted-foreground leading-relaxed">
-                {step.description}
-                {step.link && (
-                  <>
-                    {' '}
-                    <Link 
-                      href={step.link}
-                      className="text-primary hover:underline font-medium"
-                    >
-                      {step.linkText}
-                    </Link>
-                    .
-                  </>
-                )}
-              </p>
-              
-              {step.details && (
-                <p className="text-sm text-muted-foreground">
-                  {step.details}
-                </p>
-              )}
+        {/* Desktop: Horizontal flow */}
+        <div className="hidden lg:block">
+          <div className="relative">
+            {/* Progress line */}
+            {/* <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-gradient-to-r from-primary/30 via-chart-2/30 to-chart-3/30 -translate-y-1/2"></div> */}
+            
+            <div className="grid grid-cols-3 gap-8 relative">
+              {steps.map((step, index) => {
+                const Icon = step.icon;
+                return (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: index * 0.2 }}
+                    className="relative"
+                  >
+                    {/* Step card - Fixed height */}
+                    <div className="bg-card/60 backdrop-blur-sm rounded-2xl p-6 border border-border/50 hover:border-primary/50 transition-all duration-300 hover:shadow-xl group h-[380px] flex flex-col">
+                      {/* Header with number badge and title */}
+                      <div className="flex items-start gap-4 mb-6">
+                        <div className="flex-shrink-0">
+                          <div className={`w-12 h-12 bg-gradient-to-br ${step.gradient} rounded-xl flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform duration-300`}>
+                            <Icon className="w-6 h-6 text-primary-foreground" />
+                          </div>
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-2">
+                            <span className="w-6 h-6 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xs font-bold">
+                              {index + 1}
+                            </span>
+                            <h3 className="text-lg font-bold text-foreground">{step.title}</h3>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      {/* Description */}
+                      <div className="flex-1">
+                        <p className="text-muted-foreground leading-relaxed mb-4">
+                          {step.description}
+                          {step.link && (
+                            <>
+                              {' '}
+                              <Link 
+                                href={step.link}
+                                className="text-primary hover:underline font-medium transition-colors inline-flex items-center gap-1"
+                              >
+                                {step.linkText}
+                                <FiArrowRight className="w-3 h-3" />
+                              </Link>
+                              .
+                            </>
+                          )}
+                        </p>
+                      </div>
+                      
+                      {/* Details */}
+                      {step.details && (
+                        <div className="mt-auto">
+                          <div className="bg-primary/5 border border-primary/20 rounded-lg px-4 py-3">
+                            <p className="text-sm text-primary font-medium">{step.details}</p>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </motion.div>
+                );
+              })}
             </div>
-          ))}
+          </div>
+        </div>
+
+        {/* Mobile: Vertical stack */}
+        <div className="lg:hidden space-y-6">
+          {steps.map((step, index) => {
+            const Icon = step.icon;
+            return (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, x: index % 2 === 0 ? -30 : 30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                className="bg-card/40 backdrop-blur-sm rounded-2xl p-6 border border-border/50 hover:border-primary/50 transition-all duration-300"
+              >
+                {/* Header with icon and title */}
+                <div className="flex items-center gap-4 mb-4">
+                  <div className={`w-12 h-12 bg-gradient-to-br ${step.gradient} rounded-full flex items-center justify-center shadow-lg`}>
+                    <Icon className="w-5 h-5 text-primary-foreground" />
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="w-6 h-6 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xs font-bold">
+                      {index + 1}
+                    </span>
+                    <h3 className="text-lg font-bold text-foreground">{step.title}</h3>
+                  </div>
+                </div>
+                
+                {/* Description */}
+                <p className="text-muted-foreground leading-relaxed mb-4">
+                  {step.description}
+                  {step.link && (
+                    <>
+                      {' '}
+                      <Link 
+                        href={step.link}
+                        className="text-primary hover:underline font-medium transition-colors inline-flex items-center gap-1"
+                      >
+                        {step.linkText}
+                        <FiArrowRight className="w-3 h-3" />
+                      </Link>
+                      .
+                    </>
+                  )}
+                </p>
+                
+                {/* Details */}
+                {step.details && (
+                  <div className="bg-primary/5 border border-primary/20 rounded-lg px-4 py-3">
+                    <p className="text-sm text-primary font-medium">{step.details}</p>
+                  </div>
+                )}
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>

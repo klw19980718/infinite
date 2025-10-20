@@ -31,20 +31,9 @@ export default function Nav() {
 
   return (
     <nav className="w-full h-16 border-b flex items-center justify-between px-4">
-      <Link href="/" className="font-semibold">Infinite Talk</Link>
+      <Link href="/" className="font-semibold">Infinite Talk AI</Link>
       <div className="flex items-center gap-3">
-        {profile ? (
-          <Link href="/profile" className="w-9 h-9 rounded-full bg-secondary flex items-center justify-center text-sm font-medium">
-            {avatarChar}
-          </Link>
-        ) : (
-          <button
-            className="px-3 py-1.5 rounded-md bg-primary text-white"
-            onClick={() => router.push('/login')}
-          >
-            Login
-          </button>
-        )}
+       
       </div>
     </nav>
   )
