@@ -1,5 +1,5 @@
 # =====================================
-# 🤖 Robots.txt for https://www.4oimagex.com
+# 🤖 Robots.txt for Infinite Talk AI
 # =====================================
 
 # -------------------------------------
@@ -10,41 +10,84 @@ Allow: /
 Disallow: /api/        # API endpoints (not meant for indexing)
 Disallow: /_next/      # Next.js internal assets
 Disallow: /admin/      # Admin dashboard (protected)
+Disallow: /dashboard/  # User dashboard
+Disallow: /user/       # User-specific content
+Disallow: /uploads/    # User uploads (temporary)
 # Note: Static assets are allowed (no Disallow for /static/)
 
 # -------------------------------------
-# 🔍 Googlebot rules
+# 🔍 Googlebot rules (enhanced indexing)
 # -------------------------------------
 User-agent: Googlebot
 Allow: /
+Allow: /image-to-video
+Allow: /video-to-video
+Allow: /pricing
+Allow: /examples
+Allow: /blog/
 Disallow: /api/
 Disallow: /_next/
+Disallow: /admin/
+Disallow: /dashboard/
+Disallow: /user/
 
 # -------------------------------------
 # 🔎 Bingbot rules (search indexing allowed)
 # -------------------------------------
 User-agent: Bingbot
 Allow: /
+Allow: /image-to-video
+Allow: /video-to-video
+Allow: /pricing
+Allow: /examples
+Allow: /blog/
 Disallow: /api/
 Disallow: /_next/
+Disallow: /admin/
+Disallow: /dashboard/
+Disallow: /user/
 
 # -------------------------------------
 # 🔎 Baiduspider rules
 # -------------------------------------
 User-agent: Baiduspider
 Allow: /
+Allow: /image-to-video
+Allow: /video-to-video
+Allow: /pricing
+Allow: /examples
+Allow: /blog/
 Disallow: /api/
 Disallow: /_next/
+Disallow: /admin/
+Disallow: /dashboard/
+Disallow: /user/
 
 # -------------------------------------
-# 🤖 AI Crawler Rules (LLM-specific bots - restricted)
+# 🤖 AI Crawler Rules (LLM-specific bots - controlled access)
 # -------------------------------------
 User-agent: GPTBot
 User-agent: anthropic-ai
+User-agent: Claude-Web
+User-agent: PerplexityBot
+User-agent: YouBot
 Allow: /llms.txt
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+Disallow: /dashboard/
+Disallow: /user/
+Disallow: /uploads/
+
+# -------------------------------------
+# 🚫 Block unwanted bots
+# -------------------------------------
+User-agent: AhrefsBot
+User-agent: MJ12bot
+User-agent: DotBot
 Disallow: /
 
 # -------------------------------------
 # 📌 Sitemap
 # -------------------------------------
-Sitemap: https://www.4oimagex.com/sitemap.xml
+Sitemap: https://infinitetalkai.org/sitemap.xml

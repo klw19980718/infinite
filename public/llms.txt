@@ -1,34 +1,53 @@
-# llms.txt for https://www.4oimagex.com
+# llms.txt for Infinite Talk AI
 # This file provides guidance to LLM crawlers on allowed content
 
 # -------------------------------------
 # ✅ Website Information
-Website: https://www.4oimagex.com
-Name: 4oimagex
-Description: AI Image Generator | Create stunning visuals with cutting-edge AI technology. Transform your ideas into artistic images with 4oimagex, the advanced AI image generator that helps you create beautiful illustrations and artwork instantly.
+Website: https://infinitetalkai.org
+Name: Infinite Talk AI
+Description: Infinite-Length Talking Video Generator | Transform any image or video into long-form talking footage with precise lip-sync, stable motion, and consistent identity. Supports Image-to-Video and Video-to-Video workflows with 480p, 720p, and 1080p export options.
 
 # -------------------------------------
 # ✅ Core Content Sections
 Allow: /#how-it-works
-Allow: /#showcase
-Allow: /#testimonials
-Allow: /#pricing
+Allow: /#highlights
+Allow: /#under-the-hood
+Allow: /#specs
 Allow: /#faq
+Allow: /image-to-video
+Allow: /video-to-video
+Allow: /pricing
+Allow: /examples
 Allow: /blog
 Allow: /blog/*
-
 
 # -------------------------------------
 # ✅ Important Legal Pages
 Allow: /terms
 Allow: /privacy
+Allow: /about
+Allow: /contact
 
 # -------------------------------------
-# ❌ Disallowed API or Internal Paths (implicitly via robots.txt)
+# ❌ Disallowed API or Internal Paths
 Disallow: /api/
 Disallow: /_next/
 Disallow: /admin/
+Disallow: /dashboard/
+Disallow: /user/
+
+# -------------------------------------
+# 📌 Key Features for LLM Understanding
+Features:
+- Image-to-Video generation
+- Video-to-Video lip-sync
+- Whole-frame editing
+- Multi-speaker support
+- Long-form content processing
+- 1080p HD export
+- Web-based platform
+- No installation required
 
 # -------------------------------------
 # 📌 Sitemap for better discovery
-Sitemap: https://www.4oimagex.com/sitemap.xml
+Sitemap: https://infinitetalkai.org/sitemap.xml
