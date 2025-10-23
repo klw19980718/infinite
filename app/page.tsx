@@ -4,7 +4,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Infinite Talk AI – Infinite-Length Talking Video Generator',
-  description: 'Create unlimited talking videos from any image or video. Our AI-powered platform delivers precise lip-sync, stable motion, and consistent identity across long-form content. Perfect for lectures, podcasts, and presentations.',
+  description: ' Generate natural talking videos with whole-frame editing and precise lip-sync. Supports image-to-video and video-to-video with stable full-body motion.',
   keywords: [
     // Brand name variations
     'Infinite Talk AI',
@@ -62,7 +62,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'Infinite Talk AI – Infinite-Length Talking Video Generator',
-    description: 'Create unlimited talking videos from any image or video. Our AI-powered platform delivers precise lip-sync, stable motion, and consistent identity across long-form content.',
+    description: ' Generate natural talking videos with whole-frame editing and precise lip-sync. Supports image-to-video and video-to-video with stable full-body motion.',
     type: 'website',
     url: 'https://www.infinitetalkai.org',
     siteName: 'Infinite Talk AI',
@@ -79,7 +79,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Infinite Talk AI – Infinite-Length Talking Video Generator',
-    description: 'Create unlimited talking videos from any image or video. Our AI-powered platform delivers precise lip-sync, stable motion, and consistent identity across long-form content.',
+    description: ' Generate natural talking videos with whole-frame editing and precise lip-sync. Supports image-to-video and video-to-video with stable full-body motion.',
     images: ['https://www.infinitetalkai.org/logo.png'],
     creator: '@infinitetalkai',
     site: '@infinitetalkai',
