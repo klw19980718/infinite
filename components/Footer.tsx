@@ -5,7 +5,7 @@ export default function Footer() {
   return (
     <footer className="bg-muted/30 border-t">
       <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Logo & Description */}
           <div className="md:col-span-1">
             <Link href="/" className="flex items-center gap-2 mb-4">
@@ -23,8 +23,8 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* Product */}
-          <div>
+          {/* Product - TODO: Add pages later */}
+          {/* <div>
             <h3 className="font-semibold mb-4">Product</h3>
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li>
@@ -48,10 +48,10 @@ export default function Footer() {
                 </Link>
               </li>
             </ul>
-          </div>
+          </div> */}
 
-          {/* Support */}
-          <div>
+          {/* Support - TODO: Add pages later */}
+          {/* <div>
             <h3 className="font-semibold mb-4">Support</h3>
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li>
@@ -78,7 +78,7 @@ export default function Footer() {
                 </a>
               </li>
             </ul>
-          </div>
+          </div> */}
 
           {/* Legal */}
           <div>
@@ -94,7 +94,8 @@ export default function Footer() {
                   Privacy Policy
                 </Link>
               </li>
-              <li>
+              {/* TODO: Add pages later */}
+              {/* <li>
                 <Link href="/" className="hover:text-foreground transition-colors">
                   Cookie Policy
                 </Link>
@@ -103,7 +104,7 @@ export default function Footer() {
                 <Link href="/" className="hover:text-foreground transition-colors">
                   Security
                 </Link>
-              </li>
+              </li> */}
             </ul>
           </div>
         </div>
