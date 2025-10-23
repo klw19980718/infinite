@@ -1,0 +1,20 @@
+---
+alwaysApply: true
+---
+
+
+## Supabase 用法
+- 仅通过 `@/lib/supabase` 暴露的 helper 使用：
+  - `getSupabaseClient()` 用于 Client 组件。
+  - `getServerSupabase()`（或 server action 内）用于服务端。
+- 所有查询默认 **RLS 开启**；服务端需要更高权限时，使用**服务端密钥**于 Route Handler（不可在客户端暴露）。
+
+## API & Route Handlers
+- API 路由放 /app/api/**，默认 Edge 仅当无 Node 依赖。
+- 校验：Zod（或最小手写校验）；返回明确的错误结构 `{ ok:false, code, message }`。
+- 禁止在 API 中做 SSR-only 任务与重量级阻塞（交给队列/edge/cron）。
+
+## 安全
+- 禁止把 `SERVICE_ROLE` 放到任何客户端可达代码/环境变量。
+- 对外返回数据**按需**选择字段；永远不要 `select *` 暴露敏感列。
+- 限流：如有外部可调用接口，至少按 IP/会话做简单限流。

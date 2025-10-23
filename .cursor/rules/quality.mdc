@@ -1,0 +1,18 @@
+---
+alwaysApply: true
+---
+
+# 30-quality — Quality / Performance / Testing
+
+## 基线检查（每次改动）
+- 页面首屏：减少 client JS 体积；大库 `next/dynamic` + `ssr:false` 仅在确需交互时。
+- 使用 `React.memo` / `useMemo` 有明确收益再加；避免过早优化。
+
+## 性能要点
+- 图片：`next/image`，`loading="lazy"`，合理的 `sizes`。
+- 仅在必要时使用 Framer Motion；避免给列表每项加动画。
+- 不在主线程做重型任务（3D/音频处理放到 Worker/后端）。
+
+## 可测（轻量）
+- 对关键 util / server 函数写最小单测；无端到端覆盖要求。
+- 对用户看得见的回归风险（认证、表单、关键路由）留 1~2 条 smoke 测试。

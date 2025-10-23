@@ -9,7 +9,13 @@ export function getSupabaseClient(): SupabaseClient {
     if (!url || !anonKey) {
       throw new Error('Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY')
     }
-    client = createClient(url, anonKey)
+    client = createClient(url, anonKey, {
+      auth: {
+        persistSession: true,
+        autoRefreshToken: true,
+        detectSessionInUrl: true,
+      },
+    })
   }
   return client
 }
