@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import { motion } from 'framer-motion';
 import { FiArrowRight, FiUpload, FiDownload, FiPlay } from 'react-icons/fi';
 
 export function HowItWorks() {
@@ -38,20 +37,14 @@ export function HowItWorks() {
       <div className="absolute top-1/4 right-1/4 w-64 h-64 bg-primary/10 rounded-full blur-3xl"></div>
       
       <div className="container mx-auto px-6 relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-20"
-        >
+        <div className="text-center mb-20">
           <h2 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-foreground via-primary to-chart-2 bg-clip-text text-transparent mb-4">
             How It Works
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
             Three simple steps to create stunning talking videos
           </p>
-        </motion.div>
+        </div>
         
         {/* Desktop: Horizontal flow */}
         <div className="hidden lg:block">
@@ -63,12 +56,8 @@ export function HowItWorks() {
               {steps.map((step, index) => {
                 const Icon = step.icon;
                 return (
-                  <motion.div
+                  <div
                     key={index}
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6, delay: index * 0.2 }}
                     className="relative"
                   >
                     {/* Step card - Fixed height */}
@@ -119,7 +108,7 @@ export function HowItWorks() {
                         </div>
                       )}
                     </div>
-                  </motion.div>
+                  </div>
                 );
               })}
             </div>
@@ -131,12 +120,8 @@ export function HowItWorks() {
           {steps.map((step, index) => {
             const Icon = step.icon;
             return (
-              <motion.div
+              <div
                 key={index}
-                initial={{ opacity: 0, x: index % 2 === 0 ? -30 : 30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
                 className="bg-card/40 backdrop-blur-sm rounded-2xl p-6 border border-border/50 hover:border-primary/50 transition-all duration-300"
               >
                 {/* Header with icon and title */}
@@ -176,7 +161,7 @@ export function HowItWorks() {
                     <p className="text-sm text-primary font-medium">{step.details}</p>
                   </div>
                 )}
-              </motion.div>
+              </div>
             );
           })}
         </div>

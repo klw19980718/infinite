@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { getSupabaseClient } from '@/lib/supabase'
 import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
@@ -37,7 +38,16 @@ export default function Nav() {
 
   return (
     <nav className="w-full h-16 border-b flex items-center justify-between px-4">
-      <Link href="/" className="font-semibold">Infinite Talk AI</Link>
+      <Link href="/" className="flex items-center gap-2">
+        <Image 
+          src="/logo.png" 
+          alt="Infinite Talk AI" 
+          width={32} 
+          height={32}
+          className="rounded-lg"
+        />
+        <span className="font-semibold">Infinite Talk AI</span>
+      </Link>
       
       <div className="flex items-center gap-3">
         {profile?.email ? (

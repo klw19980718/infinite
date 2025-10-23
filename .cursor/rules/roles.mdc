@@ -46,9 +46,13 @@ infinite-talk/
 ├── app/                      - Next.js App Router 页面和路由
 │   ├── auth/                - 认证相关页面
 │   │   └── page.tsx         - 登录/注册整合页面（Email OTP）
+│   ├── privacy/             - 隐私政策页面
+│   │   └── page.tsx         - 隐私政策页面
+│   ├── terms/               - 服务条款页面
+│   │   └── page.tsx         - 服务条款页面
 │   ├── favicon.ico          - 网站图标
 │   ├── globals.css          - 全局样式文件
-│   ├── layout.tsx           - 根布局组件
+│   ├── layout.tsx           - 根布局组件（含导航栏和页脚）
 │   ├── not-found.tsx        - 404 页面
 │   ├── page.tsx             - 首页（主页面）
 │   └── sitemap.ts           - 站点地图配置
@@ -73,7 +77,8 @@ infinite-talk/
 │   │   ├── dropdown-menu.tsx - 下拉菜单组件
 │   │   ├── input.tsx        - 输入框组件
 │   │   └── label.tsx        - 标签组件
-│   └── nav.tsx              - 导航栏组件（含登录/用户菜单）
+│   ├── Footer.tsx           - 页脚组件（含品牌信息和链接）
+│   └── nav.tsx              - 导航栏组件（含Logo和登录/用户菜单）
 │
 ├── lib/                     - 工具函数和配置
 │   ├── supabase.ts          - Supabase 客户端单例

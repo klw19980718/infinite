@@ -1,6 +1,5 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import { FiCheck, FiMonitor, FiMusic, FiUsers, FiClock, FiGlobe } from 'react-icons/fi';
 
 export function Specs() {
@@ -40,28 +39,18 @@ export function Specs() {
   return (
     <section id="specs" className="py-20 bg-background">
       <div className="container mx-auto px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
+        <div className="text-center mb-16">
           <h2 className="text-3xl md:text-5xl font-bold bg-gradient-to-r from-foreground via-primary to-chart-2 bg-clip-text text-transparent mb-4">
             Specs at a Glance
           </h2>
-        </motion.div>
+        </div>
         
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
           {specs.map((spec, index) => {
             const Icon = spec.icon;
             return (
-              <motion.div
+              <div
                 key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="group relative p-6 bg-card/60 backdrop-blur-sm rounded-xl border border-border hover:border-primary/50 transition-all duration-300 hover:shadow-lg"
               >
                 <div className="flex items-start gap-4">
@@ -78,26 +67,20 @@ export function Specs() {
                     </p>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             );
           })}
         </div>
         
         {/* Performance note */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="mt-12 max-w-4xl mx-auto"
-        >
+        <div className="mt-12 max-w-4xl mx-auto">
           <div className="bg-gradient-to-r from-primary/10 via-chart-2/10 to-chart-3/10 border border-primary/20 rounded-xl p-6">
             <h3 className="text-lg font-semibold text-foreground mb-3">Performance note</h3>
             <p className="text-muted-foreground leading-relaxed">
               1080p yields the highest visual clarity and lip detail. It also uses more compute; render time scales with duration and the number of speakers. For speed-sensitive drafts, start at 480p/720p, then export the final cut in 1080p.
             </p>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
