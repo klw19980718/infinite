@@ -1,5 +1,3 @@
-"use client"
-
 import { FiUpload, FiDownload, FiPlay } from "react-icons/fi"
 
 export function HowItWorks() {

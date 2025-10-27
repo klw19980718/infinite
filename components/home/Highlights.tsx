@@ -1,5 +1,3 @@
-"use client"
-
 import { FiClock, FiTarget, FiTrendingUp, FiUser, FiLayers, FiUsers } from "react-icons/fi"
 
 export function Highlights() {

@@ -1,5 +1,3 @@
-"use client"
-
 import { FiCpu, FiLayers, FiZap, FiRefreshCw } from "react-icons/fi"
 
 export function UnderTheHood() {
