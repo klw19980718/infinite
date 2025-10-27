@@ -20,11 +20,10 @@ Disallow: /uploads/    # User uploads (temporary)
 # -------------------------------------
 User-agent: Googlebot
 Allow: /
-Allow: /image-to-video
-Allow: /video-to-video
-Allow: /pricing
-Allow: /examples
-Allow: /blog/
+Allow: /auth          # Authentication page
+Allow: /terms         # Terms of Service
+Allow: /privacy       # Privacy Policy
+
 Disallow: /api/
 Disallow: /_next/
 Disallow: /admin/
@@ -36,11 +35,9 @@ Disallow: /user/
 # -------------------------------------
 User-agent: Bingbot
 Allow: /
-Allow: /image-to-video
-Allow: /video-to-video
-Allow: /pricing
-Allow: /examples
-Allow: /blog/
+Allow: /auth          # Authentication page
+Allow: /terms         # Terms of Service
+Allow: /privacy       # Privacy Policy
 Disallow: /api/
 Disallow: /_next/
 Disallow: /admin/
@@ -52,11 +49,9 @@ Disallow: /user/
 # -------------------------------------
 User-agent: Baiduspider
 Allow: /
-Allow: /image-to-video
-Allow: /video-to-video
-Allow: /pricing
-Allow: /examples
-Allow: /blog/
+Allow: /auth          # Authentication page
+Allow: /terms         # Terms of Service
+Allow: /privacy       # Privacy Policy
 Disallow: /api/
 Disallow: /_next/
 Disallow: /admin/
@@ -73,6 +68,9 @@ User-agent: PerplexityBot
 User-agent: YouBot
 Allow: /llms.txt
 Allow: /
+Allow: /auth          # Authentication page
+Allow: /terms         # Terms of Service
+Allow: /privacy       # Privacy Policy
 Disallow: /api/
 Disallow: /admin/
 Disallow: /dashboard/
