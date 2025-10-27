@@ -1,3 +1,40 @@
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Privacy Policy | Infinite Talk AI',
+  description: 'Privacy Policy for Infinite Talk AI - Learn how we collect, use, and protect your data when using our audio-driven sparse-frame dubbing platform.',
+  keywords: [
+    'privacy policy',
+    'infinite talk ai',
+    'data protection',
+    'privacy',
+    'GDPR',
+    'CCPA',
+    'data security',
+    'user privacy'
+  ],
+  alternates: {
+    canonical: 'https://www.infinitetalkai.org/privacy',
+  },
+  openGraph: {
+    title: 'Privacy Policy | Infinite Talk AI',
+    description: 'Privacy Policy for Infinite Talk AI - Learn how we collect, use, and protect your data when using our audio-driven sparse-frame dubbing platform.',
+    type: 'website',
+    url: 'https://www.infinitetalkai.org/privacy',
+    siteName: 'Infinite Talk AI',
+    locale: 'en_US',
+  },
+  twitter: {
+    card: 'summary',
+    title: 'Privacy Policy | Infinite Talk AI',
+    description: 'Privacy Policy for Infinite Talk AI - Learn how we collect, use, and protect your data when using our audio-driven sparse-frame dubbing platform.',
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+}
+
 export default function PrivacyPage() {
   return (
     <div className="min-h-screen bg-background">

@@ -1,3 +1,39 @@
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Terms of Service | Infinite Talk AI',
+  description: 'Terms of Service for Infinite Talk AI - Read our terms and conditions for using our audio-driven sparse-frame dubbing platform.',
+  keywords: [
+    'terms of service',
+    'terms and conditions',
+    'infinite talk ai',
+    'user agreement',
+    'legal terms',
+    'service terms',
+    'terms of use'
+  ],
+  alternates: {
+    canonical: 'https://www.infinitetalkai.org/terms',
+  },
+  openGraph: {
+    title: 'Terms of Service | Infinite Talk AI',
+    description: 'Terms of Service for Infinite Talk AI - Read our terms and conditions for using our audio-driven sparse-frame dubbing platform.',
+    type: 'website',
+    url: 'https://www.infinitetalkai.org/terms',
+    siteName: 'Infinite Talk AI',
+    locale: 'en_US',
+  },
+  twitter: {
+    card: 'summary',
+    title: 'Terms of Service | Infinite Talk AI',
+    description: 'Terms of Service for Infinite Talk AI - Read our terms and conditions for using our audio-driven sparse-frame dubbing platform.',
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+}
+
 export default function TermsPage() {
   return (
     <div className="min-h-screen bg-background">
