@@ -1,89 +1,74 @@
 "use client"
 
-import Link from "next/link"
-import { FiArrowRight, FiUpload, FiDownload, FiPlay } from "react-icons/fi"
+import { FiUpload, FiDownload, FiPlay } from "react-icons/fi"
 
 export function HowItWorks() {
   const steps = [
     {
       icon: FiPlay,
-      title: "Choose Workflow",
-      description: "Pick image-to-video generator or video-to-video lip-sync based on your project.",
-      link: "/image-to-video/",
-      linkText: "image-to-video generator",
+      title: "1) Select Workflow in Infinite Talk AI",
+      description:
+        "Choose Image-to-Video for animating a single photo, or Video-to-Video for re-animating source footage. Infinite Talk AI provides sensible defaults and advanced knobs for expert control.",
     },
     {
       icon: FiUpload,
-      title: "Upload Source & Audio",
-      description: "Add a video or single image plus your audio (voiceover, podcast, dialogue).",
-      details: "Supported formats: MP4 / JPG / PNG / WAV / MP3.",
+      title: "2) Upload Sources to Infinite Talk AI",
+      description:
+        "Provide an image or video plus WAV/MP3 narration. Infinite Talk AI parses phonemes and prosody to drive whole-frame motion that stays on beat.",
     },
     {
       icon: FiDownload,
-      title: "Generate & Export",
+      title: "3) Generate & Export with Infinite Talk AI",
       description:
-        "Hit Generate. Our sparse-frame engine aligns lip shapes, expressions, head movement, and posture to your audio and keeps identity consistent—even in long sequences.",
-      details: "Download your result in 480p、720p、1080p as MP4.",
-      link: "/examples",
+        "Start the run, review the preview, then export. Infinite Talk AI balances lip strength, clarity settings, prompt adjustments, and context overlap to maintain consistent identity over long timelines.",
     },
   ]
 
   return (
-    <section id="how-it-works" className="py-32 bg-background relative overflow-hidden">
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:48px_48px]"></div>
+    <section id="how-it-works" className="py-32 md:py-40 bg-background relative overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-chart-1/5 via-background to-chart-3/5"></div>
+      <div className="absolute bottom-1/4 left-1/4 w-[350px] h-[350px] bg-accent/10 rounded-full blur-[100px]"></div>
+      {/* </CHANGE> */}
 
       <div className="container mx-auto px-6 relative z-10">
-        <div className="text-center mb-20">
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-4 text-balance">How it works</h2>
-          <p className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto text-pretty">
-            Three simple steps to create stunning talking videos
-          </p>
+        <div className="text-center mb-24">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4 text-balance">
+            How to Use — <span className="text-accent">Infinite Talk AI</span>{" "}
+            <span className="text-muted-foreground">(3 Steps)</span>
+          </h2>
         </div>
+        {/* </CHANGE> */}
 
-        <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+        <div className="max-w-7xl mx-auto space-y-10">
           {steps.map((step, index) => {
             const Icon = step.icon
+
             return (
-              <div
-                key={index}
-                className="group relative bg-card rounded-2xl border border-border p-8 hover:border-accent/50 transition-all duration-300"
-              >
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="flex-shrink-0 w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center">
-                    <Icon className="w-6 h-6 text-accent" />
-                  </div>
-                  <div className="w-8 h-8 bg-accent/10 rounded-full flex items-center justify-center">
-                    <span className="text-accent text-sm font-bold">{index + 1}</span>
+              <div key={index} className="flex gap-6 group">
+                <div className="flex-shrink-0">
+                  <div className="w-16 h-16 rounded-2xl bg-accent/10 border-2 border-accent/30 flex items-center justify-center group-hover:bg-accent group-hover:border-accent transition-all duration-300">
+                    <span className="text-3xl font-bold text-accent group-hover:text-background transition-colors">
+                      {index + 1}
+                    </span>
                   </div>
                 </div>
 
-                <h3 className="text-xl font-semibold text-foreground mb-3">{step.title}</h3>
-
-                <p className="text-muted-foreground leading-relaxed mb-4 text-pretty">
-                  {step.description}
-                  {step.link && (
-                    <>
-                      {" "}
-                      <Link
-                        href={step.link}
-                        className="text-accent hover:underline font-medium transition-colors inline-flex items-center gap-1"
-                      >
-                        {step.linkText}
-                        <FiArrowRight className="w-3 h-3" />
-                      </Link>
-                    </>
-                  )}
-                </p>
-
-                {step.details && (
-                  <div className="mt-auto pt-4 border-t border-border">
-                    <p className="text-sm text-muted-foreground">{step.details}</p>
+                <div className="flex-1 pt-1 space-y-3">
+                  <div className="flex items-center gap-3">
+                    <div className="inline-flex p-2 rounded-lg bg-accent/10">
+                      <Icon className="w-4 h-4 text-accent" />
+                    </div>
+                    <h3 className="text-xl md:text-2xl font-semibold text-foreground">{step.title}</h3>
                   </div>
-                )}
+                  <p className="text-base text-muted-foreground leading-relaxed text-pretty pl-10">
+                    {step.description}
+                  </p>
+                </div>
               </div>
             )
           })}
         </div>
+        {/* </CHANGE> */}
       </div>
     </section>
   )

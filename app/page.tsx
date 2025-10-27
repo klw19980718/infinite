@@ -3,66 +3,21 @@ import { AuroraHero, HowItWorks, Highlights, UnderTheHood, FAQ, Specs } from '@/
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Infinite Talk AI – Infinite-Length Talking Video Generator',
-  description: ' Generate natural talking videos with whole-frame editing and precise lip-sync. Supports image-to-video and video-to-video with stable full-body motion.',
+  title: 'Infinite Talk AI — Audio-Driven Sparse-Frame Dubbing',
+  description: 'Infinite Talk AI turns images or videos into long-form talking footage with phoneme-level sync, whole-frame control, multi-speaker scenes, and stable identity.',
   keywords: [
-    // Brand name variations
-    'Infinite Talk AI',
-    'InfiniteTalk',
-    'InfiniteTalk AI',
-    'InfiniteTalkAI',
-    'InfiniteTalkai',
-    'infinitetalk',
-    'infinitetalkai',
-    'infinitetalk.ai',
-    'infinite talk',
     'infinite talk ai',
-    'infinite talkai',
-    'infinite-talk',
-    'infinite-talk-ai',
-    'infinite_talk',
-    'infinite_talk_ai',
-    'InfiniteTalkAI',
-    'InfiniteTalkAi',
-    'infiniteTalk',
-    'infiniteTalkAI',
-    'infiniteTalkAi',
-    'INFINITE TALK',
-    'INFINITE TALK AI',
-    'INFINITETALK',
-    'INFINITETALKAI',
-    // Core functionality keywords
-    'talking video generator',
-    'image to video',
-    'video to video',
-    'lip sync AI',
-    'AI video generation',
-    'talking head generator',
-    'video synthesis',
-    'AI avatar',
-    'voice cloning',
-    'video editing AI',
-    'long-form video',
-    'infinite length video',
-    'whole frame editing',
-    'stable motion',
-    'identity preservation',
-    // User intent keywords
-    'FAQ',
-    'how it works',
-    'video tutorial',
-    'AI technology',
-    'tutorial',
-    'guide',
-    'help',
-    'support'
+    'talking video generator', 
+    'lip sync ai',
+    'sparse-frame dubbing',
+    'audio to video'
   ],
   alternates: {
     canonical: 'https://www.infinitetalkai.org',
   },
   openGraph: {
-    title: 'Infinite Talk AI – Infinite-Length Talking Video Generator',
-    description: ' Generate natural talking videos with whole-frame editing and precise lip-sync. Supports image-to-video and video-to-video with stable full-body motion.',
+    title: 'Infinite Talk AI — Audio-Driven Sparse-Frame Dubbing',
+    description: 'Infinite Talk AI turns images or videos into long-form talking footage with phoneme-level sync, whole-frame control, multi-speaker scenes, and stable identity.',
     type: 'website',
     url: 'https://www.infinitetalkai.org',
     siteName: 'Infinite Talk AI',
@@ -78,8 +33,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Infinite Talk AI – Infinite-Length Talking Video Generator',
-    description: ' Generate natural talking videos with whole-frame editing and precise lip-sync. Supports image-to-video and video-to-video with stable full-body motion.',
+    title: 'Infinite Talk AI — Audio-Driven Sparse-Frame Dubbing',
+    description: 'Infinite Talk AI turns images or videos into long-form talking footage with phoneme-level sync, whole-frame control, multi-speaker scenes, and stable identity.',
     images: ['https://www.infinitetalkai.org/logo.png'],
     creator: '@infinitetalkai',
     site: '@infinitetalkai',
@@ -106,161 +61,97 @@ export default function Home() {
     "@context": "https://schema.org",
     "@graph": [
       {
-        "@type": "WebSite",
-        "name": "Infinite Talk AI",
-        "alternateName": [
-          "InfiniteTalk",
-          "InfiniteTalkAI", 
-          "InfiniteTalkai",
-          "infinitetalk",
-          "infinitetalkai",
-          "infinitetalk.ai",
-          "infinite talk",
-          "infinite talk ai",
-          "infinite-talk",
-          "infinite-talk-ai",
-          "infinite_talk",
-          "infinite_talk_ai",
-          "INFINITE TALK",
-          "INFINITETALK",
-          "INFINITETALKAI"
-        ],
-        "url": "https://www.infinitetalkai.org",
-        "description": "Create unlimited talking videos from any image or video. Our AI-powered platform delivers precise lip-sync, stable motion, and consistent identity across long-form content.",
-        "potentialAction": {
-          "@type": "SearchAction",
-          "target": "https://www.infinitetalkai.org/search?q={search_term_string}",
-          "query-input": "required name=search_term_string"
-        }
-      },
-      {
-        "@type": "Organization",
-        "name": "Infinite Talk AI",
-        "url": "https://www.infinitetalkai.org",
-        "logo": "https://www.infinitetalkai.org/logo.png",
-        "description": "AI-powered platform for creating infinite-length talking videos with precise lip-sync and stable motion.",
-        "contactPoint": {
-          "@type": "ContactPoint",
-          "email": "support@infinitetalkai.org",
-          "contactType": "customer service"
-        },
-        "address": {
-          "@type": "PostalAddress",
-          "streetAddress": "1234 Innovation Drive",
-          "addressLocality": "San Francisco",
-          "addressRegion": "CA",
-          "postalCode": "94105",
-          "addressCountry": "US"
-        }
-      },
-      {
         "@type": "SoftwareApplication",
         "name": "Infinite Talk AI",
         "applicationCategory": "MultimediaApplication",
-        "operatingSystem": "Web Browser",
-        "description": "AI-powered talking video generator for creating unlimited-length videos with precise lip-sync and stable motion.",
+        "operatingSystem": "Web",
+        "description": "Infinite Talk AI provides audio-driven, sparse-frame dubbing with phoneme-aware lip-sync, whole-frame control, multi-speaker pipelines, and prompt/clarity controls for long-form talking video.",
         "url": "https://www.infinitetalkai.org",
+        "image": "https://www.infinitetalkai.org/logo.png",
         "offers": {
           "@type": "Offer",
           "price": "0",
-          "priceCurrency": "USD",
-          "description": "Free tier available with premium options"
+          "priceCurrency": "USD"
         },
-        "featureList": [
-          "Image-to-Video Generation",
-          "Video-to-Video Lip Sync",
-          "Whole Frame Editing",
-          "Stable Motion",
-          "Identity Preservation",
-          "Long-form Content Support",
-          "1080p Export",
-          "Google OAuth Integration",
-          "Email OTP Authentication"
-        ]
+        "publisher": {
+          "@type": "Organization",
+          "name": "Infinite Talk AI"
+        }
       },
       {
         "@type": "FAQPage",
         "mainEntity": [
           {
             "@type": "Question",
-            "name": "What inputs do you support?",
+            "name": "What's the Infinite Talk AI?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "We support image inputs (JPG/PNG) and video inputs (MP4) combined with audio files (WAV/MP3, 16–24 kHz mono recommended)."
-            }
-          },
-          {
-            "@type": "Question", 
-            "name": "How long can my video be?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "There are no hard time limits. Our platform is designed for unlimited duration content, perfect for lectures, podcasts, and multi-chapter explainers."
+              "text": "Infinite Talk AI is an audio-driven, sparse-frame dubbing system that turns images or videos into long-form, lip-accurate talking footage with whole-frame control and multi-speaker support."
             }
           },
           {
             "@type": "Question",
-            "name": "Which resolutions are available?",
+            "name": "What inputs does Infinite Talk AI support?",
             "acceptedAnswer": {
-              "@type": "Answer", 
-              "text": "We support 480p, 720p, and 1080p export resolutions. 1080p provides the highest visual clarity and lip detail."
+              "@type": "Answer",
+              "text": "Upload a single image or a source video plus audio narration (WAV/MP3). Infinite Talk AI analyzes phonemes and timing to drive motion and exports MP4."
             }
           },
           {
             "@type": "Question",
-            "name": "Can I use outputs commercially?",
+            "name": "How does Infinite Talk AI keep identity stable?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Yes, you can use the generated videos for commercial purposes. Please review our Terms of Service for specific usage guidelines."
+              "text": "Soft reference control and context overlap preserve facial structure and style while keeping expressions natural."
             }
           },
           {
             "@type": "Question",
-            "name": "Do you support multiple speakers?",
+            "name": "Can Infinite Talk AI handle multiple speakers?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Yes, we support independent tracks and references for multiple speakers in your videos."
+              "text": "Yes. Provide separate audio tracks and references, and Infinite Talk AI animates each speaker independently in the same scene."
             }
           },
           {
             "@type": "Question",
-            "name": "How is my data handled?",
+            "name": "Does Infinite Talk AI reduce flicker and seams?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "We use industry-standard security measures. Your data is processed securely and you can delete your content at any time. See our Privacy Policy for details."
+              "text": "Temporal context windows carry motion across chunks, reducing flicker and visible joins on long timelines."
             }
           },
           {
             "@type": "Question",
-            "name": "How fast is rendering?",
+            "name": "How precise is lip-sync in Infinite Talk AI?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Rendering time scales with duration and the number of speakers. For speed-sensitive drafts, start at 480p/720p, then export the final cut in 1080p."
+              "text": "Phoneme-aware mapping keeps visemes aligned to speech rhythm for accurate articulation over long runs."
             }
-          }
-        ]
-      },
-      {
-        "@type": "HowTo",
-        "name": "How to Create Talking Videos with Infinite Talk AI",
-        "description": "Step-by-step guide to create unlimited talking videos using our AI platform",
-        "step": [
-          {
-            "@type": "HowToStep",
-            "name": "Choose Workflow",
-            "text": "Pick image-to-video generator or video-to-video lip-sync based on your project needs.",
-            "url": "https://www.infinitetalkai.org#how-it-works"
           },
           {
-            "@type": "HowToStep", 
-            "name": "Upload Source & Audio",
-            "text": "Add a video or single image plus your audio (voiceover, podcast, dialogue). Supported formats: MP4 / JPG / PNG / WAV / MP3.",
-            "url": "https://www.infinitetalkai.org#how-it-works"
+            "@type": "Question",
+            "name": "Is data private when using Infinite Talk AI?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Uploads are encrypted in transit. Retention controls and one-click deletion are provided; model training is opt-in only."
+            }
           },
           {
-            "@type": "HowToStep",
-            "name": "Generate & Export", 
-            "text": "Hit Generate. Our sparse-frame engine aligns lip shapes, expressions, head movement, and posture to your audio and keeps identity consistent—even in long sequences. Download your result in 480p, 720p, or 1080p as MP4.",
-            "url": "https://www.infinitetalkai.org#how-it-works"
+            "@type": "Question",
+            "name": "What hardware suits Infinite Talk AI?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "From lightweight previews to heavier passes, Infinite Talk AI offers acceleration and quantization for limited VRAM."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What content types fit Infinite Talk AI best?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Education, corporate explainers, podcasts, creator content, and multilingual dubbing benefit from whole-frame control."
+            }
           }
         ]
       }
@@ -276,10 +167,33 @@ export default function Home() {
       <main>
         <AuroraHero />
         <HowItWorks />
+        <Specs />
         <Highlights />
         <UnderTheHood />
-        <Specs />
+       
         <FAQ />
+        
+        {/* Final CTA */}
+        <section className="py-32 bg-background">
+          <div className="container mx-auto px-6 text-center">
+            <div className="max-w-4xl mx-auto">
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 text-balance">
+                Ship courses, demos, and episodes faster.
+              </h2>
+              <p className="text-lg md:text-xl text-muted-foreground mb-8 text-pretty">
+                Start free, adjust clarity and prompts as needed, and build your production pipeline with Infinite Talk AI.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 items-center justify-center">
+                <a href="/auth" className="group relative flex items-center gap-2 rounded-full bg-primary px-8 py-4 text-primary-foreground font-semibold hover:bg-primary/90 transition-all duration-200">
+                  <span>Start Free</span>
+                </a>
+                <a href="/examples" className="group relative flex items-center gap-2 rounded-full bg-transparent px-8 py-4 text-foreground font-semibold border border-border hover:bg-card transition-all duration-200">
+                  <span>See Examples</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
     </>
   );

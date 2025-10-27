@@ -13,38 +13,48 @@ export function FAQ() {
 
   const faqs: FAQItem[] = [
     {
-      question: "What inputs do you support?",
-      answer: "Video + audio (video-to-video) or single image + audio (image-to-video). Formats: MP4/JPG/PNG/WAV/MP3.",
-    },
-    {
-      question: "How long can my video be?",
+      question: "What's the Infinite Talk AI?",
       answer:
-        "No hard time limit. We process long content in overlapping chunks for continuity; practical length and render time depend on resolution, length, and plan.",
+        "Infinite Talk AI is an audio-driven, sparse-frame dubbing system that turns images or videos into long-form, lip-accurate talking footage with whole-frame control and multi-speaker support.",
     },
     {
-      question: "Which resolutions are available?",
-      answer: "480p, 720p, and 1080p. Choose based on your quality needs and render time.",
-    },
-    {
-      question: "Can I use outputs commercially?",
-      answer: "Yes—paid plans include commercial use rights. See Pricing and Terms for details.",
-    },
-    {
-      question: "Do you support multiple speakers?",
-      answer: "Yes. Upload separate audio tracks and assign references—each speaker is synced independently.",
-    },
-    {
-      question: "How is my data handled?",
+      question: "What inputs does Infinite Talk AI support?",
       answer:
-        "Processed in the cloud with encryption. Files remain for previews and re-download then auto-delete after the retention period; you can delete anytime.",
+        "Upload a single image or a source video plus audio narration (WAV/MP3). Infinite Talk AI analyzes phonemes and timing to drive motion and exports MP4.",
     },
     {
-      question: "Can I download and share the result?",
-      answer: "Yes. Export MP4 in 480p/720p/1080p and share via a link.",
+      question: "How does Infinite Talk AI keep identity stable?",
+      answer:
+        "Soft reference control and context overlap preserve facial structure and style while keeping expressions natural.",
     },
     {
-      question: "How fast is rendering?",
-      answer: "Depends on resolution, length, and plan. Paid tiers include priority in queue for faster turnaround.",
+      question: "Can Infinite Talk AI handle multiple speakers?",
+      answer:
+        "Yes. Provide separate audio tracks and references, and Infinite Talk AI animates each speaker independently in the same scene.",
+    },
+    {
+      question: "Does Infinite Talk AI reduce flicker and seams?",
+      answer:
+        "Temporal context windows carry motion across chunks, reducing flicker and visible joins on long timelines.",
+    },
+    {
+      question: "How precise is lip-sync in Infinite Talk AI?",
+      answer: "Phoneme-aware mapping keeps visemes aligned to speech rhythm for accurate articulation over long runs.",
+    },
+    {
+      question: "Is data private when using Infinite Talk AI?",
+      answer:
+        "Uploads are encrypted in transit. Retention controls and one-click deletion are provided; model training is opt-in only.",
+    },
+    {
+      question: "What hardware suits Infinite Talk AI?",
+      answer:
+        "From lightweight previews to heavier passes, Infinite Talk AI offers acceleration and quantization for limited VRAM.",
+    },
+    {
+      question: "What content types fit Infinite Talk AI best?",
+      answer:
+        "Education, corporate explainers, podcasts, creator content, and multilingual dubbing benefit from whole-frame control.",
     },
   ]
 
@@ -53,36 +63,42 @@ export function FAQ() {
   }
 
   return (
-    <section id="faq" className="py-32 bg-background">
-      <div className="container mx-auto px-6">
-        <div className="text-center mb-20">
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-4 text-balance">
-            Frequently Asked Questions
-          </h2>
-        </div>
+    <section id="faq" className="py-32 md:py-40 bg-background relative overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-t from-accent/5 via-background to-background"></div>
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808004_1px,transparent_1px),linear-gradient(to_bottom,#80808004_1px,transparent_1px)] bg-[size:80px_80px]"></div>
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-chart-1/10 rounded-full blur-[120px]"></div>
 
-        <div className="max-w-3xl mx-auto space-y-4">
-          {faqs.map((faq, index) => (
-            <div key={index} className="border border-border rounded-2xl overflow-hidden bg-card">
-              <button
-                className="w-full px-8 py-6 text-left hover:bg-secondary/50 transition-colors flex justify-between items-center group"
-                onClick={() => toggleFAQ(index)}
-              >
-                <span className="font-semibold text-foreground text-lg pr-4">{faq.question}</span>
-                <FiChevronDown
-                  className={`flex-shrink-0 w-5 h-5 text-muted-foreground transform transition-transform duration-300 ${openIndex === index ? "rotate-180" : ""}`}
-                />
-              </button>
+      <div className="container mx-auto px-6 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-16 lg:gap-24 items-start">
+          <div className="lg:sticky lg:top-32">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground text-balance">
+              FAQs — Infinite Talk AI
+            </h2>
+          </div>
 
-              {openIndex === index && (
-                <div className="overflow-hidden transition-all duration-300">
-                  <div className="px-8 py-6 border-t border-border">
-                    <p className="text-muted-foreground leading-relaxed text-pretty">{faq.answer}</p>
+          <div className="space-y-5">
+            {faqs.map((faq, index) => (
+              <div key={index} className="border border-border rounded-2xl overflow-hidden bg-card">
+                <button
+                  className="w-full px-8 py-7 text-left hover:bg-secondary/50 transition-colors flex justify-between items-center group"
+                  onClick={() => toggleFAQ(index)}
+                >
+                  <span className="font-semibold text-foreground text-lg pr-4">{faq.question}</span>
+                  <FiChevronDown
+                    className={`flex-shrink-0 w-5 h-5 text-muted-foreground transform transition-transform duration-300 ${openIndex === index ? "rotate-180" : ""}`}
+                  />
+                </button>
+
+                {openIndex === index && (
+                  <div className="overflow-hidden transition-all duration-300">
+                    <div className="px-8 py-7 border-t border-border">
+                      <p className="text-muted-foreground leading-relaxed text-pretty">{faq.answer}</p>
+                    </div>
                   </div>
-                </div>
-              )}
-            </div>
-          ))}
+                )}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

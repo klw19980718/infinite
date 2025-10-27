@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     description: 'Sign in to Infinite Talk AI to create unlimited talking videos. Secure authentication with Google OAuth and Email OTP.',
   },
   robots: {
-    index: false, // 认证页面通常不需要被搜索引擎索引
+    index: true, // 认证页面通常不需要被搜索引擎索引
     follow: true,
   },
 }

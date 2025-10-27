@@ -90,4 +90,4 @@ Disallow: /
 # -------------------------------------
 # 📌 Sitemap
 # -------------------------------------
-Sitemap: https://infinitetalkai.org/sitemap.xml
+Sitemap: https://www.infinitetalkai.org/sitemap.xml
