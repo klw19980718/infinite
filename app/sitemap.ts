@@ -18,6 +18,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 0.6,
     },
+    // 定价页面
+    {
+      url: baseUrl + '/pricing',
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    // 个人中心页面
+    {
+      url: baseUrl + '/profile',
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.3,
+    },
     // 法律页面
     {
       url: baseUrl + '/terms',

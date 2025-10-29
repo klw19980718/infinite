@@ -59,7 +59,7 @@ export default function UserMenu({ email }: UserMenuProps) {
 
         <DropdownMenuSeparator />
 
-        <DropdownMenuItem onClick={() => router.push("/auth")} className="cursor-pointer">
+        <DropdownMenuItem onClick={() => router.push("/profile")} className="cursor-pointer">
           Profile
         </DropdownMenuItem>
 

@@ -21,6 +21,8 @@ Disallow: /uploads/    # User uploads (temporary)
 User-agent: Googlebot
 Allow: /
 Allow: /auth          # Authentication page
+Allow: /pricing       # Pricing page
+Disallow: /profile    # Profile page (private)
 Allow: /terms         # Terms of Service
 Allow: /privacy       # Privacy Policy
 
@@ -36,6 +38,8 @@ Disallow: /user/
 User-agent: Bingbot
 Allow: /
 Allow: /auth          # Authentication page
+Allow: /pricing       # Pricing page
+Disallow: /profile    # Profile page (private)
 Allow: /terms         # Terms of Service
 Allow: /privacy       # Privacy Policy
 Disallow: /api/
@@ -50,6 +54,8 @@ Disallow: /user/
 User-agent: Baiduspider
 Allow: /
 Allow: /auth          # Authentication page
+Allow: /pricing       # Pricing page
+Disallow: /profile    # Profile page (private)
 Allow: /terms         # Terms of Service
 Allow: /privacy       # Privacy Policy
 Disallow: /api/
@@ -69,6 +75,8 @@ User-agent: YouBot
 Allow: /llms.txt
 Allow: /
 Allow: /auth          # Authentication page
+Allow: /pricing       # Pricing page
+Disallow: /profile    # Profile page (private)
 Allow: /terms         # Terms of Service
 Allow: /privacy       # Privacy Policy
 Disallow: /api/

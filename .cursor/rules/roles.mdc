@@ -51,8 +51,20 @@ alwaysApply: true
 ```
 infinite-talk/
 ├── app/                      - Next.js App Router 页面和路由
+│   ├── api/                 - API 路由
+│   │   └── creem/           - Creem 支付集成
+│   │       ├── checkout/    - 创建支付会话
+│   │       │   └── route.ts
+│   │       └── webhook/      - 处理支付 webhook
+│   │           └── route.ts
 │   ├── auth/                - 认证相关页面
 │   │   └── page.tsx         - 登录/注册整合页面（Email OTP）
+│   ├── pricing/             - 定价页面
+│   │   ├── page.tsx         - 定价页面服务端组件
+│   │   └── PricingPageClient.tsx - 定价页面客户端组件
+│   ├── profile/             - 用户个人资料页面
+│   │   ├── page.tsx         - 个人资料页面服务端组件
+│   │   └── ProfilePageClient.tsx - 个人资料页面客户端组件
 │   ├── privacy/             - 隐私政策页面
 │   │   └── page.tsx         - 隐私政策页面
 │   ├── terms/               - 服务条款页面
@@ -80,6 +92,7 @@ infinite-talk/
 │   ├── ui/                  - 可复用 UI 组件（shadcn/ui 风格）
 │   │   ├── avatar.tsx       - 头像组件
 │   │   ├── button.tsx       - 按钮组件
+│   │   ├── card.tsx         - 卡片组件
 │   │   ├── dialog.tsx       - 对话框组件
 │   │   ├── dropdown-menu.tsx - 下拉菜单组件
 │   │   ├── input.tsx        - 输入框组件

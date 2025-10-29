@@ -47,7 +47,14 @@ export default function Nav() {
             <span className="font-semibold text-lg text-foreground">Infinite Talk AI</span>
           </Link>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-6">
+            <Link 
+              href="/pricing" 
+              className="text-muted-foreground hover:text-foreground transition-colors font-medium"
+            >
+              Pricing
+            </Link>
+            
             {profile?.email ? (
               <UserMenu email={profile.email} />
             ) : (
