@@ -2,7 +2,6 @@
 alwaysApply: true
 ---
 
-
 ## Supabase 用法
 - 仅通过 `@/lib/supabase` 暴露的 helper 使用：
   - `getSupabaseClient()` 用于 Client 组件。
@@ -18,3 +17,100 @@ alwaysApply: true
 - 禁止把 `SERVICE_ROLE` 放到任何客户端可达代码/环境变量。
 - 对外返回数据**按需**选择字段；永远不要 `select *` 暴露敏感列。
 - 限流：如有外部可调用接口，至少按 IP/会话做简单限流。
+
+## 数据库表结构
+
+⚠️ **重要维护提醒**：
+- 🔴 当数据库有任何改动时，必须立即更新此文件
+- 🔴 保持此表结构与实际数据库同步是强制要求
+- 🔴 新增表、修改字段、添加约束时，添加相应的说明注释
+
+### 📊 当前表结构 (2025-01-27)
+
+#### 👤 user_info 表
+```sql
+- user_id (uuid, 主键) → 关联 auth.users.id
+- credits (bigint, 默认: 0) → 用户积分
+- created_at (timestamptz, 默认: now())
+- updated_at (timestamptz, 默认: now())
+```
+**用途**: 存储用户积分信息
+**RLS**: ✅ 启用
+
+#### 🛍️ products 表
+```sql
+- id (uuid, 主键, 默认: uuid_generate_v4())
+- title (text) → 产品标题
+- credits (integer, 约束: > 0) → 积分数量
+- price_usd (numeric, 约束: >= 0) → 美元价格
+- creem_product_id (text, 唯一) → Creem支付产品ID
+- type (product_type枚举, 默认: 'one_time') → 产品类型
+  - 枚举值: 'one_time', 'subscription'
+- currency (text, 默认: 'USD') → 货币
+- active (boolean, 默认: true) → 是否激活
+- created_at (timestamptz, 默认: now())
+```
+**用途**: 存储产品/套餐信息
+**RLS**: ✅ 启用
+
+#### 💰 credit_ledger 表
+```sql
+- id (uuid, 主键, 默认: uuid_generate_v4())
+- user_id (uuid) → 关联 auth.users.id
+- delta (bigint) → 积分变动量（正数增加，负数减少）
+- note (text, 可空) → 变动说明
+- created_at (timestamptz, 默认: now())
+```
+**用途**: 积分变动记录（审计日志）
+**RLS**: ✅ 启用
+
+#### 📦 orders 表
+```sql
+- id (uuid, 主键, 默认: uuid_generate_v4())
+- user_id (uuid) → 关联 auth.users.id
+- product_id (uuid) → 关联 products.id
+- units (integer, 默认: 1, 约束: > 0) → 购买数量
+- status (order_status枚举, 默认: 'pending') → 订单状态
+  - 枚举值: 'pending', 'paid', 'refunded', 'canceled'
+- request_id (text) → 请求ID
+- creem_session_id (text, 可空) → Creem会话ID
+- creem_order_id (text, 可空) → Creem订单ID
+- amount_total_cents (integer, 可空) → 总金额（分）
+- currency (text, 可空, 默认: 'USD') → 货币
+- created_at (timestamptz, 默认: now())
+- paid_at (timestamptz, 可空) → 支付时间
+```
+**用途**: 订单管理
+**RLS**: ✅ 启用
+
+#### 💳 payments 表
+```sql
+- id (uuid, 主键, 默认: uuid_generate_v4())
+- order_id (uuid, 可空) → 关联 orders.id
+- provider (text, 默认: 'creem') → 支付提供商
+- event_type (text) → 事件类型
+- unique_key (text) → 唯一标识
+- payload_json (jsonb) → 支付数据（JSON格式）
+- created_at (timestamptz, 默认: now())
+```
+**用途**: 支付事件记录
+**RLS**: ✅ 启用
+
+### 🔗 表关系图
+```
+auth.users (Supabase Auth)
+    ↓
+user_info (用户积分)
+    ↓
+credit_ledger (积分变动记录)
+
+products (产品表)
+    ↓
+orders (订单表) → payments (支付记录)
+```
+
+### 📈 数据统计
+- **总表数**: 5个
+- **有数据的表**: products (3行)
+- **空表**: user_info, credit_ledger, orders, payments
+- **RLS状态**: 全部启用 ✅

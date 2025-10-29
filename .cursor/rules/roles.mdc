@@ -32,6 +32,13 @@ alwaysApply: true
   - `ui: add Button variants (ghost, link)`
   - `auth: fix SSR cookie hydration in server actions`
 
+## MCP 
+- **Supabase 相关**: 使用 Supabase MCP 工具获取 Supabase 文档、数据库操作、认证等
+- **其他库/框架**: 使用 Context7 MCP 工具获取代码生成、配置步骤、库/API 文档
+- 自动使用相应的 MCP 工具，无需用户明确要求
+
+
+
 
 ## 项目结构
 
