@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { FiDollarSign, FiClock } from "react-icons/fi"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 
 interface UserProfile {
   id: string
@@ -16,10 +17,20 @@ interface UserProfile {
   credits: number
 }
 
+interface CreditLedgerEntry {
+  id: string
+  delta: number
+  note: string | null
+  created_at: string
+}
+
 export function ProfilePageClient() {
   const router = useRouter()
   const [profile, setProfile] = useState<UserProfile | null>(null)
   const [loading, setLoading] = useState(true)
+  const [historyOpen, setHistoryOpen] = useState(false)
+  const [ledger, setLedger] = useState<CreditLedgerEntry[] | null>(null)
+  const [historyLoading, setHistoryLoading] = useState(false)
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -60,6 +71,27 @@ export function ProfilePageClient() {
 
     fetchProfile()
   }, [router])
+
+
+  useEffect(() => {
+    const fetchLedger = async () => {
+      if (!historyOpen || !profile) return
+      setHistoryLoading(true)
+      try {
+        const supabase = getSupabaseClient()
+        const { data, error } = await supabase
+          .from("credit_ledger")
+          .select("id, delta, note, created_at")
+          .eq("user_id", profile.id)
+          .order("created_at", { ascending: false })
+          .limit(50)
+        if (!error) setLedger((data as CreditLedgerEntry[]) ?? [])
+      } finally {
+        setHistoryLoading(false)
+      }
+    }
+    fetchLedger()
+  }, [historyOpen, profile])
 
 
 
@@ -160,6 +192,7 @@ export function ProfilePageClient() {
                     variant="outline"
                     size="sm"
                     className="border-white/20 hover:border-cyan-500/50 hover:bg-cyan-500/10 bg-transparent"
+                    onClick={() => setHistoryOpen(true)}
                   >
                     <FiClock className="w-4 h-4 mr-2" />
                     View History
@@ -175,6 +208,47 @@ export function ProfilePageClient() {
               </div>
             </CardContent>
           </Card>
+
+          <Dialog open={historyOpen} onOpenChange={setHistoryOpen}>
+            <DialogContent className="max-w-3xl bg-neutral-900 text-white border-white/10">
+              <DialogHeader>
+                <DialogTitle>Credit History</DialogTitle>
+              </DialogHeader>
+              <div className="overflow-x-auto">
+                {historyLoading ? (
+                  <div className="py-8 text-center text-gray-400">Loading...</div>
+                ) : (
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="text-left text-gray-400 border-b border-white/10">
+                        <th className="py-2 pr-4">Time</th>
+                        <th className="py-2 pr-4">Delta</th>
+                        <th className="py-2">Note</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {(ledger ?? []).map((row) => (
+                        <tr key={row.id} className="border-b border-white/5">
+                          <td className="py-2 pr-4 text-gray-300">{new Date(row.created_at).toLocaleString()}</td>
+                          <td className="py-2 pr-4 font-mono">
+                            <span className={row.delta >= 0 ? "text-emerald-400" : "text-red-400"}>
+                              {row.delta >= 0 ? "+" : ""}{row.delta}
+                            </span>
+                          </td>
+                          <td className="py-2 text-gray-300">{row.note ?? "-"}</td>
+                        </tr>
+                      ))}
+                      {ledger && ledger.length === 0 && (
+                        <tr>
+                          <td className="py-6 text-center text-gray-500" colSpan={3}>No history</td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                )}
+              </div>
+            </DialogContent>
+          </Dialog>
 
         </div>
       </section>

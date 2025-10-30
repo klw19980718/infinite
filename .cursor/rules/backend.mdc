@@ -120,3 +120,37 @@ orders (订单表) → payments (支付记录)
 - **有数据的表**: products (3行)
 - **空表**: user_info, credit_ledger, orders, payments
 - **RLS状态**: 全部启用 ✅
+
+## 触发器与函数（必须保持同步维护）
+
+### credit_ledger ⇒ user_info 同步触发器
+```sql
+-- 名称：trg_credit_ledger_sync  表：public.credit_ledger  时机：AFTER INSERT/UPDATE/DELETE
+-- 函数：public.tg_sync_user_credits()
+-- 语义：仅以 ledger 为单一事实来源；任何对 ledger 的增删改都会同步到 user_info.credits
+--      INSERT  → user_info.credits += NEW.delta
+--      UPDATE  → user_info.credits = credits - OLD.delta + NEW.delta
+--      DELETE  → user_info.credits -= OLD.delta
+```
+
+### user_info 更新触发器
+```sql
+-- 名称：trg_user_info_touch  表：public.user_info  时机：BEFORE UPDATE
+-- 函数：public.tg_user_info_touch_updated_at()
+-- 语义：写入 NEW.updated_at = now()
+```
+
+### RPC：public.add_user_credits
+```sql
+-- 参数：p_user_id uuid, p_credits_to_add bigint, p_note text
+-- 权限：SECURITY DEFINER（仅服务端调用）
+-- 行为（已修订，避免重复加分）：
+--   1) 确保 user_info 行存在（不修改 credits）
+--   2) 仅向 credit_ledger 写入一条 +delta 的记录
+--      余额变动由触发器 tg_sync_user_credits() 自动完成
+```
+
+## Webhook 幂等与订单映射
+- 幂等锁：优先插入 payments(unique_key = event.id) 作为“预占位”。若唯一键冲突则直接返回 200，不再加分。
+- 次级幂等：若 `orders.creem_session_id = checkout.id` 已存在，则仅更新既有 payments 的 `order_id/payload_json`，不重复计费。
+- 产品映射：用 `checkout.order.product` 或 `checkout.product.id` 匹配 `products.creem_product_id`，得到本地 `products.id` 作为 `orders.product_id`。

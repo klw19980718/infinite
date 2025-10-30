@@ -134,6 +134,51 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    const supabase = getServerSupabase()
+
+    // Idempotency lock: try to insert a placeholder payment first.
+    // If another request already inserted the same unique_key, skip immediately.
+    const uniqueKey: string | undefined = event.id
+    if (uniqueKey) {
+      const { error: prelockErr } = await supabase.from("payments").insert({
+        order_id: null,
+        provider: "creem",
+        event_type: event.eventType,
+        unique_key: uniqueKey,
+        payload_json: { prelocked: true },
+      })
+      if (prelockErr) {
+        // 23505 = unique violation
+        if ((prelockErr as any).code === "23505") {
+          if (IS_DEVELOPMENT) console.log("⏭️ Duplicate webhook (prelocked)", uniqueKey)
+          return NextResponse.json({ received: true })
+        }
+        console.error("Error prelocking payment record:", prelockErr)
+        return NextResponse.json({ ok: false, message: "Prelock failed" }, { status: 500 })
+      }
+    }
+
+    // Secondary idempotency: if an order with the same checkout/session id already exists, skip
+    if (checkout?.id) {
+      const { data: existingOrder, error: existingOrderErr } = await supabase
+        .from("orders")
+        .select("id")
+        .eq("creem_session_id", checkout.id)
+        .maybeSingle()
+      if (existingOrderErr) {
+        console.error("Error checking existing order by session id:", existingOrderErr)
+      }
+      if (existingOrder) {
+        // Link the prelocked payment row and exit
+        await supabase
+          .from("payments")
+          .update({ order_id: existingOrder.id, payload_json: event })
+          .eq("unique_key", event.id)
+        if (IS_DEVELOPMENT) console.log("⏭️ Duplicate webhook (by checkout.id)", checkout.id)
+        return NextResponse.json({ received: true })
+      }
+    }
+
     // Get credits to add based on plan
     const creditsToAdd = CREDIT_MAPPING[planId as keyof typeof CREDIT_MAPPING]
     if (!creditsToAdd) {
@@ -141,13 +186,12 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ received: true })
     }
 
-    const supabase = getServerSupabase()
-
     // Start transaction to update user credits and create ledger entry
+    // NOTE: argument names must match the SQL function parameters
     const { error: updateError } = await supabase.rpc("add_user_credits", {
-      user_id: userId,
-      credits_to_add: creditsToAdd,
-      note: `Purchase: ${planId} plan (${creditsToAdd} credits)`,
+      p_user_id: userId,
+      p_credits_to_add: creditsToAdd,
+      p_note: `Purchase: ${planId} plan (${creditsToAdd} credits)`,
     })
 
     if (updateError) {
@@ -163,32 +207,53 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Create order record
-    const { error: orderError } = await supabase.from("orders").insert({
-      user_id: userId,
-      product_id: checkout.order?.product || checkout.product?.id,
-      status: "paid",
-      request_id: checkout.request_id,
-      creem_session_id: checkout.id,
-      creem_order_id: checkout.order?.id,
-      amount_total_cents: checkout.order?.amount || 0,
-      currency: checkout.order?.currency || "USD",
-      paid_at: new Date().toISOString(),
-    })
-
-    if (orderError) {
-      console.error("Error creating order record:", orderError)
-      // Don't fail the webhook for this error
+    // Resolve local product uuid by creem product id
+    const creemProductId: string | undefined = checkout.order?.product || checkout.product?.id
+    let localProductId: string | null = null
+    if (creemProductId) {
+      const { data: productRow, error: productErr } = await supabase
+        .from("products")
+        .select("id")
+        .eq("creem_product_id", creemProductId)
+        .maybeSingle()
+      if (productErr) {
+        console.error("Error fetching local product:", productErr)
+      }
+      localProductId = productRow?.id ?? null
     }
 
-    // Create payment record
-    const { error: paymentError } = await supabase.from("payments").insert({
-      order_id: checkout.order?.id,
-      provider: "creem",
-      event_type: event.eventType,
-      unique_key: event.id,
-      payload_json: event,
-    })
+    // Create order record (use local uuid product_id if found)
+    let insertedOrderId: string | null = null
+    {
+      const { data: orderRows, error: orderError } = await supabase
+        .from("orders")
+        .insert({
+          user_id: userId,
+          product_id: localProductId,
+          status: "paid",
+          request_id: checkout.request_id,
+          creem_session_id: checkout.id,
+          creem_order_id: checkout.order?.id,
+          amount_total_cents: checkout.order?.amount || 0,
+          currency: checkout.order?.currency || "USD",
+          paid_at: new Date().toISOString(),
+        })
+        .select("id")
+      if (orderError) {
+        console.error("Error creating order record:", orderError)
+      } else if (orderRows && orderRows.length > 0) {
+        insertedOrderId = orderRows[0].id
+      }
+    }
+
+    // Finalize payment record: update the prelocked row with full payload and order link
+    const { error: paymentError } = await supabase
+      .from("payments")
+      .update({
+        order_id: insertedOrderId,
+        payload_json: event,
+      })
+      .eq("unique_key", event.id)
 
     if (paymentError) {
       console.error("Error creating payment record:", paymentError)
