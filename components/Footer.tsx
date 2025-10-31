@@ -116,7 +116,6 @@ export default function Footer() {
               © 2025 Infinitetalk.ai. All rights reserved.
             </p>
             <div className="flex items-center gap-4 text-sm text-muted-foreground">
-              <span>1234 Innovation Drive, San Francisco, CA 94105</span>
               <a 
                 href="https://www.infinitetalkai.org" 
                 className="hover:text-foreground transition-colors"

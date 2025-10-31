@@ -168,9 +168,6 @@ export default function PrivacyPage() {
             <h2 className="text-2xl font-semibold mb-4 text-foreground">14) Contact</h2>
             <div className="text-muted-foreground leading-relaxed">
               <p><strong>Infinitetalk.ai</strong></p>
-              <p>1234 Innovation Drive<br />
-              San Francisco, CA 94105<br />
-              United States</p>
               <p>Email: support@infinitetalkai.org</p>
             </div>
           </section>
