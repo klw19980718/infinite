@@ -1,0 +1,1 @@
+export { ImageToVideoHero } from './hero'

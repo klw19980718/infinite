@@ -58,7 +58,12 @@ infinite-talk/
 │   │       └── webhook/      - 处理支付 webhook
 │   │           └── route.ts
 │   ├── auth/                - 认证相关页面
-│   │   └── page.tsx         - 登录/注册整合页面（Email OTP）
+│   │   ├── page.tsx         - 登录/注册整合页面（Email OTP）
+│   │   └── AuthPageClient.tsx - 认证页面客户端组件
+│   ├── infinite-talk-ai/    - AI 功能相关页面
+│   │   ├── image-to-video/  - 图片转视频功能
+│   │   │   └── page.tsx     - 图片转视频页面
+│   │   └── video-to-video/  - 视频转视频功能（待实现）
 │   ├── pricing/             - 定价页面
 │   │   ├── page.tsx         - 定价页面服务端组件
 │   │   └── PricingPageClient.tsx - 定价页面客户端组件
@@ -89,6 +94,9 @@ infinite-talk/
 │   │   ├── Specs.tsx        - 规格参数组件
 │   │   ├── UnderTheHood.tsx - 技术细节组件
 │   │   └── index.ts         - 组件统一导出
+│   ├── image-to-video/      - 图片转视频相关组件
+│   │   ├── hero.tsx         - 图片转视频英雄区组件
+│   │   └── index.ts         - 组件统一导出
 │   ├── ui/                  - 可复用 UI 组件（shadcn/ui 风格）
 │   │   ├── avatar.tsx       - 头像组件
 │   │   ├── button.tsx       - 按钮组件
@@ -100,9 +108,17 @@ infinite-talk/
 │   ├── Footer.tsx           - 页脚组件（含品牌信息和链接）
 │   └── nav.tsx              - 导航栏组件（含Logo和登录/用户菜单）
 │
+├── components.json          - shadcn/ui 组件配置文件
+│
 ├── lib/                     - 工具函数和配置
 │   ├── supabase.ts          - Supabase 客户端单例
 │   └── utils.ts             - 通用工具函数（cn, clsx 等）
+│
+├── doc/                     - 项目文档目录
+│   ├── CREEM_SETUP.md       - Creem 支付集成配置文档
+│   ├── CREEM_TEST_MODE_WEBHOOK.md - Creem 测试模式 Webhook 配置
+│   ├── ENV_SETUP.md         - 环境变量配置文档
+│   └── WEBHOOK_LOCAL_SETUP.md - 本地 Webhook 测试配置文档
 │
 ├── public/                  - 静态资源目录
 │   ├── google32aec5a0f4af8f9d.html - Google 验证文件
@@ -124,7 +140,8 @@ infinite-talk/
 ├── postcss.config.mjs       - PostCSS 配置
 ├── tailwind.config.js       - Tailwind CSS 配置
 ├── tsconfig.json            - TypeScript 配置
-└── tsconfig.tsbuildinfo     - TypeScript 构建缓存
+├── tsconfig.tsbuildinfo     - TypeScript 构建缓存
+└── test-webhook-debug.js    - Webhook 测试调试脚本（开发用）
 ```
 
 

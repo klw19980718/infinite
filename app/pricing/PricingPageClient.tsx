@@ -179,12 +179,15 @@ export function PricingPageClient() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
-            <button className="px-8 py-4 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-300 hover:scale-105">
+            <Link
+              href="#plans"
+              className="px-8 py-4 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-300 hover:scale-105 text-center"
+            >
               Choose a Plan
-            </button>
+            </Link>
             <Link
               href="#how-credits-work"
-              className="px-8 py-4 border border-border rounded-xl font-semibold hover:bg-accent/50 transition-all duration-300 hover:border-blue-500/50"
+              className="px-8 py-4 border border-border rounded-xl font-semibold hover:bg-accent/50 transition-all duration-300 hover:border-blue-500/50 text-center"
             >
               How Credits Work
             </Link>
@@ -215,7 +218,7 @@ export function PricingPageClient() {
       </section>
 
       {/* Plans Section */}
-      <section className="py-20 px-4 relative z-10">
+      <section id="plans" className="py-20 px-4 relative z-10 scroll-mt-20">
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-3 gap-8">
             {plans.map((plan) => (
