@@ -104,7 +104,6 @@ export default function OtpForm({ onSuccess, redirectTo, emailSent, onBackToEmai
               disabled={loading}
               autoComplete="one-time-code"
               className="h-14 rounded-xl px-4 bg-secondary/50 text-foreground placeholder:text-muted-foreground border-border focus:ring-2 focus:ring-accent/50 focus:border-accent text-center text-2xl tracking-[0.5em] font-mono"
-              autoFocus
               maxLength={6}
             />
           </div>
