@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import {
   DropdownMenu,
@@ -10,7 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { getSupabaseClient } from "@/lib/supabase"
 
 interface UserMenuProps {
@@ -20,6 +20,40 @@ interface UserMenuProps {
 export default function UserMenu({ email }: UserMenuProps) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
+
+  useEffect(() => {
+    const fetchUserAvatar = async () => {
+      try {
+        const supabase = getSupabaseClient()
+        const { data: { user } } = await supabase.auth.getUser()
+        if (user) {
+          // Try avatar_url from user_metadata first
+          const url = user.user_metadata?.avatar_url || user.user_metadata?.avatar || null
+          setAvatarUrl(url)
+        }
+      } catch (error) {
+        console.error("Error fetching user avatar:", error)
+      }
+    }
+
+    fetchUserAvatar()
+
+    // Listen for auth state changes
+    const supabase = getSupabaseClient()
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session?.user) {
+        const url = session.user.user_metadata?.avatar_url || session.user.user_metadata?.avatar || null
+        setAvatarUrl(url)
+      } else {
+        setAvatarUrl(null)
+      }
+    })
+
+    return () => {
+      subscription.unsubscribe()
+    }
+  }, [])
 
   const avatarChar = email?.charAt(0)?.toUpperCase() || "?"
 
@@ -28,6 +62,7 @@ export default function UserMenu({ email }: UserMenuProps) {
     try {
       const supabase = getSupabaseClient()
       await supabase.auth.signOut()
+      router.push("/")
       router.refresh()
     } catch (error) {
       console.error("Sign out error:", error)
@@ -44,6 +79,7 @@ export default function UserMenu({ email }: UserMenuProps) {
           aria-label="User menu"
         >
           <Avatar className="h-10 w-10">
+            <AvatarImage src={avatarUrl || undefined} alt={email || "User"} />
             <AvatarFallback className="bg-accent text-accent-foreground font-semibold">{avatarChar}</AvatarFallback>
           </Avatar>
         </button>

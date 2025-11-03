@@ -326,13 +326,13 @@ export function PricingPageClient() {
               { icon: FiHeadphones, text: "Priority support", color: "pink" },
             ].map((item, index) => (
               <div key={index} className="group">
-                <div className="flex flex-col items-center gap-4 p-6 rounded-2xl bg-card border border-border hover:border-blue-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/10 hover:-translate-y-1">
+                <div className="flex flex-col items-center justify-between gap-4 p-6 rounded-2xl bg-card border border-border hover:border-blue-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/10 hover:-translate-y-1 h-full min-h-[160px]">
                   <div
-                    className={`w-14 h-14 bg-gradient-to-br from-${item.color}-500/20 to-${item.color}-500/5 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}
+                    className={`w-14 h-14 bg-gradient-to-br from-${item.color}-500/20 to-${item.color}-500/5 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 flex-shrink-0`}
                   >
                     <item.icon className={`w-7 h-7 text-${item.color}-400`} />
                   </div>
-                  <span className="text-sm text-muted-foreground text-center font-medium">{item.text}</span>
+                  <span className="text-sm text-muted-foreground text-center font-medium flex-shrink-0">{item.text}</span>
                 </div>
               </div>
             ))}
@@ -406,6 +406,39 @@ export function PricingPageClient() {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-20 px-4 relative">
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-500/5 to-transparent" />
+
+        <div className="max-w-4xl mx-auto text-center relative z-10">
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Ready to Get Started?</h2>
+          <p className="text-muted-foreground mb-12 max-w-2xl mx-auto">
+            Start creating amazing videos with AI-powered lip-sync and animation
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-6 justify-center">
+            <Link
+              href="/infinite-talk-ai/image-to-video"
+              className="group relative px-8 py-4 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-300 hover:scale-105"
+            >
+              <div className="flex items-center justify-center gap-2">
+                <FiZap className="w-5 h-5" />
+                <span>Image to Video</span>
+              </div>
+            </Link>
+            <Link
+              href="/infinite-talk-ai/video-to-video"
+              className="group relative px-8 py-4 border-2 border-blue-500/50 text-foreground rounded-xl font-semibold hover:bg-blue-500/10 hover:border-blue-500 transition-all duration-300 hover:scale-105"
+            >
+              <div className="flex items-center justify-center gap-2">
+                <FiZap className="w-5 h-5 text-blue-400" />
+                <span>Video to Video</span>
+              </div>
+            </Link>
           </div>
         </div>
       </section>

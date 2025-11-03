@@ -11,9 +11,11 @@ Disallow: /api/        # API endpoints (not meant for indexing)
 Disallow: /_next/      # Next.js internal assets
 Disallow: /admin/      # Admin dashboard (protected)
 Disallow: /dashboard/  # User dashboard
+Disallow: /profile/    # User profile page (private) - 禁止抓取
 Disallow: /user/       # User-specific content
 Disallow: /uploads/    # User uploads (temporary)
 # Note: Static assets are allowed (no Disallow for /static/)
+# Note: Non-www domain (http://infinitetalkai.org/) will redirect to www via middleware
 
 # -------------------------------------
 # 🔍 Googlebot rules (enhanced indexing)

@@ -2,6 +2,10 @@ import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
 export async function middleware(request: NextRequest) {
+  // Note: Domain redirect (infinitetalkai.org -> www.infinitetalkai.org) 
+  // is handled at Vercel level (301 redirect configured in Vercel dashboard)
+  // No need to handle it here in middleware
+
   let response = NextResponse.next({
     request: {
       headers: request.headers,

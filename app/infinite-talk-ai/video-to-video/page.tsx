@@ -1,4 +1,5 @@
-import { VideoToVideoHero } from '@/components/video-to-video'
+import { VideoToVideoHero, VideoToVideoCTA } from '@/components/video-to-video'
+import { WhatIsVideoToVideo } from '@/components/content/WhatIsVideoToVideo'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -60,6 +61,9 @@ export default function VideoToVideoPage() {
     <>
       <main>
         <VideoToVideoHero />
+        
+        <WhatIsVideoToVideo />
+        <VideoToVideoCTA />
       </main>
     </>
   )

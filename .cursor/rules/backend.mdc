@@ -217,6 +217,41 @@ alwaysApply: true
 
 **环境变量**: `WAVESPEED_KEY`
 
+#### DELETE `/api/video/delete`
+**功能**: 删除用户视频生成任务（作品）  
+**查询参数**:
+```typescript
+{
+  task_id: string (uuid, 必需) - 任务 ID
+}
+```
+**返回**:
+```typescript
+{
+  ok: true,
+  message: "Task deleted successfully"
+}
+// 错误情况：
+{
+  ok: false,
+  code: 'UNAUTHORIZED' | 'MISSING_TASK_ID' | 'TASK_NOT_FOUND' | 'DELETE_ERROR' | 'INTERNAL_ERROR',
+  message: string
+}
+```
+**流程**:
+1. 从 cookie 验证用户身份（使用 `createServerSupabaseClientForRouteHandler`）
+2. 验证任务归属（用户只能删除自己的任务，使用 cookie-based 客户端通过 RLS 检查）
+3. **使用服务端密钥客户端（`getServerSupabase()`）执行删除操作，绕过 RLS 限制**
+4. 验证删除结果，确保删除成功
+5. 返回删除成功信息
+
+**认证方式**: 使用 cookie-based 认证，从 `NextRequest` 读取用户 session
+
+**安全**: 
+- 双重验证（先用 cookie-based 客户端验证任务存在且属于当前用户）
+- 使用服务端密钥绕过 RLS 执行删除（在已验证权限后）
+- 删除操作仍包含 `user_id` 条件，防止误删
+
 ## 安全
 - 禁止把 `SERVICE_ROLE` 放到任何客户端可达代码/环境变量。
 - 对外返回数据**按需**选择字段；永远不要 `select *` 暴露敏感列。

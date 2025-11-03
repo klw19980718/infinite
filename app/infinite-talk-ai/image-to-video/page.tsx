@@ -1,5 +1,7 @@
 import { ImageToVideoHero } from '@/components/image-to-video'
 import type { Metadata } from 'next'
+import { ImageToVideoCTA } from '@/components/image-to-video'
+import { WhatIsImageToVideo } from '@/components/content/WhatIsImageToVideo'
 
 export const metadata: Metadata = {
   title: 'Infinite Talk AI image-to-video — Fast, Natural Lip Sync',
@@ -60,6 +62,9 @@ export default function ImageToVideoPage() {
     <>
       <main>
         <ImageToVideoHero />
+        
+        <WhatIsImageToVideo />
+        <ImageToVideoCTA />
       </main>
     </>
   )
