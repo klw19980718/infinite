@@ -52,10 +52,17 @@ alwaysApply: true
 infinite-talk/
 ├── app/                      - Next.js App Router 页面和路由
 │   ├── api/                 - API 路由
-│   │   └── creem/           - Creem 支付集成
-│   │       ├── checkout/    - 创建支付会话
+│   │   ├── creem/           - Creem 支付集成
+│   │   │   ├── checkout/    - 创建支付会话
+│   │   │   │   └── route.ts
+│   │   │   └── webhook/      - 处理支付 webhook
+│   │   │       └── route.ts
+│   │   └── video/           - WaveSpeedAI 视频生成集成
+│   │       ├── image-to-video/ - 图片转视频任务提交
 │   │       │   └── route.ts
-│   │       └── webhook/      - 处理支付 webhook
+│   │       ├── video-to-video/ - 视频转视频任务提交
+│   │       │   └── route.ts
+│   │       └── result/       - 查询任务结果
 │   │           └── route.ts
 │   ├── auth/                - 认证相关页面
 │   │   ├── page.tsx         - 登录/注册整合页面（Email OTP）
@@ -111,7 +118,10 @@ infinite-talk/
 ├── components.json          - shadcn/ui 组件配置文件
 │
 ├── lib/                     - 工具函数和配置
-│   ├── supabase.ts          - Supabase 客户端单例
+│   ├── supabase/            - Supabase 客户端配置
+│   │   └── server.server.ts - 服务端 Supabase 客户端（从 cookie 读取 session）
+│   ├── supabase.ts          - Supabase 客户端单例（客户端组件使用）
+│   ├── wavespeed.ts         - WaveSpeedAI API 工具函数
 │   └── utils.ts             - 通用工具函数（cn, clsx 等）
 │
 ├── doc/                     - 项目文档目录

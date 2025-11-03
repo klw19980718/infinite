@@ -4,20 +4,217 @@ alwaysApply: true
 
 ## Supabase 用法
 - 仅通过 `@/lib/supabase` 暴露的 helper 使用：
-  - `getSupabaseClient()` 用于 Client 组件。
-  - `getServerSupabase()`（或 server action 内）用于服务端。
+  - `getSupabaseClient()` - 用于 Client 组件（浏览器环境）
+  - `getServerSupabase()` - 用于服务端，需要 SERVICE_ROLE_KEY 的操作（如 webhooks）
+- 服务端认证（从 cookie 读取 session）：
+  - `@/lib/supabase/server.server.ts` - 服务端专用文件（`.server.ts` 后缀确保不会被打包到客户端）
+    - `createServerSupabaseClient()` - 用于 Server Components 和 Server Actions
+    - `createServerSupabaseClientForRouteHandler(request, response)` - 用于 API Route Handlers
 - 所有查询默认 **RLS 开启**；服务端需要更高权限时，使用**服务端密钥**于 Route Handler（不可在客户端暴露）。
 
 ## API & Route Handlers
 - API 路由放 /app/api/**，默认 Edge 仅当无 Node 依赖。
 - 校验：Zod（或最小手写校验）；返回明确的错误结构 `{ ok:false, code, message }`。
 - 禁止在 API 中做 SSR-only 任务与重量级阻塞（交给队列/edge/cron）。
+⚠️ **重要维护提醒**：
+- 🔴 当项目app/api有任何改动时，必须立即更新此文件
+- 🔴 保持此内容为最新
 
 ### 🚀 Creem 支付集成
-- `/api/creem/checkout` - 创建支付会话，重定向到 Creem 支付页面
-- `/api/creem/webhook` - 处理 Creem webhook 事件，更新用户积分
-- 环境变量：`CREEM_API_KEY`, `CREEM_WEBHOOK_SECRET`, `CREEM_PRODUCT_*_ID`
-- 支付流程：前端 → checkout API → Creem → webhook → 积分更新
+
+#### POST `/api/creem/checkout`
+**功能**: 创建 Creem 支付会话，返回支付页面 URL  
+**请求体**:
+```typescript
+{
+  planId: 'pro' | 'ultimate' | 'enterprise',
+  userId: string (UUID),
+  userEmail: string
+}
+```
+**返回**:
+```typescript
+{
+  ok: true,
+  checkout_url: string,
+  checkout_id: string,
+  request_id: string
+}
+// 错误情况：
+{
+  ok: false,
+  code: 'INVALID_PLAN' | 'UNAUTHORIZED' | 'PRODUCT_NOT_FOUND' | 'CHECKOUT_ERROR' | 'INTERNAL_ERROR',
+  message: string
+}
+```
+**流程**:
+1. 验证用户信息（userId, userEmail）
+2. 验证 planId 并映射到 Creem 产品 ID
+3. 生成唯一 request_id
+4. 调用 Creem API 创建 checkout 会话
+5. 返回支付页面 URL，前端重定向
+
+**环境变量**: `CREEM_API_KEY`, `CREEM_PRODUCT_PRO_ID`, `CREEM_PRODUCT_ULTIMATE_ID`, `CREEM_PRODUCT_ENTERPRISE_ID`, `CREEM_API_URL` (可选), `NEXT_PUBLIC_SITE_URL`
+
+#### POST `/api/creem/webhook`
+**功能**: 处理 Creem 支付完成 webhook 事件，更新用户积分  
+**请求头**: 
+- `Creem-Signature` 或 `x-creem-signature` (HMAC 签名)
+- `Creem-Timestamp` 或 `x-creem-timestamp` (可选，用于签名验证)
+**请求体**: Creem webhook 事件 JSON
+```typescript
+{
+  id: string,              // 事件唯一ID（用于幂等性）
+  eventType: 'checkout.completed' | 'checkout.session.completed',
+  object: {
+    id: string,            // checkout.id
+    request_id: string,
+    metadata: {
+      user_id: string,    // UUID
+      user_email: string,
+      plan_id: 'pro' | 'ultimate' | 'enterprise'
+    },
+    order?: {
+      id: string,
+      product: string,    // Creem 产品 ID
+      amount: number,
+      currency: string
+    },
+    product?: {
+      id: string          // Creem 产品 ID
+    }
+  }
+}
+```
+**返回**: 
+```typescript
+{ received: true }  // 成功或重复请求
+// 错误情况：
+{
+  ok: false,
+  message: string
+}
+```
+**流程**:
+1. 验证 HMAC 签名（生产环境强制，开发环境可选）
+2. 幂等性检查（通过 `event.id` 和 `checkout.id`）
+3. 从 metadata 提取 user_id 和 plan_id
+4. 根据 plan_id 计算积分（pro: 400, ultimate: 800, enterprise: 1800）
+5. 调用 `add_user_credits` RPC 函数增加积分
+6. 映射 Creem 产品 ID 到本地 products 表 UUID
+7. 创建 orders 记录（status='paid'）
+8. 更新 payments 记录（关联 order_id 和完整 payload）
+
+**幂等性策略**:
+- 主锁：`payments.unique_key = event.id`，冲突则直接返回 200
+- 次锁：`orders.creem_session_id = checkout.id`，已存在则跳过
+
+**积分映射**: `{ pro: 400, ultimate: 800, enterprise: 1800 }`
+
+**环境变量**: `CREEM_WEBHOOK_SECRET`
+
+### 🎥 WaveSpeedAI 视频生成集成
+
+#### POST `/api/video/image-to-video`
+**功能**: 提交图片转视频任务，从图片和音频生成说话视频  
+**请求方式**: `multipart/form-data`  
+**请求参数**:
+```typescript
+{
+  image: File (必需) - 输入图片文件
+  audio: File (必需) - 输入音频文件
+  resolution: '480p' | '720p' (可选, 默认: '480p')
+  prompt: string (可选) - 提示词
+  seed: number (可选, 默认: -1) - 随机种子
+  mask_image: File (可选) - 掩码图片，指定要动画化的区域
+}
+```
+**返回**:
+```typescript
+{
+  ok: true,
+  task_id: string (uuid),
+  wavespeed_task_id: string,
+  status: 'processing'
+}
+// 错误情况：
+{
+  ok: false,
+  code: 'UNAUTHORIZED' | 'MISSING_FILES' | 'INVALID_RESOLUTION' | 'TASK_CREATION_FAILED' | 'WAVESPEED_ERROR' | 'INTERNAL_ERROR',
+  message: string
+}
+```
+**流程**:
+1. 从 cookie 验证用户身份（使用 `createServerSupabaseClientForRouteHandler`）
+2. 验证必需文件（image, audio）
+3. 上传文件到 WaveSpeedAI 媒体存储
+4. 调用 `create_video_task` RPC 函数创建任务并扣除积分
+5. 提交任务到 WaveSpeedAI API
+6. 更新任务状态为 'processing'
+7. 返回任务 ID
+
+**认证方式**: 使用 cookie-based 认证，从 `NextRequest` 读取用户 session
+
+**积分扣除**: 
+- 480p: 1 积分/秒，最小 5 积分
+- 720p: 2 积分/秒，最小 10 积分
+- 最大: 600 秒（480p=600积分，720p=1200积分）
+
+**环境变量**: `WAVESPEED_KEY`
+
+#### POST `/api/video/video-to-video`
+**功能**: 提交视频转视频任务，从视频和音频生成说话视频  
+**请求方式**: `multipart/form-data`  
+**请求参数**:
+```typescript
+{
+  video: File (必需) - 输入视频文件
+  audio: File (必需) - 输入音频文件
+  resolution: '480p' | '720p' (可选, 默认: '480p')
+  prompt: string (可选) - 提示词
+  seed: number (可选, 默认: -1) - 随机种子
+  mask_image: File (可选) - 掩码图片，指定要动画化的区域
+}
+```
+**返回**: 同 image-to-video 接口
+**流程**: 同 image-to-video 接口（使用 video 文件而非 image）
+**认证方式**: 使用 cookie-based 认证，从 `NextRequest` 读取用户 session
+**积分扣除**: 同 image-to-video 接口
+
+#### GET `/api/video/result`
+**功能**: 查询视频生成任务结果  
+**查询参数**:
+```typescript
+{
+  task_id: string (uuid, 必需) - 任务 ID
+}
+```
+**返回**:
+```typescript
+{
+  ok: true,
+  task_id: string,
+  status: 'created' | 'processing' | 'completed' | 'failed',
+  outputs: string[],  // 完成时包含视频 URL 数组
+  error?: string     // 失败时的错误信息
+}
+// 错误情况：
+{
+  ok: false,
+  code: 'UNAUTHORIZED' | 'MISSING_TASK_ID' | 'TASK_NOT_FOUND' | 'WAVESPEED_ERROR' | 'INTERNAL_ERROR',
+  message: string
+}
+```
+**流程**:
+1. 从 cookie 验证用户身份（使用 `createServerSupabaseClientForRouteHandler`）
+2. 验证任务归属（用户只能查询自己的任务）
+3. 从 WaveSpeedAI API 获取任务状态
+4. 更新本地任务状态和结果
+5. 返回任务状态和结果
+
+**认证方式**: 使用 cookie-based 认证，从 `NextRequest` 读取用户 session
+
+**环境变量**: `WAVESPEED_KEY`
 
 ## 安全
 - 禁止把 `SERVICE_ROLE` 放到任何客户端可达代码/环境变量。
@@ -65,9 +262,49 @@ alwaysApply: true
 - user_id (uuid) → 关联 auth.users.id
 - delta (bigint) → 积分变动量（正数增加，负数减少）
 - note (text, 可空) → 变动说明
+- task_id (uuid, 可空) → 关联 video_tasks.id（视频任务扣分）
 - created_at (timestamptz, 默认: now())
 ```
 **用途**: 积分变动记录（审计日志）
+**RLS**: ✅ 启用
+
+#### 🎥 video_tasks 表
+```sql
+- id (uuid, 主键, 默认: uuid_generate_v4())
+- user_id (uuid) → 关联 auth.users.id
+- wavespeed_task_id (text, 唯一) → InfiniteTalk API 任务ID
+- status (task_status枚举, 默认: 'pending') → 任务状态
+  - 枚举值: 'pending', 'processing', 'completed', 'failed'
+- resolution (text, 约束: '480p'|'720p') → 视频分辨率
+- credits_used (bigint, 约束: > 0) → 扣除的积分数
+- video_duration_seconds (integer, 可空) → 生成的视频时长（秒）
+- input_image_url (text) → 输入图片URL
+- input_audio_url (text) → 输入音频URL
+- output_video_url (text, 可空) → 输出视频URL
+- prompt (text, 可空) → 用户提示词
+- seed (integer, 可空) → 随机种子
+- error_message (text, 可空) → 错误信息
+- api_response (jsonb, 可空) → API原始响应
+- created_at (timestamptz, 默认: now())
+- updated_at (timestamptz, 默认: now())
+```
+**用途**: 存储视频生成任务信息
+**RLS**: ✅ 启用
+
+#### 📁 uploaded_files 表
+```sql
+- id (uuid, 主键, 默认: uuid_generate_v4())
+- user_id (uuid) → 关联 auth.users.id
+- task_id (uuid, 可空) → 关联 video_tasks.id（如果用于任务）
+- file_type (file_type枚举) → 文件类型
+  - 枚举值: 'image', 'audio', 'video'
+- storage_path (text) → Supabase Storage路径
+- storage_url (text) → 可公开访问的URL
+- file_size (bigint, 约束: > 0) → 文件大小（字节）
+- mime_type (text) → MIME类型
+- created_at (timestamptz, 默认: now())
+```
+**用途**: 存储用户上传的文件元数据
 **RLS**: ✅ 启用
 
 #### 📦 orders 表
@@ -108,7 +345,9 @@ auth.users (Supabase Auth)
     ↓
 user_info (用户积分)
     ↓
-credit_ledger (积分变动记录)
+credit_ledger (积分变动记录) → video_tasks (视频任务)
+                                    ↓
+                            uploaded_files (上传文件)
 
 products (产品表)
     ↓
@@ -116,9 +355,9 @@ orders (订单表) → payments (支付记录)
 ```
 
 ### 📈 数据统计
-- **总表数**: 5个
+- **总表数**: 7个
 - **有数据的表**: products (3行)
-- **空表**: user_info, credit_ledger, orders, payments
+- **空表**: user_info, credit_ledger, orders, payments, video_tasks, uploaded_files
 - **RLS状态**: 全部启用 ✅
 
 ## 触发器与函数（必须保持同步维护）
@@ -148,6 +387,35 @@ orders (订单表) → payments (支付记录)
 --   1) 确保 user_info 行存在（不修改 credits）
 --   2) 仅向 credit_ledger 写入一条 +delta 的记录
 --      余额变动由触发器 tg_sync_user_credits() 自动完成
+```
+
+### RPC：public.create_video_task
+```sql
+-- 参数：p_user_id uuid, p_resolution text, p_input_image_url text, p_input_audio_url text, 
+--       p_audio_duration_seconds integer, p_prompt text, p_seed integer
+-- 权限：SECURITY DEFINER（仅服务端调用）
+-- 行为：
+--   1) 计算所需积分（480p = 1积分/秒，720p = 2积分/秒，最小5秒）
+--   2) 检查用户积分是否足够
+--   3) 创建任务记录（status = 'pending'）
+--   4) 扣除积分（写入 credit_ledger，关联 task_id）
+--   5) 返回任务 ID
+```
+
+### RPC：public.update_video_task
+```sql
+-- 参数：p_task_id uuid, p_status task_status, p_wavespeed_task_id text, 
+--       p_output_video_url text, p_video_duration_seconds integer, 
+--       p_error_message text, p_api_response jsonb
+-- 权限：SECURITY DEFINER（仅服务端调用）
+-- 行为：更新任务状态、结果、错误信息等
+```
+
+### video_tasks 更新触发器
+```sql
+-- 名称：trg_video_tasks_updated_at  表：public.video_tasks  时机：BEFORE UPDATE
+-- 函数：public.tg_update_updated_at()
+-- 语义：写入 NEW.updated_at = now()
 ```
 
 ## Webhook 幂等与订单映射

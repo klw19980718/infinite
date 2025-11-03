@@ -66,6 +66,12 @@ export default function Nav() {
               Home
             </Link>
             <Link 
+              href="/infinite-talk-ai/image-to-video" 
+              className="text-muted-foreground hover:text-foreground transition-colors font-medium"
+            >
+              Image to Video
+            </Link>
+            <Link 
               href="/pricing" 
               className="text-muted-foreground hover:text-foreground transition-colors font-medium"
             >
@@ -122,6 +128,15 @@ export default function Nav() {
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       Home
+                    </Link>
+                  </SheetClose>
+                  <SheetClose asChild>
+                    <Link 
+                      href="/infinite-talk-ai/image-to-video" 
+                      className="text-foreground hover:text-accent transition-colors font-medium text-lg py-2"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      Image to Video
                     </Link>
                   </SheetClose>
                   <SheetClose asChild>
