@@ -5,7 +5,7 @@ import { uploadFileToWaveSpeed, submitImageToVideoTask } from "@/lib/wavespeed"
 export async function POST(request: NextRequest) {
   try {
     // Create response object for cookie handling
-    const response = NextResponse.next()
+    const response = new NextResponse()
     
     // Get user from session using cookie-based authentication
     const supabase = createServerSupabaseClientForRouteHandler(request, response)

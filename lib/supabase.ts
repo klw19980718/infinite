@@ -1,10 +1,11 @@
+import { createBrowserClient } from '@supabase/ssr'
 import { createClient, type SupabaseClient } from '@supabase/supabase-js'
 
 let client: SupabaseClient | null = null
 
 /**
  * Get Supabase client for Client Components (Browser)
- * Uses singleton pattern to avoid creating multiple clients
+ * Uses @supabase/ssr to ensure cookies are synced with server
  */
 export function getSupabaseClient(): SupabaseClient {
   if (!client) {
@@ -13,13 +14,9 @@ export function getSupabaseClient(): SupabaseClient {
     if (!url || !anonKey) {
       throw new Error('Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY')
     }
-    client = createClient(url, anonKey, {
-      auth: {
-        persistSession: true,
-        autoRefreshToken: true,
-        detectSessionInUrl: true,
-      },
-    })
+    // Use createBrowserClient from @supabase/ssr to sync cookies with server
+    // This ensures session is stored in cookies, not just localStorage
+    client = createBrowserClient(url, anonKey)
   }
   return client
 }
