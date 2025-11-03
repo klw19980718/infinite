@@ -1,12 +1,30 @@
 import { FiUpload, FiDownload, FiPlay } from "react-icons/fi"
+import Link from "next/link"
 
 export function HowItWorks() {
   const steps = [
     {
       icon: FiPlay,
       title: "1) Select Workflow in Infinite Talk AI",
-      description:
-        "Choose Image-to-Video for animating a single photo, or Video-to-Video for re-animating source footage. Infinite Talk AI provides sensible defaults and advanced knobs for expert control.",
+      description: (
+        <>
+          Choose{" "}
+          <Link
+            href="/infinite-talk-ai/image-to-video"
+            className="text-accent hover:text-accent/80 underline font-medium transition-colors"
+          >
+            Image-to-Video
+          </Link>{" "}
+          for animating a single photo, or{" "}
+          <Link
+            href="/infinite-talk-ai/video-to-video"
+            className="text-accent hover:text-accent/80 underline font-medium transition-colors"
+          >
+            Video-to-Video
+          </Link>{" "}
+          for re-animating source footage. Infinite Talk AI provides sensible defaults and advanced knobs for expert control.
+        </>
+      ),
     },
     {
       icon: FiUpload,
@@ -58,9 +76,9 @@ export function HowItWorks() {
                     </div>
                     <h3 className="text-xl md:text-2xl font-semibold text-foreground">{step.title}</h3>
                   </div>
-                  <p className="text-base text-muted-foreground leading-relaxed text-pretty pl-10">
+                  <div className="text-base text-muted-foreground leading-relaxed text-pretty pl-10">
                     {step.description}
-                  </p>
+                  </div>
                 </div>
               </div>
             )

@@ -46,10 +46,15 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Get audio duration (if available from file metadata)
+    // Get audio duration from form data (calculated on frontend)
+    const audioDurationParam = formData.get("audio_duration")
     let audioDurationSeconds: number | null = null
-    // Note: In a real implementation, you might need to analyze the audio file
-    // to get its duration. For now, we'll use null and let the SQL function handle it.
+    if (audioDurationParam) {
+      const duration = parseInt(audioDurationParam as string, 10)
+      if (!isNaN(duration) && duration > 0) {
+        audioDurationSeconds = duration
+      }
+    }
 
     // Upload files to WaveSpeedAI
     const [videoUrl, audioUrl, maskImageUrl] = await Promise.all([

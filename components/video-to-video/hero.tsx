@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { FiUpload, FiPlay, FiLoader, FiX, FiImage, FiMusic, FiChevronDown, FiDollarSign } from "react-icons/fi"
+import { FiUpload, FiPlay, FiLoader, FiX, FiVideo, FiMusic, FiChevronDown, FiDollarSign } from "react-icons/fi"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,10 +16,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-export const ImageToVideoHero = () => {
+export const VideoToVideoHero = () => {
   const router = useRouter()
-  const [imagePreview, setImagePreview] = useState<string | null>(null)
-  const [imageFileName, setImageFileName] = useState<string | null>(null)
+  const [videoPreview, setVideoPreview] = useState<string | null>(null)
+  const [videoFileName, setVideoFileName] = useState<string | null>(null)
   const [audioPreview, setAudioPreview] = useState<string | null>(null)
   const [audioFileName, setAudioFileName] = useState<string | null>(null)
   const [audioDuration, setAudioDuration] = useState<number | null>(null)
@@ -30,19 +30,16 @@ export const ImageToVideoHero = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [estimatedCredits, setEstimatedCredits] = useState<number>(0)
   
-  const imageInputRef = useRef<HTMLInputElement>(null)
+  const videoInputRef = useRef<HTMLInputElement>(null)
   const audioInputRef = useRef<HTMLInputElement>(null)
   const promptRef = useRef<HTMLTextAreaElement>(null)
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleVideoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
-      setImageFileName(file.name)
-      const reader = new FileReader()
-      reader.onloadend = () => {
-        setImagePreview(reader.result as string)
-      }
-      reader.readAsDataURL(file)
+      setVideoFileName(file.name)
+      const url = URL.createObjectURL(file)
+      setVideoPreview(url)
     }
   }
 
@@ -90,11 +87,14 @@ export const ImageToVideoHero = () => {
     setEstimatedCredits(credits)
   }, [audioDuration, resolution])
 
-  const clearImage = () => {
-    setImagePreview(null)
-    setImageFileName(null)
-    if (imageInputRef.current) {
-      imageInputRef.current.value = ''
+  const clearVideo = () => {
+    if (videoPreview) {
+      URL.revokeObjectURL(videoPreview)
+    }
+    setVideoPreview(null)
+    setVideoFileName(null)
+    if (videoInputRef.current) {
+      videoInputRef.current.value = ''
     }
   }
 
@@ -156,16 +156,16 @@ export const ImageToVideoHero = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    if (!imagePreview || !audioPreview) {
-      alert("Please upload both image and audio files")
+    if (!videoPreview || !audioPreview) {
+      alert("Please upload both video and audio files")
       return
     }
 
-    const imageFile = imageInputRef.current?.files?.[0]
+    const videoFile = videoInputRef.current?.files?.[0]
     const audioFile = audioInputRef.current?.files?.[0]
 
-    if (!imageFile || !audioFile) {
-      alert("Please select both image and audio files")
+    if (!videoFile || !audioFile) {
+      alert("Please select both video and audio files")
       return
     }
 
@@ -174,7 +174,7 @@ export const ImageToVideoHero = () => {
 
     try {
       const formData = new FormData()
-      formData.append("image", imageFile)
+      formData.append("video", videoFile)
       formData.append("audio", audioFile)
       formData.append("resolution", resolution)
       
@@ -188,7 +188,7 @@ export const ImageToVideoHero = () => {
         formData.append("prompt", prompt)
       }
 
-      const response = await fetch("/api/video/image-to-video", {
+      const response = await fetch("/api/video/video-to-video", {
         method: "POST",
         credentials: "include",
         body: formData,
@@ -236,12 +236,12 @@ export const ImageToVideoHero = () => {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-accent"></span>
               </div>
-              <span className="text-foreground text-sm font-medium">Image-to-Video Generation</span>
+              <span className="text-foreground text-sm font-medium">Video-to-Video Generation</span>
             </div>
 
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight text-balance px-4">
               <span className="bg-gradient-to-r from-accent via-chart-2 to-chart-3 bg-clip-text text-transparent">
-                Image-to-Video with Infinite Talk AI
+                Video-to-Video with Infinite Talk AI
               </span>
               <br />
               <span className="text-foreground">
@@ -250,7 +250,7 @@ export const ImageToVideoHero = () => {
             </h1>
 
             <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-4xl mx-auto text-pretty px-4">
-              Turn a single portrait into a lifelike talking clip. Infinite Talk AI pairs image-to-video generation with precise Lip Sync and natural expressions for creators, brands, and educators.
+              Transform any video into a lifelike talking clip with perfect lip sync. Infinite Talk AI pairs video-to-video generation with precise Lip Sync and natural expressions for creators, brands, and educators.
             </p>
           </div>
 
@@ -270,44 +270,49 @@ export const ImageToVideoHero = () => {
                 </div>
                 
                 <form className="space-y-8" onSubmit={handleSubmit}>
-                  {/* Image Upload */}
+                  {/* Video Upload */}
                   <div className="space-y-3">
-                    <Label htmlFor="image" className="text-base font-semibold text-foreground flex items-center gap-2">
+                    <Label htmlFor="video" className="text-base font-semibold text-foreground flex items-center gap-2">
                       <span className="w-2 h-2 rounded-full bg-accent"></span>
-                      Portrait Image
+                      Input Video
                     </Label>
-                    {!imagePreview && (
+                    {!videoPreview && (
                       <div className="relative">
                         <div className="flex items-center justify-center w-full h-16 border border-dashed border-border/50 rounded-lg bg-muted/20 hover:bg-muted/30 transition-colors cursor-pointer">
                           <div className="flex items-center gap-3 text-sm">
                             <div className="w-8 h-8 rounded-full bg-accent/10 flex items-center justify-center">
-                              <FiImage className="w-4 h-4 text-accent" />
+                              <FiVideo className="w-4 h-4 text-accent" />
                             </div>
-                            <span className="font-medium text-foreground">Click to upload image</span>
-                            <span className="hidden sm:inline text-muted-foreground">JPG, PNG, JPEG</span>
+                            <span className="font-medium text-foreground">Click to upload video</span>
+                            <span className="hidden sm:inline text-muted-foreground">MP4, MOV, AVI</span>
                           </div>
                           <Input
-                            ref={imageInputRef}
-                            id="image"
+                            ref={videoInputRef}
+                            id="video"
                             type="file"
-                            accept="image/jpeg,image/jpg,image/png"
-                            onChange={handleImageChange}
+                            accept="video/mp4,video/mov,video/quicktime,video/avi"
+                            onChange={handleVideoChange}
                             className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                           />
                         </div>
                       </div>
                     )}
-                    {imagePreview && (
+                    {videoPreview && (
                       <div className="flex items-center justify-between gap-4 rounded-lg border border-border/50 bg-muted/20 p-3">
                         <div className="flex items-center gap-3 min-w-0 flex-1">
                           <div className="w-14 h-14 rounded-md overflow-hidden border border-border/50 bg-background flex-shrink-0">
-                            <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
+                            <video
+                              src={videoPreview}
+                              className="w-full h-full object-cover"
+                              muted
+                              playsInline
+                            />
                           </div>
                           <div className="min-w-0 flex-1">
-                            <p className="text-sm font-medium text-foreground truncate" title={imageFileName || undefined}>
-                              {imageFileName && imageFileName.length > 8 ? `${imageFileName.slice(0, 8)}...` : imageFileName}
+                            <p className="text-sm font-medium text-foreground truncate" title={videoFileName || undefined}>
+                              {videoFileName && videoFileName.length > 8 ? `${videoFileName.slice(0, 8)}...` : videoFileName}
                             </p>
-                            <p className="text-xs text-muted-foreground mt-0.5">Image selected</p>
+                            <p className="text-xs text-muted-foreground mt-0.5">Video selected</p>
                           </div>
                         </div>
                         <div className="flex gap-2">
@@ -316,7 +321,7 @@ export const ImageToVideoHero = () => {
                             variant="outline"
                             size="sm"
                             className="h-8 px-3"
-                            onClick={() => imageInputRef.current?.click()}
+                            onClick={() => videoInputRef.current?.click()}
                           >
                             <FiUpload className="mr-1 h-3 w-3" /> Replace
                           </Button>
@@ -325,7 +330,7 @@ export const ImageToVideoHero = () => {
                             variant="ghost"
                             size="sm"
                             className="h-8 w-8 p-0"
-                            onClick={clearImage}
+                            onClick={clearVideo}
                           >
                             <FiX className="h-4 w-4" />
                           </Button>
@@ -503,7 +508,7 @@ export const ImageToVideoHero = () => {
                           Ready to Create
                         </h4>
                         <p className="text-sm text-muted-foreground max-w-sm">
-                          Upload your portrait image and voice audio to generate a lifelike talking video with perfect lip sync
+                          Upload your input video and voice audio to generate a lifelike talking video with perfect lip sync
                         </p>
                       </div>
                       <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
@@ -527,7 +532,7 @@ export const ImageToVideoHero = () => {
                           Creating Your Video
                         </h4>
                         <p className="text-sm text-muted-foreground max-w-sm">
-                          Our AI is analyzing your image and audio to generate perfect lip synchronization
+                          Our AI is analyzing your video and audio to generate perfect lip synchronization
                         </p>
                         {errorMessage && (
                           <p className="text-sm text-destructive max-w-sm mt-2">
@@ -555,7 +560,7 @@ export const ImageToVideoHero = () => {
                         <video
                           controls
                           className="w-full h-full object-contain bg-black"
-                          poster={imagePreview || undefined}
+                          poster={videoPreview || undefined}
                           src={videoUrl || undefined}
                         >
                           {videoUrl ? (

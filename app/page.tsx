@@ -184,11 +184,11 @@ export default function Home() {
                 Start free, adjust clarity and prompts as needed, and build your production pipeline with Infinite Talk AI.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 items-center justify-center">
-                <a href="/auth" className="group relative flex items-center gap-2 rounded-full bg-primary px-8 py-4 text-primary-foreground font-semibold hover:bg-primary/90 transition-all duration-200">
-                  <span>Start Free</span>
+                <a href="/infinite-talk-ai/image-to-video" className="group relative flex items-center gap-2 rounded-full bg-primary px-8 py-4 text-primary-foreground font-semibold hover:bg-primary/90 transition-all duration-200">
+                  <span>Start Generating</span>
                 </a>
-                <a href="/examples" className="group relative flex items-center gap-2 rounded-full bg-transparent px-8 py-4 text-foreground font-semibold border border-border hover:bg-card transition-all duration-200">
-                  <span>See Examples</span>
+                <a href="/pricing" className="group relative flex items-center gap-2 rounded-full bg-transparent px-8 py-4 text-foreground font-semibold border border-border hover:bg-card transition-all duration-200">
+                  <span>Get Credits</span>
                 </a>
               </div>
             </div>

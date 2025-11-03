@@ -46,7 +46,7 @@ export const AuroraHero = () => {
             micro-expressions to speech timing for natural continuity.
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4  mx-auto px-4">
             {[
               "Image-to-Video & Video-to-Video",
               "Whole-frame editing, not just lips",
@@ -63,15 +63,15 @@ export const AuroraHero = () => {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-5 items-center justify-center pt-6">
-            <Link href="/image-to-video">
+            <Link href="/infinite-talk-ai/image-to-video">
               <button className="group relative flex items-center gap-2 rounded-full bg-primary px-10 py-4 text-primary-foreground font-semibold hover:bg-primary/90 transition-all duration-200">
-                <span>Start Free</span>
+                <span>Start Generating</span>
                 <FiArrowRight className="transition-transform group-hover:translate-x-1" />
               </button>
             </Link>
             <Link href="/pricing">
               <button className="group relative flex items-center gap-2 rounded-full bg-transparent px-10 py-4 text-foreground font-semibold border border-border hover:bg-card transition-all duration-200">
-                <span>See Examples</span>
+                <span>Get Credits</span>
                 <FiArrowRight className="transition-transform group-hover:translate-x-1" />
               </button>
             </Link>
