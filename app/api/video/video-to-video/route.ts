@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from "next/server"
 import { createServerSupabaseClientForRouteHandler } from "@/lib/supabase/server.server"
 import { uploadFileToWaveSpeed, submitVideoToVideoTask } from "@/lib/wavespeed"
 
+// Use Node.js runtime for Supabase compatibility
+export const runtime = 'nodejs'
+
 export async function POST(request: NextRequest) {
   try {
     // Create response object for cookie handling

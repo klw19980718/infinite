@@ -70,7 +70,8 @@ infinite-talk/
 │   ├── infinite-talk-ai/    - AI 功能相关页面
 │   │   ├── image-to-video/  - 图片转视频功能
 │   │   │   └── page.tsx     - 图片转视频页面
-│   │   └── video-to-video/  - 视频转视频功能（待实现）
+│   │   └── video-to-video/  - 视频转视频功能
+│   │       └── page.tsx     - 视频转视频页面
 │   ├── pricing/             - 定价页面
 │   │   ├── page.tsx         - 定价页面服务端组件
 │   │   └── PricingPageClient.tsx - 定价页面客户端组件
@@ -104,6 +105,9 @@ infinite-talk/
 │   ├── image-to-video/      - 图片转视频相关组件
 │   │   ├── hero.tsx         - 图片转视频英雄区组件
 │   │   └── index.ts         - 组件统一导出
+│   ├── video-to-video/      - 视频转视频相关组件
+│   │   ├── hero.tsx         - 视频转视频英雄区组件
+│   │   └── index.ts         - 组件统一导出
 │   ├── ui/                  - 可复用 UI 组件（shadcn/ui 风格）
 │   │   ├── avatar.tsx       - 头像组件
 │   │   ├── button.tsx       - 按钮组件
@@ -119,7 +123,7 @@ infinite-talk/
 │
 ├── lib/                     - 工具函数和配置
 │   ├── supabase/            - Supabase 客户端配置
-│   │   └── server.server.ts - 服务端 Supabase 客户端（从 cookie 读取 session）
+│   │   └── server.server.ts - 服务端 Supabase 客户端（从 cookie 读取 session，用于 Server Components、Server Actions、API Route Handlers）
 │   ├── supabase.ts          - Supabase 客户端单例（客户端组件使用）
 │   ├── wavespeed.ts         - WaveSpeedAI API 工具函数
 │   └── utils.ts             - 通用工具函数（cn, clsx 等）

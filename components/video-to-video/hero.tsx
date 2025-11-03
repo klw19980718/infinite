@@ -15,13 +15,16 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { toast } from "sonner"
 
 export const VideoToVideoHero = () => {
   const router = useRouter()
   const [videoPreview, setVideoPreview] = useState<string | null>(null)
   const [videoFileName, setVideoFileName] = useState<string | null>(null)
+  const [videoFile, setVideoFile] = useState<File | null>(null)
   const [audioPreview, setAudioPreview] = useState<string | null>(null)
   const [audioFileName, setAudioFileName] = useState<string | null>(null)
+  const [audioFile, setAudioFile] = useState<File | null>(null)
   const [audioDuration, setAudioDuration] = useState<number | null>(null)
   const [status, setStatus] = useState<"idle" | "loading" | "completed">("idle")
   const [resolution, setResolution] = useState<"480p" | "720p">("480p")
@@ -29,14 +32,17 @@ export const VideoToVideoHero = () => {
   const [videoUrl, setVideoUrl] = useState<string | null>(null)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [estimatedCredits, setEstimatedCredits] = useState<number>(0)
+  const [progress, setProgress] = useState<number>(0)
   
   const videoInputRef = useRef<HTMLInputElement>(null)
   const audioInputRef = useRef<HTMLInputElement>(null)
   const promptRef = useRef<HTMLTextAreaElement>(null)
+  const progressIntervalRef = useRef<NodeJS.Timeout | null>(null)
 
   const handleVideoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
+      setVideoFile(file)
       setVideoFileName(file.name)
       const url = URL.createObjectURL(file)
       setVideoPreview(url)
@@ -46,6 +52,7 @@ export const VideoToVideoHero = () => {
   const handleAudioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
+      setAudioFile(file)
       setAudioFileName(file.name)
       setAudioPreview(file.name)
       
@@ -87,12 +94,50 @@ export const VideoToVideoHero = () => {
     setEstimatedCredits(credits)
   }, [audioDuration, resolution])
 
+  // Simulate progress when loading
+  useEffect(() => {
+    if (status === "loading") {
+      setProgress(0)
+      
+      // Simulate progress: start fast, slow down near 90%
+      progressIntervalRef.current = setInterval(() => {
+        setProgress((prev) => {
+          if (prev >= 90) {
+            return 90 // Cap at 90%, wait for API response
+          }
+          // Faster at start, slower as we approach 90%
+          const increment = prev < 50 ? 3 : prev < 75 ? 2 : 1
+          return Math.min(prev + increment, 90)
+        })
+      }, 1000) // Update every second
+    } else {
+      // Reset progress when not loading
+      if (progressIntervalRef.current) {
+        clearInterval(progressIntervalRef.current)
+        progressIntervalRef.current = null
+      }
+      if (status === "completed") {
+        setProgress(100)
+      } else if (status === "idle") {
+        setProgress(0)
+      }
+    }
+
+    return () => {
+      if (progressIntervalRef.current) {
+        clearInterval(progressIntervalRef.current)
+        progressIntervalRef.current = null
+      }
+    }
+  }, [status])
+
   const clearVideo = () => {
     if (videoPreview) {
       URL.revokeObjectURL(videoPreview)
     }
     setVideoPreview(null)
     setVideoFileName(null)
+    setVideoFile(null)
     if (videoInputRef.current) {
       videoInputRef.current.value = ''
     }
@@ -101,6 +146,7 @@ export const VideoToVideoHero = () => {
   const clearAudio = () => {
     setAudioPreview(null)
     setAudioFileName(null)
+    setAudioFile(null)
     setAudioDuration(null)
     if (audioInputRef.current) {
       audioInputRef.current.value = ''
@@ -124,12 +170,14 @@ export const VideoToVideoHero = () => {
         }
 
         if (data.status === "completed" && data.outputs && data.outputs.length > 0) {
+          setProgress(100)
           setVideoUrl(data.outputs[0])
           setStatus("completed")
           return
         }
 
         if (data.status === "failed") {
+          setProgress(0)
           setErrorMessage(data.error || "Video generation failed")
           setStatus("idle")
           return
@@ -156,16 +204,8 @@ export const VideoToVideoHero = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    if (!videoPreview || !audioPreview) {
-      alert("Please upload both video and audio files")
-      return
-    }
-
-    const videoFile = videoInputRef.current?.files?.[0]
-    const audioFile = audioInputRef.current?.files?.[0]
-
     if (!videoFile || !audioFile) {
-      alert("Please select both video and audio files")
+      toast.error("Please upload both video and audio files")
       return
     }
 
@@ -174,8 +214,8 @@ export const VideoToVideoHero = () => {
 
     try {
       const formData = new FormData()
-      formData.append("video", videoFile)
-      formData.append("audio", audioFile)
+      formData.append("video", videoFile!)
+      formData.append("audio", audioFile!)
       formData.append("resolution", resolution)
       
       // Send audio duration to backend
@@ -206,9 +246,10 @@ export const VideoToVideoHero = () => {
       pollTaskResult(data.task_id)
     } catch (error) {
       console.error("Error submitting task:", error)
-      setErrorMessage(error instanceof Error ? error.message : "Failed to submit task")
+      const errorMsg = error instanceof Error ? error.message : "Failed to submit task"
+      setErrorMessage(errorMsg)
       setStatus("idle")
-      alert(error instanceof Error ? error.message : "Failed to submit task")
+      toast.error(errorMsg)
     }
   }
 
@@ -276,9 +317,9 @@ export const VideoToVideoHero = () => {
                       <span className="w-2 h-2 rounded-full bg-accent"></span>
                       Input Video
                     </Label>
-                    {!videoPreview && (
-                      <div className="relative">
-                        <div className="flex items-center justify-center w-full h-16 border border-dashed border-border/50 rounded-lg bg-muted/20 hover:bg-muted/30 transition-colors cursor-pointer">
+                    <div className="relative">
+                      {!videoPreview && (
+                        <div className="flex items-center justify-center w-full h-16 border border-dashed border-border/50 rounded-lg bg-muted/20 hover:bg-muted/30 transition-colors pointer-events-none">
                           <div className="flex items-center gap-3 text-sm">
                             <div className="w-8 h-8 rounded-full bg-accent/10 flex items-center justify-center">
                               <FiVideo className="w-4 h-4 text-accent" />
@@ -286,17 +327,18 @@ export const VideoToVideoHero = () => {
                             <span className="font-medium text-foreground">Click to upload video</span>
                             <span className="hidden sm:inline text-muted-foreground">MP4, MOV, AVI</span>
                           </div>
-                          <Input
-                            ref={videoInputRef}
-                            id="video"
-                            type="file"
-                            accept="video/mp4,video/mov,video/quicktime,video/avi"
-                            onChange={handleVideoChange}
-                            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                          />
                         </div>
-                      </div>
-                    )}
+                      )}
+                      <Input
+                        ref={videoInputRef}
+                        id="video"
+                        type="file"
+                        accept="video/mp4,video/mov,video/quicktime,video/avi"
+                        onChange={handleVideoChange}
+                        className={`absolute inset-0 w-full h-full opacity-0 cursor-pointer ${videoPreview ? 'pointer-events-none' : ''}`}
+                        style={{ zIndex: videoPreview ? -1 : 10 }}
+                      />
+                    </div>
                     {videoPreview && (
                       <div className="flex items-center justify-between gap-4 rounded-lg border border-border/50 bg-muted/20 p-3">
                         <div className="flex items-center gap-3 min-w-0 flex-1">
@@ -345,9 +387,9 @@ export const VideoToVideoHero = () => {
                       <span className="w-2 h-2 rounded-full bg-chart-2"></span>
                       Voice Audio
                     </Label>
-                    {!audioPreview && (
-                      <div className="relative">
-                        <div className="flex items-center justify-center w-full h-16 border border-dashed border-border/50 rounded-lg bg-muted/20 hover:bg-muted/30 transition-colors cursor-pointer">
+                    <div className="relative">
+                      {!audioPreview && (
+                        <div className="flex items-center justify-center w-full h-16 border border-dashed border-border/50 rounded-lg bg-muted/20 hover:bg-muted/30 transition-colors pointer-events-none">
                           <div className="flex items-center gap-3 text-sm">
                             <div className="w-8 h-8 rounded-full bg-chart-2/10 flex items-center justify-center">
                               <FiMusic className="w-4 h-4 text-chart-2" />
@@ -355,17 +397,18 @@ export const VideoToVideoHero = () => {
                             <span className="font-medium text-foreground">Click to upload audio</span>
                             <span className="hidden sm:inline text-muted-foreground">MP3, WAV</span>
                           </div>
-                          <Input
-                            ref={audioInputRef}
-                            id="audio"
-                            type="file"
-                            accept="audio/mpeg,audio/mp3,audio/wav,audio/wave,audio/x-wav"
-                            onChange={handleAudioChange}
-                            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                          />
                         </div>
-                      </div>
-                    )}
+                      )}
+                      <Input
+                        ref={audioInputRef}
+                        id="audio"
+                        type="file"
+                        accept="audio/mpeg,audio/mp3,audio/wav,audio/wave,audio/x-wav"
+                        onChange={handleAudioChange}
+                        className={`absolute inset-0 w-full h-full opacity-0 cursor-pointer ${audioPreview ? 'pointer-events-none' : ''}`}
+                        style={{ zIndex: audioPreview ? -1 : 10 }}
+                      />
+                    </div>
                     {audioPreview && (
                       <div className="flex items-center justify-between gap-4 rounded-lg border border-border/50 bg-muted/20 p-3">
                         <div className="flex items-center gap-3 min-w-0 flex-1">
@@ -543,11 +586,17 @@ export const VideoToVideoHero = () => {
                       <div className="w-full max-w-sm space-y-3">
                         <div className="flex justify-between text-xs text-muted-foreground">
                           <span>Processing...</span>
-                          <span>~2-3 minutes</span>
+                          <span>{progress}%</span>
                         </div>
                         <div className="w-full bg-border/50 rounded-full h-2 overflow-hidden">
-                          <div className="h-full bg-gradient-to-r from-accent to-chart-2 animate-pulse transition-all duration-1000" style={{ width: "65%" }}></div>
+                          <div 
+                            className="h-full bg-gradient-to-r from-accent to-chart-2 transition-all duration-500 ease-out" 
+                            style={{ width: `${progress}%` }}
+                          ></div>
                         </div>
+                        <p className="text-xs text-center text-muted-foreground">
+                          {progress < 90 ? "Generating video..." : "Finalizing..."}
+                        </p>
                       </div>
                     </div>
                   </div>

@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from "next/server"
 import { createServerSupabaseClientForRouteHandler } from "@/lib/supabase/server.server"
 import { getTaskResult } from "@/lib/wavespeed"
 
+// Use Node.js runtime for Supabase compatibility
+export const runtime = 'nodejs'
+
 export async function GET(request: NextRequest) {
   try {
     // Create response object for cookie handling
@@ -98,6 +101,20 @@ export async function GET(request: NextRequest) {
       p_error_message: updateData.error_message,
       p_api_response: updateData.api_response,
     })
+
+    // Set expiry (7 days retention) for completed outputs if the column exists.
+    // This is best-effort: ignore if the column is not present.
+    if (updateData.status === "completed") {
+      try {
+        const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
+        await supabase
+          .from("video_tasks")
+          .update({ expires_at: expiresAt })
+          .eq("id", task.id)
+      } catch (e) {
+        // noop
+      }
+    }
 
     return NextResponse.json(
       {

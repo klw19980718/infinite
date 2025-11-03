@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { getServerSupabase } from "@/lib/supabase"
-import { cookies } from "next/headers"
+import { createServerSupabaseClientForRouteHandler } from "@/lib/supabase/server.server"
 
 // Creem API configuration
 const CREEM_API_URL = process.env.CREEM_API_URL || "https://api.creem.io"
@@ -21,9 +20,28 @@ const PRODUCT_MAPPING = {
 // 开发环境使用测试 API URL
 const API_URL = IS_DEVELOPMENT ? "https://test-api.creem.io" : CREEM_API_URL
 
+// Use Node.js runtime for Supabase compatibility
+export const runtime = 'nodejs'
+
 export async function POST(request: NextRequest) {
   try {
-    const { planId, userId, userEmail } = await request.json()
+    const response = new NextResponse()
+    const supabase = createServerSupabaseClientForRouteHandler(request, response)
+
+    // Authenticate user via cookies (same as video APIs)
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser()
+
+    if (authError || !user) {
+      return NextResponse.json(
+        { ok: false, code: "UNAUTHORIZED", message: "User not authenticated" },
+        { status: 401 }
+      )
+    }
+
+    const { planId } = await request.json()
 
     if (!planId || !PRODUCT_MAPPING[planId as keyof typeof PRODUCT_MAPPING]) {
       return NextResponse.json(
@@ -32,25 +50,8 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Validate user information from client
-    if (!userId || !userEmail) {
-      if (IS_DEVELOPMENT) {
-        console.log("❌ Missing user information:", { userId, userEmail })
-      }
-      return NextResponse.json(
-        { ok: false, code: "UNAUTHORIZED", message: "User not authenticated" },
-        { status: 401 }
-      )
-    }
-
     if (IS_DEVELOPMENT) {
-      console.log("✅ User authenticated:", {
-        userId,
-        email: userEmail,
-        planId,
-        userIdLength: userId?.length,
-        userIdFormat: userId?.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i) ? "Valid UUID" : "Invalid format",
-      })
+      console.log("✅ User authenticated via cookies:", { userId: user.id, email: user.email, planId })
     }
 
     const productId = PRODUCT_MAPPING[planId as keyof typeof PRODUCT_MAPPING]
@@ -62,7 +63,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Generate unique request ID
-    const requestId = `req_${Date.now()}_${userId.slice(0, 8)}`
+    const requestId = `req_${Date.now()}_${user.id.slice(0, 8)}`
 
     // Create checkout session with Creem
     const checkoutResponse = await fetch(`${API_URL}/v1/checkouts`, {
@@ -75,8 +76,8 @@ export async function POST(request: NextRequest) {
         product_id: productId,
         request_id: requestId,
         metadata: {
-          user_id: userId,
-          user_email: userEmail,
+          user_id: user.id,
+          user_email: user.email,
           plan_id: planId,
         },
         success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/profile?payment=success`,
@@ -99,7 +100,7 @@ export async function POST(request: NextRequest) {
       checkout_url: checkoutData.checkout_url || checkoutData.url,
       checkout_id: checkoutData.id,
       request_id: requestId,
-    })
+    }, { headers: response.headers })
   } catch (error) {
     console.error("Checkout error:", error)
     return NextResponse.json(

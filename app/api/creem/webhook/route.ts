@@ -10,6 +10,9 @@ if (!CREEM_WEBHOOK_SECRET) {
   console.warn("CREEM_WEBHOOK_SECRET not configured - webhook verification disabled")
 }
 
+// Use Node.js runtime for Supabase and crypto compatibility
+export const runtime = 'nodejs'
+
 // Credit mapping based on plan
 const CREDIT_MAPPING = {
   pro: 400,

@@ -1,12 +1,12 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback, useRef } from "react"
 import { useRouter } from "next/navigation"
 import { getSupabaseClient } from "@/lib/supabase"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { FiDollarSign, FiClock } from "react-icons/fi"
+import { FiDollarSign, FiClock, FiPlayCircle, FiAlertTriangle, FiLoader } from "react-icons/fi"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 
 interface UserProfile {
@@ -31,6 +31,8 @@ export function ProfilePageClient() {
   const [historyOpen, setHistoryOpen] = useState(false)
   const [ledger, setLedger] = useState<CreditLedgerEntry[] | null>(null)
   const [historyLoading, setHistoryLoading] = useState(false)
+  const [works, setWorks] = useState<any[] | null>(null)
+  const [worksLoading, setWorksLoading] = useState(true)
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -61,6 +63,9 @@ export function ProfilePageClient() {
         }
 
         setProfile(profileData)
+
+        // Load user works right after profile
+        await fetchWorks(profileData.id)
       } catch (error) {
         console.error("Error fetching profile:", error)
         router.push("/auth")
@@ -93,6 +98,93 @@ export function ProfilePageClient() {
     fetchLedger()
   }, [historyOpen, profile])
 
+  // Fetch user works (last 7 days)
+  const fetchWorks = useCallback(async (userId: string) => {
+    setWorksLoading(true)
+    try {
+      const supabase = getSupabaseClient()
+      const { data, error } = await supabase
+        .from("video_tasks")
+        .select(
+          "id, status, resolution, output_video_url, video_duration_seconds, credits_used, created_at, updated_at, expires_at"
+        )
+        .eq("user_id", userId)
+        .order("created_at", { ascending: false })
+        .limit(50)
+
+      if (!error) {
+        const now = Date.now()
+        const sevenDaysMs = 7 * 24 * 60 * 60 * 1000
+        const filtered = (data ?? []).filter((t: any) => {
+          const createdMs = new Date(t.created_at).getTime()
+          const notExpired = t.expires_at ? new Date(t.expires_at).getTime() > now : now - createdMs < sevenDaysMs
+          return notExpired
+        })
+        setWorks(filtered)
+      }
+    } finally {
+      setWorksLoading(false)
+    }
+  }, [])
+
+  // Auto-refresh works while there are in-progress tasks
+  const pollingIntervalRef = useRef<NodeJS.Timeout | null>(null)
+  const lastHasInProgressRef = useRef<boolean>(false)
+  
+  useEffect(() => {
+    if (!profile) return
+    
+    const clearPolling = () => {
+      if (pollingIntervalRef.current) {
+        clearInterval(pollingIntervalRef.current)
+        pollingIntervalRef.current = null
+      }
+    }
+    
+    // Check if there are in-progress tasks
+    const hasInProgress = (works ?? []).some((w) => w.status === "pending" || w.status === "processing")
+    
+    // Only manage polling when the in-progress status changes
+    if (hasInProgress !== lastHasInProgressRef.current) {
+      lastHasInProgressRef.current = hasInProgress
+      
+      if (!hasInProgress) {
+        // No in-progress tasks, stop polling
+        clearPolling()
+      } else {
+        // There are in-progress tasks, start polling if not already running
+        if (!pollingIntervalRef.current) {
+          pollingIntervalRef.current = setInterval(() => {
+            fetchWorks(profile.id)
+          }, 10000)
+        }
+      }
+    }
+
+    // Cleanup on unmount or when profile changes
+    return () => {
+      clearPolling()
+      lastHasInProgressRef.current = false
+    }
+  }, [works, profile, fetchWorks])
+
+  const formatStatus = (status: string) => {
+    if (status === "completed") return { label: "Completed", color: "text-emerald-400" }
+    if (status === "failed") return { label: "Failed", color: "text-red-400" }
+    if (status === "processing") return { label: "Processing", color: "text-cyan-400" }
+    return { label: "Pending", color: "text-gray-300" }
+  }
+
+  const remainingLabel = (expires_at?: string | null, created_at?: string) => {
+    const now = Date.now()
+    const expiryMs = expires_at ? new Date(expires_at).getTime() : (created_at ? new Date(created_at).getTime() + 7 * 24 * 60 * 60 * 1000 : now)
+    const diffMs = Math.max(0, expiryMs - now)
+    const days = Math.floor(diffMs / (24 * 60 * 60 * 1000))
+    const hours = Math.floor((diffMs % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000))
+    if (days > 0) return `${days}d ${hours}h left`
+    const mins = Math.floor((diffMs % (60 * 60 * 1000)) / (60 * 1000))
+    return `${hours}h ${mins}m left`
+  }
 
 
   if (loading) {
@@ -206,6 +298,56 @@ export function ProfilePageClient() {
                    </Button>
                 </div>
               </div>
+            </CardContent>
+          </Card>
+
+          {/* User Works */}
+          <Card className="mb-8 bg-white/5 border-white/10 backdrop-blur-sm">
+            <CardHeader>
+              <CardTitle className="text-white text-xl flex items-center gap-2">
+                <FiPlayCircle className="w-5 h-5" />
+                My Works (last 7 days)
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              {worksLoading ? (
+                <div className="py-12 text-center text-gray-400 flex items-center justify-center gap-2">
+                  <FiLoader className="animate-spin" /> Loading works...
+                </div>
+              ) : (works && works.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {works.map((w) => {
+                    const s = formatStatus(w.status)
+                    return (
+                      <div key={w.id} className="rounded-xl border border-white/10 bg-white/5 overflow-hidden">
+                        <div className="aspect-video bg-black/60 flex items-center justify-center">
+                          {w.status === "completed" && w.output_video_url ? (
+                            <video src={w.output_video_url} className="w-full h-full object-contain" controls preload="metadata" />
+                          ) : w.status === "failed" ? (
+                            <div className="text-red-400 flex items-center gap-2 text-sm"><FiAlertTriangle /> Failed</div>
+                          ) : (
+                            <div className="text-gray-300 flex items-center gap-2 text-sm"><FiLoader className="animate-spin" /> {s.label}</div>
+                          )}
+                        </div>
+                        <div className="p-3 space-y-2">
+                          <div className="flex items-center justify-between">
+                            <span className={`text-xs font-medium ${s.color}`}>{s.label}</span>
+                            <span className="text-xs text-gray-400">{w.resolution?.toUpperCase?.() || ""}</span>
+                          </div>
+                          <div className="text-xs text-gray-400">
+                            Created: {new Date(w.created_at).toLocaleString()}
+                          </div>
+                          <div className="text-xs text-gray-400">
+                            Expires: {remainingLabel(w.expires_at, w.created_at)}
+                          </div>
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              ) : (
+                <div className="py-12 text-center text-gray-400">No works yet</div>
+              ))}
             </CardContent>
           </Card>
 

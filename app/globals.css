@@ -123,3 +123,22 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Sonner Toast Custom Styles */
+@layer components {
+  [data-sonner-toast][data-type="error"] {
+    @apply bg-destructive text-destructive-foreground border-destructive;
+  }
+  
+  [data-sonner-toast][data-type="error"] [data-description] {
+    @apply text-destructive-foreground/90;
+  }
+  
+  [data-sonner-toast][data-type="success"] {
+    @apply bg-emerald-600 text-white border-emerald-500;
+  }
+  
+  [data-sonner-toast][data-type="success"] [data-description] {
+    @apply text-white/90;
+  }
+}

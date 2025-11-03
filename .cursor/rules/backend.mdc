@@ -27,9 +27,7 @@ alwaysApply: true
 **请求体**:
 ```typescript
 {
-  planId: 'pro' | 'ultimate' | 'enterprise',
-  userId: string (UUID),
-  userEmail: string
+  planId: 'pro' | 'ultimate' | 'enterprise'
 }
 ```
 **返回**:
@@ -48,11 +46,13 @@ alwaysApply: true
 }
 ```
 **流程**:
-1. 验证用户信息（userId, userEmail）
+1. 从 cookie 验证用户身份（使用 `createServerSupabaseClientForRouteHandler`）
 2. 验证 planId 并映射到 Creem 产品 ID
-3. 生成唯一 request_id
-4. 调用 Creem API 创建 checkout 会话
+3. 生成唯一 request_id（基于用户ID）
+4. 调用 Creem API 创建 checkout 会话（metadata 中自动包含服务端获取的 user.id 和 user.email）
 5. 返回支付页面 URL，前端重定向
+
+**认证方式**: 使用 cookie-based 认证，从 `NextRequest` 读取用户 session
 
 **环境变量**: `CREEM_API_KEY`, `CREEM_PRODUCT_PRO_ID`, `CREEM_PRODUCT_ULTIMATE_ID`, `CREEM_PRODUCT_ENTERPRISE_ID`, `CREEM_API_URL` (可选), `NEXT_PUBLIC_SITE_URL`
 
@@ -210,7 +210,8 @@ alwaysApply: true
 2. 验证任务归属（用户只能查询自己的任务）
 3. 从 WaveSpeedAI API 获取任务状态
 4. 更新本地任务状态和结果
-5. 返回任务状态和结果
+5. **如果任务状态为 `completed`，自动设置 `expires_at = created_at + 7天`（用于作品7天保留期）**
+6. 返回任务状态和结果
 
 **认证方式**: 使用 cookie-based 认证，从 `NextRequest` 读取用户 session
 
@@ -285,11 +286,13 @@ alwaysApply: true
 - seed (integer, 可空) → 随机种子
 - error_message (text, 可空) → 错误信息
 - api_response (jsonb, 可空) → API原始响应
+- expires_at (timestamptz, 可空) → 过期时间（任务完成时自动设置为 created_at + 7天，用于作品保留期）
 - created_at (timestamptz, 默认: now())
 - updated_at (timestamptz, 默认: now())
 ```
-**用途**: 存储视频生成任务信息
+**用途**: 存储视频生成任务信息（包含用户作品）
 **RLS**: ✅ 启用
+**作品保留**: 任务完成时自动设置 `expires_at`，7天后过期（查询时过滤过期记录）
 
 #### 📁 uploaded_files 表
 ```sql
