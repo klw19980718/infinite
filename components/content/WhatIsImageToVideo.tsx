@@ -1,4 +1,4 @@
-export function WhatIsImageToVideo(): JSX.Element {
+export function WhatIsImageToVideo() {
   return (
     <section className="py-16 px-4">
       <div className="max-w-3xl mx-auto">
