@@ -29,7 +29,7 @@ export const AuroraHero = () => {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-accent"></span>
             </div>
-            <span className="text-foreground text-sm font-medium">Infinite-Length Video Generation</span>
+            <span className="text-foreground text-sm font-medium">powered by InfiniteTalk AI</span>
           </div>
 
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight text-balance px-4">
