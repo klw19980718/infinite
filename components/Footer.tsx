@@ -117,6 +117,12 @@ export default function Footer() {
             </p>
             <div className="flex items-center gap-4 text-sm text-muted-foreground">
               <a 
+                href="mailto:support@infinitetalkai.org" 
+                className="hover:text-foreground transition-colors"
+              >
+                support@infinitetalkai.org
+              </a>
+              <a 
                 href="https://www.infinitetalkai.org" 
                 className="hover:text-foreground transition-colors"
                 target="_blank"
