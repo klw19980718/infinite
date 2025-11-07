@@ -72,7 +72,7 @@ export default function Nav() {
         className={`fixed top-0 left-0 right-0 z-50 w-full h-16 transition-all duration-300 ${
           !isScrolled 
             ? 'border-b border-transparent' 
-            : 'bg-white/10 backdrop-blur-lg border-b border-white/20'
+            : 'bg-slate-900 border-b border-slate-800'
         }`}
         style={!isScrolled ? { backgroundColor: 'transparent' } : undefined}
       >
@@ -136,11 +136,7 @@ export default function Nav() {
             ) : (
               <Button
                 onClick={() => setLoginDialogOpen(true)}
-                className={`rounded-lg transition-all duration-200 ${
-                  isScrolled
-                    ? 'bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/15 hover:border-white/30'
-                    : 'bg-accent text-accent-foreground hover:bg-accent/90'
-                }`}
+                className={'rounded-lg transition-all duration-200 bg-accent text-accent-foreground hover:bg-accent/90'}
               >
                 Log in
               </Button>

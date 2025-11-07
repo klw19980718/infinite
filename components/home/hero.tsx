@@ -3,22 +3,22 @@ import Link from "next/link"
 
 export const AuroraHero = () => {
   return (
-    <section className="relative min-h-screen overflow-hidden bg-gradient-to-br from-emerald-950 via-teal-950 to-cyan-950">
-      {/* Vibrant gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-emerald-900/40 via-teal-900/30 to-cyan-900/40"></div>
+    <section className="relative min-h-screen overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
+      {/* Elegant gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-950/30 via-slate-900/20 to-purple-950/30"></div>
       
       {/* Subtle grid pattern */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:64px_64px]"></div>
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:64px_64px]"></div>
 
-      {/* Enhanced atmospheric glowing orbs */}
-      <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-emerald-400/20 rounded-full blur-[150px] animate-pulse"></div>
+      {/* Smooth animated orbs with better colors */}
+      <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-blue-500/15 rounded-full blur-[150px] animate-float"></div>
       <div
-        className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-teal-400/15 rounded-full blur-[120px] animate-pulse"
-        style={{ animationDelay: "2s" }}
+        className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-purple-500/12 rounded-full blur-[120px] animate-float"
+        style={{ animationDelay: "3s", animationDuration: "25s" }}
       ></div>
       <div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-cyan-400/12 rounded-full blur-[100px] animate-pulse"
-        style={{ animationDelay: "4s" }}
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-indigo-500/10 rounded-full blur-[100px] animate-float"
+        style={{ animationDelay: "6s", animationDuration: "30s" }}
       ></div>
 
       {/* Content container - bottom-aligned layout */}
