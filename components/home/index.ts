@@ -4,3 +4,5 @@ export { Highlights } from './Highlights';
 export { UnderTheHood } from './UnderTheHood';
 export { FAQ } from './FAQ';
 export { Specs } from './Specs';
+export { default as WhyItStandsOut } from './WhyItStandsOut';
+export { ExampleVideos } from './ExampleVideos';

@@ -1,5 +1,5 @@
 
-import { AuroraHero, HowItWorks, Highlights, UnderTheHood, FAQ, Specs } from '@/components/home';
+import { AuroraHero, HowItWorks, Highlights, UnderTheHood, FAQ, Specs, WhyItStandsOut, ExampleVideos } from '@/components/home';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -56,7 +56,116 @@ export const metadata: Metadata = {
   category: 'technology',
 };
 
+// 视频分类和 ID 配置
+const videoCategories = [
+  {
+    key: "multilingual",
+    title: "Multilingual content",
+    ids: ["22955", "22969", "22977", "22868"],
+    dir: "languages",
+  },
+  {
+    key: "songs",
+    title: "Songs & Music Videos",
+    ids: ["22742", "22810", "22863", "22935", "22947"],
+    dir: "songs",
+  },
+  {
+    key: "cartoons",
+    title: "Cartoons & Characters",
+    ids: ["22893", "22943", "22960"],
+    dir: "cartoons",
+  },
+  {
+    key: "ads",
+    title: "Ads & Promos",
+    ids: ["22737", "22953"],
+    dir: "ads",
+  },
+  {
+    key: "podcasts",
+    title: "Podcasts / Product Demos / News",
+    ids: ["22800", "22802", "22844", "22928"],
+    dir: "blogs",
+  },
+  {
+    key: "shorts",
+    title: "Shorts & Vlogs",
+    ids: ["22823", "22927", "22956"],
+    dir: "short-videos",
+  },
+  {
+    key: "memes",
+    title: "Memes & Parodies",
+    ids: ["22876", "22855"],
+    dir: "parody",
+  },
+];
+
+// 语言映射
+const languageMap: Record<string, string> = {
+  "22955": "Hindi",
+  "22969": "English",
+  "22977": "Japanese",
+  "22868": "Chinese",
+};
+
+// 与 ExampleVideos 文案保持一致的分类描述
+const categoryDescriptions: Record<string, string> = {
+  multilingual:
+    "many languages (English, Chinese/Mandarin, Japanese, Hindi, Spanish, French, German, Portuguese, Korean, Arabic, Russian, and other major languages)",
+  songs: "sing-along covers, duets, lyric-synced performances",
+  cartoons: "animated hosts, kid-friendly narration, voice swaps",
+  ads: "15–30s product spots, feature highlights, brand intros",
+  podcasts: "virtual anchors, multilingual briefings, how-tos",
+  shorts: "daily stories, travel explainers, creator intros, social clips",
+  memes: "over-the-top reactions, remixed lines, comedic dubs",
+};
+
+// 生成视频的 VideoObject 结构化数据
+function generateVideoStructuredData() {
+  const baseUrl = "https://www.infinitetalkai.org";
+  const cdnUrl = "https://cdn.infinitetalkai.org";
+  const uploadDate = "2024-01-01T00:00:00+00:00"; // 默认上传日期，可根据实际情况调整
+  
+  return videoCategories.flatMap((category) =>
+    category.ids.map((id) => {
+      const thumbnailUrl = `${cdnUrl}/${category.dir}/infinite-talk-ai-${id}.jpg`;
+      const contentUrl = `${cdnUrl}/${category.dir}/infinite-talk-ai-${id}.mp4`;
+      const language = languageMap[id] || "";
+      const name = language
+        ? `${category.title} - ${language} Example`
+        : `${category.title} Example - Video ${id}`;
+      const categoryInfo = categoryDescriptions[category.key] || category.title;
+      const baseLabel = language
+        ? `${language} ${category.title.toLowerCase()}`
+        : category.title.toLowerCase();
+      const description = `${baseLabel} — ${categoryInfo}. Created with Infinite Talk AI: studio-grade lip sync, natural expression, multilingual publishing.`;
+
+      return {
+        "@type": "VideoObject",
+        name,
+        description,
+        thumbnailUrl,
+        uploadDate,
+        contentUrl,
+        embedUrl: baseUrl, // 指向包含视频的页面
+        publisher: {
+          "@type": "Organization",
+          name: "Infinite Talk AI",
+          logo: {
+            "@type": "ImageObject",
+            url: `${baseUrl}/logo.png`,
+          },
+        },
+      };
+    })
+  );
+}
+
 export default function Home() {
+  const videoStructuredData = generateVideoStructuredData();
+  
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -154,7 +263,8 @@ export default function Home() {
             }
           }
         ]
-      }
+      },
+      ...videoStructuredData,
     ]
   };
 
@@ -166,11 +276,15 @@ export default function Home() {
       />
       <main>
         <AuroraHero />
+        <WhyItStandsOut />
+        <ExampleVideos />
         <HowItWorks />
         <Specs />
         <Highlights />
         <UnderTheHood />
+      
        
+
         <FAQ />
         
         {/* Final CTA */}

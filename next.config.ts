@@ -16,6 +16,11 @@ const nextConfig: NextConfig = {
         port: '', // 通常不需要指定端口
         pathname: '/**', // 允许该域名下的所有路径
       },
+      {
+        protocol: 'https',
+        hostname: 'cdn.infinitetalkai.org',
+        pathname: '/**', // 允许 CDN 下的所有路径
+      },
       // 如果有其他需要允许的域名，可以在这里继续添加
     ],
   },
