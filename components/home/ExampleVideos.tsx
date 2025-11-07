@@ -16,15 +16,15 @@ function AudioBar({ src }: { src: string }) {
   }
 
   return (
-    <div className="rounded-lg border border-border/40 bg-slate-900/70 backdrop-blur px-3 py-2 flex items-center justify-between">
-      <div className="text-[11px] text-cyan-300">input Audio</div>
+    <div className="rounded-lg border border-slate-700 bg-slate-900/80 backdrop-blur px-3 py-2 flex items-center justify-between">
+      <div className="text-[11px] text-blue-300">input Audio</div>
       <button
         type="button"
         onClick={toggle}
         aria-label={isPlaying ? 'Pause input audio' : 'Play input audio'}
-        className="inline-flex items-center justify-center h-8 w-8 rounded-full border border-cyan-400/40 bg-cyan-500/15 hover:bg-cyan-500/25 transition"
+        className="inline-flex items-center justify-center h-8 w-8 rounded-full border border-blue-400/40 bg-blue-500/15 hover:bg-blue-500/25 transition"
       >
-        {isPlaying ? <Pause className="h-4 w-4 text-cyan-300" /> : <Play className="h-4 w-4 text-cyan-300" />}
+        {isPlaying ? <Pause className="h-4 w-4 text-blue-300" /> : <Play className="h-4 w-4 text-blue-300" />}
       </button>
       <audio ref={audioRef} src={src} preload="metadata" onEnded={() => setIsPlaying(false)} />
     </div>
@@ -172,12 +172,13 @@ export function ExampleVideos() {
   }
 
   return (
-    <section className="relative py-32 overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-slate-950/50 to-background" />
-      <div className="absolute top-20 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
-      <div className="absolute bottom-20 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl" />
+    <section className="relative py-32 md:py-40 bg-slate-950 overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-950/50 via-slate-950 to-purple-950/50"></div>
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_50%,rgba(59,130,246,0.1),transparent_50%)]"></div>
+      <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-blue-500/20 to-transparent rounded-full blur-3xl"></div>
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-purple-500/20 to-transparent rounded-full blur-3xl"></div>
 
-      <div className="container relative mx-auto px-6">
+      <div className="container relative mx-auto px-6 z-10">
         <div className="max-w-4xl mx-auto text-center mb-20">
           <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
             Example Videos ·{" "}
@@ -199,29 +200,29 @@ export function ExampleVideos() {
             return (
               <div key={cat.key} className="relative" id={cat.key === 'multilingual' ? 'multilingual-content' : undefined}>
                 <div className="mb-8">
-                  <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-2">{cat.title}</h3>
+                  <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">{cat.title}</h3>
                   {cat.ids.length > 0 ? (
                     <div className="flex items-center justify-between gap-4">
-                      <p className="text-base text-muted-foreground flex-1">{cat.description}</p>
+                      <p className="text-base text-slate-300 flex-1">{cat.description}</p>
                       <div className="hidden sm:flex items-center gap-2">
                         <button
                           aria-label="Scroll left"
                           onClick={() => scrollCategory(cat.key, -1)}
-                          className="h-9 w-9 rounded-full border border-border/60 bg-card/40 hover:bg-card transition"
+                          className="h-9 w-9 rounded-full border border-slate-800 bg-slate-900/50 hover:border-blue-400/30 hover:bg-blue-500/10 transition"
                         >
-                          <ChevronLeft className="mx-auto h-5 w-5" />
+                          <ChevronLeft className="mx-auto h-5 w-5 text-slate-300" />
                         </button>
                         <button
                           aria-label="Scroll right"
                           onClick={() => scrollCategory(cat.key, 1)}
-                          className="h-9 w-9 rounded-full border border-border/60 bg-card/40 hover:bg-card transition"
+                          className="h-9 w-9 rounded-full border border-slate-800 bg-slate-900/50 hover:border-blue-400/30 hover:bg-blue-500/10 transition"
                         >
-                          <ChevronRight className="mx-auto h-5 w-5" />
+                          <ChevronRight className="mx-auto h-5 w-5 text-slate-300" />
                         </button>
                       </div>
                     </div>
                   ) : (
-                    <p className="text-base text-muted-foreground max-w-3xl">{cat.description}</p>
+                    <p className="text-base text-slate-300 max-w-3xl">{cat.description}</p>
                   )}
                 </div>
 
@@ -236,13 +237,13 @@ export function ExampleVideos() {
                         {cat.ids.map((id) => (
                           <div
                             key={id}
-                            className="shrink-0 rounded-2xl border border-border/50 bg-gradient-to-br from-slate-900/50 to-slate-950/50 backdrop-blur-sm p-6"
+                            className="shrink-0 rounded-2xl border border-slate-800 bg-slate-900/50 backdrop-blur-sm p-6"
                           >
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
                               {/* 左侧：图片容器，底部浮层为音频 */}
                               <div className="space-y-2">
-                                <div className="text-sm font-medium text-muted-foreground">input Image && audio</div>
-                                <div className="relative h-[260px] md:h-[300px] overflow-hidden rounded-xl border border-border/50 bg-black shadow-lg">
+                                <div className="text-sm font-medium text-slate-400">input Image && audio</div>
+                                <div className="relative h-[260px] md:h-[300px] overflow-hidden rounded-xl border border-slate-700 bg-black shadow-lg">
                                   {cat.key === 'multilingual' && languageEnById[id] && (
                                     <div className="absolute top-3 left-3 z-10 rounded-full bg-black/70 text-white text-xs px-2 py-1 border border-white/10">
                                       {languageEnById[id]}
@@ -263,8 +264,8 @@ export function ExampleVideos() {
 
                               {/* 右侧：视频 */}
                               <div className="space-y-2">
-                                <div className="text-sm font-medium text-muted-foreground">Generated Video</div>
-                                <div className="relative h-[260px] md:h-[300px] overflow-hidden rounded-xl border border-border/50 bg-black shadow-lg">
+                                <div className="text-sm font-medium text-slate-400">Generated Video</div>
+                                <div className="relative h-[260px] md:h-[300px] overflow-hidden rounded-xl border border-slate-700 bg-black shadow-lg">
                                   <video
                                     controls
                                     preload="metadata"
@@ -289,8 +290,8 @@ export function ExampleVideos() {
                     )}
                   </div>
                 ) : (
-                  <div className="rounded-2xl border border-dashed border-border/50 bg-muted/20 p-12 text-center">
-                    <p className="text-muted-foreground">Coming soon...</p>
+                  <div className="rounded-2xl border border-dashed border-slate-800 bg-slate-900/30 p-12 text-center">
+                    <p className="text-slate-400">Coming soon...</p>
                   </div>
                 )}
               </div>
@@ -308,12 +309,12 @@ export function ExampleVideos() {
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
 
-        /* Nice thin horizontal scrollbar */
-        .nice-scroll-x { scrollbar-color: rgba(148,163,184,0.35) transparent; scrollbar-width: thin; }
+        /* Nice thin horizontal scrollbar - dark theme */
+        .nice-scroll-x { scrollbar-color: rgba(59,130,246,0.4) transparent; scrollbar-width: thin; }
         .nice-scroll-x::-webkit-scrollbar { height: 8px; }
         .nice-scroll-x::-webkit-scrollbar-track { background: transparent; }
-        .nice-scroll-x::-webkit-scrollbar-thumb { background: linear-gradient(90deg, rgba(148,163,184,0.35), rgba(203,213,225,0.35)); border-radius: 9999px; }
-        .nice-scroll-x::-webkit-scrollbar-thumb:hover { background: linear-gradient(90deg, rgba(203,213,225,0.5), rgba(226,232,240,0.5)); }
+        .nice-scroll-x::-webkit-scrollbar-thumb { background: linear-gradient(90deg, rgba(59,130,246,0.4), rgba(147,51,234,0.4)); border-radius: 9999px; }
+        .nice-scroll-x::-webkit-scrollbar-thumb:hover { background: linear-gradient(90deg, rgba(59,130,246,0.6), rgba(147,51,234,0.6)); }
       `}</style>
     </section>
   )
