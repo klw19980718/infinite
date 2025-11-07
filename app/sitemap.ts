@@ -38,6 +38,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
       changeFrequency: 'yearly',
       priority: 0.4,
+    },
+    {
+      url: baseUrl + '/refund',
+      lastModified: new Date(),
+      changeFrequency: 'yearly',
+      priority: 0.5,
     }, {
       url: baseUrl + '/infinite-talk-ai/image-to-video',
       lastModified: new Date(),

@@ -94,6 +94,11 @@ export default function Footer() {
                   Privacy Policy
                 </Link>
               </li>
+              <li>
+                <Link href="/refund" className="hover:text-foreground transition-colors">
+                  Refund Policy
+                </Link>
+              </li>
               {/* TODO: Add pages later */}
               {/* <li>
                 <Link href="/" className="hover:text-foreground transition-colors">

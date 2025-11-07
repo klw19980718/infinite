@@ -167,7 +167,7 @@ export default function PrivacyPage() {
           <section className="mb-8">
             <h2 className="text-2xl font-semibold mb-4 text-foreground">14) Contact</h2>
             <div className="text-muted-foreground leading-relaxed">
-              <p><strong>Infinitetalk.ai</strong></p>
+              <p><strong>Infinitetalk ai</strong></p>
               <p>Email: support@infinitetalkai.org</p>
             </div>
           </section>

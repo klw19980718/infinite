@@ -148,6 +148,11 @@ export function PricingPageClient() {
       answer:
         "Start with Pro to trial workflows. Choose Ultimate for best price/credit. Use Enterprise if you render in bulk.",
     },
+    {
+      question: "What is your refund policy?",
+      answer:
+        "Credits are generally non-refundable once purchased. However, we may consider refund requests on a case-by-case basis for technical issues or exceptional circumstances. Contact support@infinitetalkai.org within 14 days of purchase. See our Refund Policy for details.",
+    },
   ]
 
   const [openFaq, setOpenFaq] = useState<number | null>(null)
@@ -486,8 +491,18 @@ export function PricingPageClient() {
       <section className="py-12 px-4 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
           <div className="p-6 rounded-2xl bg-muted/30 border border-border">
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-muted-foreground mb-2">
               Payments & taxes are handled by our Merchant of Record. Invoices are issued automatically after purchase.
+            </p>
+            <p className="text-sm text-muted-foreground">
+              Questions about refunds? See our{' '}
+              <Link href="/refund" className="text-primary hover:underline font-medium">
+                Refund Policy
+              </Link>
+              {' '}or contact{' '}
+              <a href="mailto:support@infinitetalkai.org" className="text-primary hover:underline font-medium">
+                support@infinitetalkai.org
+              </a>
             </p>
           </div>
         </div>
