@@ -45,7 +45,13 @@ export function ExampleVideos() {
       key: "songs",
       title: "Songs & Music Videos",
       description: "sing-along covers, duets, lyric-synced performances",
-      ids: ["22742", "22810", "22863", "22935", "22947"],
+      ids: ["22742", "22810", "22863", "22935"],
+    },
+    {
+      key: "infinitetalk",
+      title: "Infinitetalk",
+      description: "long-form video generation, extended content creation, hour-scale programs with seamless batching and stitching",
+      ids: ["22947"],
     },
     {
       key: "cartoons",
@@ -110,6 +116,8 @@ export function ExampleVideos() {
         return "languages"
       case "songs":
         return "songs"
+      case "infinitetalk":
+        return "songs" // 使用 songs 目录，因为 22947 原本在 songs 中
       case "cartoons":
         return "cartoons"
       case "ads":
@@ -198,7 +206,13 @@ export function ExampleVideos() {
             const currentId = cat.ids[currentIndex]
 
             return (
-              <div key={cat.key} className="relative" id={cat.key === 'multilingual' ? 'multilingual-content' : undefined}>
+              <div key={cat.key} className="relative" id={
+                cat.key === 'multilingual' ? 'multilingual-content' :
+                cat.key === 'infinitetalk' ? 'infinitetalk' :
+                cat.key === 'shorts' ? 'shorts' :
+                cat.key === 'podcasts' ? 'podcasts' :
+                undefined
+              }>
                 <div className="mb-8">
                   <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">{cat.title}</h3>
                   {cat.ids.length > 0 ? (
