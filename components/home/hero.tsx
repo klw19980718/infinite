@@ -47,9 +47,9 @@ export const AuroraHero = () => {
                   <FiArrowRight className="transition-transform group-hover:translate-x-1" />
                 </button>
               </Link>
-              <Link href="/pricing">
+              <Link href="#example-videos">
                 <button className="group relative flex items-center gap-2 rounded-lg bg-transparent border border-white/30 px-6 py-3 text-white font-semibold hover:bg-white/10 hover:border-white/40 transition-all duration-200">
-                  <span>Get Credits</span>
+                  <span>Example Videos</span>
                   <FiArrowRight className="transition-transform group-hover:translate-x-1" />
                 </button>
               </Link>

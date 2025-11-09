@@ -16,15 +16,15 @@ function AudioBar({ src }: { src: string }) {
   }
 
   return (
-    <div className="rounded-lg border border-slate-700 bg-slate-900/80 backdrop-blur px-3 py-2 flex items-center justify-between">
-      <div className="text-[11px] text-blue-300">input Audio</div>
+    <div className="rounded-lg border border-slate-700 bg-slate-900/80 backdrop-blur px-2 md:px-3 py-1.5 md:py-2 flex items-center justify-between">
+      <div className="text-[9px] md:text-[11px] text-blue-300">input Audio</div>
       <button
         type="button"
         onClick={toggle}
         aria-label={isPlaying ? 'Pause input audio' : 'Play input audio'}
-        className="inline-flex items-center justify-center h-8 w-8 rounded-full border border-blue-400/40 bg-blue-500/15 hover:bg-blue-500/25 transition"
+        className="inline-flex items-center justify-center h-6 w-6 md:h-8 md:w-8 rounded-full border border-blue-400/40 bg-blue-500/15 hover:bg-blue-500/25 transition"
       >
-        {isPlaying ? <Pause className="h-4 w-4 text-blue-300" /> : <Play className="h-4 w-4 text-blue-300" />}
+        {isPlaying ? <Pause className="h-3 w-3 md:h-4 md:w-4 text-blue-300" /> : <Play className="h-3 w-3 md:h-4 md:w-4 text-blue-300" />}
       </button>
       <audio ref={audioRef} src={src} preload="metadata" onEnded={() => setIsPlaying(false)} />
     </div>
@@ -180,7 +180,7 @@ export function ExampleVideos() {
   }
 
   return (
-    <section className="relative py-32 md:py-40 bg-slate-950 overflow-hidden">
+    <section id="example-videos" className="relative py-32 md:py-40 bg-slate-950 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-blue-950/50 via-slate-950 to-purple-950/50"></div>
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_50%,rgba(59,130,246,0.1),transparent_50%)]"></div>
       <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-blue-500/20 to-transparent rounded-full blur-3xl"></div>
@@ -251,15 +251,15 @@ export function ExampleVideos() {
                         {cat.ids.map((id) => (
                           <div
                             key={id}
-                            className="shrink-0 rounded-2xl border border-slate-800 bg-slate-900/50 backdrop-blur-sm p-6"
+                            className="shrink-0 rounded-2xl border border-slate-800 bg-slate-900/50 backdrop-blur-sm p-3 md:p-6"
                           >
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+                            <div className="grid grid-cols-2 gap-3 md:gap-6 items-start">
                               {/* 左侧：图片容器，底部浮层为音频 */}
-                              <div className="space-y-2">
-                                <div className="text-sm font-medium text-slate-400">input Image && audio</div>
-                                <div className="relative h-[260px] md:h-[300px] overflow-hidden rounded-xl border border-slate-700 bg-black shadow-lg">
+                              <div className="space-y-1 md:space-y-2">
+                                <div className="text-[10px] md:text-sm font-medium text-slate-400">input Image && audio</div>
+                                <div className="relative h-[200px] md:h-[300px] overflow-hidden rounded-xl border border-slate-700 bg-black shadow-lg">
                                   {cat.key === 'multilingual' && languageEnById[id] && (
-                                    <div className="absolute top-3 left-3 z-10 rounded-full bg-black/70 text-white text-xs px-2 py-1 border border-white/10">
+                                    <div className="absolute top-2 left-2 md:top-3 md:left-3 z-10 rounded-full bg-black/70 text-white text-[10px] md:text-xs px-1.5 md:px-2 py-0.5 md:py-1 border border-white/10">
                                       {languageEnById[id]}
                                     </div>
                                   )}
@@ -270,16 +270,16 @@ export function ExampleVideos() {
                                     sizes="(max-width: 768px) 100vw, 50vw"
                                     className="object-contain"
                                   />
-                                  <div className="absolute left-3 right-3 bottom-3">
+                                  <div className="absolute left-2 right-2 md:left-3 md:right-3 bottom-2 md:bottom-3">
                                     <AudioBar src={getAudioSrc(id, cat.key)} />
                                   </div>
                                 </div>
                               </div>
 
                               {/* 右侧：视频 */}
-                              <div className="space-y-2">
-                                <div className="text-sm font-medium text-slate-400">Generated Video</div>
-                                <div className="relative h-[260px] md:h-[300px] overflow-hidden rounded-xl border border-slate-700 bg-black shadow-lg">
+                              <div className="space-y-1 md:space-y-2">
+                                <div className="text-[10px] md:text-sm font-medium text-slate-400">Generated Video</div>
+                                <div className="relative h-[200px] md:h-[300px] overflow-hidden rounded-xl border border-slate-700 bg-black shadow-lg">
                                   <video
                                     controls
                                     preload="metadata"
