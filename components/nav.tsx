@@ -69,10 +69,10 @@ export default function Nav() {
   return (
     <>
       <nav 
-        className={`fixed top-0 left-0 right-0 z-50 w-full h-16 transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-50 w-full h-16 border-b border-border transition-all duration-300 ${
           !isScrolled 
-            ? 'border-b border-transparent' 
-            : 'bg-slate-900 border-b border-slate-800'
+            ? '' 
+            : 'bg-slate-900'
         }`}
         style={!isScrolled ? { backgroundColor: 'transparent' } : undefined}
       >
@@ -92,41 +92,25 @@ export default function Nav() {
           <div className="hidden md:flex items-center gap-4">
             <Link 
               href="/" 
-              className={`rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200 ${
-                isScrolled
-                  ? 'bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/15 hover:border-white/30'
-                  : 'text-muted-foreground hover:text-foreground'
-              }`}
+              className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
             >
               Home
             </Link>
             <Link 
               href="/infinite-talk-ai/image-to-video" 
-              className={`rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200 ${
-                isScrolled
-                  ? 'bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/15 hover:border-white/30'
-                  : 'text-muted-foreground hover:text-foreground'
-              }`}
+              className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
             >
               Image to Video
             </Link>
             <Link 
               href="/infinite-talk-ai/video-to-video" 
-              className={`rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200 ${
-                isScrolled
-                  ? 'bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/15 hover:border-white/30'
-                  : 'text-muted-foreground hover:text-foreground'
-              }`}
+              className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
             >
               Video to Video
             </Link>
             <Link 
               href="/pricing" 
-              className={`rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200 ${
-                isScrolled
-                  ? 'bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/15 hover:border-white/30'
-                  : 'text-muted-foreground hover:text-foreground'
-              }`}
+              className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
             >
               Pricing
             </Link>

@@ -1,35 +1,7 @@
 "use client"
 
-import Image from "next/image"
-import { useRef, useState } from "react"
+import { useRef, useState, useEffect } from "react"
 import { ChevronLeft, ChevronRight, Play, Pause } from "lucide-react"
-
-function AudioBar({ src }: { src: string }) {
-  const audioRef = useRef<HTMLAudioElement | null>(null)
-  const [isPlaying, setIsPlaying] = useState(false)
-
-  const toggle = () => {
-    const el = audioRef.current
-    if (!el) return
-    if (isPlaying) el.pause(); else el.play()
-    setIsPlaying(!isPlaying)
-  }
-
-  return (
-    <div className="rounded-lg border border-slate-700 bg-slate-900/80 backdrop-blur px-2 md:px-3 py-1.5 md:py-2 flex items-center justify-between">
-      <div className="text-[9px] md:text-[11px] text-blue-300">input Audio</div>
-      <button
-        type="button"
-        onClick={toggle}
-        aria-label={isPlaying ? 'Pause input audio' : 'Play input audio'}
-        className="inline-flex items-center justify-center h-6 w-6 md:h-8 md:w-8 rounded-full border border-blue-400/40 bg-blue-500/15 hover:bg-blue-500/25 transition"
-      >
-        {isPlaying ? <Pause className="h-3 w-3 md:h-4 md:w-4 text-blue-300" /> : <Play className="h-3 w-3 md:h-4 md:w-4 text-blue-300" />}
-      </button>
-      <audio ref={audioRef} src={src} preload="metadata" onEnded={() => setIsPlaying(false)} />
-    </div>
-  )
-}
 
 export function ExampleVideos() {
   // 定义分类；仅"Multilingual content"提供演示用素材
@@ -85,30 +57,6 @@ export function ExampleVideos() {
     },
   ]
 
-  // 音频扩展名映射（注意大小写）
-  const audioExtById: Record<string, "mp3" | "wav" | "WAV" | "MP3" | "m4a"> = {
-    "22969": "wav", // languages
-    "22742": "mp3", // songs
-    "22810": "WAV", // songs
-    "22863": "wav", // songs
-    "22935": "wav", // songs
-    "22947": "mp3", // songs
-    "22893": "MP3", // cartoons
-    "22943": "mp3", // cartoons
-    "22960": "mp3", // cartoons
-    "22737": "mp3", // ads
-    "22953": "m4a", // ads
-    "22800": "mp3", // podcasts (blogs)
-    "22802": "mp3", // podcasts (blogs)
-    "22844": "m4a", // podcasts (blogs)
-    "22928": "mp3", // podcasts (blogs)
-    "22823": "mp3", // shorts (short-videos)
-    "22927": "mp3", // shorts (short-videos)
-    "22956": "mp3", // shorts (short-videos)
-    "22855": "mp3", // memes (parody)
-    "22876": "m4a", // memes (parody)
-  }
-  
   // 根据分类获取目录路径
   const getCategoryDir = (categoryKey: string) => {
     switch (categoryKey) {
@@ -133,11 +81,6 @@ export function ExampleVideos() {
     }
   }
   
-  const getAudioSrc = (id: string, categoryKey: string) => {
-    const dir = getCategoryDir(categoryKey)
-    const ext = audioExtById[id] ?? "mp3"
-    return `https://cdn.infinitetalkai.org/${dir}/infinite-talk-ai-${id}.${ext}`
-  }
   const getImageSrc = (id: string, categoryKey: string) => {
     const dir = getCategoryDir(categoryKey)
     return `https://cdn.infinitetalkai.org/${dir}/infinite-talk-ai-${id}.jpg`
@@ -146,23 +89,73 @@ export function ExampleVideos() {
     const dir = getCategoryDir(categoryKey)
     return `https://cdn.infinitetalkai.org/${dir}/infinite-talk-ai-${id}.mp4`
   }
-  const languageEnById: Record<string, string> = {
-    "22955": "Hindi",
-    "22969": "English",
-    "22977": "Japanese",
-    "22868": "Chinese",
-  }
 
   const [activeIndexes, setActiveIndexes] = useState<Record<string, number>>(
     categories.reduce((acc, cat) => ({ ...acc, [cat.key]: 0 }), {}),
   )
+  const [playingVideos, setPlayingVideos] = useState<Record<string, boolean>>({})
   const scrollRefs = useRef<Record<string, HTMLDivElement | null>>({})
-  const imgBoxRefs = useRef<Record<string, HTMLDivElement | null>>({})
-  const vidBoxRefs = useRef<Record<string, HTMLDivElement | null>>({})
-  const [boxWidths, setBoxWidths] = useState<Record<string, number>>({})
-  const setBoxWidth = (key: string, width: number) => {
-    setBoxWidths((prev) => (prev[key] === width ? prev : { ...prev, [key]: width }))
+  const videoRefs = useRef<Record<string, HTMLVideoElement | null>>({})
+  const cardRefs = useRef<Record<string, HTMLDivElement | null>>({})
+  
+  const handleVideoPlay = (videoKey: string) => {
+    setPlayingVideos((prev) => ({ ...prev, [videoKey]: true }))
   }
+  
+  const handleVideoPause = (videoKey: string) => {
+    setPlayingVideos((prev) => ({ ...prev, [videoKey]: false }))
+  }
+  
+  const toggleVideo = async (videoKey: string) => {
+    const video = videoRefs.current[videoKey]
+    if (!video) return
+    
+    if (video.paused) {
+      try {
+        await video.play()
+        handleVideoPlay(videoKey)
+      } catch (error) {
+        // 处理播放错误（用户可能取消了播放）
+        console.error('Video play error:', error)
+      }
+    } else {
+      video.pause()
+      handleVideoPause(videoKey)
+    }
+  }
+  
+  // 点击外部关闭所有视频
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Node
+      
+      // 检查点击是否在任何视频卡片内
+      let clickedInsideCard = false
+      Object.values(cardRefs.current).forEach((card) => {
+        if (card && card.contains(target)) {
+          clickedInsideCard = true
+        }
+      })
+      
+      // 如果点击在卡片外，关闭所有正在播放的视频
+      if (!clickedInsideCard) {
+        Object.keys(playingVideos).forEach((videoKey) => {
+          if (playingVideos[videoKey]) {
+            const video = videoRefs.current[videoKey]
+            if (video && !video.paused) {
+              video.pause()
+              setPlayingVideos((prev) => ({ ...prev, [videoKey]: false }))
+            }
+          }
+        })
+      }
+    }
+    
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [playingVideos])
 
   const scrollCategory = (key: string, direction: 1 | -1) => {
     const el = scrollRefs.current[key]
@@ -186,17 +179,12 @@ export function ExampleVideos() {
   }
 
   return (
-    <section id="example-videos" className="relative py-32 md:py-40 bg-slate-950 overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-950/50 via-slate-950 to-purple-950/50"></div>
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_50%,rgba(59,130,246,0.1),transparent_50%)]"></div>
-      <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-blue-500/20 to-transparent rounded-full blur-3xl"></div>
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-purple-500/20 to-transparent rounded-full blur-3xl"></div>
-
+    <section id="example-videos" className="relative py-32 md:py-40 overflow-hidden">
       <div className="container relative mx-auto px-6 z-10">
         <div className="max-w-4xl mx-auto text-center mb-20">
           <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
             Example Videos ·{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
+            <span className="text-accent">
               Infinite Talk AI
             </span>
           </h2>
@@ -255,84 +243,38 @@ export function ExampleVideos() {
                       className="overflow-x-auto mx-[-1.5rem] px-6 pb-2 nice-scroll-x"
                     >
                       <div className="flex gap-6 min-w-max">
-                        {cat.ids.map((id) => (
-                          <div
-                            key={id}
-                            className="shrink-0 w-auto rounded-2xl border border-slate-800 bg-slate-900/50 backdrop-blur-sm p-3 md:p-6"
-                          >
-                            <div className="flex gap-3 md:gap-6 items-start">
-                              {/* 左侧：图片容器，底部浮层为音频 */}
-                              <div className="min-w-0 space-y-1 md:space-y-2">
-                                <div className="text-[10px] md:text-sm font-medium text-slate-400">input Image && audio</div>
-                                {(() => {
-                                  const imgKey = `${cat.key}-${id}-img`
-                                  return (
-                                    <div
-                                      ref={(el) => {
-                                        imgBoxRefs.current[imgKey] = el
-                                      }}
-                                      style={boxWidths[imgKey] ? { width: `${boxWidths[imgKey]}px` } : undefined}
-                                      className="relative flex-none h-[200px] md:h-[300px] aspect-video overflow-hidden rounded-xl border border-slate-700 bg-black shadow-lg"
-                                    >
-                                  {cat.key === 'multilingual' && languageEnById[id] && (
-                                    <div className="absolute top-2 left-2 md:top-3 md:left-3 z-10 rounded-full bg-black/70 text-white text-[10px] md:text-xs px-1.5 md:px-2 py-0.5 md:py-1 border border-white/10">
-                                      {languageEnById[id]}
-                                    </div>
-                                  )}
-                                  <Image
-                                    src={getImageSrc(id, cat.key) || "/placeholder.svg"}
-                                    alt={`input image ${id}`}
-                                    fill
-                                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                                    className="object-contain"
-                                    onLoadingComplete={(img) => {
-                                      const ratio = img.naturalWidth && img.naturalHeight ? img.naturalWidth / img.naturalHeight : 16 / 9
-                                      const h = imgBoxRefs.current[imgKey]?.offsetHeight ?? 200
-                                      setBoxWidth(imgKey, Math.round(h * ratio))
-                                    }}
-                                  />
-                                  <div className="absolute left-2 right-2 md:left-3 md:right-3 bottom-2 md:bottom-3">
-                                    <AudioBar src={getAudioSrc(id, cat.key)} />
-                                  </div>
-                                    </div>
-                                  )
-                                })()}
-                              </div>
-
-                              {/* 右侧：视频 */}
-                              <div className="min-w-0 space-y-1 md:space-y-2">
-                                <div className="text-[10px] md:text-sm font-medium text-slate-400">Generated Video</div>
-                                {(() => {
-                                  const vidKey = `${cat.key}-${id}-vid`
-                                  return (
-                                    <div
-                                      ref={(el) => {
-                                        vidBoxRefs.current[vidKey] = el
-                                      }}
-                                      style={boxWidths[vidKey] ? { width: `${boxWidths[vidKey]}px` } : undefined}
-                                      className="relative flex-none h-[200px] md:h-[300px] aspect-video overflow-hidden rounded-xl border border-slate-700 bg-black shadow-lg"
-                                    >
-                                      <video
-                                        controls
-                                        preload="metadata"
-                                        className="w-full h-full object-contain bg-black"
-                                        poster={getImageSrc(id, cat.key)}
-                                        onLoadedMetadata={(e) => {
-                                          const v = e.currentTarget
-                                          const ratio = v.videoWidth && v.videoHeight ? v.videoWidth / v.videoHeight : 16 / 9
-                                          const h = vidBoxRefs.current[vidKey]?.offsetHeight ?? 200
-                                          setBoxWidth(vidKey, Math.round(h * ratio))
-                                        }}
-                                      >
-                                        <source src={getVideoSrc(id, cat.key)} />
-                                      </video>
-                                    </div>
-                                  )
-                                })()}
+                        {cat.ids.map((id) => {
+                          const videoKey = `${cat.key}-${id}`
+                          const isPlaying = playingVideos[videoKey] || false
+                          
+                          return (
+                            <div
+                              key={id}
+                              ref={(el) => {
+                                cardRefs.current[videoKey] = el
+                              }}
+                              className="shrink-0 w-auto rounded-2xl border border-border bg-card"
+                            >
+                              {/* 只展示视频 */}
+                              <div
+                                className="relative flex-none overflow-hidden rounded-2xl border border-border bg-card shadow-md cursor-pointer group h-[180px] md:h-[280px]"
+                                onClick={() => toggleVideo(videoKey)}
+                              >
+                                <video
+                                  ref={(el) => {
+                                    videoRefs.current[videoKey] = el
+                                  }}
+                                  controls
+                                  className="w-full h-full object-contain bg-black"
+                                  poster={getImageSrc(id, cat.key)}
+                                >
+                                  <source src={getVideoSrc(id, cat.key)} />
+                                </video>
+                      
                               </div>
                             </div>
-                          </div>
-                        ))}
+                          )
+                        })}
                       </div>
                     </div>
 

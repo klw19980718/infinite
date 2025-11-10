@@ -63,16 +63,15 @@ export function FAQ() {
   }
 
   return (
-    <section id="faq" className="py-32 md:py-40 bg-background relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-t from-accent/5 via-background to-background"></div>
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808004_1px,transparent_1px),linear-gradient(to_bottom,#80808004_1px,transparent_1px)] bg-[size:80px_80px]"></div>
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-chart-1/10 rounded-full blur-[120px]"></div>
-
+    <section id="faq" className="py-32 md:py-40 relative overflow-hidden">
       <div className="container mx-auto px-6 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-16 lg:gap-24 items-start">
           <div className="lg:sticky lg:top-32">
+            <div className="text-sm md:text-base font-medium text-accent uppercase tracking-wider mb-2">
+              FAQs
+            </div>
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground text-balance">
-              FAQs — Infinite Talk AI
+              Frequently Asked Questions
             </h2>
           </div>
 

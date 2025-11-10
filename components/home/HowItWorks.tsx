@@ -41,11 +41,7 @@ export function HowItWorks() {
   ]
 
   return (
-    <section id="how-it-works" className="py-32 md:py-40 bg-background relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-chart-1/5 via-background to-chart-3/5"></div>
-      <div className="absolute bottom-1/4 left-1/4 w-[350px] h-[350px] bg-accent/10 rounded-full blur-[100px]"></div>
-      {/* </CHANGE> */}
-
+    <section id="how-it-works" className="py-32 md:py-40 relative overflow-hidden">
       <div className="container mx-auto px-6 relative z-10">
         <div className="text-center mb-24">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4 text-balance">

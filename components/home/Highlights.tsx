@@ -41,11 +41,7 @@ export function Highlights() {
   ]
 
   return (
-    <section id="highlights" className="py-32 md:py-40 bg-background relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-accent/5 to-background"></div>
-      <div className="absolute top-1/4 right-1/4 w-[400px] h-[400px] bg-accent/10 rounded-full blur-[120px]"></div>
-      {/* </CHANGE> */}
-
+    <section id="highlights" className="py-32 md:py-40 relative overflow-hidden">
       <div className="container mx-auto px-6 relative z-10">
         <div className="text-center mb-24">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4 text-balance">

@@ -274,7 +274,7 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <main>
+      <main className="bg-background">
         <AuroraHero />
         <WhyItStandsOut />
         <ExampleVideos />
@@ -288,7 +288,7 @@ export default function Home() {
         <FAQ />
         
         {/* Final CTA */}
-        <section className="py-32 bg-background">
+        <section className="py-32">
           <div className="container mx-auto px-6 text-center">
             <div className="max-w-4xl mx-auto">
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 text-balance">

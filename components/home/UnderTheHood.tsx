@@ -35,16 +35,7 @@ export function UnderTheHood() {
   ]
 
   return (
-    <section id="under-the-hood" className="py-32 md:py-40 bg-background relative overflow-hidden">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_50%,rgba(120,119,198,0.08),transparent_70%)]"></div>
-      <div className="absolute inset-0 bg-gradient-to-tr from-background via-chart-3/3 to-background"></div>
-
-      {/* Decorative grid accent */}
-      <div className="absolute top-1/4 right-0 w-1/3 h-1/2 bg-[linear-gradient(to_right,#80808008_2px,transparent_2px),linear-gradient(to_bottom,#80808008_2px,transparent_2px)] bg-[size:40px_40px]"></div>
-
-      {/* Corner glow */}
-      <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-accent/8 rounded-full blur-[120px]"></div>
-
+    <section id="under-the-hood" className="py-32 md:py-40 relative overflow-hidden">
       <div className="container mx-auto px-6 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-[400px_1fr] gap-16 max-w-7xl mx-auto">
           {/* Left: Sticky title */}
