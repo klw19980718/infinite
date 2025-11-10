@@ -21,28 +21,36 @@ export const AuroraHero = () => {
         style={{ animationDelay: "6s", animationDuration: "30s" }}
       ></div>
 
-      {/* Content container - bottom-aligned layout */}
-      <div className="relative z-10 container mx-auto px-6 min-h-screen flex items-end pb-16 md:pb-24">
-        <div className="w-full max-w-7xl mx-auto">
-          {/* Horizontal layout: left content (wide) + right buttons (narrow) */}
-          <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-8 items-center">
-            {/* Left: Title and Description - wider section */}
-            <div className="space-y-6">
-              {/* Title */}
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
-                Infinite Talk AI
-              </h1>
-              
-              {/* Description */}
-              <p className="text-base md:text-lg text-slate-300 leading-relaxed max-w-3xl">
-                Audio-driven, whole-frame dubbing that turns images or footage into identity-stable talking video. It enables infinite-length generation—syncing lips, head motion, posture, and expressions to speech for natural continuity.
-              </p>
+      {/* Content container - centered layout */}
+      <div className="relative z-10 container mx-auto px-6 min-h-screen flex items-center justify-center py-16 md:py-24">
+        <div className="w-full max-w-5xl mx-auto">
+          <div className="flex flex-col items-center text-center space-y-8 md:space-y-10">
+            {/* Hero Video - 16:9 */}
+            <div className="relative w-full max-w-4xl aspect-video rounded-2xl overflow-hidden border border-slate-700/50 bg-black shadow-2xl shadow-black/50">
+              <video
+                controls
+                preload="none"
+                className="w-full h-full object-contain bg-black"
+                poster="https://cdn.infinitetalkai.org/hero/hero.png"
+              >
+                <source src="https://cdn.infinitetalkai.org/hero/hero.mp4" type="video/mp4" />
+              </video>
             </div>
 
-            {/* Right: CTA Buttons - narrower section, horizontal layout */}
-            <div className="flex flex-row gap-4 justify-start lg:justify-end">
+            {/* Title */}
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
+              Infinite Talk AI
+            </h1>
+            
+            {/* Description */}
+            <p className="text-base md:text-lg lg:text-xl text-slate-300 leading-relaxed max-w-3xl mx-auto">
+              Audio-driven, whole-frame dubbing that turns images or footage into identity-stable talking video. It enables infinite-length generation—syncing lips, head motion, posture, and expressions to speech for natural continuity.
+            </p>
+
+            {/* CTA Buttons - horizontal layout, centered */}
+            <div className="flex flex-row gap-4 justify-center items-center pt-2">
               <Link href="/infinite-talk-ai/image-to-video">
-                <button className="group relative flex items-center gap-2 rounded-lg bg-gradient-to-r from-blue-500 to-cyan-500 border border-blue-400/50 px-6 py-3 text-white font-semibold hover:from-blue-600 hover:to-cyan-600 hover:border-blue-400 transition-all duration-200 shadow-lg shadow-blue-500/25">
+                <button className="group relative flex items-center gap-2 rounded-lg bg-gradient-to-r from-blue-500 to-cyan-500 border border-blue-400/50 px-6 py-3 text-white font-semibold hover:from-blue-600 hover:to-cyan-600 hover:border-blue-400 transition-all duration-200 shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40">
                   <span>Start Generating</span>
                   <FiArrowRight className="transition-transform group-hover:translate-x-1" />
                 </button>

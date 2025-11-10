@@ -253,9 +253,9 @@ export function ExampleVideos() {
                             key={id}
                             className="shrink-0 rounded-2xl border border-slate-800 bg-slate-900/50 backdrop-blur-sm p-3 md:p-6"
                           >
-                            <div className="grid grid-cols-2 gap-3 md:gap-6 items-start">
+                            <div className="flex gap-3 md:gap-6 items-start">
                               {/* 左侧：图片容器，底部浮层为音频 */}
-                              <div className="space-y-1 md:space-y-2">
+                              <div className="flex-1 min-w-0 space-y-1 md:space-y-2">
                                 <div className="text-[10px] md:text-sm font-medium text-slate-400">input Image && audio</div>
                                 <div className="relative h-[200px] md:h-[300px] overflow-hidden rounded-xl border border-slate-700 bg-black shadow-lg">
                                   {cat.key === 'multilingual' && languageEnById[id] && (
@@ -267,7 +267,7 @@ export function ExampleVideos() {
                                     src={getImageSrc(id, cat.key) || "/placeholder.svg"}
                                     alt={`input image ${id}`}
                                     fill
-                                    sizes="(max-width: 768px) 100vw, 50vw"
+                                    sizes="(max-width: 768px) 50vw, 50vw"
                                     className="object-contain"
                                   />
                                   <div className="absolute left-2 right-2 md:left-3 md:right-3 bottom-2 md:bottom-3">
@@ -277,7 +277,7 @@ export function ExampleVideos() {
                               </div>
 
                               {/* 右侧：视频 */}
-                              <div className="space-y-1 md:space-y-2">
+                              <div className="flex-1 min-w-0 space-y-1 md:space-y-2">
                                 <div className="text-[10px] md:text-sm font-medium text-slate-400">Generated Video</div>
                                 <div className="relative h-[200px] md:h-[300px] overflow-hidden rounded-xl border border-slate-700 bg-black shadow-lg">
                                   <video
