@@ -157,6 +157,12 @@ export function ExampleVideos() {
     categories.reduce((acc, cat) => ({ ...acc, [cat.key]: 0 }), {}),
   )
   const scrollRefs = useRef<Record<string, HTMLDivElement | null>>({})
+  const imgBoxRefs = useRef<Record<string, HTMLDivElement | null>>({})
+  const vidBoxRefs = useRef<Record<string, HTMLDivElement | null>>({})
+  const [boxWidths, setBoxWidths] = useState<Record<string, number>>({})
+  const setBoxWidth = (key: string, width: number) => {
+    setBoxWidths((prev) => (prev[key] === width ? prev : { ...prev, [key]: width }))
+  }
 
   const scrollCategory = (key: string, direction: 1 | -1) => {
     const el = scrollRefs.current[key]
@@ -252,13 +258,22 @@ export function ExampleVideos() {
                         {cat.ids.map((id) => (
                           <div
                             key={id}
-                            className="shrink-0 rounded-2xl border border-slate-800 bg-slate-900/50 backdrop-blur-sm p-3 md:p-6"
+                            className="shrink-0 w-auto rounded-2xl border border-slate-800 bg-slate-900/50 backdrop-blur-sm p-3 md:p-6"
                           >
                             <div className="flex gap-3 md:gap-6 items-start">
                               {/* 左侧：图片容器，底部浮层为音频 */}
-                              <div className="flex-1 min-w-0 space-y-1 md:space-y-2">
+                              <div className="min-w-0 space-y-1 md:space-y-2">
                                 <div className="text-[10px] md:text-sm font-medium text-slate-400">input Image && audio</div>
-                                <div className="relative h-[200px] md:h-[300px] overflow-hidden rounded-xl border border-slate-700 bg-black shadow-lg">
+                                {(() => {
+                                  const imgKey = `${cat.key}-${id}-img`
+                                  return (
+                                    <div
+                                      ref={(el) => {
+                                        imgBoxRefs.current[imgKey] = el
+                                      }}
+                                      style={boxWidths[imgKey] ? { width: `${boxWidths[imgKey]}px` } : undefined}
+                                      className="relative flex-none h-[200px] md:h-[300px] aspect-video overflow-hidden rounded-xl border border-slate-700 bg-black shadow-lg"
+                                    >
                                   {cat.key === 'multilingual' && languageEnById[id] && (
                                     <div className="absolute top-2 left-2 md:top-3 md:left-3 z-10 rounded-full bg-black/70 text-white text-[10px] md:text-xs px-1.5 md:px-2 py-0.5 md:py-1 border border-white/10">
                                       {languageEnById[id]}
@@ -268,28 +283,52 @@ export function ExampleVideos() {
                                     src={getImageSrc(id, cat.key) || "/placeholder.svg"}
                                     alt={`input image ${id}`}
                                     fill
-                                    sizes="(max-width: 768px) 50vw, 50vw"
+                                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                                     className="object-contain"
+                                    onLoadingComplete={(img) => {
+                                      const ratio = img.naturalWidth && img.naturalHeight ? img.naturalWidth / img.naturalHeight : 16 / 9
+                                      const h = imgBoxRefs.current[imgKey]?.offsetHeight ?? 200
+                                      setBoxWidth(imgKey, Math.round(h * ratio))
+                                    }}
                                   />
                                   <div className="absolute left-2 right-2 md:left-3 md:right-3 bottom-2 md:bottom-3">
                                     <AudioBar src={getAudioSrc(id, cat.key)} />
                                   </div>
-                                </div>
+                                    </div>
+                                  )
+                                })()}
                               </div>
 
                               {/* 右侧：视频 */}
-                              <div className="flex-1 min-w-0 space-y-1 md:space-y-2">
+                              <div className="min-w-0 space-y-1 md:space-y-2">
                                 <div className="text-[10px] md:text-sm font-medium text-slate-400">Generated Video</div>
-                                <div className="relative h-[200px] md:h-[300px] overflow-hidden rounded-xl border border-slate-700 bg-black shadow-lg">
-                                  <video
-                                    controls
-                                    preload="metadata"
-                                    className="w-full h-full object-contain bg-black"
-                                    poster={getImageSrc(id, cat.key)}
-                                  >
-                                    <source src={getVideoSrc(id, cat.key)} />
-                                  </video>
-                                </div>
+                                {(() => {
+                                  const vidKey = `${cat.key}-${id}-vid`
+                                  return (
+                                    <div
+                                      ref={(el) => {
+                                        vidBoxRefs.current[vidKey] = el
+                                      }}
+                                      style={boxWidths[vidKey] ? { width: `${boxWidths[vidKey]}px` } : undefined}
+                                      className="relative flex-none h-[200px] md:h-[300px] aspect-video overflow-hidden rounded-xl border border-slate-700 bg-black shadow-lg"
+                                    >
+                                      <video
+                                        controls
+                                        preload="metadata"
+                                        className="w-full h-full object-contain bg-black"
+                                        poster={getImageSrc(id, cat.key)}
+                                        onLoadedMetadata={(e) => {
+                                          const v = e.currentTarget
+                                          const ratio = v.videoWidth && v.videoHeight ? v.videoWidth / v.videoHeight : 16 / 9
+                                          const h = vidBoxRefs.current[vidKey]?.offsetHeight ?? 200
+                                          setBoxWidth(vidKey, Math.round(h * ratio))
+                                        }}
+                                      >
+                                        <source src={getVideoSrc(id, cat.key)} />
+                                      </video>
+                                    </div>
+                                  )
+                                })()}
                               </div>
                             </div>
                           </div>
