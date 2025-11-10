@@ -65,23 +65,6 @@ export function PricingPageClient() {
 
   const plans = [
     {
-      id: "starter",
-      name: "Starter",
-      badge: "Try it out",
-      price: "$4.49",
-      credits: "50 Credits",
-      unitPrice: "$0.090 / credit",
-      bullets: [
-        "HD video generation",
-        "Lip-sync & body animation",
-        "Downloads enabled",
-        "Commercial use license",
-      ],
-      microcopy: "Approx. 50 s Standard or 25 s HD total.",
-      cta: "Get Starter",
-      popular: false,
-    },
-    {
       id: "pro",
       name: "Pro",
       badge: "Most Popular",

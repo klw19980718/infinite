@@ -12,7 +12,6 @@ if (!CREEM_API_KEY) {
 
 // Product mapping - 这些需要在 Creem 仪表板中创建
 const PRODUCT_MAPPING = {
-  starter: process.env.CREEM_PRODUCT_STARTER_ID || "prod_3hUX6akVxgtvX2CIvac4Bb", // 50 credits for $4.49
   pro: process.env.CREEM_PRODUCT_PRO_ID, // 400 credits for $29.9
   ultimate: process.env.CREEM_PRODUCT_ULTIMATE_ID, // 800 credits for $49.9
   enterprise: process.env.CREEM_PRODUCT_ENTERPRISE_ID, // 1800 credits for $99.9
