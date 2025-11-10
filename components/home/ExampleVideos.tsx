@@ -195,8 +195,9 @@ export function ExampleVideos() {
             </span>
           </h2>
           <p className="text-lg text-muted-foreground text-balance leading-relaxed">
-            Create any kind of video with Infinite Talk AI / InfiniteTalk AI — studio-grade Lip Sync, natural
-            expression, and multilingual publishing for the world's major languages.
+            Create any kind of video with infinite talk — also searched as "infinite talk ai", "infinitetalk",
+            "infinitetalk ai", and "infinity talk" — delivering studio-grade lip sync, natural expression, and
+            multilingual publishing for the world's major languages.
           </p>
         </div>
 

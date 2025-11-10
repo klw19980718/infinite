@@ -4,33 +4,33 @@ export function UnderTheHood() {
   const techFeatures = [
     {
       icon: FiRefreshCw,
-      title: "Phoneme-Aware Alignment in Infinite Talk AI",
+      title: "Phoneme-Aware Alignment in infinite talk",
       description:
-        "Speech cues map to visemes, head timing, and posture shifts. Infinite Talk AI fuses audio features with spatial priors so articulation stays crisp at natural pace.",
+        "Speech cues map to visemes, head timing, and posture shifts. infinite talk fuses audio features with spatial priors so articulation stays crisp at natural pace.",
     },
     {
       icon: FiLayers,
-      title: "Keyframe Sampling Strategy in Infinite Talk AI",
+      title: "Keyframe Sampling Strategy in infinitetalk",
       description:
-        "Fine-grained placement balances constraint and freedom. Infinite Talk AI lets expressive beats land precisely while smoothing in-between frames.",
+        "Fine-grained placement balances constraint and freedom. infinitetalk lets expressive beats land precisely while smoothing in-between frames.",
     },
     {
       icon: FiZap,
-      title: "Memory-Aware Processing in Infinite Talk AI",
+      title: "Memory-Aware Processing in infinity talk",
       description:
-        "Overlapping windows minimize discontinuities. Infinite Talk AI maintains temporal consistency without over-regularizing natural variation.",
+        "Overlapping windows minimize discontinuities. infinity talk maintains temporal consistency without over-regularizing natural variation.",
     },
     {
       icon: FiCpu,
-      title: "Prompt-Driven Style & Clarity in Infinite Talk AI",
+      title: "Prompt-Driven Style & Clarity in infinitetalk ai",
       description:
-        "Concise prompts and clarity switches influence articulation intensity, expression range, and stabilization. Infinite Talk AI keeps prompts human-readable and domain-aware for technical scripts.",
+        "Concise prompts and clarity switches influence articulation intensity, expression range, and stabilization. infinitetalk ai keeps prompts human-readable and domain-aware for technical scripts.",
     },
     {
       icon: FiRefreshCw,
-      title: "Latency & Throughput in Infinite Talk AI",
+      title: "Latency & Throughput in infinite talk ai",
       description:
-        "Pipeline stages are tuned for predictable latency under load. Infinite Talk AI exposes batch-friendly behavior for production workflows and queue-based rendering.",
+        "Pipeline stages are tuned for predictable latency under load. infinite talk ai exposes batch-friendly behavior for production workflows and queue-based rendering.",
     },
   ]
 

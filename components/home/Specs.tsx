@@ -7,39 +7,39 @@ export function Specs() {
   const specs = [
     {
       icon: FiMonitor,
-      title: "Education & L&D with Infinite Talk AI",
+      title: "Education & L&D with infinite talk ai",
       content:
-        "Scale courses, micro-lessons, and compliance modules. Infinite Talk AI keeps the same instructor avatar while swapping languages or scripts.",
+        "Scale courses, micro-lessons, and compliance modules. infinite talk ai keeps the same instructor avatar while swapping languages or scripts.",
     },
     {
       icon: FiCheck,
-      title: "Corporate Demos & Comms using Infinite Talk AI",
+      title: "Corporate Demos & Comms using infinitetalk ai",
       content:
-        "Produce product explainers, investor briefings, and onboarding clips. Infinite Talk AI aligns motion to technical narration and preserves brand style.",
+        "Produce product explainers, investor briefings, and onboarding clips. infinitetalk ai aligns motion to technical narration and preserves brand style.",
     },
     {
       icon: FiMonitor,
-      title: "Podcasts & Media powered by Infinite Talk AI",
+      title: "Podcasts & Media powered by infinity talk",
       content:
-        "Turn audio-only shows into visual episodes. Infinite Talk AI provides lip-true on-screen hosts without reshoots or studio time.",
+        "Turn audio-only shows into visual episodes. infinity talk provides lip-true on-screen hosts without reshoots or studio time.",
     },
     {
       icon: FiUsers,
-      title: "Marketing & Creators on Infinite Talk AI",
+      title: "Marketing & Creators on infinitetalk",
       content:
-        "Batch short-form and long-form breakdowns. Infinite Talk AI accelerates iteration loops for agencies and solo creators.",
+        "Batch short-form and long-form breakdowns. infinitetalk accelerates iteration loops for agencies and solo creators.",
     },
     {
       icon: FiClock,
-      title: "Accessibility & Multilingual with Infinite Talk AI",
+      title: "Accessibility & Multilingual with infinite talk",
       content:
-        "Deliver the same avatar across languages. Infinite Talk AI maintains identity while dubbing global content.",
+        "Deliver the same avatar across languages. infinite talk maintains identity while dubbing global content.",
     },
     {
       icon: FiGlobe,
-      title: "Optimization Path inside Infinite Talk AI",
+      title: "Optimization Path inside infinitetalk",
       content:
-        "Acceleration, adaptive parameter grouping, and quantization options allow Infinite Talk AI to scale from quick previews to production passes while respecting hardware limits.",
+        "Acceleration, adaptive parameter grouping, and quantization options allow infinitetalk to scale from quick previews to production passes while respecting hardware limits.",
     },
   ]
 
@@ -57,7 +57,7 @@ export function Specs() {
       <div className="container mx-auto px-6 relative z-10">
         <div className="text-center mb-24">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 text-balance">
-            Application Scenarios — Infinite Talk AI
+            Application Scenarios — infinite talk ai
           </h2>
         </div>
 

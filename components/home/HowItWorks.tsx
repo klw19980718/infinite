@@ -5,7 +5,7 @@ export function HowItWorks() {
   const steps = [
     {
       icon: FiPlay,
-      title: "1) Select Workflow in Infinite Talk AI",
+      title: "1) Select Workflow in infinite talk",
       description: (
         <>
           Choose{" "}
@@ -28,15 +28,15 @@ export function HowItWorks() {
     },
     {
       icon: FiUpload,
-      title: "2) Upload Sources to Infinite Talk AI",
+      title: "2) Upload Sources to infinitetalk",
       description:
-        "Provide an image or video plus WAV/MP3 narration. Infinite Talk AI parses phonemes and prosody to drive whole-frame motion that stays on beat.",
+        "Provide an image or video plus WAV/MP3 narration. infinitetalk parses phonemes and prosody to drive whole-frame motion that stays on beat.",
     },
     {
       icon: FiDownload,
-      title: "3) Generate & Export with Infinite Talk AI",
+      title: "3) Generate & Export with infinity talk",
       description:
-        "Start the run, review the preview, then export. Infinite Talk AI balances lip strength, clarity settings, prompt adjustments, and context overlap to maintain consistent identity over long timelines.",
+        "Start the run, review the preview, then export. infinity talk balances lip strength, clarity settings, prompt adjustments, and context overlap to maintain consistent identity over long timelines.",
     },
   ]
 

@@ -20,41 +20,41 @@ export function FAQ() {
     {
       question: "What inputs does Infinite Talk AI support?",
       answer:
-        "Upload a single image or a source video plus audio narration (WAV/MP3). Infinite Talk AI analyzes phonemes and timing to drive motion and exports MP4.",
+        "Upload a single image or a source video plus audio narration (WAV/MP3). infinite talk ai analyzes phonemes and timing to drive motion and exports MP4.",
     },
     {
       question: "How does Infinite Talk AI keep identity stable?",
       answer:
-        "Soft reference control and context overlap preserve facial structure and style while keeping expressions natural.",
+        "Soft reference control and context overlap preserve facial structure and style while keeping expressions natural — in infinitetalk.",
     },
     {
       question: "Can Infinite Talk AI handle multiple speakers?",
       answer:
-        "Yes. Provide separate audio tracks and references, and Infinite Talk AI animates each speaker independently in the same scene.",
+        "Yes. Provide separate audio tracks and references, and infinitetalk ai animates each speaker independently in the same scene.",
     },
     {
       question: "Does Infinite Talk AI reduce flicker and seams?",
       answer:
-        "Temporal context windows carry motion across chunks, reducing flicker and visible joins on long timelines.",
+        "Temporal context windows carry motion across chunks, reducing flicker and visible joins on long timelines — a strength of infinity talk.",
     },
     {
       question: "How precise is lip-sync in Infinite Talk AI?",
-      answer: "Phoneme-aware mapping keeps visemes aligned to speech rhythm for accurate articulation over long runs.",
+      answer: "Phoneme-aware mapping keeps visemes aligned to speech rhythm for accurate articulation over long runs in infinite talk.",
     },
     {
       question: "Is data private when using Infinite Talk AI?",
       answer:
-        "Uploads are encrypted in transit. Retention controls and one-click deletion are provided; model training is opt-in only.",
+        "When using infinitetalk ai, uploads are encrypted in transit. Retention controls and one-click deletion are provided; model training is opt-in only.",
     },
     {
       question: "What hardware suits Infinite Talk AI?",
       answer:
-        "From lightweight previews to heavier passes, Infinite Talk AI offers acceleration and quantization for limited VRAM.",
+        "From lightweight previews to heavier passes, infinitetalk ai offers acceleration and quantization for limited VRAM.",
     },
     {
       question: "What content types fit Infinite Talk AI best?",
       answer:
-        "Education, corporate explainers, podcasts, creator content, and multilingual dubbing benefit from whole-frame control.",
+        "Education, corporate explainers, podcasts, creator content, and multilingual dubbing benefit from whole-frame control — popular use cases for infinite talk.",
     },
   ]
 
