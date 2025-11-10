@@ -15,6 +15,7 @@ export const runtime = 'nodejs'
 
 // Credit mapping based on plan
 const CREDIT_MAPPING = {
+  starter: 50,
   pro: 400,
   ultimate: 800,
   enterprise: 1800,
