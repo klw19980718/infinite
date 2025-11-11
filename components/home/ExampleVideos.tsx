@@ -179,16 +179,16 @@ export function ExampleVideos() {
   }
 
   return (
-    <section id="example-videos" className="relative py-32 md:py-40 overflow-hidden">
+    <section id="example-videos" className="relative py-20 md:py-28 overflow-hidden bg-background">
       <div className="container relative mx-auto px-6 z-10">
-        <div className="max-w-4xl mx-auto text-center mb-20">
-          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
+        <div className="max-w-3xl mx-auto text-center mb-16">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground mb-4">
             Example Videos ·{" "}
             <span className="text-accent">
               Infinite Talk AI
             </span>
           </h2>
-          <p className="text-lg text-muted-foreground text-balance leading-relaxed">
+          <p className="text-sm md:text-base text-muted-foreground text-balance leading-relaxed">
             Create any kind of video with infinite talk - delivering studio-grade lip sync, natural expression, and
             multilingual publishing for the world's major languages.
           </p>
@@ -207,30 +207,30 @@ export function ExampleVideos() {
                 cat.key === 'podcasts' ? 'podcasts' :
                 undefined
               }>
-                <div className="mb-8">
-                  <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">{cat.title}</h3>
+                <div className="mb-6">
+                  <h3 className="text-lg md:text-xl font-bold text-foreground mb-2">{cat.title}</h3>
                   {cat.ids.length > 0 ? (
                     <div className="flex items-center justify-between gap-4">
-                      <p className="text-base text-slate-300 flex-1">{cat.description}</p>
+                      <p className="text-sm text-muted-foreground flex-1">{cat.description}</p>
                       <div className="hidden sm:flex items-center gap-2">
                         <button
                           aria-label="Scroll left"
                           onClick={() => scrollCategory(cat.key, -1)}
-                          className="h-9 w-9 rounded-full border border-slate-800 bg-slate-900/50 hover:border-blue-400/30 hover:bg-blue-500/10 transition"
+                          className="h-8 w-8 rounded-full border border-border bg-card hover:border-accent/50 hover:bg-accent/10 transition"
                         >
-                          <ChevronLeft className="mx-auto h-5 w-5 text-slate-300" />
+                          <ChevronLeft className="mx-auto h-4 w-4 text-muted-foreground" />
                         </button>
                         <button
                           aria-label="Scroll right"
                           onClick={() => scrollCategory(cat.key, 1)}
-                          className="h-9 w-9 rounded-full border border-slate-800 bg-slate-900/50 hover:border-blue-400/30 hover:bg-blue-500/10 transition"
+                          className="h-8 w-8 rounded-full border border-border bg-card hover:border-accent/50 hover:bg-accent/10 transition"
                         >
-                          <ChevronRight className="mx-auto h-5 w-5 text-slate-300" />
+                          <ChevronRight className="mx-auto h-4 w-4 text-muted-foreground" />
                         </button>
                       </div>
                     </div>
                   ) : (
-                    <p className="text-base text-slate-300 max-w-3xl">{cat.description}</p>
+                    <p className="text-sm text-muted-foreground max-w-3xl">{cat.description}</p>
                   )}
                 </div>
 
@@ -285,8 +285,8 @@ export function ExampleVideos() {
                     )}
                   </div>
                 ) : (
-                  <div className="rounded-2xl border border-dashed border-slate-800 bg-slate-900/30 p-12 text-center">
-                    <p className="text-slate-400">Coming soon...</p>
+                  <div className="rounded-xl border border-dashed border-border bg-card p-8 text-center">
+                    <p className="text-muted-foreground text-sm">Coming soon...</p>
                   </div>
                 )}
               </div>
@@ -304,12 +304,12 @@ export function ExampleVideos() {
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
 
-        /* Nice thin horizontal scrollbar - dark theme */
-        .nice-scroll-x { scrollbar-color: rgba(59,130,246,0.4) transparent; scrollbar-width: thin; }
-        .nice-scroll-x::-webkit-scrollbar { height: 8px; }
+        /* Nice thin horizontal scrollbar - green accent */
+        .nice-scroll-x { scrollbar-color: rgba(34, 197, 94, 0.4) transparent; scrollbar-width: thin; }
+        .nice-scroll-x::-webkit-scrollbar { height: 6px; }
         .nice-scroll-x::-webkit-scrollbar-track { background: transparent; }
-        .nice-scroll-x::-webkit-scrollbar-thumb { background: linear-gradient(90deg, rgba(59,130,246,0.4), rgba(147,51,234,0.4)); border-radius: 9999px; }
-        .nice-scroll-x::-webkit-scrollbar-thumb:hover { background: linear-gradient(90deg, rgba(59,130,246,0.6), rgba(147,51,234,0.6)); }
+        .nice-scroll-x::-webkit-scrollbar-thumb { background: rgba(34, 197, 94, 0.4); border-radius: 9999px; }
+        .nice-scroll-x::-webkit-scrollbar-thumb:hover { background: rgba(34, 197, 94, 0.6); }
       `}</style>
     </section>
   )

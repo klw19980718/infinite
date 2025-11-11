@@ -288,20 +288,20 @@ export default function Home() {
         <FAQ />
         
         {/* Final CTA */}
-        <section className="py-32">
+        <section className="py-20 md:py-28 bg-background">
           <div className="container mx-auto px-6 text-center">
-            <div className="max-w-4xl mx-auto">
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 text-balance">
+            <div className="max-w-3xl mx-auto">
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground mb-4 text-balance">
                 Ship courses, demos, and episodes faster.
               </h2>
-              <p className="text-lg md:text-xl text-muted-foreground mb-8 text-pretty">
+              <p className="text-sm md:text-base text-muted-foreground mb-6 text-pretty">
                 Start free, adjust clarity and prompts as needed, and build your production pipeline with Infinite Talk AI.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 items-center justify-center">
-                <a href="/infinite-talk-ai/image-to-video" className="group relative flex items-center gap-2 rounded-full bg-primary px-8 py-4 text-primary-foreground font-semibold hover:bg-primary/90 transition-all duration-200">
+              <div className="flex flex-col sm:flex-row gap-3 items-center justify-center">
+                <a href="/infinite-talk-ai/image-to-video" className="group relative flex items-center gap-2 rounded-lg bg-accent px-6 py-3 text-accent-foreground text-sm font-medium hover:bg-accent/90 transition-all duration-200">
                   <span>Start Generating</span>
                 </a>
-                <a href="/pricing" className="group relative flex items-center gap-2 rounded-full bg-transparent px-8 py-4 text-foreground font-semibold border border-border hover:bg-card transition-all duration-200">
+                <a href="/pricing" className="group relative flex items-center gap-2 rounded-lg bg-transparent px-6 py-3 text-foreground text-sm font-medium border border-border hover:border-accent hover:text-accent transition-all duration-200">
                   <span>Get Credits</span>
                 </a>
               </div>

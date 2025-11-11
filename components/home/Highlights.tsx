@@ -41,16 +41,15 @@ export function Highlights() {
   ]
 
   return (
-    <section id="highlights" className="py-32 md:py-40 relative overflow-hidden">
+    <section id="highlights" className="py-20 md:py-28 relative overflow-hidden bg-background">
       <div className="container mx-auto px-6 relative z-10">
-        <div className="text-center mb-24">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4 text-balance">
+        <div className="text-center mb-16">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground mb-3 text-balance">
             Key Features — <span className="text-accent">Infinite Talk AI</span>
           </h2>
         </div>
-        {/* </CHANGE> */}
 
-        <div className="space-y-12 max-w-7xl mx-auto">
+        <div className="space-y-8 max-w-6xl mx-auto">
           {highlights.map((highlight, index) => {
             const Icon = highlight.icon
             const isEven = index % 2 === 0
@@ -58,23 +57,22 @@ export function Highlights() {
             return (
               <div
                 key={index}
-                className={`flex flex-col ${isEven ? "lg:flex-row" : "lg:flex-row-reverse"} gap-6 lg:gap-10 items-start group`}
+                className={`flex flex-col ${isEven ? "lg:flex-row" : "lg:flex-row-reverse"} gap-5 lg:gap-8 items-start group`}
               >
                 <div className="flex-shrink-0">
-                  <div className="inline-flex p-5 rounded-2xl bg-accent/10 border border-accent/20 group-hover:bg-accent/20 transition-all duration-300">
-                    <Icon className="w-8 h-8 text-accent" />
+                  <div className="inline-flex p-4 rounded-xl bg-accent/10 border border-accent/20 group-hover:bg-accent/20 transition-all duration-300">
+                    <Icon className="w-6 h-6 text-accent" />
                   </div>
                 </div>
 
-                <div className="flex-1 space-y-3">
-                  <h3 className="text-xl md:text-2xl font-semibold text-foreground">{highlight.title}</h3>
-                  <p className="text-base text-muted-foreground leading-relaxed text-pretty">{highlight.description}</p>
+                <div className="flex-1 space-y-2">
+                  <h3 className="text-base md:text-lg font-semibold text-foreground">{highlight.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed text-pretty">{highlight.description}</p>
                 </div>
               </div>
             )
           })}
         </div>
-        {/* </CHANGE> */}
       </div>
     </section>
   )

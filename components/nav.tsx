@@ -69,48 +69,45 @@ export default function Nav() {
   return (
     <>
       <nav 
-        className={`fixed top-0 left-0 right-0 z-50 w-full h-16 border-b border-border transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-50 w-full h-16 border-b border-border/50 transition-all duration-300 ${
           !isScrolled 
-            ? '' 
-            : 'bg-slate-900'
+            ? 'bg-card/80 backdrop-blur-md' 
+            : 'bg-card/95 backdrop-blur-md'
         }`}
-        style={!isScrolled ? { backgroundColor: 'transparent' } : undefined}
       >
         <div className="container mx-auto h-full flex items-center justify-between px-4">
           <Link href="/" className="flex items-center gap-2 sm:gap-3 hover:opacity-80 transition-opacity">
-            <div className="relative w-8 h-8 rounded-lg overflow-hidden bg-accent/10 flex items-center justify-center flex-shrink-0">
-              <Image src="/logo.png" alt="Infinite Talk AI" width={32} height={32} className="object-cover" />
+            <div className="relative w-7 h-7 rounded-lg overflow-hidden bg-accent/10 flex items-center justify-center flex-shrink-0">
+              <Image src="/logo.png" alt="Infinite Talk AI" width={28} height={28} className="object-cover" />
             </div>
-            <span className={`font-semibold text-base sm:text-lg hidden sm:inline transition-colors ${
-              isScrolled ? 'text-white' : 'text-foreground'
-            }`}>
+            <span className={`font-semibold text-sm sm:text-base hidden sm:inline transition-colors text-foreground`}>
               Infinite Talk AI
             </span>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-4">
+          <div className="hidden md:flex items-center gap-2">
             <Link 
               href="/" 
-              className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+              className="px-3 py-2 text-sm font-medium text-muted-foreground hover:text-accent transition-colors"
             >
               Home
             </Link>
             <Link 
               href="/infinite-talk-ai/image-to-video" 
-              className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+              className="px-3 py-2 text-sm font-medium text-muted-foreground hover:text-accent transition-colors"
             >
               Image to Video
             </Link>
             <Link 
               href="/infinite-talk-ai/video-to-video" 
-              className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+              className="px-3 py-2 text-sm font-medium text-muted-foreground hover:text-accent transition-colors"
             >
               Video to Video
             </Link>
             <Link 
               href="/pricing" 
-              className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+              className="px-3 py-2 text-sm font-medium text-muted-foreground hover:text-accent transition-colors"
             >
               Pricing
             </Link>
@@ -120,7 +117,8 @@ export default function Nav() {
             ) : (
               <Button
                 onClick={() => setLoginDialogOpen(true)}
-                className={'rounded-lg transition-all duration-200 bg-accent text-accent-foreground hover:bg-accent/90'}
+                size="sm"
+                className={'rounded-lg transition-all duration-200 bg-accent text-accent-foreground hover:bg-accent/90 ml-2'}
               >
                 Log in
               </Button>
@@ -136,11 +134,7 @@ export default function Nav() {
                 onClick={() => setLoginDialogOpen(true)}
                 variant="ghost"
                 size="sm"
-                className={`rounded-lg transition-all duration-200 text-sm px-3 py-2 ${
-                  isScrolled
-                    ? 'bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/15 hover:border-white/30'
-                    : 'bg-accent text-accent-foreground hover:bg-accent/90'
-                }`}
+                className="rounded-lg transition-all duration-200 text-sm px-3 py-2 bg-accent text-accent-foreground hover:bg-accent/90"
               >
                 Log in
               </Button>
@@ -151,9 +145,7 @@ export default function Nav() {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className={`h-9 w-9 transition-colors ${
-                    isScrolled ? 'text-white hover:bg-white/10' : ''
-                  }`}
+                  className="h-9 w-9 transition-colors hover:bg-accent/10"
                   aria-label="Open menu"
                 >
                   <Menu className="h-5 w-5" />

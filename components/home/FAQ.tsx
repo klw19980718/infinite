@@ -63,35 +63,35 @@ export function FAQ() {
   }
 
   return (
-    <section id="faq" className="py-32 md:py-40 relative overflow-hidden">
+    <section id="faq" className="py-20 md:py-28 relative overflow-hidden bg-background">
       <div className="container mx-auto px-6 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-16 lg:gap-24 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-12 lg:gap-16 items-start">
           <div className="lg:sticky lg:top-32">
-            <div className="text-sm md:text-base font-medium text-accent uppercase tracking-wider mb-2">
-              FAQs
+            <div className="text-xs md:text-sm font-medium text-accent uppercase tracking-wider mb-2">
+              FAQ
             </div>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground text-balance">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground text-balance">
               Frequently Asked Questions
             </h2>
           </div>
 
-          <div className="space-y-5">
+          <div className="space-y-3">
             {faqs.map((faq, index) => (
-              <div key={index} className="border border-border rounded-2xl overflow-hidden bg-card">
+              <div key={index} className="border border-border rounded-xl overflow-hidden bg-card hover:border-accent/50 transition-all">
                 <button
-                  className="w-full px-8 py-7 text-left hover:bg-secondary/50 transition-colors flex justify-between items-center group"
+                  className="w-full px-6 py-4 text-left hover:bg-secondary/30 transition-colors flex justify-between items-center group"
                   onClick={() => toggleFAQ(index)}
                 >
-                  <span className="font-semibold text-foreground text-lg pr-4">{faq.question}</span>
+                  <span className="font-semibold text-foreground text-sm pr-4">{faq.question}</span>
                   <FiChevronDown
-                    className={`flex-shrink-0 w-5 h-5 text-muted-foreground transform transition-transform duration-300 ${openIndex === index ? "rotate-180" : ""}`}
+                    className={`flex-shrink-0 w-4 h-4 text-muted-foreground transform transition-transform duration-300 ${openIndex === index ? "rotate-180" : ""}`}
                   />
                 </button>
 
                 {openIndex === index && (
                   <div className="overflow-hidden transition-all duration-300">
-                    <div className="px-8 py-7 border-t border-border">
-                      <p className="text-muted-foreground leading-relaxed text-pretty">{faq.answer}</p>
+                    <div className="px-6 py-4 border-t border-border">
+                      <p className="text-muted-foreground text-sm leading-relaxed text-pretty">{faq.answer}</p>
                     </div>
                   </div>
                 )}
