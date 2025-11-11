@@ -41,34 +41,29 @@ export function Highlights() {
   ]
 
   return (
-    <section id="highlights" className="py-20 md:py-28 relative overflow-hidden bg-background">
+    <section id="highlights" className="py-24 md:py-32 relative overflow-hidden">
       <div className="container mx-auto px-6 relative z-10">
-        <div className="text-center mb-16">
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground mb-3 text-balance">
+        <div className="text-center mb-20">
+          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4 text-balance">
             Key Features — <span className="text-accent">Infinite Talk AI</span>
           </h2>
         </div>
 
-        <div className="space-y-8 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl mx-auto">
           {highlights.map((highlight, index) => {
             const Icon = highlight.icon
-            const isEven = index % 2 === 0
 
             return (
               <div
                 key={index}
-                className={`flex flex-col ${isEven ? "lg:flex-row" : "lg:flex-row-reverse"} gap-5 lg:gap-8 items-start group`}
+                className="glass rounded-2xl p-8 hover:glass-strong hover:scale-[1.02] transition-all duration-300 group"
               >
-                <div className="flex-shrink-0">
-                  <div className="inline-flex p-4 rounded-xl bg-accent/10 border border-accent/20 group-hover:bg-accent/20 transition-all duration-300">
-                    <Icon className="w-6 h-6 text-accent" />
-                  </div>
+                <div className="inline-flex p-4 rounded-2xl bg-accent/10 border border-accent/20 group-hover:bg-accent/20 transition-all duration-300 mb-5">
+                  <Icon className="w-7 h-7 text-accent" />
                 </div>
 
-                <div className="flex-1 space-y-2">
-                  <h3 className="text-base md:text-lg font-semibold text-foreground">{highlight.title}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed text-pretty">{highlight.description}</p>
-                </div>
+                <h3 className="text-xl font-semibold text-foreground mb-3 group-hover:text-accent transition-colors">{highlight.title}</h3>
+                <p className="text-base text-muted-foreground leading-relaxed text-pretty">{highlight.description}</p>
               </div>
             )
           })}

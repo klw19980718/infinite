@@ -3,45 +3,42 @@ import Link from "next/link"
 
 export const AuroraHero = () => {
   return (
-    <section className="relative min-h-screen overflow-hidden bg-background">
-      {/* Subtle gradient overlay for depth */}
-      <div className="absolute inset-0 bg-gradient-to-b from-card/20 via-transparent to-card/30"></div>
-      
+    <section className="relative min-h-screen overflow-hidden">
       {/* Content container - centered layout */}
-      <div className="relative z-10 container mx-auto px-6 min-h-screen flex items-center justify-center py-20 md:py-28">
-        <div className="w-full max-w-4xl mx-auto">
-          <div className="flex flex-col items-center text-center space-y-6 md:space-y-8">
-            {/* Title */}
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground leading-tight">
+      <div className="relative z-10 container mx-auto px-6 min-h-screen flex items-center justify-center py-32 md:py-40">
+        <div className="w-full max-w-5xl mx-auto">
+          <div className="flex flex-col items-center text-center space-y-10 md:space-y-12">
+            {/* Title - Apple-style large and bold */}
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-accent leading-[1.1] tracking-tight">
               Infinite Talk AI
             </h1>
             
-            {/* Description */}
-            <p className="text-sm md:text-base text-muted-foreground leading-relaxed max-w-2xl mx-auto">
+            {/* Description - Larger, more readable */}
+            <p className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-3xl mx-auto font-light">
               Audio-driven, whole-frame dubbing that turns images or footage into identity-stable talking video. It enables infinite-length generation—syncing lips, head motion, posture, and expressions to speech for natural continuity.
             </p>
 
-            {/* CTA Buttons - horizontal layout, centered */}
-            <div className="flex flex-row gap-3 justify-center items-center pt-2">
+            {/* CTA Buttons - Apple-style prominent */}
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
               <Link href="/infinite-talk-ai/image-to-video">
-                <button className="group relative flex items-center gap-2 rounded-lg bg-accent text-accent-foreground px-5 py-2.5 text-sm font-medium hover:bg-accent/90 transition-all duration-200">
+                <button className="group relative flex items-center gap-3 rounded-full bg-accent text-accent-foreground px-8 py-4 text-base font-semibold hover:bg-accent/90 hover:scale-105 transition-all duration-300 shadow-2xl glow-lime">
                   <span>Start Generating</span>
-                  <FiArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                  <FiArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
                 </button>
               </Link>
               <Link href="#example-videos">
-                <button className="group relative flex items-center gap-2 rounded-lg bg-transparent border border-border text-foreground px-5 py-2.5 text-sm font-medium hover:border-accent hover:text-accent transition-all duration-200">
+                <button className="group relative flex items-center gap-3 rounded-full glass px-8 py-4 text-foreground text-base font-semibold hover:glass-strong transition-all duration-300">
                   <span>Example Videos</span>
-                  <FiArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                  <FiArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
                 </button>
               </Link>
             </div>
 
-            {/* Hero Video - 16:9 - smaller and at bottom */}
-            <div className="relative w-full max-w-2xl aspect-video rounded-xl overflow-hidden border border-border/50 bg-black shadow-xl mt-4">
+            {/* Hero Video - Glassmorphism frame */}
+            <div className="relative w-full max-w-4xl aspect-video rounded-3xl overflow-hidden glass-strong shadow-2xl  mt-8">
               <video
                 controls
-                preload="none"
+                preload="metadata"
                 className="w-full h-full object-contain bg-black"
                 poster="https://cdn.infinitetalkai.org/hero/hero.png"
               >

@@ -41,38 +41,40 @@ export function HowItWorks() {
   ]
 
   return (
-    <section id="how-it-works" className="py-20 md:py-28 relative overflow-hidden">
+    <section id="how-it-works" className="py-24 md:py-32 relative overflow-hidden">
       <div className="container mx-auto px-6 relative z-10">
-        <div className="text-center mb-16">
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground mb-3 text-balance">
+        <div className="text-center mb-20">
+          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4 text-balance">
             How to Use — <span className="text-accent">Infinite Talk AI</span>{" "}
-            <span className="text-muted-foreground text-xl md:text-2xl">(3 Steps)</span>
           </h2>
+          <p className="text-xl text-muted-foreground">(3 Steps)</p>
         </div>
 
-        <div className="max-w-6xl mx-auto space-y-6">
+        <div className="max-w-5xl mx-auto space-y-8">
           {steps.map((step, index) => {
             const Icon = step.icon
 
             return (
-              <div key={index} className="flex gap-5 group">
-                <div className="flex-shrink-0">
-                  <div className="w-12 h-12 rounded-xl bg-accent/10 border border-accent/30 flex items-center justify-center group-hover:bg-accent group-hover:border-accent transition-all duration-300">
-                    <span className="text-xl font-bold text-accent group-hover:text-background transition-colors">
-                      {index + 1}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="flex-1 pt-0.5 space-y-2">
-                  <div className="flex items-center gap-2">
-                    <div className="inline-flex p-1.5 rounded-lg bg-accent/10">
-                      <Icon className="w-3.5 h-3.5 text-accent" />
+              <div key={index} className="glass rounded-2xl p-8 hover:glass-strong transition-all duration-300 group">
+                <div className="flex gap-6 items-start">
+                  <div className="flex-shrink-0">
+                    <div className="w-16 h-16 rounded-2xl bg-accent/20 border border-accent/30 flex items-center justify-center group-hover:bg-accent/30 transition-all duration-300">
+                      <span className="text-2xl font-bold text-accent">
+                        {index + 1}
+                      </span>
                     </div>
-                    <h3 className="text-base md:text-lg font-semibold text-foreground">{step.title}</h3>
                   </div>
-                  <div className="text-sm text-muted-foreground leading-relaxed text-pretty pl-8">
-                    {step.description}
+
+                  <div className="flex-1 pt-2 space-y-3">
+                    <div className="flex items-center gap-3">
+                      <div className="inline-flex p-2 rounded-xl bg-accent/10">
+                        <Icon className="w-5 h-5 text-accent" />
+                      </div>
+                      <h3 className="text-xl md:text-2xl font-semibold text-foreground">{step.title}</h3>
+                    </div>
+                    <div className="text-base text-muted-foreground leading-relaxed text-pretty">
+                      {step.description}
+                    </div>
                   </div>
                 </div>
               </div>

@@ -254,20 +254,7 @@ export const VideoToVideoHero = () => {
   }
 
   return (
-    <section className="relative min-h-screen overflow-hidden bg-background py-24">
-      {/* Animated gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-accent/5 via-background to-chart-2/5"></div>
-
-      {/* Grid pattern */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:64px_64px]"></div>
-
-      {/* Multiple glowing orbs for depth */}
-      <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-accent/15 rounded-full blur-[150px] animate-pulse"></div>
-      <div
-        className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-chart-2/12 rounded-full blur-[120px] animate-pulse"
-        style={{ animationDelay: "2s" }}
-      ></div>
-
+    <section className="relative min-h-screen overflow-hidden bg-background py-32">
       <div className="relative z-10 container mx-auto px-6">
         <div className="max-w-6xl mx-auto">
           {/* Header Section */}
@@ -280,13 +267,13 @@ export const VideoToVideoHero = () => {
               <span className="text-foreground text-sm font-medium">Video-to-Video Generation</span>
             </div>
 
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight text-balance px-4">
-              <span className="bg-gradient-to-r from-accent via-chart-2 to-chart-3 bg-clip-text text-transparent">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-balance px-4">
+              <span className="text-accent">
                 Video-to-Video with Infinite Talk AI
               </span>
               <br />
               <span className="text-foreground">
-                — Accurate Lip Sync
+                — Natural Lip Sync & Motion
               </span>
             </h1>
 
@@ -299,9 +286,9 @@ export const VideoToVideoHero = () => {
           <div className="grid grid-cols-1 lg:grid-cols-[0.8fr_1.2fr] gap-8 max-w-7xl mx-auto">
             {/* Left: Form */}
             <div className="relative">
-              <Card className="p-8 border-border/50 bg-card/50 backdrop-blur-sm shadow-lg">
+                <Card className="p-8 glass-strong shadow-2xl">
                 <div className="flex items-center gap-3 mb-8">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-r from-accent to-chart-2 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center">
                     <FiUpload className="w-5 h-5 text-white" />
                   </div>
                   <div>
@@ -384,15 +371,15 @@ export const VideoToVideoHero = () => {
                   {/* Audio Upload */}
                   <div className="space-y-3">
                     <Label htmlFor="audio" className="text-base font-semibold text-foreground flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-chart-2"></span>
+                      <span className="w-2 h-2 rounded-full bg-accent"></span>
                       Voice Audio
                     </Label>
                     <div className="relative">
                       {!audioPreview && (
                         <div className="flex items-center justify-center w-full h-16 border border-dashed border-border/50 rounded-lg bg-muted/20 hover:bg-muted/30 transition-colors pointer-events-none">
                           <div className="flex items-center gap-3 text-sm">
-                            <div className="w-8 h-8 rounded-full bg-chart-2/10 flex items-center justify-center">
-                              <FiMusic className="w-4 h-4 text-chart-2" />
+                            <div className="w-8 h-8 rounded-full bg-accent/10 flex items-center justify-center">
+                              <FiMusic className="w-4 h-4 text-accent" />
                             </div>
                             <span className="font-medium text-foreground">Click to upload audio</span>
                             <span className="hidden sm:inline text-muted-foreground">MP3, WAV</span>
@@ -412,8 +399,8 @@ export const VideoToVideoHero = () => {
                     {audioPreview && (
                       <div className="flex items-center justify-between gap-4 rounded-lg border border-border/50 bg-muted/20 p-3">
                         <div className="flex items-center gap-3 min-w-0 flex-1">
-                          <div className="w-10 h-10 rounded-full bg-chart-2/10 flex items-center justify-center flex-shrink-0">
-                            <FiMusic className="w-5 h-5 text-chart-2" />
+                          <div className="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center flex-shrink-0">
+                            <FiMusic className="w-5 h-5 text-accent" />
                           </div>
                           <div className="min-w-0 flex-1 overflow-hidden">
                             <p className="text-sm font-medium text-foreground truncate" title={audioFileName || undefined}>
@@ -458,7 +445,7 @@ export const VideoToVideoHero = () => {
                   {/* Resolution (Shadcn via Dropdown) */}
                   <div className="space-y-3">
                     <Label className="text-base font-semibold text-foreground flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-chart-3"></span>
+                      <span className="w-2 h-2 rounded-full bg-accent"></span>
                       Quality
                     </Label>
                     <DropdownMenu>
@@ -486,7 +473,7 @@ export const VideoToVideoHero = () => {
                   {/* Prompt */}
                   <div className="space-y-3">
                     <Label htmlFor="prompt" className="text-base font-semibold text-foreground flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-chart-5"></span>
+                      <span className="w-2 h-2 rounded-full bg-accent"></span>
                       Style Prompt
                       <span className="text-xs text-muted-foreground font-normal">(Optional)</span>
                     </Label>
@@ -503,7 +490,7 @@ export const VideoToVideoHero = () => {
                   <div className="pt-4">
                     <Button
                       type="submit"
-                      className="w-full h-14 rounded-xl bg-gradient-to-r from-accent to-chart-2 text-white font-semibold text-base hover:from-accent/90 hover:to-chart-2/90 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                      className="w-full h-14 rounded-xl bg-accent text-accent-foreground font-semibold text-base hover:bg-accent/90 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                       disabled={status === "loading"}
                     >
                       {status === "loading" ? (
@@ -525,9 +512,9 @@ export const VideoToVideoHero = () => {
 
             {/* Right: Preview/Result Area */}
             <div className="relative lg:sticky lg:top-24 self-start">
-              <Card className="p-8 border-border/50 bg-card/50 backdrop-blur-sm shadow-lg w-full">
+                <Card className="p-8 glass-strong shadow-2xl w-full">
                 <div className="flex items-center gap-3 mb-8">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-r from-chart-2 to-chart-3 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center">
                     <FiPlay className="w-5 h-5 text-white" />
                   </div>
                   <div>
@@ -540,10 +527,9 @@ export const VideoToVideoHero = () => {
                 <div className="h-[380px]">
                   {/* Initial State */}
                   {status === "idle" && (
-                    <div className="flex flex-col items-center justify-center h-full rounded-xl border-2 border-dashed border-border/50 bg-gradient-to-br from-muted/20 to-muted/40 relative overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-chart-2/5"></div>
+                    <div className="flex flex-col items-center justify-center h-full rounded-xl border-2 border-dashed border-border/50 glass relative overflow-hidden">
                     <div className="relative text-center space-y-6 p-8">
-                      <div className="w-20 h-20 rounded-full bg-gradient-to-r from-accent/20 to-chart-2/20 flex items-center justify-center mx-auto backdrop-blur-sm border border-accent/20">
+                      <div className="w-20 h-20 rounded-full bg-accent/10 flex items-center justify-center mx-auto border border-accent/20">
                         <FiUpload className="w-10 h-10 text-accent" />
                       </div>
                       <div className="space-y-3">
@@ -564,10 +550,9 @@ export const VideoToVideoHero = () => {
 
                   {/* Loading State */}
                   {status === "loading" && (
-                    <div className="flex flex-col items-center justify-center h-full rounded-xl border border-border/50 bg-gradient-to-br from-muted/20 to-muted/40 relative overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-br from-accent/10 to-chart-2/10"></div>
+                    <div className="flex flex-col items-center justify-center h-full rounded-xl border border-border/50 glass relative overflow-hidden">
                     <div className="relative text-center space-y-8 p-8">
-                      <div className="w-20 h-20 rounded-full bg-gradient-to-r from-accent/20 to-chart-2/20 flex items-center justify-center mx-auto backdrop-blur-sm border border-accent/20">
+                      <div className="w-20 h-20 rounded-full bg-accent/10 flex items-center justify-center mx-auto border border-accent/20">
                         <FiLoader className="w-10 h-10 text-accent animate-spin" />
                       </div>
                       <div className="space-y-4">
@@ -590,7 +575,7 @@ export const VideoToVideoHero = () => {
                         </div>
                         <div className="w-full bg-border/50 rounded-full h-2 overflow-hidden">
                           <div 
-                            className="h-full bg-gradient-to-r from-accent to-chart-2 transition-all duration-500 ease-out" 
+                            className="h-full bg-accent transition-all duration-500 ease-out" 
                             style={{ width: `${progress}%` }}
                           ></div>
                         </div>
@@ -684,14 +669,14 @@ export const VideoToVideoHero = () => {
                         </div>
                       </div>
                       <div className="flex items-start gap-2">
-                        <span className="w-1.5 h-1.5 rounded-full bg-chart-2 mt-1.5 flex-shrink-0"></span>
+                        <span className="w-1.5 h-1.5 rounded-full bg-accent mt-1.5 flex-shrink-0"></span>
                         <div>
                           <span className="font-medium text-foreground">HD (720p):</span>
                           <span className="text-muted-foreground"> 2 credits/second, minimum 10 credits</span>
                         </div>
                       </div>
                       <div className="flex items-start gap-2">
-                        <span className="w-1.5 h-1.5 rounded-full bg-chart-3 mt-1.5 flex-shrink-0"></span>
+                        <span className="w-1.5 h-1.5 rounded-full bg-accent mt-1.5 flex-shrink-0"></span>
                         <div>
                           <span className="font-medium text-foreground">Maximum duration:</span>
                           <span className="text-muted-foreground"> 600 seconds (10 minutes)</span>

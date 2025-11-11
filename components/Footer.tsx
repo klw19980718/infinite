@@ -3,124 +3,61 @@ import Image from 'next/image'
 
 export default function Footer() {
   return (
-    <footer className="bg-card/50 border-t border-border/50">
-      <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <footer className="relative glass border-t border-white/10">
+      {/* Gradient glow */}
+      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-[600px] h-[400px] bg-purple-600/10 rounded-full blur-[120px]"></div>
+      
+      <div className="container mx-auto px-6 py-16 relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
           {/* Logo & Description */}
           <div className="md:col-span-1">
-            <Link href="/" className="flex items-center gap-2 mb-3">
-              <Image 
-                src="/logo.png" 
-                alt="Infinite Talk AI" 
-                width={28} 
-                height={28}
-                className="rounded-lg"
-              />
-              <span className="font-semibold text-base">Infinite Talk AI</span>
+            <Link href="/" className="flex items-center gap-3 mb-4 group">
+              <div className="relative w-12 h-12 rounded-2xl overflow-hidden bg-gradient-to-br from-accent/20 to-purple-500/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                <Image 
+                  src="/logo.png" 
+                  alt="Infinite Talk AI" 
+                  width={36} 
+                  height={36}
+                  className="rounded-lg"
+                />
+              </div>
+              <span className="font-semibold text-xl text-foreground">Infinite Talk AI</span>
             </Link>
-            <p className="text-sm text-muted-foreground leading-relaxed">
+            <p className="text-base text-muted-foreground leading-relaxed max-w-md">
               Turn any image or video into long-form talking footage with our sparse-frame pipeline for accurate lip-sync and stable motion.
             </p>
           </div>
 
-          {/* Product - TODO: Add pages later */}
-          {/* <div>
-            <h3 className="font-semibold mb-4">Product</h3>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>
-                <Link href="/" className="hover:text-foreground transition-colors">
-                  Features
-                </Link>
-              </li>
-              <li>
-                <Link href="/" className="hover:text-foreground transition-colors">
-                  Pricing
-                </Link>
-              </li>
-              <li>
-                <Link href="/" className="hover:text-foreground transition-colors">
-                  How It Works
-                </Link>
-              </li>
-              <li>
-                <Link href="/" className="hover:text-foreground transition-colors">
-                  API
-                </Link>
-              </li>
-            </ul>
-          </div> */}
-
-          {/* Support - TODO: Add pages later */}
-          {/* <div>
-            <h3 className="font-semibold mb-4">Support</h3>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>
-                <Link href="/" className="hover:text-foreground transition-colors">
-                  Documentation
-                </Link>
-              </li>
-              <li>
-                <Link href="/" className="hover:text-foreground transition-colors">
-                  Help Center
-                </Link>
-              </li>
-              <li>
-                <Link href="/" className="hover:text-foreground transition-colors">
-                  Contact Us
-                </Link>
-              </li>
-              <li>
-                <a 
-                  href="mailto:support@infinitetalkai.org" 
-                  className="hover:text-foreground transition-colors"
-                >
-                  support@infinitetalkai.org
-                </a>
-              </li>
-            </ul>
-          </div> */}
-
           {/* Legal */}
           <div>
-            <h3 className="font-semibold mb-3 text-sm">Legal</h3>
-            <ul className="space-y-2 text-sm text-muted-foreground">
+            <h3 className="font-semibold mb-5 text-base text-foreground">Legal</h3>
+            <ul className="space-y-3 text-base text-muted-foreground">
               <li>
-                <Link href="/terms" className="hover:text-accent transition-colors">
-                  Terms of Service
+                <Link href="/terms" className="hover:text-accent transition-colors inline-flex items-center group">
+                  <span className="group-hover:translate-x-1 transition-transform">Terms of Service</span>
                 </Link>
               </li>
               <li>
-                <Link href="/privacy" className="hover:text-accent transition-colors">
-                  Privacy Policy
+                <Link href="/privacy" className="hover:text-accent transition-colors inline-flex items-center group">
+                  <span className="group-hover:translate-x-1 transition-transform">Privacy Policy</span>
                 </Link>
               </li>
               <li>
-                <Link href="/refund" className="hover:text-accent transition-colors">
-                  Refund Policy
+                <Link href="/refund" className="hover:text-accent transition-colors inline-flex items-center group">
+                  <span className="group-hover:translate-x-1 transition-transform">Refund Policy</span>
                 </Link>
               </li>
-              {/* TODO: Add pages later */}
-              {/* <li>
-                <Link href="/" className="hover:text-foreground transition-colors">
-                  Cookie Policy
-                </Link>
-              </li>
-              <li>
-                <Link href="/" className="hover:text-foreground transition-colors">
-                  Security
-                </Link>
-              </li> */}
             </ul>
           </div>
         </div>
 
         {/* Bottom Section */}
-        <div className="mt-6 pt-4 border-t border-border/30">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-3">
-            <p className="text-xs text-muted-foreground">
+        <div className="mt-12 pt-8 border-t border-white/10">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+            <p className="text-sm text-muted-foreground">
               © 2025 Infinitetalk.ai. All rights reserved.
             </p>
-            <div className="flex items-center gap-4 text-xs text-muted-foreground">
+            <div className="flex items-center gap-6 text-sm text-muted-foreground">
               <a 
                 href="mailto:support@infinitetalkai.org" 
                 className="hover:text-accent transition-colors"

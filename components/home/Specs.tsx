@@ -48,17 +48,17 @@ export function Specs() {
   const SelectedIcon = selectedSpec.icon
 
   return (
-    <section id="specs" className="py-20 md:py-28 relative overflow-hidden">
+    <section id="specs" className="py-24 md:py-32 relative overflow-hidden">
       <div className="container mx-auto px-6 relative z-10">
-        <div className="text-center mb-16">
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground mb-3 text-balance">
+        <div className="text-center mb-20">
+          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4 text-balance">
             Application Scenarios — infinite talk ai
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-8 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-[380px_1fr] gap-8 max-w-7xl mx-auto">
           {/* Left: Scenario list */}
-          <div className="space-y-2">
+          <div className="space-y-3">
             {specs.map((spec, index) => {
               const Icon = spec.icon
               const isSelected = selectedIndex === index
@@ -67,17 +67,17 @@ export function Specs() {
                 <button
                   key={index}
                   onClick={() => setSelectedIndex(index)}
-                  className={`w-full text-left p-4 rounded-lg border transition-all duration-300 ${
+                  className={`w-full text-left p-5 rounded-2xl border transition-all duration-300 ${
                     isSelected
-                      ? "bg-card border-accent shadow-md shadow-accent/20"
-                      : "bg-card border-border hover:border-accent/50"
+                      ? "glass-strong border-accent shadow-lg glow-lime"
+                      : "glass border-border hover:border-accent/50 hover:glass-strong"
                   }`}
                 >
-                  <div className="flex items-center gap-3">
-                    <div className={`p-1.5 rounded-lg ${isSelected ? "bg-accent/30" : "bg-accent/10"}`}>
-                      <Icon className={`w-4 h-4 ${isSelected ? "text-accent" : "text-muted-foreground"}`} />
+                  <div className="flex items-center gap-4">
+                    <div className={`p-2.5 rounded-xl ${isSelected ? "bg-accent/20" : "bg-accent/10"}`}>
+                      <Icon className={`w-5 h-5 ${isSelected ? "text-accent" : "text-muted-foreground"}`} />
                     </div>
-                    <h3 className={`text-sm font-semibold ${isSelected ? "text-foreground" : "text-muted-foreground"}`}>
+                    <h3 className={`text-base font-semibold ${isSelected ? "text-foreground" : "text-muted-foreground"}`}>
                       {spec.title}
                     </h3>
                   </div>
@@ -87,14 +87,14 @@ export function Specs() {
           </div>
 
           {/* Right: Selected scenario detail */}
-          <div className="bg-card rounded-xl border border-border p-8 min-h-[320px] flex flex-col justify-center">
-            <div className="inline-flex p-3 rounded-lg bg-accent/15 mb-6 w-fit">
-              <SelectedIcon className="w-6 h-6 text-accent" />
+          <div className="glass-strong rounded-3xl p-12 min-h-[400px] flex flex-col justify-center">
+            <div className="inline-flex p-5 rounded-2xl bg-accent/15 mb-8 w-fit">
+              <SelectedIcon className="w-8 h-8 text-accent" />
             </div>
 
-            <h3 className="text-lg md:text-xl font-bold text-foreground mb-4">{selectedSpec.title}</h3>
+            <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-5">{selectedSpec.title}</h3>
 
-            <p className="text-sm text-muted-foreground leading-relaxed">{selectedSpec.content}</p>
+            <p className="text-lg text-muted-foreground leading-relaxed">{selectedSpec.content}</p>
           </div>
         </div>
       </div>

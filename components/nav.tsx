@@ -69,45 +69,45 @@ export default function Nav() {
   return (
     <>
       <nav 
-        className={`fixed top-0 left-0 right-0 z-50 w-full h-16 border-b border-border/50 transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-50 w-full h-16 transition-all duration-500 ${
           !isScrolled 
-            ? 'bg-card/80 backdrop-blur-md' 
-            : 'bg-card/95 backdrop-blur-md'
+            ? 'glass border-b border-white/10' 
+            : 'glass-strong border-b border-white/15 shadow-2xl'
         }`}
       >
-        <div className="container mx-auto h-full flex items-center justify-between px-4">
-          <Link href="/" className="flex items-center gap-2 sm:gap-3 hover:opacity-80 transition-opacity">
-            <div className="relative w-7 h-7 rounded-lg overflow-hidden bg-accent/10 flex items-center justify-center flex-shrink-0">
+        <div className="container mx-auto h-full flex items-center justify-between px-6">
+          <Link href="/" className="flex items-center gap-2.5 hover:opacity-90 transition-all duration-300 group">
+            <div className="relative w-9 h-9 rounded-xl overflow-hidden bg-gradient-to-br from-accent/20 to-purple-500/20 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
               <Image src="/logo.png" alt="Infinite Talk AI" width={28} height={28} className="object-cover" />
             </div>
-            <span className={`font-semibold text-sm sm:text-base hidden sm:inline transition-colors text-foreground`}>
+            <span className="font-semibold text-base hidden sm:inline transition-colors text-foreground tracking-tight">
               Infinite Talk AI
             </span>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-2">
+          <div className="hidden md:flex items-center gap-0.5">
             <Link 
               href="/" 
-              className="px-3 py-2 text-sm font-medium text-muted-foreground hover:text-accent transition-colors"
+              className="px-3.5 py-2 text-xs font-medium text-foreground/70 hover:text-foreground hover:bg-white/5 rounded-lg transition-all duration-300"
             >
               Home
             </Link>
             <Link 
               href="/infinite-talk-ai/image-to-video" 
-              className="px-3 py-2 text-sm font-medium text-muted-foreground hover:text-accent transition-colors"
+              className="px-3.5 py-2 text-xs font-medium text-foreground/70 hover:text-foreground hover:bg-white/5 rounded-lg transition-all duration-300"
             >
               Image to Video
             </Link>
             <Link 
               href="/infinite-talk-ai/video-to-video" 
-              className="px-3 py-2 text-sm font-medium text-muted-foreground hover:text-accent transition-colors"
+              className="px-3.5 py-2 text-xs font-medium text-foreground/70 hover:text-foreground hover:bg-white/5 rounded-lg transition-all duration-300"
             >
               Video to Video
             </Link>
             <Link 
               href="/pricing" 
-              className="px-3 py-2 text-sm font-medium text-muted-foreground hover:text-accent transition-colors"
+              className="px-3.5 py-2 text-xs font-medium text-foreground/70 hover:text-foreground hover:bg-white/5 rounded-lg transition-all duration-300"
             >
               Pricing
             </Link>
@@ -118,7 +118,7 @@ export default function Nav() {
               <Button
                 onClick={() => setLoginDialogOpen(true)}
                 size="sm"
-                className={'rounded-lg transition-all duration-200 bg-accent text-accent-foreground hover:bg-accent/90 ml-2'}
+                className="ml-2.5 px-5 py-2 rounded-full bg-accent text-accent-foreground hover:bg-accent/90 hover:scale-105 transition-all duration-300 font-semibold text-xs glow-lime"
               >
                 Log in
               </Button>
@@ -134,7 +134,7 @@ export default function Nav() {
                 onClick={() => setLoginDialogOpen(true)}
                 variant="ghost"
                 size="sm"
-                className="rounded-lg transition-all duration-200 text-sm px-3 py-2 bg-accent text-accent-foreground hover:bg-accent/90"
+                className="rounded-full px-4 py-2 text-sm bg-accent text-accent-foreground hover:bg-accent/90 font-semibold"
               >
                 Log in
               </Button>
@@ -145,21 +145,21 @@ export default function Nav() {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="h-9 w-9 transition-colors hover:bg-accent/10"
+                  className="h-10 w-10 rounded-xl hover:bg-white/10 transition-all duration-300"
                   aria-label="Open menu"
                 >
-                  <Menu className="h-5 w-5" />
+                  <Menu className="h-6 w-6" />
                 </Button>
               </SheetTrigger>
               <SheetContent side="right" className="w-[300px] sm:w-[400px]">
                 <SheetHeader>
                   <SheetTitle>Menu</SheetTitle>
                 </SheetHeader>
-                <nav className="flex flex-col gap-4 mt-6">
+                <nav className="flex flex-col gap-2 mt-8">
                   <SheetClose asChild>
                     <Link 
                       href="/" 
-                      className="text-foreground hover:text-accent transition-colors font-medium text-lg py-2"
+                      className="text-foreground hover:text-foreground hover:bg-white/5 transition-all duration-300 font-medium text-base py-3 px-4 rounded-xl"
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       Home
@@ -168,7 +168,7 @@ export default function Nav() {
                   <SheetClose asChild>
                     <Link 
                       href="/infinite-talk-ai/image-to-video" 
-                      className="text-foreground hover:text-accent transition-colors font-medium text-lg py-2"
+                      className="text-foreground hover:text-foreground hover:bg-white/5 transition-all duration-300 font-medium text-base py-3 px-4 rounded-xl"
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       Image to Video
@@ -177,7 +177,7 @@ export default function Nav() {
                   <SheetClose asChild>
                     <Link 
                       href="/infinite-talk-ai/video-to-video" 
-                      className="text-foreground hover:text-accent transition-colors font-medium text-lg py-2"
+                      className="text-foreground hover:text-foreground hover:bg-white/5 transition-all duration-300 font-medium text-base py-3 px-4 rounded-xl"
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       Video to Video
@@ -186,7 +186,7 @@ export default function Nav() {
                   <SheetClose asChild>
                     <Link 
                       href="/pricing" 
-                      className="text-foreground hover:text-accent transition-colors font-medium text-lg py-2"
+                      className="text-foreground hover:text-foreground hover:bg-white/5 transition-all duration-300 font-medium text-base py-3 px-4 rounded-xl"
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       Pricing
@@ -194,14 +194,14 @@ export default function Nav() {
                   </SheetClose>
                   
                   {!profile?.email && (
-                    <div className="pt-4 border-t border-border">
+                    <div className="pt-6 mt-4 border-t border-border/50">
                       <SheetClose asChild>
                         <Button
                           onClick={() => {
                             setMobileMenuOpen(false)
                             setLoginDialogOpen(true)
                           }}
-                          className="w-full rounded-xl bg-accent text-accent-foreground hover:bg-accent/90 transition-all duration-200"
+                          className="w-full rounded-full py-3 bg-accent text-accent-foreground hover:bg-accent/90 transition-all duration-300 font-semibold"
                         >
                           Log in
                         </Button>

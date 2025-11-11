@@ -160,39 +160,34 @@ export function PricingPageClient() {
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
-        <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-1/2 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl opacity-30" />
+        {/* Subtle background effects */}
       </div>
 
       {/* Hero Section */}
       <section className="relative py-32 px-4">
-        <div className="absolute inset-0 bg-gradient-to-b from-blue-500/5 via-transparent to-transparent" />
-        <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-full blur-3xl opacity-30" />
-
         <div className="max-w-4xl mx-auto text-center relative z-10">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 mb-8">
-            <FiZap className="w-4 h-4 text-blue-400" />
-            <span className="text-sm text-blue-400 font-medium">Simple & Transparent Pricing</span>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-accent/30 mb-8">
+            <FiZap className="w-4 h-4 text-accent" />
+            <span className="text-sm text-accent font-medium">Simple & Transparent Pricing</span>
           </div>
 
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 text-balance">
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-foreground mb-6 text-balance tracking-tight">
             Simple Pricing — Credits Never Expire
           </h1>
-          <p className="text-lg md:text-xl text-muted-foreground mb-12 max-w-2xl mx-auto text-balance">
+          <p className="text-lg md:text-xl text-muted-foreground mb-12 max-w-2xl mx-auto text-balance font-light">
             Pay once in USD. Use credits anytime for Standard or HD generation.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
             <Link
               href="#plans"
-              className="px-8 py-4 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-300 hover:scale-105 text-center"
+              className="px-8 py-4 bg-accent text-accent-foreground rounded-full font-semibold hover:bg-accent/90 hover:scale-105 transition-all duration-300 shadow-2xl glow-lime text-center"
             >
               Choose a Plan
             </Link>
             <Link
               href="#how-credits-work"
-              className="px-8 py-4 border border-border rounded-xl font-semibold hover:bg-accent/50 transition-all duration-300 hover:border-blue-500/50 text-center"
+              className="px-8 py-4 glass rounded-full font-semibold hover:glass-strong transition-all duration-300 text-center"
             >
               How Credits Work
             </Link>
@@ -201,20 +196,20 @@ export function PricingPageClient() {
           {/* Trust mini-row */}
           <div className="flex flex-wrap justify-center items-center gap-8 text-sm text-muted-foreground">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center">
-                <FiShield className="w-4 h-4 text-blue-400" />
+              <div className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center">
+                <FiShield className="w-4 h-4 text-accent" />
               </div>
               <span>Commercial use</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-green-500/10 flex items-center justify-center">
-                <FiCheck className="w-4 h-4 text-green-400" />
+              <div className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center">
+                <FiCheck className="w-4 h-4 text-accent" />
               </div>
               <span>Secure checkout</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-purple-500/10 flex items-center justify-center">
-                <FiHeadphones className="w-4 h-4 text-purple-400" />
+              <div className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center">
+                <FiHeadphones className="w-4 h-4 text-accent" />
               </div>
               <span>Priority support</span>
             </div>
@@ -229,21 +224,13 @@ export function PricingPageClient() {
             {plans.map((plan) => (
               <div key={plan.id} className={`relative group ${plan.popular ? "md:-mt-4" : ""}`}>
                 <div
-                  className={`absolute -inset-[1px] rounded-3xl transition-all duration-300 ${
-                    plan.popular
-                      ? "bg-gradient-to-b from-blue-500 via-cyan-500 to-blue-500 opacity-100"
-                      : "bg-gradient-to-b from-border to-border group-hover:from-blue-500/50 group-hover:to-cyan-500/50 opacity-100"
-                  }`}
-                />
-
-                <div
-                  className={`relative bg-card rounded-3xl p-8 h-full flex flex-col ${
-                    plan.popular ? "shadow-2xl shadow-blue-500/20" : ""
+                  className={`relative glass rounded-3xl p-8 h-full flex flex-col transition-all duration-300 hover:glass-strong hover:scale-[1.02] ${
+                    plan.popular ? "border-2 border-accent shadow-2xl glow-lime" : ""
                   }`}
                 >
                   {plan.popular && (
                     <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                      <span className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-6 py-2 rounded-full text-sm font-semibold shadow-lg">
+                      <span className="bg-accent text-accent-foreground px-6 py-2 rounded-full text-sm font-semibold shadow-lg">
                         {plan.badge}
                       </span>
                     </div>
@@ -251,7 +238,7 @@ export function PricingPageClient() {
 
                   {!plan.popular && plan.badge && (
                     <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                      <span className="bg-muted text-muted-foreground px-4 py-1.5 rounded-full text-xs font-medium border border-border">
+                      <span className="glass px-4 py-1.5 rounded-full text-xs font-medium border border-border">
                         {plan.badge}
                       </span>
                     </div>
@@ -260,7 +247,7 @@ export function PricingPageClient() {
                   <div className="text-center mb-8 mt-4">
                     <h3 className="text-2xl font-bold text-foreground mb-4">{plan.name}</h3>
                     <div className="flex items-baseline justify-center gap-1 mb-2">
-                      <span className="text-5xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
+                      <span className="text-5xl font-bold text-accent">
                         {plan.price}
                       </span>
                     </div>
@@ -272,8 +259,8 @@ export function PricingPageClient() {
                     <ul className="space-y-4 mb-8 flex-1">
                       {plan.bullets.map((bullet, index) => (
                         <li key={index} className="flex items-start gap-3">
-                          <div className="w-5 h-5 rounded-full bg-blue-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                            <FiCheck className="w-3 h-3 text-blue-400" />
+                          <div className="w-5 h-5 rounded-full bg-accent/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <FiCheck className="w-3 h-3 text-accent" />
                           </div>
                           <span className="text-sm text-muted-foreground">{bullet}</span>
                         </li>
@@ -290,10 +277,10 @@ export function PricingPageClient() {
                   <button
                     onClick={() => handlePurchase(plan.id)}
                     disabled={loading === plan.id}
-                    className={`w-full py-4 rounded-xl font-semibold transition-all duration-300 ${
+                    className={`w-full py-4 rounded-full font-semibold transition-all duration-300 ${
                       plan.popular
-                        ? "bg-gradient-to-r from-blue-500 to-cyan-500 text-white hover:shadow-lg hover:shadow-blue-500/25 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
-                        : "bg-muted text-foreground hover:bg-accent hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                        ? "bg-accent text-accent-foreground hover:bg-accent/90 hover:scale-105 shadow-2xl glow-lime disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                        : "glass hover:glass-strong hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                     }`}
                   >
                     {loading === plan.id ? (
@@ -314,8 +301,6 @@ export function PricingPageClient() {
 
       {/* What's Included Section */}
       <section className="py-20 px-4 relative">
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-500/5 to-transparent" />
-
         <div className="max-w-5xl mx-auto text-center relative z-10">
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">What's Included</h2>
           <p className="text-muted-foreground mb-12 max-w-2xl mx-auto">
@@ -324,18 +309,16 @@ export function PricingPageClient() {
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
             {[
-              { icon: FiZap, text: "HD video generation", color: "blue" },
-              { icon: FiUsers, text: "Lip-sync & body animation", color: "cyan" },
-              { icon: FiDownload, text: "Downloads", color: "purple" },
-              { icon: FiShield, text: "Commercial use license", color: "green" },
-              { icon: FiHeadphones, text: "Priority support", color: "pink" },
+              { icon: FiZap, text: "HD video generation", color: "accent" },
+              { icon: FiUsers, text: "Lip-sync & body animation", color: "accent" },
+              { icon: FiDownload, text: "Downloads", color: "accent" },
+              { icon: FiShield, text: "Commercial use license", color: "accent" },
+              { icon: FiHeadphones, text: "Priority support", color: "accent" },
             ].map((item, index) => (
               <div key={index} className="group">
-                <div className="flex flex-col items-center justify-between gap-4 p-6 rounded-2xl bg-card border border-border hover:border-blue-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/10 hover:-translate-y-1 h-full min-h-[160px]">
-                  <div
-                    className={`w-14 h-14 bg-gradient-to-br from-${item.color}-500/20 to-${item.color}-500/5 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 flex-shrink-0`}
-                  >
-                    <item.icon className={`w-7 h-7 text-${item.color}-400`} />
+                <div className="flex flex-col items-center justify-between gap-4 p-6 rounded-2xl glass hover:glass-strong transition-all duration-300 hover:-translate-y-1 h-full min-h-[160px]">
+                  <div className="w-14 h-14 bg-accent/10 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 flex-shrink-0">
+                    <item.icon className="w-7 h-7 text-accent" />
                   </div>
                   <span className="text-sm text-muted-foreground text-center font-medium flex-shrink-0">{item.text}</span>
                 </div>
@@ -357,11 +340,10 @@ export function PricingPageClient() {
 
           <div className="grid md:grid-cols-2 gap-8">
             <div className="relative group">
-              <div className="absolute -inset-[1px] bg-gradient-to-br from-blue-500/50 to-cyan-500/50 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <div className="relative bg-card border border-border rounded-2xl p-8 h-full">
+              <div className="relative glass rounded-2xl p-8 h-full hover:glass-strong transition-all duration-300">
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center">
-                    <FiClock className="w-6 h-6 text-blue-400" />
+                  <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center">
+                    <FiClock className="w-6 h-6 text-accent" />
                   </div>
                   <h3 className="text-xl font-semibold text-foreground">Credit Usage</h3>
                 </div>
@@ -387,24 +369,23 @@ export function PricingPageClient() {
             </div>
 
             <div className="relative group">
-              <div className="absolute -inset-[1px] bg-gradient-to-br from-purple-500/50 to-pink-500/50 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <div className="relative bg-card border border-border rounded-2xl p-8 h-full">
+              <div className="relative glass rounded-2xl p-8 h-full hover:glass-strong transition-all duration-300">
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center">
-                    <FiInfo className="w-6 h-6 text-purple-400" />
+                  <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center">
+                    <FiInfo className="w-6 h-6 text-accent" />
                   </div>
                   <h3 className="text-xl font-semibold text-foreground">Important Notes</h3>
                 </div>
                 <div className="space-y-4">
-                  <div className="flex items-start gap-3 p-4 rounded-lg bg-muted/50">
-                    <div className="w-5 h-5 rounded-full bg-green-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <FiCheck className="w-3 h-3 text-green-400" />
+                  <div className="flex items-start gap-3 p-4 rounded-lg glass">
+                    <div className="w-5 h-5 rounded-full bg-accent/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <FiCheck className="w-3 h-3 text-accent" />
                     </div>
                     <span className="text-muted-foreground">Credits never expire</span>
                   </div>
-                  <div className="flex items-start gap-3 p-4 rounded-lg bg-muted/50">
-                    <div className="w-5 h-5 rounded-full bg-green-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <FiCheck className="w-3 h-3 text-green-400" />
+                  <div className="flex items-start gap-3 p-4 rounded-lg glass">
+                    <div className="w-5 h-5 rounded-full bg-accent/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <FiCheck className="w-3 h-3 text-accent" />
                     </div>
                     <span className="text-muted-foreground">You can split credits across multiple renders</span>
                   </div>
@@ -417,8 +398,6 @@ export function PricingPageClient() {
 
       {/* CTA Section */}
       <section className="py-20 px-4 relative">
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-500/5 to-transparent" />
-
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Ready to Get Started?</h2>
           <p className="text-muted-foreground mb-12 max-w-2xl mx-auto">
@@ -428,7 +407,7 @@ export function PricingPageClient() {
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
             <Link
               href="/infinite-talk-ai/image-to-video"
-              className="group relative px-8 py-4 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-300 hover:scale-105"
+              className="group relative px-8 py-4 bg-accent text-accent-foreground rounded-full font-semibold hover:bg-accent/90 hover:scale-105 transition-all duration-300 shadow-2xl glow-lime"
             >
               <div className="flex items-center justify-center gap-2">
                 <FiZap className="w-5 h-5" />
@@ -437,10 +416,10 @@ export function PricingPageClient() {
             </Link>
             <Link
               href="/infinite-talk-ai/video-to-video"
-              className="group relative px-8 py-4 border-2 border-blue-500/50 text-foreground rounded-xl font-semibold hover:bg-blue-500/10 hover:border-blue-500 transition-all duration-300 hover:scale-105"
+              className="group relative px-8 py-4 glass rounded-full font-semibold hover:glass-strong transition-all duration-300 hover:scale-105"
             >
               <div className="flex items-center justify-center gap-2">
-                <FiZap className="w-5 h-5 text-blue-400" />
+                <FiZap className="w-5 h-5 text-accent" />
                 <span>Video to Video</span>
               </div>
             </Link>
@@ -450,8 +429,6 @@ export function PricingPageClient() {
 
       {/* FAQ Section */}
       <section className="py-20 px-4 relative">
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-purple-500/5 to-transparent" />
-
         <div className="max-w-4xl mx-auto relative z-10">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Frequently Asked Questions</h2>
@@ -461,18 +438,18 @@ export function PricingPageClient() {
           <div className="space-y-4">
             {faqs.map((faq, index) => (
               <div key={index} className="group">
-                <div className="bg-card border border-border rounded-xl overflow-hidden hover:border-blue-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/10">
+                <div className="glass rounded-xl overflow-hidden hover:glass-strong transition-all duration-300">
                   <button
-                    className="w-full px-6 py-5 text-left flex justify-between items-center hover:bg-accent/30 transition-colors"
+                    className="w-full px-6 py-5 text-left flex justify-between items-center hover:bg-white/5 transition-colors"
                     onClick={() => setOpenFaq(openFaq === index ? null : index)}
                   >
                     <span className="font-semibold text-foreground pr-4">{faq.question}</span>
                     <div
-                      className={`w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center flex-shrink-0 transition-transform duration-300 ${
+                      className={`w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0 transition-transform duration-300 ${
                         openFaq === index ? "rotate-180" : ""
                       }`}
                     >
-                      <FiChevronDown className="w-5 h-5 text-blue-400" />
+                      <FiChevronDown className="w-5 h-5 text-accent" />
                     </div>
                   </button>
                   {openFaq === index && (

@@ -1,5 +1,7 @@
 
 import { AuroraHero, HowItWorks, Highlights, UnderTheHood, FAQ, Specs, WhyItStandsOut, ExampleVideos } from '@/components/home';
+import { Beams } from '@/components/ui/beams';
+import { Plasma } from '@/components/ui/plasma';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -274,40 +276,52 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <main className="bg-background">
-        <AuroraHero />
-        <WhyItStandsOut />
-        <ExampleVideos />
-        <HowItWorks />
-        <Specs />
-        <Highlights />
-        <UnderTheHood />
-      
-       
-
-        <FAQ />
+      <main className="bg-background relative min-h-screen">
+        {/* Unified background with Plasma and Beams */}
+        <div className="fixed inset-0 pointer-events-none" style={{ zIndex: 0 }}>
+          <Plasma 
+            color="#bef264"
+            speed={0.6}
+            direction="forward"
+            scale={1.1}
+            opacity={0.3}
+            mouseInteractive={true}
+          />
+        </div>
+    
         
-        {/* Final CTA */}
-        <section className="py-20 md:py-28 bg-background">
-          <div className="container mx-auto px-6 text-center">
-            <div className="max-w-3xl mx-auto">
-              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground mb-4 text-balance">
-                Ship courses, demos, and episodes faster.
-              </h2>
-              <p className="text-sm md:text-base text-muted-foreground mb-6 text-pretty">
-                Start free, adjust clarity and prompts as needed, and build your production pipeline with Infinite Talk AI.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-3 items-center justify-center">
-                <a href="/infinite-talk-ai/image-to-video" className="group relative flex items-center gap-2 rounded-lg bg-accent px-6 py-3 text-accent-foreground text-sm font-medium hover:bg-accent/90 transition-all duration-200">
-                  <span>Start Generating</span>
-                </a>
-                <a href="/pricing" className="group relative flex items-center gap-2 rounded-lg bg-transparent px-6 py-3 text-foreground text-sm font-medium border border-border hover:border-accent hover:text-accent transition-all duration-200">
-                  <span>Get Credits</span>
-                </a>
+        <div className="relative z-10">
+          <AuroraHero />
+          <WhyItStandsOut />
+          <ExampleVideos />
+          <HowItWorks />
+          <Specs />
+          <Highlights />
+          <UnderTheHood />
+          <FAQ />
+          
+          {/* Final CTA */}
+          <section className="py-32 md:py-40 relative overflow-hidden">
+            <div className="container mx-auto px-6 text-center relative z-10">
+              <div className="max-w-4xl mx-auto glass-strong rounded-3xl p-16">
+                <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 text-balance">
+                  Ship courses, demos, and episodes faster.
+                </h2>
+                <p className="text-lg md:text-xl text-muted-foreground mb-10 text-pretty font-light max-w-2xl mx-auto">
+                  Start free, adjust clarity and prompts as needed, and build your production pipeline with Infinite Talk AI.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-5 items-center justify-center">
+                  <a href="/infinite-talk-ai/image-to-video" className="group relative flex items-center gap-3 rounded-full bg-accent px-10 py-5 text-accent-foreground text-lg font-semibold hover:bg-accent/90 hover:scale-105 transition-all duration-300 shadow-2xl glow-lime">
+                    <span>Start Generating</span>
+                  </a>
+                  <a href="/pricing" className="group relative flex items-center gap-3 rounded-full glass px-10 py-5 text-foreground text-lg font-semibold hover:glass-strong transition-all duration-300">
+                    <span>Get Credits</span>
+                  </a>
+                </div>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
+        </div>
       </main>
     </>
   );

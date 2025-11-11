@@ -179,7 +179,7 @@ export function ExampleVideos() {
   }
 
   return (
-    <section id="example-videos" className="relative py-20 md:py-28 overflow-hidden bg-background">
+    <section id="example-videos" className="relative py-20 md:py-28 overflow-hidden">
       <div className="container relative mx-auto px-6 z-10">
         <div className="max-w-3xl mx-auto text-center mb-16">
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground mb-4">

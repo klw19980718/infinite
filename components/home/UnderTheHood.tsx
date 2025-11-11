@@ -35,33 +35,33 @@ export function UnderTheHood() {
   ]
 
   return (
-    <section id="under-the-hood" className="py-20 md:py-28 relative overflow-hidden bg-background">
+    <section id="under-the-hood" className="py-24 md:py-32 relative overflow-hidden">
       <div className="container mx-auto px-6 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-12 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-[400px_1fr] gap-16 max-w-7xl mx-auto">
           {/* Left: Sticky title */}
           <div className="lg:sticky lg:top-32 lg:self-start">
-            <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-foreground text-balance leading-tight">
-              Under the Hood — Infinite Talk AI (Technical Notes)
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground text-balance leading-tight">
+              Under the Hood — Infinite Talk AI <span className="text-accent">(Technical Notes)</span>
             </h2>
           </div>
 
           {/* Right: Technical features list */}
-          <div className="space-y-4">
+          <div className="space-y-5">
             {techFeatures.map((feature, index) => {
               const Icon = feature.icon
               return (
                 <div
                   key={index}
-                  className="group relative bg-card rounded-xl border border-border p-6 hover:border-accent/50 transition-all duration-300"
+                  className="group glass rounded-2xl p-8 hover:glass-strong transition-all duration-300"
                 >
-                  <div className="flex items-start gap-4">
-                    <div className="flex-shrink-0 p-2 rounded-lg bg-accent/10">
-                      <Icon className="w-4 h-4 text-accent" />
+                  <div className="flex items-start gap-5">
+                    <div className="flex-shrink-0 p-3 rounded-xl bg-accent/10">
+                      <Icon className="w-6 h-6 text-accent" />
                     </div>
 
-                    <div className="flex-1 space-y-1.5">
-                      <h3 className="text-base font-semibold text-foreground">{feature.title}</h3>
-                      <p className="text-sm text-muted-foreground leading-relaxed text-pretty">{feature.description}</p>
+                    <div className="flex-1 space-y-2">
+                      <h3 className="text-lg md:text-xl font-semibold text-foreground group-hover:text-accent transition-colors">{feature.title}</h3>
+                      <p className="text-base text-muted-foreground leading-relaxed text-pretty">{feature.description}</p>
                     </div>
                   </div>
                 </div>
