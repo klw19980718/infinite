@@ -2,6 +2,8 @@ import { ImageToVideoHero } from '@/components/image-to-video'
 import type { Metadata } from 'next'
 import { ImageToVideoCTA } from '@/components/image-to-video'
 import { WhatIsImageToVideo } from '@/components/content/WhatIsImageToVideo'
+import { Plasma } from '@/components/ui/plasma'
+import { Beams } from '@/components/ui/beams'
 
 export const metadata: Metadata = {
   title: 'Infinite Talk AI image-to-video — Fast, Natural Lip Sync',
@@ -60,11 +62,25 @@ export const metadata: Metadata = {
 export default function ImageToVideoPage() {
   return (
     <>
-      <main>
-        <ImageToVideoHero />
+      <main className="bg-background relative min-h-screen">
+        {/* Unified background with Plasma and Beams */}
+        <div className="fixed inset-0 pointer-events-none" style={{ zIndex: 0 }}>
+          <Plasma 
+            color="#bef264"
+            speed={0.6}
+            direction="forward"
+            scale={1.1}
+            opacity={0.3}
+            mouseInteractive={true}
+          />
+        </div>
+        <Beams />
         
-        <WhatIsImageToVideo />
-        <ImageToVideoCTA />
+        <div className="relative z-10">
+          <ImageToVideoHero />
+          <WhatIsImageToVideo />
+          <ImageToVideoCTA />
+        </div>
       </main>
     </>
   )

@@ -254,7 +254,7 @@ export const ImageToVideoHero = () => {
   }
 
   return (
-    <section className="relative min-h-screen overflow-hidden bg-background py-32">
+    <section className="relative min-h-screen overflow-hidden py-32">
       <div className="relative z-10 container mx-auto px-6">
         <div className="max-w-6xl mx-auto">
           {/* Header Section */}

@@ -9,6 +9,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { FiDollarSign, FiClock, FiPlayCircle, FiAlertTriangle, FiLoader, FiDownload, FiTrash2, FiRefreshCw, FiChevronLeft, FiChevronRight } from "react-icons/fi"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "@/components/ui/dialog"
 import { toast } from "sonner"
+import { Plasma } from "@/components/ui/plasma"
+import { Beams } from "@/components/ui/beams"
 
 interface UserProfile {
   id: string
@@ -333,7 +335,7 @@ export function ProfilePageClient() {
   const formatStatus = (status: string) => {
     if (status === "completed") return { label: "Completed", color: "text-emerald-400" }
     if (status === "failed") return { label: "Failed", color: "text-red-400" }
-    if (status === "processing") return { label: "Processing", color: "text-cyan-400" }
+    if (status === "processing") return { label: "Processing", color: "text-accent" }
     return { label: "Pending", color: "text-gray-300" }
   }
 
@@ -351,10 +353,10 @@ export function ProfilePageClient() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-500 mx-auto mb-4"></div>
-          <p className="text-gray-400">Loading profile...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading profile...</p>
         </div>
       </div>
     )
@@ -362,9 +364,9 @@ export function ProfilePageClient() {
 
   if (!profile) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <p className="text-gray-400 mb-4">Unable to load profile</p>
+          <p className="text-muted-foreground mb-4">Unable to load profile</p>
           <Button onClick={() => router.push("/auth")}>Go to Login</Button>
         </div>
       </div>
@@ -372,47 +374,51 @@ export function ProfilePageClient() {
   }
 
   return (
-    <div className="min-h-screen bg-black relative overflow-hidden">
-      {/* Background decorations */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl" />
-        <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-1/2 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl" />
+    <div className="min-h-screen bg-background relative overflow-hidden">
+      {/* Unified background with Plasma and Beams */}
+      <div className="fixed inset-0 pointer-events-none" style={{ zIndex: 0 }}>
+        <Plasma 
+          color="#bef264"
+          speed={0.6}
+          direction="forward"
+          scale={1.1}
+          opacity={0.3}
+          mouseInteractive={true}
+        />
       </div>
+      <Beams />
 
       {/* Content */}
-      <section className="relative py-16 px-4">
+      <section className="relative z-10 py-16 px-4">
         <div className="max-w-5xl mx-auto">
           <div className="mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-white via-cyan-200 to-blue-400 bg-clip-text text-transparent mb-3">
+            <h1 className="text-4xl md:text-5xl font-bold text-accent mb-3">
               My Profile
             </h1>
-            <p className="text-gray-400 text-lg">Manage your account and preferences</p>
+            <p className="text-muted-foreground text-lg">Manage your account and preferences</p>
           </div>
 
-          <Card className="mb-8 bg-white/5 border-white/10 backdrop-blur-sm overflow-hidden relative group">
-            <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 via-blue-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            <CardContent className="p-8 relative">
+          <Card className="mb-8 glass-strong overflow-hidden">
+            <CardContent className="p-8">
               <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
-                {/* Avatar with gradient border */}
+                {/* Avatar */}
                 <div className="relative">
-                  <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 rounded-full blur-md opacity-75" />
-                  <Avatar className="w-28 h-28 relative border-4 border-white/10">
+                  <Avatar className="w-28 h-28 border-4 border-border">
                     <AvatarImage src={profile.avatar_url || "/placeholder.svg"} alt={profile.display_name} />
-                    <AvatarFallback className="text-3xl bg-gradient-to-br from-cyan-500 to-blue-600 text-white">
+                    <AvatarFallback className="text-3xl bg-accent/20 text-accent">
                       {profile.display_name?.charAt(0).toUpperCase() || "U"}
                     </AvatarFallback>
                   </Avatar>
                 </div>
 
                  <div className="flex-1 text-center md:text-left">
-                   <h2 className="text-3xl font-bold text-white mb-2">{profile.display_name}</h2>
-                   <p className="text-gray-400 mb-4 font-mono text-sm">{profile.email}</p>
+                   <h2 className="text-3xl font-bold text-foreground mb-2">{profile.display_name}</h2>
+                   <p className="text-muted-foreground mb-4 font-mono text-sm">{profile.email}</p>
                    <div className="flex flex-wrap gap-2 justify-center md:justify-start">
-                     <span className="px-3 py-1 bg-cyan-500/20 text-cyan-400 rounded-full text-sm border border-cyan-500/30">
+                     <span className="px-3 py-1 bg-accent/20 text-accent rounded-full text-sm border border-accent/30">
                        Active Member
                      </span>
-                     <span className="px-3 py-1 bg-blue-500/20 text-blue-400 rounded-full text-sm border border-blue-500/30">
+                     <span className="px-3 py-1 bg-accent/20 text-accent rounded-full text-sm border border-accent/30">
                        {profile.credits > 1000 ? "Premium" : "Standard"}
                      </span>
                    </div>
@@ -423,29 +429,28 @@ export function ProfilePageClient() {
           </Card>
 
 
-          <Card className="mb-8 bg-gradient-to-br from-cyan-500/10 via-blue-500/10 to-purple-500/10 border-cyan-500/30 backdrop-blur-sm relative overflow-hidden group">
-            <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 via-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            <CardHeader className="relative">
-              <CardTitle className="flex items-center gap-3 text-white text-xl">
-                <div className="p-3 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl shadow-lg shadow-cyan-500/20">
-                  <FiDollarSign className="w-6 h-6 text-white" />
+          <Card className="mb-8 glass-strong">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-3 text-foreground text-xl">
+                <div className="p-3 bg-accent/20 rounded-xl">
+                  <FiDollarSign className="w-6 h-6 text-accent" />
                 </div>
                 Available Credits
               </CardTitle>
             </CardHeader>
-            <CardContent className="relative">
+            <CardContent>
               <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
                 <div>
-                  <p className="text-5xl font-bold bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent mb-3">
+                  <p className="text-5xl font-bold text-accent mb-3">
                     {profile.credits.toLocaleString()}
                   </p>
-                  <p className="text-gray-400">Credits available for video generation</p>
+                  <p className="text-muted-foreground">Credits available for video generation</p>
                 </div>
                 <div className="flex flex-wrap gap-3">
                   <Button
                     variant="outline"
                     size="sm"
-                    className="border-white/20 hover:border-cyan-500/50 hover:bg-cyan-500/10 bg-transparent"
+                    className="border-border hover:border-accent hover:bg-accent/10"
                     onClick={() => setHistoryOpen(true)}
                   >
                     <FiClock className="w-4 h-4 mr-2" />
@@ -454,7 +459,7 @@ export function ProfilePageClient() {
                    <Button
                      size="sm"
                      onClick={() => router.push("/pricing")}
-                     className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 shadow-lg shadow-cyan-500/20"
+                     className="bg-accent text-accent-foreground hover:bg-accent/90"
                    >
                      Buy More Credits
                    </Button>
@@ -464,16 +469,16 @@ export function ProfilePageClient() {
           </Card>
 
           {/* User Works */}
-          <Card className="mb-8 bg-white/5 border-white/10 backdrop-blur-sm">
+          <Card className="mb-8 glass">
             <CardHeader>
-              <CardTitle className="text-white text-xl flex items-center gap-2">
-                <FiPlayCircle className="w-5 h-5" />
+              <CardTitle className="text-foreground text-xl flex items-center gap-2">
+                <FiPlayCircle className="w-5 h-5 text-accent" />
                 My Works (last 7 days)
               </CardTitle>
             </CardHeader>
             <CardContent>
               {worksLoading ? (
-                <div className="py-12 text-center text-gray-400 flex items-center justify-center gap-2">
+                <div className="py-12 text-center text-muted-foreground flex items-center justify-center gap-2">
                   <FiLoader className="animate-spin" /> Loading works...
                 </div>
               ) : works && works.length > 0 ? (
@@ -482,14 +487,14 @@ export function ProfilePageClient() {
                     {works.map((w) => {
                       const s = formatStatus(w.status)
                       return (
-                        <div key={w.id} className="rounded-xl border border-white/10 bg-white/5 overflow-hidden group">
+                        <div key={w.id} className="rounded-xl border border-border glass overflow-hidden group">
                           <div className="aspect-video bg-black/60 flex items-center justify-center relative">
                             {(w.status === "processing" || w.status === "pending") && (
                               <div className="absolute top-2 right-2 z-10">
                                 <Button
                                   variant="outline"
                                   size="sm"
-                                  className="h-8 w-8 p-0 bg-black/80 border-white/20 hover:bg-black/90 text-white"
+                                  className="h-8 w-8 p-0 bg-black/80 border-border hover:bg-black/90 text-foreground"
                                   onClick={() => handleRefreshWork(w.id, w.wavespeed_task_id)}
                                   title="Refresh status"
                                 >
@@ -505,27 +510,27 @@ export function ProfilePageClient() {
                             ) : w.status === "failed" ? (
                               <div className="text-red-400 flex items-center gap-2 text-sm"><FiAlertTriangle /> Failed</div>
                             ) : (
-                              <div className="text-gray-300 flex items-center gap-2 text-sm"><FiLoader className="animate-spin" /> {s.label}</div>
+                              <div className="text-muted-foreground flex items-center gap-2 text-sm"><FiLoader className="animate-spin" /> {s.label}</div>
                             )}
                           </div>
                           <div className="p-3 space-y-2">
                             <div className="flex items-center justify-between">
                               <span className={`text-xs font-medium ${s.color}`}>{s.label}</span>
-                              <span className="text-xs text-gray-400">{w.resolution?.toUpperCase?.() || ""}</span>
+                              <span className="text-xs text-muted-foreground">{w.resolution?.toUpperCase?.() || ""}</span>
                             </div>
-                            <div className="text-xs text-gray-400">
+                            <div className="text-xs text-muted-foreground">
                               Created: {new Date(w.created_at).toLocaleString()}
                             </div>
-                            <div className="text-xs text-gray-400">
+                            <div className="text-xs text-muted-foreground">
                               Expires: {remainingLabel(w.expires_at, w.created_at)}
                             </div>
                             {/* Action buttons */}
-                            <div className="flex items-center gap-2 pt-2 border-t border-white/10">
+                            <div className="flex items-center gap-2 pt-2 border-t border-border">
                               {w.status === "completed" && w.output_video_url && (
                                 <Button
                                   variant="outline"
                                   size="sm"
-                                  className="h-8 px-3 text-xs border-white/20 hover:border-cyan-500/50 hover:bg-cyan-500/10 bg-transparent"
+                                  className="h-8 px-3 text-xs border-border hover:border-accent hover:bg-accent/10"
                                   onClick={() => handleDownloadWork(w.output_video_url)}
                                 >
                                   <FiDownload className="w-3 h-3 mr-1" />
@@ -550,15 +555,15 @@ export function ProfilePageClient() {
                   
                   {/* Pagination */}
                   {worksTotal > 0 && (
-                    <div className="flex items-center justify-between pt-6 border-t border-white/10 mt-6">
-                      <div className="text-sm text-gray-400">
+                    <div className="flex items-center justify-between pt-6 border-t border-border mt-6">
+                      <div className="text-sm text-muted-foreground">
                         Showing {((worksPage - 1) * WORKS_PER_PAGE) + 1} to {Math.min(worksPage * WORKS_PER_PAGE, worksTotal)} of {worksTotal} works
                       </div>
                       <div className="flex items-center gap-2">
                         <Button
                           variant="outline"
                           size="sm"
-                          className="h-8 px-3 border-white/20 hover:border-cyan-500/50 hover:bg-cyan-500/10 bg-transparent"
+                          className="h-8 px-3 border-border hover:border-accent hover:bg-accent/10"
                           onClick={() => {
                             const newPage = Math.max(1, worksPage - 1)
                             setWorksPage(newPage)
@@ -572,7 +577,7 @@ export function ProfilePageClient() {
                         <Button
                           variant="outline"
                           size="sm"
-                          className="h-8 px-3 border-white/20 hover:border-cyan-500/50 hover:bg-cyan-500/10 bg-transparent"
+                          className="h-8 px-3 border-border hover:border-accent hover:bg-accent/10"
                           onClick={() => {
                             const newPage = worksPage + 1
                             setWorksPage(newPage)
@@ -588,7 +593,7 @@ export function ProfilePageClient() {
                   )}
                 </>
               ) : (
-                <div className="py-12 text-center text-gray-400">No works yet</div>
+                <div className="py-12 text-center text-muted-foreground">No works yet</div>
               )}
             </CardContent>
           </Card>
@@ -604,10 +609,10 @@ export function ProfilePageClient() {
               }
             }}
           >
-            <DialogContent className="bg-neutral-900 text-white border-white/10">
+            <DialogContent className="glass-strong border-border">
               <DialogHeader>
-                <DialogTitle>Delete Work</DialogTitle>
-                <DialogDescription className="text-gray-400">
+                <DialogTitle className="text-foreground">Delete Work</DialogTitle>
+                <DialogDescription className="text-muted-foreground">
                   Are you sure you want to delete this work? This action cannot be undone.
                 </DialogDescription>
               </DialogHeader>
@@ -619,7 +624,7 @@ export function ProfilePageClient() {
                     setWorkToDelete(null)
                     setDeleteLoading(false)
                   }}
-                  className="border-white/20 hover:border-gray-400"
+                  className="border-border hover:border-muted-foreground"
                   disabled={deleteLoading}
                 >
                   Cancel
@@ -644,17 +649,17 @@ export function ProfilePageClient() {
           </Dialog>
 
           <Dialog open={historyOpen} onOpenChange={setHistoryOpen}>
-            <DialogContent className="max-w-3xl bg-neutral-900 text-white border-white/10">
+            <DialogContent className="max-w-3xl glass-strong border-border">
               <DialogHeader>
-                <DialogTitle>Credit History</DialogTitle>
+                <DialogTitle className="text-foreground">Credit History</DialogTitle>
               </DialogHeader>
               <div className="overflow-x-auto">
                 {historyLoading ? (
-                  <div className="py-8 text-center text-gray-400">Loading...</div>
+                  <div className="py-8 text-center text-muted-foreground">Loading...</div>
                 ) : (
                   <table className="w-full text-sm">
                     <thead>
-                      <tr className="text-left text-gray-400 border-b border-white/10">
+                      <tr className="text-left text-muted-foreground border-b border-border">
                         <th className="py-2 pr-4">Time</th>
                         <th className="py-2 pr-4">Delta</th>
                         <th className="py-2">Note</th>
@@ -662,19 +667,19 @@ export function ProfilePageClient() {
                     </thead>
                     <tbody>
                       {(ledger ?? []).map((row) => (
-                        <tr key={row.id} className="border-b border-white/5">
-                          <td className="py-2 pr-4 text-gray-300">{new Date(row.created_at).toLocaleString()}</td>
+                        <tr key={row.id} className="border-b border-border/50">
+                          <td className="py-2 pr-4 text-foreground">{new Date(row.created_at).toLocaleString()}</td>
                           <td className="py-2 pr-4 font-mono">
                             <span className={row.delta >= 0 ? "text-emerald-400" : "text-red-400"}>
                               {row.delta >= 0 ? "+" : ""}{row.delta}
                             </span>
                           </td>
-                          <td className="py-2 text-gray-300">{row.note ?? "-"}</td>
+                          <td className="py-2 text-foreground">{row.note ?? "-"}</td>
                         </tr>
                       ))}
                       {ledger && ledger.length === 0 && (
                         <tr>
-                          <td className="py-6 text-center text-gray-500" colSpan={3}>No history</td>
+                          <td className="py-6 text-center text-muted-foreground" colSpan={3}>No history</td>
                         </tr>
                       )}
                     </tbody>

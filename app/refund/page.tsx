@@ -90,7 +90,7 @@ export default function RefundPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-background pt-30">
         <div className="container mx-auto px-4 py-8 max-w-4xl">
           <h1 className="text-4xl font-bold mb-8 text-foreground">Refund Policy — Infinite Talk AI</h1>
           
