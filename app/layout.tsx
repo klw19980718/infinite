@@ -24,8 +24,24 @@ export default function RootLayout({
   const GA_TRACKING_ID = 'G-BST9KGD31X';
 
   return (
-    <html lang="en" className="dark">
+    <html lang="en" suppressHydrationWarning className="dark">
       <body className={`${inter.className} bg-background text-foreground`}>
+        <Script
+          id="theme-init"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  const theme = localStorage.getItem('theme') || 'dark';
+                  const root = document.documentElement;
+                  root.classList.remove('dark', 'light');
+                  root.classList.add(theme);
+                } catch (e) {}
+              })();
+            `,
+          }}
+        />
         <>
           <Nav />
           <main className="min-h-[calc(100vh-80px)]">

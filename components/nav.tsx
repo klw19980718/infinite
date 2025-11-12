@@ -16,6 +16,7 @@ import {
   SheetTrigger,
   SheetClose,
 } from "@/components/ui/sheet"
+import { ThemeToggle } from "@/components/ui/theme-toggle"
 
 type Profile = {
   email: string | null
@@ -25,7 +26,6 @@ export default function Nav() {
   const [profile, setProfile] = useState<Profile | null>(null)
   const [loginDialogOpen, setLoginDialogOpen] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [isScrolled, setIsScrolled] = useState(false)
 
   useEffect(() => {
     const supabase = getSupabaseClient()
@@ -47,33 +47,10 @@ export default function Nav() {
     }
   }, [])
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrolled = window.scrollY > 20
-      setIsScrolled(scrolled)
-    }
-
-    // Check initial scroll position after mount
-    if (typeof window !== 'undefined') {
-      handleScroll()
-      window.addEventListener('scroll', handleScroll, { passive: true })
-    }
-
-    return () => {
-      if (typeof window !== 'undefined') {
-        window.removeEventListener('scroll', handleScroll)
-      }
-    }
-  }, [])
-
   return (
     <>
       <nav 
-        className={`fixed top-0 left-0 right-0 z-50 w-full h-16 transition-all duration-500 overflow-hidden ${
-          !isScrolled 
-            ? 'glass border-b border-white/10' 
-            : 'glass-strong border-b border-white/15 shadow-2xl'
-        }`}
+        className="fixed top-0 left-0 right-0 z-50 w-full h-16 overflow-hidden bg-transparent glass-strong border-b border-white/15"
       >
         <div className="container mx-auto h-full flex items-center justify-between px-4 sm:px-6 min-w-0">
           <Link href="/" className="flex items-center gap-2 sm:gap-2.5 hover:opacity-90 transition-all duration-300 group flex-shrink-0 min-w-0">
@@ -112,21 +89,25 @@ export default function Nav() {
               Pricing
             </Link>
             
-            {profile?.email ? (
-              <UserMenu email={profile.email} />
-            ) : (
-              <Button
-                onClick={() => setLoginDialogOpen(true)}
-                size="sm"
-                className="ml-2.5 px-5 py-2 rounded-full bg-accent text-accent-foreground hover:bg-accent/90 hover:scale-105 transition-all duration-300 font-semibold text-xs glow-lime"
-              >
-                Log in
-              </Button>
-            )}
+            <div className="ml-2 flex items-center gap-2">
+              <ThemeToggle />
+              {profile?.email ? (
+                <UserMenu email={profile.email} />
+              ) : (
+                <Button
+                  onClick={() => setLoginDialogOpen(true)}
+                  size="sm"
+                  className="px-5 py-2 rounded-full bg-accent text-accent-foreground hover:bg-accent/90 hover:scale-105 transition-all duration-300 font-semibold text-xs glow-lime"
+                >
+                  Log in
+                </Button>
+              )}
+            </div>
           </div>
 
           {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center gap-2 flex-shrink-0">
+            <ThemeToggle />
             {profile?.email ? (
               <div className="flex-shrink-0">
                 <UserMenu email={profile.email} />
@@ -194,6 +175,13 @@ export default function Nav() {
                       Pricing
                     </Link>
                   </SheetClose>
+                  
+                  <div className="pt-4 mt-4 border-t border-border/50">
+                    <div className="flex items-center justify-between px-4 py-2">
+                      <span className="text-sm font-medium text-foreground/70">Theme</span>
+                      <ThemeToggle />
+                    </div>
+                  </div>
                   
                   {!profile?.email && (
                     <div className="pt-6 mt-4 border-t border-border/50">
