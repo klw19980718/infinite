@@ -50,7 +50,7 @@ export default function Nav() {
   return (
     <>
       <nav 
-        className="fixed top-0 left-0 right-0 z-50 w-full h-16 overflow-hidden bg-transparent glass-strong border-b border-white/15"
+        className="fixed top-0 left-0 right-0 z-50 w-full h-16 overflow-hidden bg-background border-b-2 border-accent"
       >
         <div className="container mx-auto h-full flex items-center justify-between px-4 sm:px-6 min-w-0">
           <Link href="/" className="flex items-center gap-2 sm:gap-2.5 hover:opacity-90 transition-all duration-300 group flex-shrink-0 min-w-0">
@@ -131,7 +131,7 @@ export default function Nav() {
                   className="h-9 w-9 sm:h-10 sm:w-10 rounded-xl hover:bg-white/10 transition-all duration-300 flex-shrink-0"
                   aria-label="Open menu"
                 >
-                  <Menu className="h-5 w-5 sm:h-6 sm:w-6" />
+                  <Menu className="h-5 w-5 sm:h-6 sm:w-6 text-accent" />
                 </Button>
               </SheetTrigger>
               <SheetContent side="right" className="w-[300px] sm:w-[400px]">

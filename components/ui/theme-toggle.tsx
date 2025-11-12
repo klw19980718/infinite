@@ -7,13 +7,13 @@ import { Button } from "@/components/ui/button"
 type Theme = "dark" | "light"
 
 export function ThemeToggle() {
-  const [theme, setTheme] = useState<Theme>("dark")
+  const [theme, setTheme] = useState<Theme>("light")
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
     setMounted(true)
-    // Get theme from localStorage or default to dark
-    const savedTheme = (localStorage.getItem("theme") as Theme) || "dark"
+    // Get theme from localStorage or default to light
+    const savedTheme = (localStorage.getItem("theme") as Theme) || "light"
     setTheme(savedTheme)
     // Theme is already applied by the script in layout.tsx, but ensure it's correct
     applyTheme(savedTheme)

@@ -103,7 +103,8 @@ export default function OtpForm({ onSuccess, redirectTo, emailSent, onBackToEmai
               required
               disabled={loading}
               autoComplete="one-time-code"
-              className="h-14 rounded-xl px-4 bg-secondary/50 text-foreground placeholder:text-muted-foreground border-border focus:ring-2 focus:ring-accent/50 focus:border-accent text-center text-2xl tracking-[0.5em] font-mono"
+              className="h-14 rounded-xl px-4 bg-secondary/50 text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-accent/50 text-center text-2xl tracking-[0.5em] font-mono"
+              style={{ border: '2px solid var(--accent)' }}
               maxLength={6}
             />
           </div>
@@ -152,7 +153,8 @@ export default function OtpForm({ onSuccess, redirectTo, emailSent, onBackToEmai
           required
           disabled={loading}
           autoComplete="email"
-          className="h-12 rounded-xl px-4 bg-secondary/50 text-foreground placeholder:text-muted-foreground border-border focus:ring-2 focus:ring-accent/50 focus:border-accent transition-all duration-200"
+          className="h-12 rounded-xl px-4 bg-secondary/50 text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-accent/50 transition-all duration-200"
+          style={{ border: '2px solid var(--accent)' }}
           autoFocus
         />
       </div>
@@ -165,10 +167,11 @@ export default function OtpForm({ onSuccess, redirectTo, emailSent, onBackToEmai
 
       <Button
         type="submit"
-        className="w-full h-12 rounded-xl font-semibold bg-secondary text-secondary-foreground hover:bg-secondary/80 transition-all duration-200 shadow-lg hover:shadow-xl"
+        className="w-full h-12 rounded-xl font-semibold bg-card border-2 hover:bg-accent/10 transition-all duration-200 shadow-lg hover:shadow-xl"
+        style={{ borderColor: 'var(--accent)' }}
         disabled={loading}
       >
-        {loading ? "Sending…" : "Send verification code"}
+        <span className="text-foreground font-semibold">{loading ? "Sending…" : "Send verification code"}</span>
       </Button>
     </form>
   )

@@ -82,16 +82,16 @@ export default function LoginDialog({ open, onOpenChange }: LoginDialogProps) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[440px] bg-gradient-to-br from-neutral-950 to-neutral-900 border border-neutral-800/50 p-0 overflow-hidden">
+      <DialogContent className="sm:max-w-[440px] bg-card p-0 overflow-hidden" style={{ border: '2px solid var(--accent)' }}>
         <DialogHeader className="sr-only">
           <DialogTitle>Sign in to Infinite Talk</DialogTitle>
         </DialogHeader>
         
         {/* Header with gradient background */}
-        <div className="relative px-8 pt-8 pb-6 bg-gradient-to-r from-primary/10 via-chart-2/10 to-chart-3/10">
+        <div className="relative px-8 pt-8 pb-6 bg-accent/10">
           {/* Logo */}
           <div className="flex justify-center mb-6 ">
-            <div className="relative w-20 h-20 rounded-2xl overflow-hidden shadow-2xl ring-2 ring-white/10 flex flex-col justify-center">
+            <div className="relative w-20 h-20 rounded-2xl overflow-hidden shadow-2xl ring-2 ring-border flex flex-col justify-center">
               <Image 
                 src="/logo.png" 
                 alt="Infinite Talk" 
@@ -104,10 +104,10 @@ export default function LoginDialog({ open, onOpenChange }: LoginDialogProps) {
 
           {/* Heading */}
           <div className="text-center space-y-2">
-            <h2 id="auth_login_title" className="text-3xl font-bold text-white">
+            <h2 id="auth_login_title" className="text-3xl font-bold text-foreground">
               Welcome Back
             </h2>
-            <p className="text-neutral-300 text-base">
+            <p className="text-muted-foreground text-base">
               Sign in to continue to your account
             </p>
           </div>
@@ -119,20 +119,21 @@ export default function LoginDialog({ open, onOpenChange }: LoginDialogProps) {
           <Button
             onClick={handleGoogleLogin}
             disabled={googleLoading}
-            className="w-full h-12 rounded-2xl font-semibold bg-white text-neutral-900 hover:bg-neutral-100 transition-all duration-200 shadow-lg hover:shadow-xl"
+            className="w-full h-12 rounded-2xl font-semibold bg-card border-2 hover:bg-accent/10 transition-all duration-200 shadow-lg hover:shadow-xl"
+            style={{ borderColor: 'var(--accent)' }}
             aria-label="Continue with Google"
           >
             <FcGoogle className="w-6 h-6 mr-3" />
-            {googleLoading ? 'Connecting...' : 'Continue with Google'}
+            <span className="text-foreground font-semibold">{googleLoading ? 'Connecting...' : 'Continue with Google'}</span>
           </Button>
 
           {/* Divider */}
           <div className="relative my-8">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-neutral-700/50" />
+              <div className="w-full border-t border-border" />
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="bg-gradient-to-br from-neutral-950 to-neutral-900 px-4 text-neutral-400 font-medium">OR</span>
+              <span className="bg-card px-4 text-muted-foreground font-medium">OR</span>
             </div>
           </div>
 
@@ -144,14 +145,14 @@ export default function LoginDialog({ open, onOpenChange }: LoginDialogProps) {
           />
 
           {/* Footer */}
-          <div className="mt-8 pt-6 border-t border-neutral-800/50">
-            <p className="text-center text-xs text-neutral-400 leading-tight whitespace-nowrap">
+          <div className="mt-8 pt-6 border-t border-border">
+            <p className="text-center text-xs text-muted-foreground leading-tight whitespace-nowrap">
               By continuing, you agree to our{' '}
-              <a href="/terms" className="text-primary hover:text-primary/80 transition-colors underline">
+              <a href="/terms" className="text-accent hover:text-accent/80 transition-colors underline">
                 Terms
               </a>{' '}
               and{' '}
-              <a href="/privacy" className="text-primary hover:text-primary/80 transition-colors underline">
+              <a href="/privacy" className="text-accent hover:text-accent/80 transition-colors underline">
                 Privacy Policy
               </a>
             </p>

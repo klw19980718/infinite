@@ -77,7 +77,7 @@ export function FAQ() {
 
           <div className="space-y-4">
             {faqs.map((faq, index) => (
-              <div key={index} className="glass rounded-2xl overflow-hidden hover:glass-strong transition-all duration-300">
+              <div key={index} className="glass rounded-2xl overflow-hidden hover:glass-strong transition-all duration-300" style={{ borderColor: 'var(--accent)', borderWidth: '2px' }}>
                 <button
                   className="w-full px-8 py-6 text-left hover:bg-white/5 transition-colors flex justify-between items-center group"
                   onClick={() => toggleFAQ(index)}

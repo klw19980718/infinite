@@ -166,7 +166,7 @@ export function PricingPageClient() {
       {/* Hero Section */}
       <section className="relative py-32 px-4">
         <div className="max-w-4xl mx-auto text-center relative z-10">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-accent/30 mb-8">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-8" style={{ borderColor: 'var(--accent)', borderWidth: '2px' }}>
             <FiZap className="w-4 h-4 text-accent" />
             <span className="text-sm text-accent font-medium">Simple & Transparent Pricing</span>
           </div>
@@ -188,6 +188,7 @@ export function PricingPageClient() {
             <Link
               href="#how-credits-work"
               className="px-8 py-4 glass rounded-full font-semibold hover:glass-strong transition-all duration-300 text-center"
+              style={{ borderColor: 'var(--accent)', borderWidth: '2px' }}
             >
               How Credits Work
             </Link>
@@ -225,8 +226,9 @@ export function PricingPageClient() {
               <div key={plan.id} className={`relative group ${plan.popular ? "md:-mt-4" : ""}`}>
                 <div
                   className={`relative glass rounded-3xl p-8 h-full flex flex-col transition-all duration-300 hover:glass-strong hover:scale-[1.02] ${
-                    plan.popular ? "border-2 border-accent shadow-2xl glow-lime" : ""
+                    plan.popular ? "shadow-2xl glow-lime" : ""
                   }`}
+                  style={{ border: '2px solid var(--accent)' }}
                 >
                   {plan.popular && (
                     <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
@@ -237,8 +239,8 @@ export function PricingPageClient() {
                   )}
 
                   {!plan.popular && plan.badge && (
-                    <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                      <span className="glass px-4 py-1.5 rounded-full text-xs font-medium border border-border">
+                    <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10">
+                      <span className="px-4 py-1.5 rounded-full text-xs font-medium bg-card" style={{ border: '2px solid var(--accent)' }}>
                         {plan.badge}
                       </span>
                     </div>
@@ -282,6 +284,7 @@ export function PricingPageClient() {
                         ? "bg-accent text-accent-foreground hover:bg-accent/90 hover:scale-105 shadow-2xl glow-lime disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                         : "glass hover:glass-strong hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                     }`}
+                    style={!plan.popular ? { borderColor: 'var(--accent)', borderWidth: '2px' } : undefined}
                   >
                     {loading === plan.id ? (
                       <div className="flex items-center justify-center gap-2">
@@ -316,7 +319,7 @@ export function PricingPageClient() {
               { icon: FiHeadphones, text: "Priority support", color: "accent" },
             ].map((item, index) => (
               <div key={index} className="group">
-                <div className="flex flex-col items-center justify-between gap-4 p-6 rounded-2xl glass hover:glass-strong transition-all duration-300 hover:-translate-y-1 h-full min-h-[160px]">
+                <div className="flex flex-col items-center justify-between gap-4 p-6 rounded-2xl glass hover:glass-strong transition-all duration-300 hover:-translate-y-1 h-full min-h-[160px]" style={{ borderColor: 'var(--accent)', borderWidth: '2px' }}>
                   <div className="w-14 h-14 bg-accent/10 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 flex-shrink-0">
                     <item.icon className="w-7 h-7 text-accent" />
                   </div>
@@ -340,7 +343,7 @@ export function PricingPageClient() {
 
           <div className="grid md:grid-cols-2 gap-8">
             <div className="relative group">
-              <div className="relative glass rounded-2xl p-8 h-full hover:glass-strong transition-all duration-300">
+              <div className="relative glass rounded-2xl p-8 h-full hover:glass-strong transition-all duration-300" style={{ borderColor: 'var(--accent)', borderWidth: '2px' }}>
                 <div className="flex items-center gap-3 mb-6">
                   <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center">
                     <FiClock className="w-6 h-6 text-accent" />
@@ -369,7 +372,7 @@ export function PricingPageClient() {
             </div>
 
             <div className="relative group">
-              <div className="relative glass rounded-2xl p-8 h-full hover:glass-strong transition-all duration-300">
+              <div className="relative glass rounded-2xl p-8 h-full hover:glass-strong transition-all duration-300" style={{ borderColor: 'var(--accent)', borderWidth: '2px' }}>
                 <div className="flex items-center gap-3 mb-6">
                   <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center">
                     <FiInfo className="w-6 h-6 text-accent" />
@@ -377,13 +380,13 @@ export function PricingPageClient() {
                   <h3 className="text-xl font-semibold text-foreground">Important Notes</h3>
                 </div>
                 <div className="space-y-4">
-                  <div className="flex items-start gap-3 p-4 rounded-lg glass">
+                  <div className="flex items-start gap-3 p-4 rounded-lg glass" style={{ borderColor: 'var(--accent)', borderWidth: '2px' }}>
                     <div className="w-5 h-5 rounded-full bg-accent/10 flex items-center justify-center flex-shrink-0 mt-0.5">
                       <FiCheck className="w-3 h-3 text-accent" />
                     </div>
                     <span className="text-muted-foreground">Credits never expire</span>
                   </div>
-                  <div className="flex items-start gap-3 p-4 rounded-lg glass">
+                  <div className="flex items-start gap-3 p-4 rounded-lg glass" style={{ borderColor: 'var(--accent)', borderWidth: '2px' }}>
                     <div className="w-5 h-5 rounded-full bg-accent/10 flex items-center justify-center flex-shrink-0 mt-0.5">
                       <FiCheck className="w-3 h-3 text-accent" />
                     </div>
@@ -417,6 +420,7 @@ export function PricingPageClient() {
             <Link
               href="/infinite-talk-ai/video-to-video"
               className="group relative px-8 py-4 glass rounded-full font-semibold hover:glass-strong transition-all duration-300 hover:scale-105"
+              style={{ borderColor: 'var(--accent)', borderWidth: '2px' }}
             >
               <div className="flex items-center justify-center gap-2">
                 <FiZap className="w-5 h-5 text-accent" />
@@ -438,7 +442,7 @@ export function PricingPageClient() {
           <div className="space-y-4">
             {faqs.map((faq, index) => (
               <div key={index} className="group">
-                <div className="glass rounded-xl overflow-hidden hover:glass-strong transition-all duration-300">
+                <div className="glass rounded-xl overflow-hidden hover:glass-strong transition-all duration-300" style={{ borderColor: 'var(--accent)', borderWidth: '2px' }}>
                   <button
                     className="w-full px-6 py-5 text-left flex justify-between items-center hover:bg-white/5 transition-colors"
                     onClick={() => setOpenFaq(openFaq === index ? null : index)}
@@ -467,7 +471,7 @@ export function PricingPageClient() {
       {/* Footer Note */}
       <section className="py-12 px-4 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
-          <div className="p-6 rounded-2xl bg-muted/30 border border-border">
+          <div className="p-6 rounded-2xl bg-muted/30" style={{ borderColor: 'var(--accent)', borderWidth: '2px' }}>
             <p className="text-sm text-muted-foreground mb-2">
               Payments & taxes are handled by our Merchant of Record. Invoices are issued automatically after purchase.
             </p>

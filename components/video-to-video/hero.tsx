@@ -286,7 +286,7 @@ export const VideoToVideoHero = () => {
           <div className="grid grid-cols-1 lg:grid-cols-[0.8fr_1.2fr] gap-8 max-w-7xl mx-auto">
             {/* Left: Form */}
             <div className="relative">
-                <Card className="p-8 glass-strong shadow-2xl">
+                <Card className="p-8 glass-strong shadow-2xl" style={{ borderColor: 'var(--accent)', borderWidth: '2px' }}>
                 <div className="flex items-center gap-3 mb-8">
                   <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center">
                     <FiUpload className="w-5 h-5 text-white" />
@@ -512,7 +512,7 @@ export const VideoToVideoHero = () => {
 
             {/* Right: Preview/Result Area */}
             <div className="relative lg:sticky lg:top-24 self-start">
-                <Card className="p-8 glass-strong shadow-2xl w-full">
+                <Card className="p-8 glass-strong shadow-2xl w-full" style={{ borderColor: 'var(--accent)', borderWidth: '2px' }}>
                 <div className="flex items-center gap-3 mb-8">
                   <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center">
                     <FiPlay className="w-5 h-5 text-white" />

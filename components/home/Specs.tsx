@@ -69,9 +69,10 @@ export function Specs() {
                   onClick={() => setSelectedIndex(index)}
                   className={`w-full text-left p-5 rounded-2xl border transition-all duration-300 ${
                     isSelected
-                      ? "glass-strong border-accent shadow-lg glow-lime"
-                      : "glass border-border hover:border-accent/50 hover:glass-strong"
+                      ? "glass-strong shadow-lg glow-lime"
+                      : "glass hover:glass-strong"
                   }`}
+                  style={{ borderColor: 'var(--accent)', borderWidth: '2px' }}
                 >
                   <div className="flex items-center gap-4">
                     <div className={`p-2.5 rounded-xl ${isSelected ? "bg-accent/20" : "bg-accent/10"}`}>
@@ -87,7 +88,7 @@ export function Specs() {
           </div>
 
           {/* Right: Selected scenario detail */}
-          <div className="glass-strong rounded-3xl p-12 min-h-[400px] flex flex-col justify-center">
+          <div className="glass-strong rounded-3xl p-12 min-h-[400px] flex flex-col justify-center" style={{ borderColor: 'var(--accent)', borderWidth: '2px' }}>
             <div className="inline-flex p-5 rounded-2xl bg-accent/15 mb-8 w-fit">
               <SelectedIcon className="w-8 h-8 text-accent" />
             </div>

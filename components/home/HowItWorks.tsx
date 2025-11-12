@@ -55,7 +55,7 @@ export function HowItWorks() {
             const Icon = step.icon
 
             return (
-              <div key={index} className="glass rounded-2xl p-8 hover:glass-strong transition-all duration-300 group">
+              <div key={index} className="glass rounded-2xl p-8 hover:glass-strong transition-all duration-300 group" style={{ borderColor: 'var(--accent)', borderWidth: '2px' }}>
                 <div className="flex gap-6 items-start">
                   <div className="flex-shrink-0">
                     <div className="w-16 h-16 rounded-2xl bg-accent/20 border border-accent/30 flex items-center justify-center group-hover:bg-accent/30 transition-all duration-300">

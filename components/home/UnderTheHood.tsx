@@ -53,6 +53,7 @@ export function UnderTheHood() {
                 <div
                   key={index}
                   className="group glass rounded-2xl p-8 hover:glass-strong transition-all duration-300"
+                  style={{ borderColor: 'var(--accent)', borderWidth: '2px' }}
                 >
                   <div className="flex items-start gap-5">
                     <div className="flex-shrink-0 p-3 rounded-xl bg-accent/10">

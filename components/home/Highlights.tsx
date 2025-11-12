@@ -57,6 +57,7 @@ export function Highlights() {
               <div
                 key={index}
                 className="glass rounded-2xl p-8 hover:glass-strong hover:scale-[1.02] transition-all duration-300 group"
+                style={{ borderColor: 'var(--accent)', borderWidth: '2px' }}
               >
                 <div className="inline-flex p-4 rounded-2xl bg-accent/10 border border-accent/20 group-hover:bg-accent/20 transition-all duration-300 mb-5">
                   <Icon className="w-7 h-7 text-accent" />

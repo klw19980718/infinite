@@ -195,12 +195,13 @@ export function ExampleVideos() {
         </div>
 
         <div className="space-y-24">
-          {categories.map((cat) => {
+          {categories.map((cat, index) => {
             const currentIndex = activeIndexes[cat.key] || 0
             const currentId = cat.ids[currentIndex]
+            const isLast = index === categories.length - 1
 
             return (
-              <div key={cat.key} className="relative" id={
+              <div key={cat.key} className={`relative ${!isLast ? 'border-b-2' : ''}`} style={!isLast ? { borderColor: 'var(--accent)' } : undefined} id={
                 cat.key === 'multilingual' ? 'multilingual-content' :
                 cat.key === 'infinitetalk' ? 'infinitetalk' :
                 cat.key === 'shorts' ? 'shorts' :
@@ -216,16 +217,18 @@ export function ExampleVideos() {
                         <button
                           aria-label="Scroll left"
                           onClick={() => scrollCategory(cat.key, -1)}
-                          className="h-8 w-8 rounded-full border border-border bg-card hover:border-accent/50 hover:bg-accent/10 transition"
+                          className="h-8 w-8 rounded-full border-2 bg-card hover:bg-accent/10 transition"
+                          style={{ borderColor: 'var(--accent)' }}
                         >
-                          <ChevronLeft className="mx-auto h-4 w-4 text-muted-foreground" />
+                          <ChevronLeft className="mx-auto h-4 w-4 text-accent" />
                         </button>
                         <button
                           aria-label="Scroll right"
                           onClick={() => scrollCategory(cat.key, 1)}
-                          className="h-8 w-8 rounded-full border border-border bg-card hover:border-accent/50 hover:bg-accent/10 transition"
+                          className="h-8 w-8 rounded-full border-2 bg-card hover:bg-accent/10 transition"
+                          style={{ borderColor: 'var(--accent)' }}
                         >
-                          <ChevronRight className="mx-auto h-4 w-4 text-muted-foreground" />
+                          <ChevronRight className="mx-auto h-4 w-4 text-accent" />
                         </button>
                       </div>
                     </div>
