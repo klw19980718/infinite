@@ -69,18 +69,18 @@ export default function Nav() {
   return (
     <>
       <nav 
-        className={`fixed top-0 left-0 right-0 z-50 w-full h-16 transition-all duration-500 ${
+        className={`fixed top-0 left-0 right-0 z-50 w-full h-16 transition-all duration-500 overflow-hidden ${
           !isScrolled 
             ? 'glass border-b border-white/10' 
             : 'glass-strong border-b border-white/15 shadow-2xl'
         }`}
       >
-        <div className="container mx-auto h-full flex items-center justify-between px-6">
-          <Link href="/" className="flex items-center gap-2.5 hover:opacity-90 transition-all duration-300 group">
+        <div className="container mx-auto h-full flex items-center justify-between px-4 sm:px-6 min-w-0">
+          <Link href="/" className="flex items-center gap-2 sm:gap-2.5 hover:opacity-90 transition-all duration-300 group flex-shrink-0 min-w-0">
             <div className="relative w-9 h-9 rounded-xl overflow-hidden bg-gradient-to-br from-accent/20 to-purple-500/20 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
               <Image src="/logo.png" alt="Infinite Talk AI" width={28} height={28} className="object-cover" />
             </div>
-            <span className="font-semibold text-base hidden sm:inline transition-colors text-foreground tracking-tight">
+            <span className="font-semibold text-base hidden sm:inline transition-colors text-foreground tracking-tight whitespace-nowrap">
               Infinite Talk AI
             </span>
           </Link>
@@ -126,15 +126,17 @@ export default function Nav() {
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="md:hidden flex items-center gap-3">
+          <div className="md:hidden flex items-center gap-2 flex-shrink-0">
             {profile?.email ? (
-              <UserMenu email={profile.email} />
+              <div className="flex-shrink-0">
+                <UserMenu email={profile.email} />
+              </div>
             ) : (
               <Button
                 onClick={() => setLoginDialogOpen(true)}
                 variant="ghost"
                 size="sm"
-                className="rounded-full px-4 py-2 text-sm bg-accent text-accent-foreground hover:bg-accent/90 font-semibold"
+                className="rounded-full px-3 sm:px-4 py-2 text-xs sm:text-sm bg-accent text-accent-foreground hover:bg-accent/90 font-semibold whitespace-nowrap flex-shrink-0"
               >
                 Log in
               </Button>
@@ -145,10 +147,10 @@ export default function Nav() {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="h-10 w-10 rounded-xl hover:bg-white/10 transition-all duration-300"
+                  className="h-9 w-9 sm:h-10 sm:w-10 rounded-xl hover:bg-white/10 transition-all duration-300 flex-shrink-0"
                   aria-label="Open menu"
                 >
-                  <Menu className="h-6 w-6" />
+                  <Menu className="h-5 w-5 sm:h-6 sm:w-6" />
                 </Button>
               </SheetTrigger>
               <SheetContent side="right" className="w-[300px] sm:w-[400px]">

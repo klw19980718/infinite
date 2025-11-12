@@ -9,7 +9,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { FiDollarSign, FiClock, FiPlayCircle, FiAlertTriangle, FiLoader, FiDownload, FiTrash2, FiRefreshCw, FiChevronLeft, FiChevronRight } from "react-icons/fi"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "@/components/ui/dialog"
 import { toast } from "sonner"
-import { Plasma } from "@/components/ui/plasma"
 import { Beams } from "@/components/ui/beams"
 
 interface UserProfile {
@@ -375,17 +374,6 @@ export function ProfilePageClient() {
 
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
-      {/* Unified background with Plasma and Beams */}
-      <div className="fixed inset-0 pointer-events-none" style={{ zIndex: 0 }}>
-        <Plasma 
-          color="#bef264"
-          speed={0.6}
-          direction="forward"
-          scale={1.1}
-          opacity={0.3}
-          mouseInteractive={true}
-        />
-      </div>
       <Beams />
 
       {/* Content */}

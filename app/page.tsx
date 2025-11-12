@@ -1,7 +1,6 @@
 
 import { AuroraHero, HowItWorks, Highlights, UnderTheHood, FAQ, Specs, WhyItStandsOut, ExampleVideos } from '@/components/home';
 import { Beams } from '@/components/ui/beams';
-import { Plasma } from '@/components/ui/plasma';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -277,18 +276,7 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <main className="bg-background relative min-h-screen">
-        {/* Unified background with Plasma and Beams */}
-        <div className="fixed inset-0 pointer-events-none" style={{ zIndex: 0 }}>
-          <Plasma 
-            color="#bef264"
-            speed={0.6}
-            direction="forward"
-            scale={1.1}
-            opacity={0.3}
-            mouseInteractive={true}
-          />
-        </div>
-    
+        <Beams />
         
         <div className="relative z-10">
           <AuroraHero />

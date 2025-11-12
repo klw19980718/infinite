@@ -5,7 +5,7 @@ export default function Footer() {
   return (
     <footer className="relative glass border-t border-white/10">
       {/* Gradient glow */}
-      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-[600px] h-[400px] bg-purple-600/10 rounded-full blur-[120px]"></div>
+      {/* <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-[600px] h-[400px] bg-purple-600/10 rounded-full blur-[120px]"></div> */}
       
       <div className="container mx-auto px-6 py-16 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">

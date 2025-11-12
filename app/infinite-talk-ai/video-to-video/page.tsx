@@ -1,7 +1,6 @@
 import { VideoToVideoHero, VideoToVideoCTA } from '@/components/video-to-video'
 import { WhatIsVideoToVideo } from '@/components/content/WhatIsVideoToVideo'
 import type { Metadata } from 'next'
-import { Plasma } from '@/components/ui/plasma'
 import { Beams } from '@/components/ui/beams'
 
 export const metadata: Metadata = {
@@ -62,17 +61,6 @@ export default function VideoToVideoPage() {
   return (
     <>
       <main className="bg-background relative min-h-screen">
-        {/* Unified background with Plasma and Beams */}
-        <div className="fixed inset-0 pointer-events-none" style={{ zIndex: 0 }}>
-          <Plasma 
-            color="#bef264"
-            speed={0.6}
-            direction="forward"
-            scale={1.1}
-            opacity={0.3}
-            mouseInteractive={true}
-          />
-        </div>
         <Beams />
         
         <div className="relative z-10">
