@@ -1,12 +1,10 @@
 "use client"
 
 import { useState, useRef, useEffect } from "react"
-import { useRouter } from "next/navigation"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import { FiUpload, FiPlay, FiLoader, FiX, FiImage, FiMusic, FiChevronDown, FiDollarSign } from "react-icons/fi"
+import { FiX, FiImage, FiMusic, FiChevronDown, FiDollarSign } from "react-icons/fi"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,9 +14,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { toast } from "sonner"
+import { TalkingPhotoLayout } from "./TalkingPhotoLayout"
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 export const ImageToVideoHero = () => {
-  const router = useRouter()
   const [imagePreview, setImagePreview] = useState<string | null>(null)
   const [imageFileName, setImageFileName] = useState<string | null>(null)
   const [imageFile, setImageFile] = useState<File | null>(null)
@@ -65,6 +64,16 @@ export const ImageToVideoHero = () => {
       audio.src = url
       audio.addEventListener("loadedmetadata", () => {
         const duration = Math.ceil(audio.duration)
+        const maxDuration = 600 // 10 minutes
+        if (duration > maxDuration) {
+          toast.error(`Audio duration exceeds maximum of ${maxDuration}s (${Math.floor(maxDuration / 60)} minutes)`)
+          setAudioFile(null)
+          setAudioFileName("")
+          setAudioPreview("")
+          setAudioDuration(null)
+          URL.revokeObjectURL(url)
+          return
+        }
         setAudioDuration(duration)
         URL.revokeObjectURL(url)
       })
@@ -264,424 +273,59 @@ export const ImageToVideoHero = () => {
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
                     <span className="relative inline-flex rounded-full h-3 w-3 bg-accent"></span>
                   </div>
-                  <span className="text-foreground text-base font-semibold">Image-to-Video Generation</span>
+                  <span className="text-foreground text-base font-semibold">Talking Photo Generator</span>
                 </div>
 
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-balance px-4">
-                  <span className="text-accent">
-                    Image-to-Video with Infinite Talk AI
-                  </span>
-                  <br />
-                  <span className="text-foreground">
-                    — Accurate Lip Sync
-                  </span>
+                <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight px-4 whitespace-nowrap">
+                  <span className="text-accent">Infinite Talk AI</span>
+                  <span className="text-foreground"> — Talking Photo Generator</span>
                 </h1>
 
                 <p className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-4xl mx-auto text-pretty px-4 font-light">
-                  Turn a single portrait into a lifelike talking clip. Infinite Talk AI pairs image-to-video generation with precise Lip Sync and natural expressions for creators, brands, and educators.
+                  Bring your talking photos to life with natural, expressive audio sync. Infinite Talk AI lets your photos speak with unlimited, natural video creation.
                 </p>
+
+                {/* Anchor Tab Links */}
+                <Tabs defaultValue="photo-talking" className="pt-4">
+                  <TabsList>
+                    <TabsTrigger value="photo-talking" onClick={() => {
+                      const element = document.getElementById('photo-talking')
+                      element?.scrollIntoView({ behavior: 'smooth' })
+                    }}>
+                      Photo Talking
+                    </TabsTrigger>
+                    <TabsTrigger value="video-lip-sync" onClick={() => {
+                      const element = document.getElementById('video-lip-sync')
+                      element?.scrollIntoView({ behavior: 'smooth' })
+                    }}>
+                      Video Lip Sync
+                    </TabsTrigger>
+                  </TabsList>
+                </Tabs>
           </div>
 
-          {/* Main Content: Form and Preview */}
-          <div className="grid grid-cols-1 lg:grid-cols-[0.8fr_1.2fr] gap-8 max-w-7xl mx-auto">
-            {/* Left: Form */}
-            <div className="relative">
-              <Card className="p-8 glass-strong shadow-2xl" style={{ borderColor: 'var(--accent)', borderWidth: '2px' }}>
-                <div className="flex items-center gap-3 mb-8">
-                  <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center">
-                    <FiUpload className="w-5 h-5 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-semibold text-foreground">Create Video</h3>
-                    <p className="text-sm text-muted-foreground">Upload your files and generate</p>
-                  </div>
-                </div>
-                
-                <form className="space-y-8" onSubmit={handleSubmit}>
-                  {/* Image Upload */}
-                  <div className="space-y-3">
-                    <Label htmlFor="image" className="text-base font-semibold text-foreground flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-accent"></span>
-                      Portrait Image
-                    </Label>
-                    <div className="relative">
-                      {!imagePreview && (
-                        <div className="flex items-center justify-center w-full h-16 border border-dashed border-border/50 rounded-lg bg-muted/20 hover:bg-muted/30 transition-colors pointer-events-none">
-                          <div className="flex items-center gap-3 text-sm">
-                            <div className="w-8 h-8 rounded-full bg-accent/10 flex items-center justify-center">
-                              <FiImage className="w-4 h-4 text-accent" />
-                            </div>
-                            <span className="font-medium text-foreground">Click to upload image</span>
-                            <span className="hidden sm:inline text-muted-foreground">JPG, PNG, JPEG</span>
-                          </div>
-                        </div>
-                      )}
-                      <Input
-                        ref={imageInputRef}
-                        id="image"
-                        type="file"
-                        accept="image/jpeg,image/jpg,image/png"
-                        onChange={handleImageChange}
-                        className={`absolute inset-0 w-full h-full opacity-0 cursor-pointer ${imagePreview ? 'pointer-events-none' : ''}`}
-                        style={{ zIndex: imagePreview ? -1 : 10 }}
-                      />
-                    </div>
-                    {imagePreview && (
-                      <div className="flex items-center justify-between gap-4 rounded-lg border border-border/50 bg-muted/20 p-3">
-                        <div className="flex items-center gap-3 min-w-0 flex-1">
-                          <div className="w-14 h-14 rounded-md overflow-hidden border border-border/50 bg-background flex-shrink-0">
-                            <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
-                          </div>
-                          <div className="min-w-0 flex-1">
-                            <p className="text-sm font-medium text-foreground truncate" title={imageFileName || undefined}>
-                              {imageFileName && imageFileName.length > 8 ? `${imageFileName.slice(0, 8)}...` : imageFileName}
-                            </p>
-                            <p className="text-xs text-muted-foreground mt-0.5">Image selected</p>
-                          </div>
-                        </div>
-                        <div className="flex gap-2">
-                          <Button
-                            type="button"
-                            variant="outline"
-                            size="sm"
-                            className="h-8 px-3"
-                            onClick={() => imageInputRef.current?.click()}
-                          >
-                            <FiUpload className="mr-1 h-3 w-3" /> Replace
-                          </Button>
-                          <Button
-                            type="button"
-                            variant="ghost"
-                            size="sm"
-                            className="h-8 w-8 p-0"
-                            onClick={clearImage}
-                          >
-                            <FiX className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Audio Upload */}
-                  <div className="space-y-3">
-                    <Label htmlFor="audio" className="text-base font-semibold text-foreground flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-accent"></span>
-                      Voice Audio
-                    </Label>
-                    <div className="relative">
-                      {!audioPreview && (
-                        <div className="flex items-center justify-center w-full h-16 border border-dashed border-border/50 rounded-lg bg-muted/20 hover:bg-muted/30 transition-colors pointer-events-none">
-                          <div className="flex items-center gap-3 text-sm">
-                            <div className="w-8 h-8 rounded-full bg-accent/10 flex items-center justify-center">
-                              <FiMusic className="w-4 h-4 text-accent" />
-                            </div>
-                            <span className="font-medium text-foreground">Click to upload audio</span>
-                            <span className="hidden sm:inline text-muted-foreground">MP3, WAV</span>
-                          </div>
-                        </div>
-                      )}
-                      <Input
-                        ref={audioInputRef}
-                        id="audio"
-                        type="file"
-                        accept="audio/mpeg,audio/mp3,audio/wav,audio/wave,audio/x-wav"
-                        onChange={handleAudioChange}
-                        className={`absolute inset-0 w-full h-full opacity-0 cursor-pointer ${audioPreview ? 'pointer-events-none' : ''}`}
-                        style={{ zIndex: audioPreview ? -1 : 10 }}
-                      />
-                    </div>
-                    {audioPreview && (
-                      <div className="flex items-center justify-between gap-4 rounded-lg border border-border/50 bg-muted/20 p-3">
-                        <div className="flex items-center gap-3 min-w-0 flex-1">
-                          <div className="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center flex-shrink-0">
-                            <FiMusic className="w-5 h-5 text-accent" />
-                          </div>
-                          <div className="min-w-0 flex-1 overflow-hidden">
-                            <p className="text-sm font-medium text-foreground truncate" title={audioFileName || undefined}>
-                              {audioFileName && audioFileName.length > 8 ? `${audioFileName.slice(0, 8)}...` : audioFileName}
-                            </p>
-                            <div className="flex items-center gap-3 mt-1">
-                              <p className="text-xs text-muted-foreground">
-                                {audioDuration !== null ? `${audioDuration}s` : "Loading duration..."}
-                              </p>
-                              {audioDuration !== null && (
-                                <span className="text-xs font-medium text-accent">
-                                  ~{estimatedCredits} credits
-                                </span>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                        <div className="flex gap-2">
-                          <Button
-                            type="button"
-                            variant="outline"
-                            size="sm"
-                            className="h-8 px-3"
-                            onClick={() => audioInputRef.current?.click()}
-                          >
-                            <FiUpload className="mr-1 h-3 w-3" /> Replace
-                          </Button>
-                          <Button
-                            type="button"
-                            variant="ghost"
-                            size="sm"
-                            className="h-8 w-8 p-0"
-                            onClick={clearAudio}
-                          >
-                            <FiX className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Resolution (Shadcn via Dropdown) */}
-                  <div className="space-y-3">
-                    <Label className="text-base font-semibold text-foreground flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-accent"></span>
-                      Quality
-                    </Label>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <button
-                          type="button"
-                          className="flex h-12 w-full items-center justify-between rounded-lg border border-border/50 bg-background/50 px-4 text-base shadow-sm transition-colors hover:border-accent/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/20"
-                          aria-label="Select resolution"
-                        >
-                          <span className="text-foreground font-medium">
-                            {resolution === "480p" ? "Standard (480p)" : "HD (720p)"}
-                          </span>
-                          <FiChevronDown className="w-4 h-4 text-muted-foreground" />
-                        </button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="start" className="w-[var(--radix-dropdown-menu-trigger-width)]">
-                        <DropdownMenuRadioGroup value={resolution} onValueChange={(v) => setResolution(v as any)}>
-                          <DropdownMenuRadioItem value="480p">Standard (480p)</DropdownMenuRadioItem>
-                          <DropdownMenuRadioItem value="720p">HD (720p)</DropdownMenuRadioItem>
-                        </DropdownMenuRadioGroup>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </div>
-
-                  {/* Prompt */}
-                  <div className="space-y-3">
-                    <Label htmlFor="prompt" className="text-base font-semibold text-foreground flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-accent"></span>
-                      Style Prompt
-                      <span className="text-xs text-muted-foreground font-normal">(Optional)</span>
-                    </Label>
-                    <textarea
-                      ref={promptRef}
-                      id="prompt"
-                      rows={4}
-                      placeholder="Describe the style, mood, or specific details you want in the video..."
-                      className="flex w-full rounded-lg border border-border/50 bg-background/50 px-4 py-3 text-base shadow-sm transition-colors placeholder:text-muted-foreground hover:border-accent/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/20 disabled:cursor-not-allowed disabled:opacity-50 resize-none"
-                    />
-                  </div>
-
-                  {/* Submit Button */}
-                  <div className="pt-4">
-                    <Button
-                      type="submit"
-                      className="w-full h-14 rounded-xl bg-accent text-accent-foreground font-semibold text-base hover:bg-accent/90 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-                      disabled={status === "loading"}
-                    >
-                      {status === "loading" ? (
-                        <>
-                          <FiLoader className="mr-3 h-5 w-5 animate-spin" />
-                          Generating Magic...
-                        </>
-                      ) : (
-                        <>
-                          <FiPlay className="mr-3 h-5 w-5" />
-                          Generate Talking Video
-                        </>
-                      )}
-                    </Button>
-                  </div>
-                </form>
-              </Card>
-            </div>
-
-            {/* Right: Preview/Result Area */}
-            <div className="relative lg:sticky lg:top-24 self-start">
-                <Card className="p-8 glass-strong shadow-2xl w-full" style={{ borderColor: 'var(--accent)', borderWidth: '2px' }}>
-                <div className="flex items-center gap-3 mb-8">
-                  <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center">
-                    <FiPlay className="w-5 h-5 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-semibold text-foreground">Preview</h3>
-                    <p className="text-sm text-muted-foreground">Your generated video will appear here</p>
-                  </div>
-                </div>
-
-                {/* Content Container with Fixed Height */}
-                <div className="h-[380px]">
-                  {/* Initial State */}
-                  {status === "idle" && (
-                    <div className="flex flex-col items-center justify-center h-full rounded-xl border-2 border-dashed border-border/50 glass relative overflow-hidden">
-                    <div className="relative text-center space-y-6 p-8">
-                      <div className="w-20 h-20 rounded-full bg-accent/10 flex items-center justify-center mx-auto border border-accent/20">
-                        <FiUpload className="w-10 h-10 text-accent" />
-                      </div>
-                      <div className="space-y-3">
-                        <h4 className="text-lg font-semibold text-foreground">
-                          Ready to Create
-                        </h4>
-                        <p className="text-sm text-muted-foreground max-w-sm">
-                          Upload your portrait image and voice audio to generate a lifelike talking video with perfect lip sync
-                        </p>
-                      </div>
-                      <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
-                        <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse"></span>
-                        <span>Powered by AI</span>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                  {/* Loading State */}
-                  {status === "loading" && (
-                    <div className="flex flex-col items-center justify-center h-full rounded-xl border border-border/50 glass relative overflow-hidden">
-                    <div className="relative text-center space-y-8 p-8">
-                      <div className="w-20 h-20 rounded-full bg-accent/10 flex items-center justify-center mx-auto border border-accent/20">
-                        <FiLoader className="w-10 h-10 text-accent animate-spin" />
-                      </div>
-                      <div className="space-y-4">
-                        <h4 className="text-lg font-semibold text-foreground">
-                          Creating Your Video
-                        </h4>
-                        <p className="text-sm text-muted-foreground max-w-sm">
-                          Our AI is analyzing your image and audio to generate perfect lip synchronization
-                        </p>
-                        {errorMessage && (
-                          <p className="text-sm text-destructive max-w-sm mt-2">
-                            {errorMessage}
-                          </p>
-                        )}
-                      </div>
-                      <div className="w-full max-w-sm space-y-3">
-                        <div className="flex justify-between text-xs text-muted-foreground">
-                          <span>Processing...</span>
-                          <span>{progress}%</span>
-                        </div>
-                        <div className="w-full bg-border/50 rounded-full h-2 overflow-hidden">
-                          <div 
-                            className="h-full bg-accent transition-all duration-500 ease-out" 
-                            style={{ width: `${progress}%` }}
-                          ></div>
-                        </div>
-                        <p className="text-xs text-center text-muted-foreground">
-                          {progress < 90 ? "Generating video..." : "Finalizing..."}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                  {/* Completed State */}
-                  {status === "completed" && (
-                    <div className="flex flex-col h-full gap-4">
-                      <div className="flex-1 rounded-xl overflow-hidden border border-border/50 bg-muted/20 shadow-inner flex items-center justify-center min-h-0">
-                        <video
-                          controls
-                          className="w-full h-full object-contain bg-black"
-                          poster={imagePreview || undefined}
-                          src={videoUrl || undefined}
-                        >
-                          {videoUrl ? (
-                            <source src={videoUrl} type="video/mp4" />
-                          ) : (
-                            <source src="#" type="video/mp4" />
-                          )}
-                          Your browser does not support the video tag.
-                        </video>
-                      </div>
-                      <div className="grid grid-cols-2 gap-4">
-                        <Button
-                          variant="outline"
-                          className="h-12 rounded-lg border-border/50 hover:border-accent/50 hover:bg-accent/5 font-medium"
-                        >
-                          <FiUpload className="mr-2 h-4 w-4" />
-                          Download
-                        </Button>
-                        <Button
-                          variant="outline"
-                          className="h-12 rounded-lg border-border/50 hover:border-accent/50 hover:bg-accent/5 font-medium"
-                        >
-                          <FiPlay className="mr-2 h-4 w-4" />
-                          Share
-                        </Button>
-                      </div>
-                      <div className="text-center">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="text-muted-foreground hover:text-foreground"
-                          onClick={() => setStatus("idle")}
-                        >
-                          Create Another Video
-                        </Button>
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {/* Credit Billing Rules */}
-                <div className="mt-8 pt-8 border-t border-border/50">
-                  <div className="space-y-4">
-                    <div className="flex items-center gap-2 mb-4">
-                      <FiDollarSign className="w-5 h-5 text-accent" />
-                      <h4 className="text-base font-semibold text-foreground">Credit Billing</h4>
-                    </div>
-                    
-                    {/* Estimated Credits */}
-                    <div className="flex items-center justify-between p-4 rounded-lg bg-muted/20 border border-border/50">
-                      <div>
-                        <p className="text-sm font-medium text-foreground">Estimated Credits</p>
-                        <p className="text-xs text-muted-foreground mt-1">
-                          {audioDuration
-                            ? `Based on ${audioDuration}s audio at ${resolution}`
-                            : `Minimum charge for ${resolution}`}
-                        </p>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-2xl font-bold text-accent">{estimatedCredits}</p>
-                        <p className="text-xs text-muted-foreground">credits</p>
-                      </div>
-                    </div>
-
-                    {/* Billing Rules */}
-                    <div className="space-y-2 text-sm">
-                      <div className="flex items-start gap-2">
-                        <span className="w-1.5 h-1.5 rounded-full bg-accent mt-1.5 flex-shrink-0"></span>
-                        <div>
-                          <span className="font-medium text-foreground">Standard (480p):</span>
-                          <span className="text-muted-foreground"> 1 credit/second, minimum 5 credits</span>
-                        </div>
-                      </div>
-                      <div className="flex items-start gap-2">
-                        <span className="w-1.5 h-1.5 rounded-full bg-accent mt-1.5 flex-shrink-0"></span>
-                        <div>
-                          <span className="font-medium text-foreground">HD (720p):</span>
-                          <span className="text-muted-foreground"> 2 credits/second, minimum 10 credits</span>
-                        </div>
-                      </div>
-                      <div className="flex items-start gap-2">
-                        <span className="w-1.5 h-1.5 rounded-full bg-accent mt-1.5 flex-shrink-0"></span>
-                        <div>
-                          <span className="font-medium text-foreground">Maximum duration:</span>
-                          <span className="text-muted-foreground"> 600 seconds (10 minutes)</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </Card>
-            </div>
+          {/* Main Content: New Layout */}
+          <div id="photo-talking" className="mb-16">
+            <TalkingPhotoLayout
+              imagePreview={imagePreview}
+              imageFileName={imageFileName}
+              imageFile={imageFile}
+              audioPreview={audioPreview}
+              audioFileName={audioFileName}
+              audioFile={audioFile}
+              audioDuration={audioDuration}
+              resolution={resolution}
+              estimatedCredits={estimatedCredits}
+              status={status}
+              onImageChange={handleImageChange}
+              onAudioChange={handleAudioChange}
+              onResolutionChange={setResolution}
+              onClearImage={clearImage}
+              onClearAudio={clearAudio}
+              onSubmit={handleSubmit}
+              imageInputRef={imageInputRef}
+              audioInputRef={audioInputRef}
+            />
           </div>
         </div>
       </div>
