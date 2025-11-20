@@ -1634,7 +1634,14 @@ export const TalkingPhotoLayout = ({
               {status === "loading" || isSubmitting ? (
                 <>Generating...</>
               ) : (
-                <>Generate ({estimatedCredits > 0 ? `-${estimatedCredits}` : ""} Credit{estimatedCredits !== 1 ? "s" : ""})</>
+                (() => {
+                  const minCredits = resolution === "480p" ? 5 : 10
+                  if (audioTab === "input") {
+                    return <>Generate (minimum -{minCredits} credits)</>
+                  }
+                  const displayCredits = estimatedCredits || minCredits
+                  return <>Generate (-{displayCredits} Credit{displayCredits !== 1 ? "s" : ""})</>
+                })()
               )}
             </Button>
           </form>
