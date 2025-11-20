@@ -122,6 +122,9 @@ export const TalkingPhotoLayout = ({
   const [pausePopoverOpen, setPausePopoverOpen] = useState(false)
   const editableDivRef = useRef<HTMLDivElement | null>(null)
 
+  // Submission state
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
   // Load avatars on mount
   useEffect(() => {
     const loadAvatars = async () => {
@@ -540,74 +543,110 @@ export const TalkingPhotoLayout = ({
       return
     }
 
-    let finalAudioFile: File | null = audioFile
-    let finalAudioUrl: string | null = null
-    let finalAudioDuration: number | null = audioDuration
+    setIsSubmitting(true)
 
-    // If tab is "input" and no audio file, check if we have TTS audio or need to generate
-    if (audioTab === "input" && !audioFile) {
-      // Check if we have input text
-      const textToSend = editableDivRef.current ? getTextFromEditableDiv() : inputText.trim()
-      if (!textToSend.trim()) {
-        toast.error("Please enter some text")
+    try {
+      let finalAudioFile: File | null = audioFile
+      let finalAudioUrl: string | null = null
+      let finalAudioDuration: number | null = audioDuration
+
+      // Only TTS audio can have URL (HTTP URL), upload and record audio only have File
+      // If tab is "input" and no audio file, check if we have TTS audio or need to generate
+      if (audioTab === "input" && !audioFile) {
+        // Check if we have input text
+        const textToSend = editableDivRef.current ? getTextFromEditableDiv() : inputText.trim()
+        if (!textToSend.trim()) {
+          toast.error("Please enter some text")
+          setIsSubmitting(false)
+          return
+        }
+
+        // If TTS audio already exists, use it
+        if (ttsAudioBlob && ttsAudioUrl) {
+          // TTS audio exists - check if it's HTTP URL or blob URL
+          if (ttsAudioUrl.startsWith("http")) {
+            // HTTP URL - will download later
+            finalAudioUrl = ttsAudioUrl
+          } else {
+            // Blob URL - convert to File directly
+            finalAudioFile = new File([ttsAudioBlob], `tts-${Date.now()}.mp3`, { type: ttsAudioBlob.type })
+          }
+          finalAudioDuration = ttsAudioDuration > 0 ? ttsAudioDuration : audioDuration
+        } else {
+          // Generate new TTS audio (returns HTTP URL)
+          try {
+            setTtsLoading(true)
+            // toast.loading("Generating audio from text...", { id: "tts-generating" })
+            const audioUrl = await generateTTSAudio()
+            finalAudioUrl = audioUrl
+            
+            // Fetch audio to get duration and blob
+            const audioResponse = await fetch(audioUrl)
+            const audioBlob = await audioResponse.blob()
+            const audio = new Audio(audioUrl)
+            
+            await new Promise((resolve) => {
+              audio.addEventListener("loadedmetadata", () => {
+                finalAudioDuration = audio.duration
+                resolve(null)
+              })
+              audio.addEventListener("error", resolve)
+            })
+
+            // Update TTS states to change UI to show audio result
+            setTtsAudioUrl(audioUrl)
+            setTtsAudioBlob(audioBlob)
+            setTtsAudioDuration(finalAudioDuration || 0)
+            setTtsLoading(false)
+
+            // toast.success("Audio generated successfully", { id: "tts-generating" })
+          } catch (error) {
+            setTtsLoading(false)
+            toast.error(error instanceof Error ? error.message : "Failed to generate audio", { id: "tts-generating" })
+            setIsSubmitting(false)
+            return
+          }
+        }
+      }
+
+      // For non-input tabs (upload/record), only check audioFile (no URL)
+      if (audioTab !== "input" && !finalAudioFile) {
+        toast.error("Please provide audio")
+        setIsSubmitting(false)
         return
       }
 
-      // If TTS audio already exists, use it
-      if (ttsAudioBlob && ttsAudioUrl) {
-        // Use existing TTS audio
-        // If it's a blob URL, convert to File; if it's an HTTP URL, use it directly
-        if (ttsAudioUrl.startsWith("http")) {
-          finalAudioUrl = ttsAudioUrl
-        } else if (ttsAudioUrl.startsWith("blob:")) {
-          // Convert blob URL to File
-          finalAudioFile = new File([ttsAudioBlob], `tts-${Date.now()}.mp3`, { type: ttsAudioBlob.type })
-        } else {
-          // Fallback: convert blob to File
-          finalAudioFile = new File([ttsAudioBlob], `tts-${Date.now()}.mp3`, { type: ttsAudioBlob.type })
-        }
-        finalAudioDuration = ttsAudioDuration > 0 ? ttsAudioDuration : audioDuration
-      } else {
-        // Generate new TTS audio
+      // Handle audio - only TTS audio can have HTTP URL, upload/record audio are already File objects
+      let finalAudioFileForSubmit: File
+      if (finalAudioFile) {
+        // Upload/record audio or TTS blob URL - already a File
+        finalAudioFileForSubmit = finalAudioFile
+      } else if (finalAudioUrl) {
+        // TTS HTTP URL - download and convert to File
         try {
-          toast.loading("Generating audio from text...", { id: "tts-generating" })
-          const audioUrl = await generateTTSAudio()
-          finalAudioUrl = audioUrl
-          
-          // Fetch audio to get duration
-          const audioResponse = await fetch(audioUrl)
+          toast.loading("Downloading audio...", { id: "download-audio" })
+          const audioResponse = await fetch(finalAudioUrl)
+          if (!audioResponse.ok) {
+            throw new Error("Failed to download audio")
+          }
           const audioBlob = await audioResponse.blob()
-          const audio = new Audio(audioUrl)
-          
-          await new Promise((resolve) => {
-            audio.addEventListener("loadedmetadata", () => {
-              finalAudioDuration = audio.duration
-              resolve(null)
-            })
-            audio.addEventListener("error", resolve)
-          })
-
-          // Convert to File for form data
-          finalAudioFile = new File([audioBlob], `tts-${Date.now()}.mp3`, { type: audioBlob.type })
-          toast.success("Audio generated successfully", { id: "tts-generating" })
+          const audioFileName = finalAudioUrl.split("/").pop()?.split("?")[0] || "tts-audio.mp3"
+          finalAudioFileForSubmit = new File([audioBlob], audioFileName, { type: audioBlob.type })
+          // toast.success("Audio downloaded", { id: "download-audio" })
         } catch (error) {
-          toast.error(error instanceof Error ? error.message : "Failed to generate audio", { id: "tts-generating" })
+          toast.error(error instanceof Error ? error.message : "Failed to download audio", { id: "download-audio" })
+          setIsSubmitting(false)
           return
         }
+      } else {
+        toast.error("Invalid audio")
+        setIsSubmitting(false)
+        return
       }
-    }
 
-    // For non-input tabs, check if audio file exists
-    if (audioTab !== "input" && !finalAudioFile && !finalAudioUrl) {
-      toast.error("Please provide audio")
-      return
-    }
-
-    try {
-      // Convert URLs to Files if needed
+      // Create form data with File objects
       let finalImageFile: File = imageFile!
-      let finalAudioFileForSubmit: File
-
+      
       // Handle image - convert URL to File if needed
       if (!imageFile && imagePreview && imagePreview.startsWith("http")) {
         try {
@@ -622,52 +661,15 @@ export const TalkingPhotoLayout = ({
           toast.success("Image downloaded", { id: "download-image" })
         } catch (error) {
           toast.error(error instanceof Error ? error.message : "Failed to download image", { id: "download-image" })
+          setIsSubmitting(false)
           return
         }
       } else if (!imageFile) {
         toast.error("Invalid image")
+        setIsSubmitting(false)
         return
       }
 
-      // Handle audio - convert URL to File if needed
-      if (finalAudioFile) {
-        finalAudioFileForSubmit = finalAudioFile
-      } else if (finalAudioUrl) {
-        try {
-          toast.loading("Downloading audio...", { id: "download-audio" })
-          const audioResponse = await fetch(finalAudioUrl)
-          if (!audioResponse.ok) {
-            throw new Error("Failed to download audio")
-          }
-          const audioBlob = await audioResponse.blob()
-          const audioFileName = finalAudioUrl.split("/").pop()?.split("?")[0] || "audio.mp3"
-          finalAudioFileForSubmit = new File([audioBlob], audioFileName, { type: audioBlob.type })
-          toast.success("Audio downloaded", { id: "download-audio" })
-        } catch (error) {
-          toast.error(error instanceof Error ? error.message : "Failed to download audio", { id: "download-audio" })
-          return
-        }
-      } else if (ttsAudioUrl && ttsAudioUrl.startsWith("http")) {
-        try {
-          toast.loading("Downloading audio...", { id: "download-audio" })
-          const audioResponse = await fetch(ttsAudioUrl)
-          if (!audioResponse.ok) {
-            throw new Error("Failed to download audio")
-          }
-          const audioBlob = await audioResponse.blob()
-          const audioFileName = ttsAudioUrl.split("/").pop()?.split("?")[0] || "tts-audio.mp3"
-          finalAudioFileForSubmit = new File([audioBlob], audioFileName, { type: audioBlob.type })
-          toast.success("Audio downloaded", { id: "download-audio" })
-        } catch (error) {
-          toast.error(error instanceof Error ? error.message : "Failed to download audio", { id: "download-audio" })
-          return
-        }
-      } else {
-        toast.error("Invalid audio")
-        return
-      }
-
-      // Create form data with File objects
       const formData = new FormData()
       formData.append("image", finalImageFile)
       formData.append("audio", finalAudioFileForSubmit)
@@ -693,10 +695,12 @@ export const TalkingPhotoLayout = ({
         onTaskCreated(data.task_id)
       }
 
-      toast.success("Video task created successfully")
+      // toast.success("Video task created successfully") - handled by parent
     } catch (error) {
       console.error("Error submitting task:", error)
       toast.error(error instanceof Error ? error.message : "Failed to submit task")
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -1622,12 +1626,12 @@ export const TalkingPhotoLayout = ({
               type="submit"
               className="w-full h-14 rounded-xl bg-accent text-accent-foreground font-semibold text-base hover:bg-accent/90 transition-all duration-300 shadow-lg hover:shadow-xl"
               disabled={
-                status === "loading" || 
+                status === "loading" || isSubmitting ||
                 !imageFile || 
                 (audioTab === "input" ? !inputText.trim() : !audioFile && !ttsAudioBlob)
               }
             >
-              {status === "loading" ? (
+              {status === "loading" || isSubmitting ? (
                 <>Generating...</>
               ) : (
                 <>Generate ({estimatedCredits > 0 ? `-${estimatedCredits}` : ""} Credit{estimatedCredits !== 1 ? "s" : ""})</>

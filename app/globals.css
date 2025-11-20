@@ -233,6 +233,19 @@
     @apply text-foreground flex-1;
   }
   
+  /* Fix loading spinner wrapper - override position absolute */
+  [data-sonner-toast][data-type="loading"] .sonner-loading-wrapper {
+    position: relative !important;
+    inset: unset !important;
+    /* width: auto !important;
+    height: auto !important; */
+    z-index: auto !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+  }
+  
   /* Ensure loading spinner and text are properly aligned */
   [data-sonner-toast][data-type="loading"] > div {
     @apply flex items-center gap-3;

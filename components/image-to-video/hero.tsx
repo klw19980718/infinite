@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
-import { FiX, FiImage, FiMusic, FiChevronDown, FiDollarSign } from "react-icons/fi"
+import { FiX, FiImage, FiMusic, FiChevronDown, FiDollarSign, FiCheck } from "react-icons/fi"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,6 +18,7 @@ import { TalkingPhotoLayout } from "./TalkingPhotoLayout"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 export const ImageToVideoHero = () => {
+
   const [imagePreview, setImagePreview] = useState<string | null>(null)
   const [imageFileName, setImageFileName] = useState<string | null>(null)
   const [imageFile, setImageFile] = useState<File | null>(null)
@@ -277,8 +278,28 @@ export const ImageToVideoHero = () => {
               audioInputRef={audioInputRef}
               onTaskCreated={(taskId) => {
                 setTaskId(taskId)
-                setStatus("loading")
-                pollTaskResult(taskId)
+                // Don't poll, just show success message and guide to profile
+                toast.custom((t) => (
+                  <div className="bg-background border border-border rounded-xl shadow-lg p-4 w-[350px] flex items-start gap-3 relative pointer-events-auto">
+                    <div className="flex-shrink-0 w-6 h-6 rounded-full bg-green-500 flex items-center justify-center mt-0.5">
+                      <FiCheck className="w-4 h-4 text-white" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-semibold text-foreground text-[15px] leading-none mb-1.5">Create Success</h3>
+                      <p className="text-muted-foreground text-[13px] leading-relaxed">
+                        Close window won't stop generation. <br />
+                        Check progress in <button onClick={() => window.location.href = '/profile'} className="text-blue-500 hover:text-blue-600 font-medium hover:underline">My Creations</button>
+                      </p>
+                    </div>
+                    <button onClick={() => toast.dismiss(t)} className="absolute top-3 right-3 text-muted-foreground hover:text-foreground transition-colors">
+                      <FiX className="w-4 h-4" />
+                    </button>
+                  </div>
+                ), {
+                  duration: Infinity,
+                })
+                // Reset status to idle so user can create another one
+                setStatus("idle")
               }}
             />
           </div>

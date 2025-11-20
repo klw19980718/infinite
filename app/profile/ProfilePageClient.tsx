@@ -197,6 +197,7 @@ export function ProfilePageClient() {
 
   // Confirm delete work
   const handleDeleteConfirm = async () => {
+
     if (!workToDelete || !profile) return
 
     setDeleteLoading(true)
@@ -270,6 +271,7 @@ export function ProfilePageClient() {
 
   // Handle download work
   const handleDownloadWork = async (videoUrl: string) => {
+
     if (!videoUrl) return
     
     try {
@@ -350,6 +352,9 @@ export function ProfilePageClient() {
   }
 
 
+  // Note: Auto-polling for works has been removed.
+  // Users can manually refresh works from the UI when needed.
+
   if (loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -377,214 +382,255 @@ export function ProfilePageClient() {
       <Beams />
 
       {/* Content */}
-      <section className="relative z-10 py-16 px-4">
-        <div className="max-w-5xl mx-auto">
-          <div className="mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold text-accent mb-3">
+      <section className="relative z-10 py-32 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-[1600px] mx-auto">
+          <div className="mb-8">
+            <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-2">
               My Profile
             </h1>
-            <p className="text-muted-foreground text-lg">Manage your account and preferences</p>
+            <p className="text-muted-foreground">Manage your account and view your creations</p>
           </div>
 
-          <Card className="mb-8 glass-strong overflow-hidden">
-            <CardContent className="p-8">
-              <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
-                {/* Avatar */}
-                <div className="relative">
-                  <Avatar className="w-28 h-28 border-4 border-border">
-                    <AvatarImage src={profile.avatar_url || "/placeholder.svg"} alt={profile.display_name} />
-                    <AvatarFallback className="text-3xl bg-accent/20 text-accent">
-                      {profile.display_name?.charAt(0).toUpperCase() || "U"}
-                    </AvatarFallback>
-                  </Avatar>
-                </div>
+          <div className="grid grid-cols-1 lg:grid-cols-[260px_minmax(0,1fr)] gap-8">
+            {/* Left Sidebar - User Info & Credits (compact) */}
+            <div className="space-y-6 lg:max-w-xs">
+              {/* User Card */}
+              <Card className="glass-strong border-border overflow-hidden">
+                <CardContent className="p-6">
+                  <div className="flex flex-col items-center text-center gap-2">
+                    <Avatar className="w-16 h-16 border border-accent/20 mb-2">
+                      <AvatarImage src={profile.avatar_url || "/placeholder.svg"} alt={profile.display_name} />
+                      <AvatarFallback className="text-xl bg-accent/20 text-accent">
+                        {profile.display_name?.charAt(0).toUpperCase() || "U"}
+                      </AvatarFallback>
+                    </Avatar>
+                    
+                    <h2 className="text-lg font-semibold text-foreground">{profile.display_name}</h2>
+                    <p className="text-xs text-muted-foreground mb-1 font-mono break-all">{profile.email}</p>
+                    
+                    <div className="flex gap-2 mt-1">
+                      <span className="px-2.5 py-0.5 bg-accent/10 text-accent rounded-full text-xs font-medium border border-accent/20">
+                        {profile.credits > 1000 ? "Premium" : "Standard"}
+                      </span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
 
-                 <div className="flex-1 text-center md:text-left">
-                   <h2 className="text-3xl font-bold text-foreground mb-2">{profile.display_name}</h2>
-                   <p className="text-muted-foreground mb-4 font-mono text-sm">{profile.email}</p>
-                   <div className="flex flex-wrap gap-2 justify-center md:justify-start">
-                     <span className="px-3 py-1 bg-accent/20 text-accent rounded-full text-sm border border-accent/30">
-                       Active Member
-                     </span>
-                     <span className="px-3 py-1 bg-accent/20 text-accent rounded-full text-sm border border-accent/30">
-                       {profile.credits > 1000 ? "Premium" : "Standard"}
-                     </span>
-                   </div>
-                 </div>
+              {/* Credits Card (small) */}
+              <Card className="glass-strong border-border">
+                <CardHeader className="pb-2">
+                  <CardTitle className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+                    <FiDollarSign className="w-4 h-4 text-accent" />
+                    Available Credits
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="mb-3">
+                    <p className="text-2xl font-bold text-foreground">
+                      {profile.credits.toLocaleString()}
+                    </p>
+                  </div>
+                  <div className="space-y-2">
+                    <Button
+                      className="w-full bg-accent text-accent-foreground hover:bg-accent/90"
+                      onClick={() => router.push("/pricing")}
+                    >
+                      Buy More Credits
+                    </Button>
+                    <Button
+                      variant="outline"
+                      className="w-full border-border hover:bg-accent/10"
+                      onClick={() => setHistoryOpen(true)}
+                    >
+                      <FiClock className="w-4 h-4 mr-2" />
+                      History
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
 
-              </div>
-            </CardContent>
-          </Card>
-
-
-          <Card className="mb-8 glass-strong">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-3 text-foreground text-xl">
-                <div className="p-3 bg-accent/20 rounded-xl">
-                  <FiDollarSign className="w-6 h-6 text-accent" />
-                </div>
-                Available Credits
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-                <div>
-                  <p className="text-5xl font-bold text-accent mb-3">
-                    {profile.credits.toLocaleString()}
-                  </p>
-                  <p className="text-muted-foreground">Credits available for video generation</p>
-                </div>
-                <div className="flex flex-wrap gap-3">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="border-border hover:border-accent hover:bg-accent/10"
-                    onClick={() => setHistoryOpen(true)}
-                  >
-                    <FiClock className="w-4 h-4 mr-2" />
-                    View History
-                  </Button>
-                   <Button
-                     size="sm"
-                     onClick={() => router.push("/pricing")}
-                     className="bg-accent text-accent-foreground hover:bg-accent/90"
-                   >
-                     Buy More Credits
-                   </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* User Works */}
-          <Card className="mb-8 glass">
-            <CardHeader>
-              <CardTitle className="text-foreground text-xl flex items-center gap-2">
-                <FiPlayCircle className="w-5 h-5 text-accent" />
-                My Works (last 7 days)
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              {worksLoading ? (
-                <div className="py-12 text-center text-muted-foreground flex items-center justify-center gap-2">
-                  <FiLoader className="animate-spin" /> Loading works...
-                </div>
-              ) : works && works.length > 0 ? (
-                <>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {works.map((w) => {
-                      const s = formatStatus(w.status)
-                      return (
-                        <div key={w.id} className="rounded-xl border border-border glass overflow-hidden group">
-                          <div className="aspect-video bg-black/60 flex items-center justify-center relative">
-                            {(w.status === "processing" || w.status === "pending") && (
-                              <div className="absolute top-2 right-2 z-10">
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  className="h-8 w-8 p-0 bg-black/80 border-border hover:bg-black/90 text-foreground"
-                                  onClick={() => handleRefreshWork(w.id, w.wavespeed_task_id)}
-                                  title="Refresh status"
-                                >
-                                  <FiRefreshCw className="w-4 h-4" />
-                                </Button>
+            {/* Main Content - Works (expanded panel) */}
+            <div className="w-full">
+              <Card className="glass h-full min-h-[600px] border-border">
+                <CardHeader className="border-b border-border/50">
+                  <div className="flex items-center justify-between gap-4">
+                    <CardTitle className="text-xl flex items-center gap-2 text-foreground">
+                      <FiPlayCircle className="w-5 h-5 text-accent" />
+                      My Creations
+                    </CardTitle>
+                    <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                      <div className="flex items-center gap-1">
+                        <FiClock className="w-3 h-3" />
+                        <span>Last 7 days</span>
+                      </div>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="h-7 px-3 border-border hover:bg-accent/10"
+                        onClick={() => profile && fetchWorks(profile.id, worksPage)}
+                        disabled={worksLoading}
+                      >
+                        <FiRefreshCw className="w-3 h-3 mr-1" />
+                        Refresh
+                      </Button>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent className="p-6">
+                  {worksLoading ? (
+                    <div className="py-20 text-center text-muted-foreground flex flex-col items-center justify-center gap-3">
+                      <FiLoader className="w-8 h-8 animate-spin text-accent" />
+                      <p>Loading your masterpieces...</p>
+                    </div>
+                  ) : works && works.length > 0 ? (
+                    <>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-4">
+                        {works.map((w) => {
+                          const s = formatStatus(w.status)
+                          return (
+                            <div
+                              key={w.id}
+                              className="rounded-2xl border border-border/70 bg-card/40 hover:bg-card/70 transition-all duration-200 overflow-hidden group flex flex-col shadow-sm hover:shadow-md"
+                            >
+                              <div className="aspect-video bg-black/40 flex items-center justify-center relative overflow-hidden border-b border-border/50">
+                                {(w.status === "processing" || w.status === "pending") && (
+                                  <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/60 backdrop-blur-sm z-10">
+                                    <div className="relative">
+                                      <div className="absolute inset-0 animate-ping rounded-full bg-accent/20"></div>
+                                      <div className="relative bg-card rounded-full p-3 border border-accent/20">
+                                        <FiLoader className="w-6 h-6 text-accent animate-spin" />
+                                      </div>
+                                    </div>
+                                    <p className="text-accent text-xs font-medium mt-3 animate-pulse">Generating...</p>
+                                  </div>
+                                )}
+                                
+                                {w.status === "completed" && w.output_video_url ? (
+                                  <video
+                                    src={w.output_video_url}
+                                    className="w-full h-full object-contain"
+                                    controls
+                                    preload="metadata"
+                                  />
+                                ) : w.status === "failed" ? (
+                                  <div className="text-red-400 flex flex-col items-center gap-2 text-xs sm:text-sm">
+                                    <FiAlertTriangle className="w-8 h-8 opacity-50" /> 
+                                    <span>Generation Failed</span>
+                                  </div>
+                                ) : (
+                                  // Fallback for other states if not covered above
+                                  null
+                                )}
                               </div>
-                            )}
-                            {w.status === "completed" && w.output_video_url ? (
-                              <>
-                                <video src={w.output_video_url} className="w-full h-full object-contain" controls preload="metadata" />
-                  
-                              </>
-                            ) : w.status === "failed" ? (
-                              <div className="text-red-400 flex items-center gap-2 text-sm"><FiAlertTriangle /> Failed</div>
-                            ) : (
-                              <div className="text-muted-foreground flex items-center gap-2 text-sm"><FiLoader className="animate-spin" /> {s.label}</div>
-                            )}
+                              
+                              <div className="p-3 flex-1 flex flex-col">
+                                <div className="flex items-center justify-between mb-2 gap-2">
+                                  <span className={`text-xs font-medium px-2 py-0.5 rounded-full bg-card border ${
+                                    w.status === 'completed' ? 'text-emerald-400 border-emerald-400/20' :
+                                    w.status === 'failed' ? 'text-red-400 border-red-400/20' :
+                                    'text-accent border-accent/20'
+                                  }`}>
+                                    {s.label}
+                                  </span>
+                                  <span className="text-[10px] text-muted-foreground font-mono uppercase border border-border px-1.5 rounded whitespace-nowrap">
+                                    {w.resolution || "HD"}
+                                  </span>
+                                </div>
+                                
+                                <div className="space-y-1.5 mb-3 flex-1 text-[11px] text-muted-foreground">
+                                  <div className="flex justify-between gap-2">
+                                    <span className="opacity-80">Created</span>
+                                    <span className="font-mono">{new Date(w.created_at).toLocaleDateString()}</span>
+                                  </div>
+                           
+                                </div>
+
+                                {/* Action buttons */}
+                                <div className="flex items-center gap-2 pt-2 border-t border-border/40 mt-auto">
+                                  {w.status === "completed" && w.output_video_url && (
+                                    <Button
+                                      variant="ghost"
+                                      size="sm"
+                                      className="h-8 px-2 text-[11px] flex-1 justify-center hover:bg-accent/10 hover:text-accent"
+                                      onClick={() => handleDownloadWork(w.output_video_url)}
+                                    >
+                                      <FiDownload className="w-3 h-3 mr-1.5" />
+                                      Download
+                                    </Button>
+                                  )}
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    className="h-8 px-2 text-[11px] flex-1 justify-center hover:bg-red-500/10 hover:text-red-400 text-muted-foreground"
+                                    onClick={() => handleDeleteClick(w.id)}
+                                  >
+                                    <FiTrash2 className="w-3 h-3 mr-1.5" />
+                                    Delete
+                                  </Button>
+                                </div>
+                              </div>
+                            </div>
+                          )
+                        })}
+                      </div>
+                      
+                      {/* Pagination */}
+                      {worksTotal > 0 && (
+                        <div className="flex items-center justify-between pt-6 border-t border-border/50 mt-8">
+                          <div className="text-sm text-muted-foreground">
+                            Showing {((worksPage - 1) * WORKS_PER_PAGE) + 1} to {Math.min(worksPage * WORKS_PER_PAGE, worksTotal)} of {worksTotal} works
                           </div>
-                          <div className="p-3 space-y-2">
-                            <div className="flex items-center justify-between">
-                              <span className={`text-xs font-medium ${s.color}`}>{s.label}</span>
-                              <span className="text-xs text-muted-foreground">{w.resolution?.toUpperCase?.() || ""}</span>
-                            </div>
-                            <div className="text-xs text-muted-foreground">
-                              Created: {new Date(w.created_at).toLocaleString()}
-                            </div>
-                            <div className="text-xs text-muted-foreground">
-                              Expires: {remainingLabel(w.expires_at, w.created_at)}
-                            </div>
-                            {/* Action buttons */}
-                            <div className="flex items-center gap-2 pt-2 border-t border-border">
-                              {w.status === "completed" && w.output_video_url && (
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  className="h-8 px-3 text-xs border-border hover:border-accent hover:bg-accent/10"
-                                  onClick={() => handleDownloadWork(w.output_video_url)}
-                                >
-                                  <FiDownload className="w-3 h-3 mr-1" />
-                                  Download
-                                </Button>
-                              )}
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                className="h-8 px-3 text-xs border-red-500/30 hover:border-red-500/50 hover:bg-red-500/10 bg-transparent text-red-400"
-                                onClick={() => handleDeleteClick(w.id)}
-                              >
-                                <FiTrash2 className="w-3 h-3 mr-1" />
-                                Delete
-                              </Button>
-                            </div>
+                          <div className="flex items-center gap-2">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="h-8 px-3 border-border hover:bg-accent/10"
+                              onClick={() => {
+                                const newPage = Math.max(1, worksPage - 1)
+                                setWorksPage(newPage)
+                                if (profile) fetchWorks(profile.id, newPage)
+                              }}
+                              disabled={worksPage === 1 || worksLoading}
+                            >
+                              <FiChevronLeft className="w-4 h-4 mr-1" />
+                              Previous
+                            </Button>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="h-8 px-3 border-border hover:bg-accent/10"
+                              onClick={() => {
+                                const newPage = worksPage + 1
+                                setWorksPage(newPage)
+                                if (profile) fetchWorks(profile.id, newPage)
+                              }}
+                              disabled={worksPage * WORKS_PER_PAGE >= worksTotal || worksLoading}
+                            >
+                              Next
+                              <FiChevronRight className="w-4 h-4 ml-1" />
+                            </Button>
                           </div>
                         </div>
-                      )
-                    })}
-                  </div>
-                  
-                  {/* Pagination */}
-                  {worksTotal > 0 && (
-                    <div className="flex items-center justify-between pt-6 border-t border-border mt-6">
-                      <div className="text-sm text-muted-foreground">
-                        Showing {((worksPage - 1) * WORKS_PER_PAGE) + 1} to {Math.min(worksPage * WORKS_PER_PAGE, worksTotal)} of {worksTotal} works
+                      )}
+                    </>
+                  ) : (
+                    <div className="py-20 text-center">
+                      <div className="w-16 h-16 bg-muted/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <FiPlayCircle className="w-8 h-8 text-muted-foreground/50" />
                       </div>
-                      <div className="flex items-center gap-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="h-8 px-3 border-border hover:border-accent hover:bg-accent/10"
-                          onClick={() => {
-                            const newPage = Math.max(1, worksPage - 1)
-                            setWorksPage(newPage)
-                            if (profile) fetchWorks(profile.id, newPage)
-                          }}
-                          disabled={worksPage === 1 || worksLoading}
-                        >
-                          <FiChevronLeft className="w-4 h-4 mr-1" />
-                          Previous
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="h-8 px-3 border-border hover:border-accent hover:bg-accent/10"
-                          onClick={() => {
-                            const newPage = worksPage + 1
-                            setWorksPage(newPage)
-                            if (profile) fetchWorks(profile.id, newPage)
-                          }}
-                          disabled={worksPage * WORKS_PER_PAGE >= worksTotal || worksLoading}
-                        >
-                          Next
-                          <FiChevronRight className="w-4 h-4 ml-1" />
-                        </Button>
-                      </div>
+                      <h3 className="text-lg font-medium text-foreground mb-2">No creations yet</h3>
+                      <p className="text-muted-foreground mb-6 max-w-xs mx-auto">Create your first talking photo video to see it here.</p>
+                      <Button onClick={() => router.push("/infinite-talk-ai/image-to-video")} className="bg-accent text-accent-foreground hover:bg-accent/90">
+                        Create New Video
+                      </Button>
                     </div>
                   )}
-                </>
-              ) : (
-                <div className="py-12 text-center text-muted-foreground">No works yet</div>
-              )}
-            </CardContent>
-          </Card>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
 
           {/* Delete Confirmation Dialog */}
           <Dialog 
