@@ -217,6 +217,59 @@ alwaysApply: true
 
 **环境变量**: `WAVESPEED_KEY`
 
+#### POST `/api/speech/text-to-speech`
+**功能**: 使用 MiniMax Speech 02 Hd 将文本转换为语音（通过 WaveSpeedAI API）  
+**请求方式**: `application/json`  
+**请求体**:
+```typescript
+{
+  text: string (必需) - 要转换为语音的文本（最大 50,000 字符）
+  voice_id?: string (可选) - 语音 ID
+  speed?: number (可选, 默认: 1.0) - 语音速度，范围: 0.5-2.0
+  vol?: number (可选, 默认: 1.0) - 语音音量，范围: 0-10
+  pitch?: number (可选, 默认: 0) - 语音音调，范围: -12 到 12
+  emotion?: "happy" | "sad" | "angry" | "fearful" | "disgusted" | "surprised" | "calm" | "fluent" (可选) - 情感
+  language_boost?: string (可选) - 语言增强，例如: "auto", "Chinese", "English"
+  audio_setting?: {
+    audio_sample_rate?: 8000 | 16000 | 22050 | 24000 | 32000 | 44100 (可选, 默认: 32000)
+    bitrate?: 32000 | 64000 | 128000 | 256000 (可选, 默认: 128000, 仅 mp3)
+    format?: "mp3" | "pcm" | "flac" (可选, 默认: "mp3")
+    channel?: number (可选, 默认: 1)
+  }
+  wait?: boolean (可选, 默认: false) - 是否等待结果生成完成再返回
+}
+```
+**返回**:
+```typescript
+{
+  ok: true,
+  task_id: string,
+  status: string,
+  outputs?: string[],  // 仅在 wait=true 时存在
+  urls: {
+    get: string  // 获取任务结果的 URL
+  }
+}
+// 错误情况：
+{
+  ok: false,
+  code: 'UNAUTHORIZED' | 'MISSING_TEXT' | 'TEXT_TOO_LONG' | 'INVALID_SPEED' | 'INVALID_VOLUME' | 'INVALID_PITCH' | 'INVALID_EMOTION' | 'WAVESPEED_ERROR' | 'INTERNAL_ERROR',
+  message: string
+}
+```
+**流程**:
+1. 从 cookie 验证用户身份（使用 `createServerSupabaseClientForRouteHandler`）
+2. 验证必需字段（text）
+3. 验证可选参数范围（speed, vol, pitch, emotion）
+4. 调用 WaveSpeedAI API 提交文本转语音任务（模型: minimax-speech-02-hd）
+5. 返回任务 ID 和状态
+
+**认证方式**: 使用 cookie-based 认证，从 `NextRequest` 读取用户 session
+
+**环境变量**: `WAVESPEED_KEY`
+
+**参考文档**: https://wavespeed.ai/docs/docs-api/minimax/minimax-speech-02-hd
+
 #### DELETE `/api/video/delete`
 **功能**: 删除用户视频生成任务（作品）  
 **查询参数**:

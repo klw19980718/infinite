@@ -209,58 +209,8 @@ export const ImageToVideoHero = () => {
     poll()
   }
 
-  // Handle form submission
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-
-    if (!imageFile || !audioFile) {
-      toast.error("Please upload both image and audio files")
-      return
-    }
-
-    setStatus("loading")
-    setErrorMessage(null)
-
-    try {
-      const formData = new FormData()
-      formData.append("image", imageFile!)
-      formData.append("audio", audioFile!)
-      formData.append("resolution", resolution)
-      
-      // Send audio duration to backend
-      if (audioDuration !== null) {
-        formData.append("audio_duration", audioDuration.toString())
-      }
-      
-      const prompt = promptRef.current?.value.trim()
-      if (prompt) {
-        formData.append("prompt", prompt)
-      }
-
-      const response = await fetch("/api/video/image-to-video", {
-        method: "POST",
-        credentials: "include",
-        body: formData,
-      })
-
-      const data = await response.json()
-
-      if (!data.ok) {
-        throw new Error(data.message || "Failed to create video task")
-      }
-
-      setTaskId(data.task_id)
-      
-      // Start polling for results
-      pollTaskResult(data.task_id)
-    } catch (error) {
-      console.error("Error submitting task:", error)
-      const errorMsg = error instanceof Error ? error.message : "Failed to submit task"
-      setErrorMessage(errorMsg)
-      setStatus("idle")
-      toast.error(errorMsg)
-    }
-  }
+  // Note: TalkingPhotoLayout has its own handleSubmit that handles all cases
+  // including input tab with TTS generation, so we don't need a separate handleSubmit here
 
   return (
     <section className="relative min-h-screen overflow-hidden py-32">
@@ -322,9 +272,14 @@ export const ImageToVideoHero = () => {
               onResolutionChange={setResolution}
               onClearImage={clearImage}
               onClearAudio={clearAudio}
-              onSubmit={handleSubmit}
+              onSubmit={undefined}
               imageInputRef={imageInputRef}
               audioInputRef={audioInputRef}
+              onTaskCreated={(taskId) => {
+                setTaskId(taskId)
+                setStatus("loading")
+                pollTaskResult(taskId)
+              }}
             />
           </div>
         </div>

@@ -59,7 +59,7 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Upload files to WaveSpeedAI
+    // Upload files to WaveSpeedAI (all files are now File objects, converted from URLs on frontend)
     const [imageUrl, audioUrl, maskImageUrl] = await Promise.all([
       uploadFileToWaveSpeed(imageFile),
       uploadFileToWaveSpeed(audioFile),

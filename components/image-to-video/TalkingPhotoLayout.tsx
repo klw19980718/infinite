@@ -6,10 +6,25 @@ import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
-import { FiUpload, FiImage, FiMusic, FiMic, FiX, FiChevronRight, FiCheck, FiDollarSign, FiPlay, FiPause, FiTrash2 } from "react-icons/fi"
+import { FiUpload, FiImage, FiMusic, FiMic, FiX, FiChevronRight, FiCheck, FiDollarSign, FiPlay, FiPause, FiTrash2, FiSearch, FiSettings, FiLoader, FiClock, FiMinus, FiPlus } from "react-icons/fi"
+import { toast } from "sonner"
 import { AvatarDialog } from "./AvatarDialog"
 import { RecordAudioDialog } from "./RecordAudioDialog"
 import { AudioWaveform } from "./AudioWaveform"
+import { VoiceSelectDialog } from "./VoiceSelectDialog"
+import { Textarea } from "@/components/ui/textarea"
+import { Slider } from "@/components/ui/slider"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
 
 interface Avatar {
   url: string
@@ -34,10 +49,11 @@ interface TalkingPhotoLayoutProps {
   onResolutionChange: (resolution: "480p" | "720p") => void
   onClearImage: () => void
   onClearAudio: () => void
-  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void
+  onSubmit?: (e: React.FormEvent<HTMLFormElement>) => void
   imageInputRef: React.RefObject<HTMLInputElement | null>
   audioInputRef: React.RefObject<HTMLInputElement | null>
   onAvatarSelect?: (url: string) => void
+  onTaskCreated?: (taskId: string) => void
 }
 
 export const TalkingPhotoLayout = ({
@@ -60,9 +76,18 @@ export const TalkingPhotoLayout = ({
   imageInputRef,
   audioInputRef,
   onAvatarSelect,
+  onTaskCreated,
 }: TalkingPhotoLayoutProps) => {
   const [aspectRatio, setAspectRatio] = useState<"9:16" | "16:9">("9:16")
-  const [audioTab, setAudioTab] = useState<"upload" | "record">("upload")
+  const [audioTab, setAudioTab] = useState<"input" | "upload" | "record">("input")
+  const [inputText, setInputText] = useState("")
+  const [voiceId, setVoiceId] = useState("English_Trustworth_Man")
+  const [emotion, setEmotion] = useState("Neutral")
+  const [speed, setSpeed] = useState([0.8])
+  const [volume, setVolume] = useState([5])
+  const [pitch, setPitch] = useState([0])
+  const [voiceDialogOpen, setVoiceDialogOpen] = useState(false)
+  const [selectedVoiceName, setSelectedVoiceName] = useState("Trustworthy Man")
   const [avatars, setAvatars] = useState<Avatar[]>([])
   const [loading, setLoading] = useState(true)
   const [dialogOpen, setDialogOpen] = useState(false)
@@ -79,6 +104,23 @@ export const TalkingPhotoLayout = ({
   const uploadedAudioRef = useRef<HTMLAudioElement | null>(null)
   const animationFrameRef = useRef<number | null>(null)
   const uploadedAnimationFrameRef = useRef<number | null>(null)
+  
+  // TTS (Text-to-Speech) states
+  const [ttsLoading, setTtsLoading] = useState(false)
+  const [ttsTaskId, setTtsTaskId] = useState<string | null>(null)
+  const [ttsAudioUrl, setTtsAudioUrl] = useState<string | null>(null)
+  const [ttsAudioBlob, setTtsAudioBlob] = useState<Blob | null>(null)
+  const [ttsAudioDuration, setTtsAudioDuration] = useState<number>(0)
+  const [isPlayingTts, setIsPlayingTts] = useState(false)
+  const [ttsPlaybackPosition, setTtsPlaybackPosition] = useState(0)
+  const ttsAudioRef = useRef<HTMLAudioElement | null>(null)
+  const ttsAnimationFrameRef = useRef<number | null>(null)
+  const pollingIntervalRef = useRef<NodeJS.Timeout | null>(null)
+  
+  // Pause control states
+  const [pauseSeconds, setPauseSeconds] = useState(0.5)
+  const [pausePopoverOpen, setPausePopoverOpen] = useState(false)
+  const editableDivRef = useRef<HTMLDivElement | null>(null)
 
   // Load avatars on mount
   useEffect(() => {
@@ -204,6 +246,612 @@ export const TalkingPhotoLayout = ({
       setUploadedPlaybackPosition(0)
     }
   }, [audioFile])
+
+  // Update playback position for TTS audio
+  useEffect(() => {
+    if (isPlayingTts && ttsAudioRef.current) {
+      const updatePosition = () => {
+        if (ttsAudioRef.current) {
+          setTtsPlaybackPosition(ttsAudioRef.current.currentTime)
+          ttsAnimationFrameRef.current = requestAnimationFrame(updatePosition)
+        }
+      }
+      ttsAnimationFrameRef.current = requestAnimationFrame(updatePosition)
+    } else if (ttsAnimationFrameRef.current) {
+      cancelAnimationFrame(ttsAnimationFrameRef.current)
+      ttsAnimationFrameRef.current = null
+    }
+
+    return () => {
+      if (ttsAnimationFrameRef.current) {
+        cancelAnimationFrame(ttsAnimationFrameRef.current)
+      }
+    }
+  }, [isPlayingTts])
+
+  // Cleanup polling on unmount
+  useEffect(() => {
+    return () => {
+      if (pollingIntervalRef.current) {
+        clearInterval(pollingIntervalRef.current)
+      }
+    }
+  }, [])
+
+  // Extract text from editable div, converting pause elements to API format
+  const getTextFromEditableDiv = (): string => {
+    if (!editableDivRef.current) return inputText
+    
+    // Get all child nodes in order
+    const nodes = Array.from(editableDivRef.current.childNodes)
+    let text = ""
+    
+    for (const node of nodes) {
+      if (node.nodeType === Node.TEXT_NODE) {
+        // Regular text node
+        text += node.textContent || ""
+      } else if (node.nodeType === Node.ELEMENT_NODE) {
+        const element = node as HTMLElement
+        if (element.dataset.pause) {
+          // Pause element - convert to API format
+          text += `<#${element.dataset.pause}#>`
+        } else {
+          // Other elements - recursively process their text content
+          // But skip any pause elements inside
+          const walker = document.createTreeWalker(
+            element,
+            NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT,
+            {
+              acceptNode: (n) => {
+                // Skip pause elements and their children
+                if (n.nodeType === Node.ELEMENT_NODE) {
+                  const el = n as HTMLElement
+                  if (el.dataset.pause) {
+                    return NodeFilter.FILTER_REJECT
+                  }
+                }
+                // Skip text nodes inside pause elements
+                if (n.nodeType === Node.TEXT_NODE) {
+                  const parent = n.parentElement
+                  if (parent && parent.dataset.pause) {
+                    return NodeFilter.FILTER_REJECT
+                  }
+                }
+                return NodeFilter.FILTER_ACCEPT
+              }
+            }
+          )
+          
+          let subNode
+          while ((subNode = walker.nextNode())) {
+            if (subNode.nodeType === Node.TEXT_NODE) {
+              text += subNode.textContent || ""
+            } else if (subNode.nodeType === Node.ELEMENT_NODE) {
+              const subElement = subNode as HTMLElement
+              if (subElement.dataset.pause) {
+                text += `<#${subElement.dataset.pause}#>`
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    return text
+  }
+
+  // Format pause seconds to avoid floating point precision issues
+  const formatPauseSeconds = (seconds: number): string => {
+    // Round to 1 decimal place to avoid precision issues
+    return parseFloat(seconds.toFixed(1)).toString()
+  }
+
+  // Handle deleting pause element
+  const handleDeletePause = (pauseElement: HTMLElement) => {
+    if (!editableDivRef.current) return
+    
+    pauseElement.remove()
+    
+    // Update inputText state
+    const newText = getTextFromEditableDiv()
+    setInputText(newText)
+    
+    // Focus back to editable div
+    editableDivRef.current.focus()
+  }
+
+  // Handle inserting pause at cursor position
+  const handleInsertPause = () => {
+    if (!editableDivRef.current) return
+
+    const selection = window.getSelection()
+    if (!selection) return
+
+    if (selection.rangeCount === 0) {
+      // If no selection, insert at the end
+      const range = document.createRange()
+      range.selectNodeContents(editableDivRef.current)
+      range.collapse(false)
+      selection.removeAllRanges()
+      selection.addRange(range)
+    }
+
+    const range = selection.getRangeAt(0)
+    
+    // Format pause seconds to avoid precision issues
+    const formattedSeconds = formatPauseSeconds(pauseSeconds)
+    
+    // Create pause element
+    const pauseElement = document.createElement("span")
+    pauseElement.className = "inline-flex items-center gap-1.5 px-2 py-1 rounded bg-accent/20 text-accent text-xs font-medium my-0.5"
+    pauseElement.dataset.pause = formattedSeconds
+    pauseElement.contentEditable = "false"
+    
+    // Clock icon - larger
+    const clockIcon = document.createElement("span")
+    clockIcon.innerHTML = "⏱"
+    clockIcon.className = "inline-block text-base leading-none"
+    
+    // Text node with formatted seconds
+    const textNode = document.createTextNode(`${formattedSeconds}s`)
+    
+    // Delete button
+    const deleteButton = document.createElement("button")
+    deleteButton.type = "button"
+    deleteButton.className = "ml-1 h-4 w-4 rounded-full bg-accent/30 hover:bg-accent/50 flex items-center justify-center transition-colors flex-shrink-0"
+    deleteButton.innerHTML = "×"
+    deleteButton.style.fontSize = "14px"
+    deleteButton.style.lineHeight = "1"
+    deleteButton.onclick = (e) => {
+      e.preventDefault()
+      e.stopPropagation()
+      handleDeletePause(pauseElement)
+    }
+    
+    pauseElement.appendChild(clockIcon)
+    pauseElement.appendChild(textNode)
+    pauseElement.appendChild(deleteButton)
+    
+    // Insert pause element
+    range.deleteContents()
+    range.insertNode(pauseElement)
+    
+    // Move cursor after the pause element
+    range.setStartAfter(pauseElement)
+    range.collapse(true)
+    selection.removeAllRanges()
+    selection.addRange(range)
+    
+    // Update inputText state
+    const newText = getTextFromEditableDiv()
+    setInputText(newText)
+    
+    // Close popover
+    setPausePopoverOpen(false)
+    
+    // Focus back to editable div
+    editableDivRef.current.focus()
+  }
+
+  // Handle text change in editable div
+  const handleEditableDivChange = () => {
+    if (!editableDivRef.current) return
+    const newText = getTextFromEditableDiv()
+    setInputText(newText)
+  }
+
+  // Generate TTS audio and return the audio URL
+  const generateTTSAudio = async (): Promise<string> => {
+    const textToSend = editableDivRef.current ? getTextFromEditableDiv() : inputText.trim()
+    
+    if (!textToSend.trim()) {
+      throw new Error("Please enter some text")
+    }
+
+    // Map emotion to API format
+    const emotionMap: Record<string, string> = {
+      "Neutral": "neutral",
+      "Happy": "happy",
+      "Sad": "sad",
+      "Angry": "angry",
+      "Fearful": "fearful",
+      "Disgusted": "disgusted",
+      "Surprised": "surprised",
+    }
+
+    // Call TTS API
+    const response = await fetch("/api/speech/text-to-speech", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        text: textToSend.trim(),
+        voice_id: voiceId || undefined,
+        speed: speed[0] || 1,
+        volume: volume[0] || 1,
+        pitch: pitch[0] || 0,
+        emotion: emotionMap[emotion] || "neutral",
+        english_normalization: false,
+        enable_sync_mode: false,
+      }),
+    })
+
+    const data = await response.json()
+
+    if (!data.ok) {
+      throw new Error(data.message || "Failed to create TTS task")
+    }
+
+    const wavespeedTaskId = data.task_id
+
+    // Poll for result
+    return new Promise((resolve, reject) => {
+      const pollInterval = setInterval(async () => {
+        try {
+          const resultResponse = await fetch(`/api/speech/result?task_id=${wavespeedTaskId}`)
+          const resultData = await resultResponse.json()
+
+          if (!resultData.ok) {
+            if (resultData.code === "WAVESPEED_ERROR" || resultData.code === "INTERNAL_ERROR") {
+              return // Continue polling
+            }
+            clearInterval(pollInterval)
+            reject(new Error(resultData.message || "Failed to get task result"))
+            return
+          }
+
+          if (resultData.status === "completed" && resultData.outputs && resultData.outputs.length > 0) {
+            clearInterval(pollInterval)
+            resolve(resultData.outputs[0]) // Return audio URL
+          } else if (resultData.status === "failed") {
+            clearInterval(pollInterval)
+            reject(new Error(resultData.error || "TTS task failed"))
+          }
+        } catch (error) {
+          // Continue polling on network errors
+          if (error instanceof Error && (error.message.includes("TTS task failed") || error.message.includes("Failed to get task result"))) {
+            clearInterval(pollInterval)
+            reject(error)
+          }
+        }
+      }, 2000)
+
+      // Timeout after 5 minutes
+      setTimeout(() => {
+        clearInterval(pollInterval)
+        reject(new Error("TTS task timeout"))
+      }, 5 * 60 * 1000)
+    })
+  }
+
+  // Handle form submission
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+
+    // If custom onSubmit is provided, use it
+    if (onSubmit) {
+      onSubmit(e)
+      return
+    }
+
+    if (!imageFile && !imagePreview) {
+      toast.error("Please upload an image")
+      return
+    }
+
+    let finalAudioFile: File | null = audioFile
+    let finalAudioUrl: string | null = null
+    let finalAudioDuration: number | null = audioDuration
+
+    // If tab is "input" and no audio file, check if we have TTS audio or need to generate
+    if (audioTab === "input" && !audioFile) {
+      // Check if we have input text
+      const textToSend = editableDivRef.current ? getTextFromEditableDiv() : inputText.trim()
+      if (!textToSend.trim()) {
+        toast.error("Please enter some text")
+        return
+      }
+
+      // If TTS audio already exists, use it
+      if (ttsAudioBlob && ttsAudioUrl) {
+        // Use existing TTS audio
+        // If it's a blob URL, convert to File; if it's an HTTP URL, use it directly
+        if (ttsAudioUrl.startsWith("http")) {
+          finalAudioUrl = ttsAudioUrl
+        } else if (ttsAudioUrl.startsWith("blob:")) {
+          // Convert blob URL to File
+          finalAudioFile = new File([ttsAudioBlob], `tts-${Date.now()}.mp3`, { type: ttsAudioBlob.type })
+        } else {
+          // Fallback: convert blob to File
+          finalAudioFile = new File([ttsAudioBlob], `tts-${Date.now()}.mp3`, { type: ttsAudioBlob.type })
+        }
+        finalAudioDuration = ttsAudioDuration > 0 ? ttsAudioDuration : audioDuration
+      } else {
+        // Generate new TTS audio
+        try {
+          toast.loading("Generating audio from text...", { id: "tts-generating" })
+          const audioUrl = await generateTTSAudio()
+          finalAudioUrl = audioUrl
+          
+          // Fetch audio to get duration
+          const audioResponse = await fetch(audioUrl)
+          const audioBlob = await audioResponse.blob()
+          const audio = new Audio(audioUrl)
+          
+          await new Promise((resolve) => {
+            audio.addEventListener("loadedmetadata", () => {
+              finalAudioDuration = audio.duration
+              resolve(null)
+            })
+            audio.addEventListener("error", resolve)
+          })
+
+          // Convert to File for form data
+          finalAudioFile = new File([audioBlob], `tts-${Date.now()}.mp3`, { type: audioBlob.type })
+          toast.success("Audio generated successfully", { id: "tts-generating" })
+        } catch (error) {
+          toast.error(error instanceof Error ? error.message : "Failed to generate audio", { id: "tts-generating" })
+          return
+        }
+      }
+    }
+
+    // For non-input tabs, check if audio file exists
+    if (audioTab !== "input" && !finalAudioFile && !finalAudioUrl) {
+      toast.error("Please provide audio")
+      return
+    }
+
+    try {
+      // Convert URLs to Files if needed
+      let finalImageFile: File = imageFile!
+      let finalAudioFileForSubmit: File
+
+      // Handle image - convert URL to File if needed
+      if (!imageFile && imagePreview && imagePreview.startsWith("http")) {
+        try {
+          toast.loading("Downloading image...", { id: "download-image" })
+          const imageResponse = await fetch(imagePreview)
+          if (!imageResponse.ok) {
+            throw new Error("Failed to download image")
+          }
+          const imageBlob = await imageResponse.blob()
+          const imageFileName = imagePreview.split("/").pop() || "image.jpg"
+          finalImageFile = new File([imageBlob], imageFileName, { type: imageBlob.type })
+          toast.success("Image downloaded", { id: "download-image" })
+        } catch (error) {
+          toast.error(error instanceof Error ? error.message : "Failed to download image", { id: "download-image" })
+          return
+        }
+      } else if (!imageFile) {
+        toast.error("Invalid image")
+        return
+      }
+
+      // Handle audio - convert URL to File if needed
+      if (finalAudioFile) {
+        finalAudioFileForSubmit = finalAudioFile
+      } else if (finalAudioUrl) {
+        try {
+          toast.loading("Downloading audio...", { id: "download-audio" })
+          const audioResponse = await fetch(finalAudioUrl)
+          if (!audioResponse.ok) {
+            throw new Error("Failed to download audio")
+          }
+          const audioBlob = await audioResponse.blob()
+          const audioFileName = finalAudioUrl.split("/").pop()?.split("?")[0] || "audio.mp3"
+          finalAudioFileForSubmit = new File([audioBlob], audioFileName, { type: audioBlob.type })
+          toast.success("Audio downloaded", { id: "download-audio" })
+        } catch (error) {
+          toast.error(error instanceof Error ? error.message : "Failed to download audio", { id: "download-audio" })
+          return
+        }
+      } else if (ttsAudioUrl && ttsAudioUrl.startsWith("http")) {
+        try {
+          toast.loading("Downloading audio...", { id: "download-audio" })
+          const audioResponse = await fetch(ttsAudioUrl)
+          if (!audioResponse.ok) {
+            throw new Error("Failed to download audio")
+          }
+          const audioBlob = await audioResponse.blob()
+          const audioFileName = ttsAudioUrl.split("/").pop()?.split("?")[0] || "tts-audio.mp3"
+          finalAudioFileForSubmit = new File([audioBlob], audioFileName, { type: audioBlob.type })
+          toast.success("Audio downloaded", { id: "download-audio" })
+        } catch (error) {
+          toast.error(error instanceof Error ? error.message : "Failed to download audio", { id: "download-audio" })
+          return
+        }
+      } else {
+        toast.error("Invalid audio")
+        return
+      }
+
+      // Create form data with File objects
+      const formData = new FormData()
+      formData.append("image", finalImageFile)
+      formData.append("audio", finalAudioFileForSubmit)
+      formData.append("resolution", resolution)
+      
+      if (finalAudioDuration !== null) {
+        formData.append("audio_duration", Math.ceil(finalAudioDuration).toString())
+      }
+
+      const response = await fetch("/api/video/image-to-video", {
+        method: "POST",
+        credentials: "include",
+        body: formData,
+      })
+
+      const data = await response.json()
+
+      if (!data.ok) {
+        throw new Error(data.message || "Failed to create video task")
+      }
+
+      if (onTaskCreated) {
+        onTaskCreated(data.task_id)
+      }
+
+      toast.success("Video task created successfully")
+    } catch (error) {
+      console.error("Error submitting task:", error)
+      toast.error(error instanceof Error ? error.message : "Failed to submit task")
+    }
+  }
+
+  // Handle TTS task creation and polling
+  const handleTextToSpeech = async () => {
+    const textToSend = editableDivRef.current ? getTextFromEditableDiv() : inputText.trim()
+    
+    if (!textToSend.trim()) {
+      toast.error("Please enter some text")
+      return
+    }
+
+    setTtsLoading(true)
+    setTtsTaskId(null)
+    setTtsAudioUrl(null)
+    setTtsAudioBlob(null)
+    setTtsAudioDuration(0)
+
+    try {
+      // Map emotion to API format (matching allowed values: happy, sad, angry, fearful, disgusted, surprised, neutral)
+      const emotionMap: Record<string, string> = {
+        "Neutral": "neutral",
+        "Happy": "happy",
+        "Sad": "sad",
+        "Angry": "angry",
+        "Fearful": "fearful",
+        "Disgusted": "disgusted",
+        "Surprised": "surprised",
+      }
+
+      // Call TTS API (matching official API format)
+      const response = await fetch("/api/speech/text-to-speech", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          text: textToSend.trim(),
+          voice_id: voiceId || undefined,
+          speed: speed[0] || 1,
+          volume: volume[0] || 1,
+          pitch: pitch[0] || 0,
+          emotion: emotionMap[emotion] || "neutral",
+          english_normalization: false,
+          enable_sync_mode: false,
+        }),
+      })
+
+      const data = await response.json()
+
+      if (!data.ok) {
+        throw new Error(data.message || "Failed to create TTS task")
+      }
+
+      setTtsTaskId(data.task_id)
+      const wavespeedTaskId = data.task_id // This is the WaveSpeedAI task ID
+
+      // Start polling for result using TTS result API
+      // Keep ttsLoading true until audio is ready
+      const pollResult = async () => {
+        try {
+          // Use TTS result API
+          const resultResponse = await fetch(`/api/speech/result?task_id=${wavespeedTaskId}`)
+          const resultData = await resultResponse.json()
+
+          if (!resultData.ok) {
+            // If still processing (404 or other non-fatal errors), continue polling
+            if (resultData.code === "WAVESPEED_ERROR" || resultData.code === "INTERNAL_ERROR") {
+              // Still processing, continue polling
+              return
+            }
+            throw new Error(resultData.message || "Failed to get task result")
+          }
+
+          if (resultData.status === "completed" && resultData.outputs && resultData.outputs.length > 0) {
+            // Task completed, fetch audio
+            const audioUrl = resultData.outputs[0]
+            
+            // Fetch audio as blob
+            const audioResponse = await fetch(audioUrl)
+            const audioBlob = await audioResponse.blob()
+            
+            // Create object URL
+            const url = URL.createObjectURL(audioBlob)
+            setTtsAudioUrl(url)
+            setTtsAudioBlob(audioBlob)
+
+            // Get audio duration
+            const audio = new Audio(url)
+            audio.addEventListener("loadedmetadata", () => {
+              setTtsAudioDuration(audio.duration)
+            })
+
+            // Convert blob to file and trigger audio change
+            const file = new File([audioBlob], `tts-${Date.now()}.mp3`, { type: audioBlob.type })
+            const dataTransfer = new DataTransfer()
+            dataTransfer.items.add(file)
+            const fakeEvent = {
+              target: { files: dataTransfer.files },
+            } as React.ChangeEvent<HTMLInputElement>
+            onAudioChange(fakeEvent)
+
+            setTtsLoading(false)
+            if (pollingIntervalRef.current) {
+              clearInterval(pollingIntervalRef.current)
+              pollingIntervalRef.current = null
+            }
+          } else if (resultData.status === "failed") {
+            throw new Error(resultData.error || "TTS task failed")
+          }
+          // If still processing, continue polling
+        } catch (error) {
+          console.error("Error polling TTS result:", error)
+          // Don't stop polling on network errors, only on actual failures
+          if (error instanceof Error && (error.message.includes("TTS task failed") || error.message.includes("Failed to get task result"))) {
+            setTtsLoading(false)
+            if (pollingIntervalRef.current) {
+              clearInterval(pollingIntervalRef.current)
+              pollingIntervalRef.current = null
+            }
+            toast.error(error.message)
+          }
+        }
+      }
+
+      // Poll every 2 seconds
+      pollingIntervalRef.current = setInterval(pollResult, 2000)
+      // Initial poll
+      pollResult()
+    } catch (error) {
+      console.error("Error creating TTS task:", error)
+      setTtsLoading(false)
+      setTtsTaskId(null) // Clear task ID on error
+      toast.error(error instanceof Error ? error.message : "Failed to create TTS task")
+    }
+  }
+
+  // Handle TTS audio deletion
+  const handleDeleteTtsAudio = () => {
+    setTtsTaskId(null)
+    setTtsAudioUrl(null)
+    setTtsAudioBlob(null)
+    setTtsAudioDuration(0)
+    setIsPlayingTts(false)
+    setTtsPlaybackPosition(0)
+    if (ttsAudioRef.current) {
+      ttsAudioRef.current.pause()
+      ttsAudioRef.current = null
+    }
+    if (pollingIntervalRef.current) {
+      clearInterval(pollingIntervalRef.current)
+      pollingIntervalRef.current = null
+    }
+    setTtsLoading(false)
+  }
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[38%_62%] gap-8 max-w-7xl mx-auto">
@@ -408,8 +1056,11 @@ export const TalkingPhotoLayout = ({
               3. Enter your text, upload or record audio
             </h3>
 
-            <Tabs value={audioTab} onValueChange={(v) => setAudioTab(v as "upload" | "record")} className="w-full flex flex-col flex-1 min-h-0">
-              <TabsList className="grid w-full grid-cols-2 mb-4 flex-shrink-0">
+            <Tabs value={audioTab} onValueChange={(v) => setAudioTab(v as "input" | "upload" | "record")} className="w-full flex flex-col flex-1 min-h-0">
+              <TabsList className="grid w-full grid-cols-3 mb-4 flex-shrink-0">
+                <TabsTrigger value="input" className="data-[state=active]:bg-accent data-[state=active]:text-accent-foreground">
+                  Input Text
+                </TabsTrigger>
                 <TabsTrigger value="upload" className="data-[state=active]:bg-accent data-[state=active]:text-accent-foreground">
                   Upload Audio
                 </TabsTrigger>
@@ -417,6 +1068,318 @@ export const TalkingPhotoLayout = ({
                   Record Audio
                 </TabsTrigger>
               </TabsList>
+
+              <TabsContent value="input" className="flex-1 flex flex-col min-h-0 mt-0">
+                {ttsLoading ? (
+                  // Loading state
+                  <div key="loading" className="flex items-center justify-center w-full flex-1 min-h-[200px] border-2 border-dashed border-border/50 rounded-lg bg-card/50 dark:bg-card">
+                    <div className="text-center space-y-4">
+                      <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center mx-auto">
+                        <FiLoader className="w-6 h-6 text-accent animate-spin" />
+                      </div>
+                      <p className="text-sm font-medium text-foreground">Generating audio...</p>
+                      <p className="text-xs text-muted-foreground">This may take a few moments</p>
+                    </div>
+                  </div>
+                ) : ttsAudioUrl ? (
+                  // Audio result state (same layout as upload tab)
+                  <div key="result" className="relative w-full flex-1 min-h-[200px] rounded-lg border border-border/50 bg-card/50 dark:bg-card p-4 flex flex-col">
+                    {/* Top: Audio Info and Actions */}
+                    <div className="flex items-center justify-between mb-3 flex-shrink-0">
+                      <div className="flex items-center gap-3 min-w-0 flex-1">
+                        <div className="w-8 h-8 rounded-full bg-accent/10 flex items-center justify-center flex-shrink-0">
+                          <FiMusic className="w-4 h-4 text-accent" />
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <p className="text-sm font-medium text-foreground truncate">
+                            TTS Audio
+                          </p>
+                          <p className="text-xs text-muted-foreground mt-0.5">
+                            {ttsAudioDuration > 0 ? `${Math.ceil(ttsAudioDuration)}s` : "Loading..."}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex gap-2">
+                        {/* <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          className="h-7 px-2 text-xs"
+                          onClick={handleTextToSpeech}
+                          disabled={!inputText.trim()}
+                        >
+                          <FiMusic className="mr-1 h-3 w-3" /> Re-generate
+                        </Button> */}
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          className="h-7 w-7 p-0"
+                          onClick={handleDeleteTtsAudio}
+                        >
+                          <FiTrash2 className="h-3 w-3" />
+                        </Button>
+                      </div>
+                    </div>
+
+                    {/* Middle: Waveform - Takes remaining space */}
+                    <div className="flex-1 min-h-0 mb-3">
+                      {ttsAudioBlob ? (
+                        <AudioWaveform
+                          audioBlob={ttsAudioBlob}
+                          audioUrl={ttsAudioUrl}
+                          isPlaying={isPlayingTts}
+                          playbackPosition={ttsPlaybackPosition}
+                          duration={ttsAudioDuration}
+                        />
+                      ) : (
+                        <div className="flex items-center justify-center h-full">
+                          <p className="text-sm text-muted-foreground">Loading audio waveform...</p>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Bottom: Playback Controls */}
+                    <div className="flex items-center justify-between flex-shrink-0">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        className="h-8 px-3"
+                        onClick={() => {
+                          if (!ttsAudioRef.current && ttsAudioUrl) {
+                            ttsAudioRef.current = new Audio(ttsAudioUrl)
+                            ttsAudioRef.current.addEventListener("ended", () => {
+                              setIsPlayingTts(false)
+                              setTtsPlaybackPosition(0)
+                            })
+                          }
+
+                          if (ttsAudioRef.current) {
+                            if (isPlayingTts) {
+                              ttsAudioRef.current.pause()
+                              setIsPlayingTts(false)
+                            } else {
+                              ttsAudioRef.current.play()
+                              setIsPlayingTts(true)
+                            }
+                          }
+                        }}
+                      >
+                        {isPlayingTts ? (
+                          <FiPause className="mr-2 h-3 w-3" />
+                        ) : (
+                          <FiPlay className="mr-2 h-3 w-3" />
+                        )}
+                        {isPlayingTts ? "Pause" : "Play"}
+                      </Button>
+                      <span className="text-xs text-muted-foreground">
+                        {Math.floor(ttsPlaybackPosition)}s / {ttsAudioDuration > 0 ? Math.ceil(ttsAudioDuration) : 0}s
+                      </span>
+                    </div>
+                  </div>
+                ) : (
+                  // Input state
+                  <div key="input" className="flex-1 min-h-[200px] rounded-lg border border-border/50 bg-card/50 dark:bg-card p-4 flex flex-col">
+                    {/* Editable Div (replacing Textarea) */}
+                    <div className="flex-shrink-0 mb-4" style={{ height: "130px" }}>
+                      <div
+                        key="editable-div"
+                        ref={editableDivRef}
+                        contentEditable
+                        suppressContentEditableWarning
+                        onInput={handleEditableDivChange}
+                        onPaste={(e) => {
+                          e.preventDefault()
+                          const text = e.clipboardData.getData("text/plain")
+                          const selection = window.getSelection()
+                          if (selection && selection.rangeCount > 0) {
+                            const range = selection.getRangeAt(0)
+                            range.deleteContents()
+                            range.insertNode(document.createTextNode(text))
+                            range.collapse(false)
+                            selection.removeAllRanges()
+                            selection.addRange(range)
+                            handleEditableDivChange()
+                          }
+                        }}
+                        className="w-full h-full resize-none border-0 bg-transparent focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 text-foreground overflow-y-auto custom-scrollbar [&:empty]:before:content-[attr(data-placeholder)] [&:empty]:before:text-muted-foreground"
+                        data-placeholder="Type what you want to say..."
+                      />
+                    </div>
+
+                    {/* Character Counter and Bottom Controls */}
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2 sm:gap-0 flex-shrink-0 pt-2 border-t border-border/50">
+                      <div className="flex items-center gap-2 sm:gap-3 flex-wrap sm:flex-nowrap min-w-0">
+                        {/* Voice Select */}
+                        <Button
+                          type="button"
+                          variant="outline"
+                          className="flex items-center gap-1 sm:gap-1.5 h-7 sm:h-8 px-1.5 sm:px-2 text-xs flex-shrink-0 min-w-0"
+                          onClick={() => setVoiceDialogOpen(true)}
+                        >
+                          <FiMusic className="h-3 w-3 sm:h-3.5 sm:w-3.5 flex-shrink-0" />
+                          <span className="text-xs truncate">{selectedVoiceName}</span>
+                        </Button>
+
+                        {/* Emotion Select */}
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button
+                              type="button"
+                              variant="outline"
+                              className="flex items-center gap-1 sm:gap-1.5 h-7 sm:h-8 px-1.5 sm:px-2 text-xs flex-shrink-0 min-w-0"
+                            >
+                              <span className="text-sm sm:text-base flex-shrink-0">😊</span>
+                              <span className="text-xs truncate">{emotion}</span>
+                              <FiChevronRight className="h-3 w-3 sm:h-3.5 sm:w-3.5 flex-shrink-0" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="start">
+                            {["Neutral", "Happy", "Sad", "Angry", "Fearful", "Disgusted", "Surprised"].map((emo) => (
+                              <DropdownMenuItem
+                                key={emo}
+                                onClick={() => setEmotion(emo)}
+                                className={emotion === emo ? "bg-accent text-accent-foreground" : ""}
+                              >
+                                {emo}
+                              </DropdownMenuItem>
+                            ))}
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+
+                        {/* Settings (Speed, Volume, Pitch) */}
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button
+                              type="button"
+                              variant="outline"
+                              className="h-7 w-7 sm:h-8 sm:w-8 p-0 flex-shrink-0"
+                            >
+                              <FiSettings className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end" className="w-64 p-4">
+                            <div className="space-y-4">
+                              {/* Speed */}
+                              <div className="space-y-2">
+                                <div className="flex items-center justify-between">
+                                  <Label className="text-sm">Speed: {speed[0]}</Label>
+                                </div>
+                                <Slider
+                                  value={speed}
+                                  onValueChange={setSpeed}
+                                  min={0}
+                                  max={2}
+                                  step={0.1}
+                                />
+                              </div>
+
+                              {/* Volume */}
+                              <div className="space-y-2">
+                                <div className="flex items-center justify-between">
+                                  <Label className="text-sm">Volume: {volume[0]}</Label>
+                                </div>
+                                <Slider
+                                  value={volume}
+                                  onValueChange={setVolume}
+                                  min={0}
+                                  max={10}
+                                  step={1}
+                                />
+                              </div>
+
+                              {/* Pitch */}
+                              <div className="space-y-2">
+                                <div className="flex items-center justify-between">
+                                  <Label className="text-sm">Pitch: {pitch[0]}</Label>
+                                </div>
+                                <Slider
+                                  value={pitch}
+                                  onValueChange={setPitch}
+                                  min={-12}
+                                  max={12}
+                                  step={1}
+                                />
+                              </div>
+                            </div>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+
+                        {/* Pause Button */}
+                        <Popover open={pausePopoverOpen} onOpenChange={setPausePopoverOpen}>
+                          <PopoverTrigger asChild>
+                            <Button
+                              type="button"
+                              variant="outline"
+                              className="h-7 sm:h-8 px-1.5 sm:px-2 flex-shrink-0"
+                            >
+                              <FiClock className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-auto p-2" align="start">
+                            <div className="flex items-center gap-2">
+                              <Button
+                                type="button"
+                                variant="outline"
+                                size="sm"
+                                className="h-7 w-7 p-0"
+                                onClick={() => {
+                                  const newValue = Math.max(0.1, parseFloat((pauseSeconds - 0.1).toFixed(1)))
+                                  setPauseSeconds(newValue)
+                                }}
+                                disabled={pauseSeconds <= 0.1}
+                              >
+                                <FiMinus className="h-3 w-3" />
+                              </Button>
+                              <div className="flex items-center gap-2 min-w-[50px] justify-center">
+                                <span className="text-sm font-medium">{formatPauseSeconds(pauseSeconds)}</span>
+                              </div>
+                              <Button
+                                type="button"
+                                variant="outline"
+                                size="sm"
+                                className="h-7 w-7 p-0"
+                                onClick={() => {
+                                  const newValue = Math.min(2, parseFloat((pauseSeconds + 0.1).toFixed(1)))
+                                  setPauseSeconds(newValue)
+                                }}
+                                disabled={pauseSeconds >= 2}
+                              >
+                                <FiPlus className="h-3 w-3" />
+                              </Button>
+                              <div className="text-xs text-muted-foreground px-2">
+                                Seconds Pause
+                              </div>
+                              <Button
+                                type="button"
+                                size="sm"
+                                className="h-7 px-2 bg-accent hover:bg-accent/90 text-accent-foreground"
+                                onClick={handleInsertPause}
+                              >
+                                <FiCheck className="h-3 w-3" />
+                              </Button>
+                            </div>
+                          </PopoverContent>
+                        </Popover>
+
+                        {/* Run Button */}
+                        <Button
+                          type="button"
+                          className="h-7 sm:h-8 px-2 sm:px-3 text-xs bg-accent hover:bg-accent/90 text-accent-foreground flex-shrink-0"
+                          onClick={handleTextToSpeech}
+                          disabled={!inputText.trim()}
+                        >
+                          Run
+                        </Button>
+                      </div>
+                      <span className="text-xs text-muted-foreground flex-shrink-0 text-right sm:text-left">
+                        {inputText.length} / 1000
+                      </span>
+                    </div>
+                  </div>
+                )}
+              </TabsContent>
 
               <TabsContent value="upload" className="flex-1 flex flex-col min-h-0 mt-0">
                 {!audioFile ? (
@@ -654,11 +1617,15 @@ export const TalkingPhotoLayout = ({
           </div>
 
           {/* Generate Button */}
-          <form onSubmit={onSubmit} className="flex-shrink-0">
+          <form onSubmit={handleSubmit} className="flex-shrink-0">
             <Button
               type="submit"
               className="w-full h-14 rounded-xl bg-accent text-accent-foreground font-semibold text-base hover:bg-accent/90 transition-all duration-300 shadow-lg hover:shadow-xl"
-              disabled={status === "loading" || !imageFile || !audioFile}
+              disabled={
+                status === "loading" || 
+                !imageFile || 
+                (audioTab === "input" ? !inputText.trim() : !audioFile && !ttsAudioBlob)
+              }
             >
               {status === "loading" ? (
                 <>Generating...</>
@@ -700,6 +1667,27 @@ export const TalkingPhotoLayout = ({
           onAudioChange(fakeEvent)
         }}
       />
+
+      {/* Voice Select Dialog */}
+      <VoiceSelectDialog
+        open={voiceDialogOpen}
+        onOpenChange={setVoiceDialogOpen}
+        selectedVoiceId={voiceId}
+        onSelect={(id) => {
+          setVoiceId(id)
+          // Find voice name
+          fetch("/audio/voices.json")
+            .then((res) => res.json())
+            .then((voices) => {
+              const voice = voices.find((v: any) => v.uniq_id === id)
+              if (voice) {
+                setSelectedVoiceName(voice.voice_name)
+              }
+            })
+            .catch(console.error)
+        }}
+      />
     </div>
   )
 }
+

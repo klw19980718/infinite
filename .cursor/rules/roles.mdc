@@ -1,4 +1,4 @@
-image.png---
+
 alwaysApply: true
 ---
 
@@ -103,19 +103,32 @@ infinite-talk/
 │   │   ├── UnderTheHood.tsx - 技术细节组件
 │   │   └── index.ts         - 组件统一导出
 │   ├── image-to-video/      - 图片转视频相关组件
+│   │   ├── AudioWaveform.tsx - 音频波形可视化组件
+│   │   ├── AvatarDialog.tsx - 头像选择对话框组件
+│   │   ├── cta.tsx          - 行动号召组件
 │   │   ├── hero.tsx         - 图片转视频英雄区组件
+│   │   ├── RecordAudioDialog.tsx - 录音对话框组件
+│   │   ├── TalkingPhotoLayout.tsx - 图片转视频布局组件（包含图片上传、音频处理、模型选择等）
+│   │   ├── VoiceSelectDialog.tsx - 声音选择对话框组件
 │   │   └── index.ts         - 组件统一导出
 │   ├── video-to-video/      - 视频转视频相关组件
 │   │   ├── hero.tsx         - 视频转视频英雄区组件
 │   │   └── index.ts         - 组件统一导出
 │   ├── ui/                  - 可复用 UI 组件（shadcn/ui 风格）
 │   │   ├── avatar.tsx       - 头像组件
+│   │   ├── beams.tsx        - 光束效果组件
 │   │   ├── button.tsx       - 按钮组件
 │   │   ├── card.tsx         - 卡片组件
 │   │   ├── dialog.tsx       - 对话框组件
 │   │   ├── dropdown-menu.tsx - 下拉菜单组件
 │   │   ├── input.tsx        - 输入框组件
-│   │   └── label.tsx        - 标签组件
+│   │   ├── label.tsx        - 标签组件
+│   │   ├── sheet.tsx        - 侧边栏组件
+│   │   ├── slider.tsx       - 滑块组件
+│   │   ├── sonner.tsx       - Toast 通知组件
+│   │   ├── tabs.tsx         - 标签页组件
+│   │   ├── textarea.tsx     - 文本域组件
+│   │   └── theme-toggle.tsx - 主题切换组件
 │   ├── Footer.tsx           - 页脚组件（含品牌信息和链接）
 │   └── nav.tsx              - 导航栏组件（含Logo和登录/用户菜单）
 │
@@ -135,6 +148,9 @@ infinite-talk/
 │   └── WEBHOOK_LOCAL_SETUP.md - 本地 Webhook 测试配置文档
 │
 ├── public/                  - 静态资源目录
+│   ├── audio/               - 音频相关资源
+│   │   ├── voice/           - 声音样本文件目录（包含音频文件和封面图片）
+│   │   └── voices.json      - 声音数据配置文件（包含声音列表、标签、音频文件路径等）
 │   ├── google32aec5a0f4af8f9d.html - Google 验证文件
 │   ├── llms.txt             - LLM 相关文档
 │   ├── logo.png             - 网站 Logo

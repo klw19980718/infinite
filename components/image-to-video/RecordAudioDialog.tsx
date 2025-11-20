@@ -8,7 +8,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
-import { FiMic, FiX, FiCheck, FiPlay, FiPause, FiTrash2 } from "react-icons/fi"
+import { FiMic, FiX, FiCheck, FiTrash2 } from "react-icons/fi"
 
 interface RecordAudioDialogProps {
   open: boolean
@@ -30,7 +30,6 @@ export const RecordAudioDialog = ({
   onConfirm,
 }: RecordAudioDialogProps) => {
   const [isRecording, setIsRecording] = useState(false)
-  const [isPaused, setIsPaused] = useState(false)
   const [recordedBlob, setRecordedBlob] = useState<Blob | null>(null)
   const [audioUrl, setAudioUrl] = useState<string | null>(null)
   const [duration, setDuration] = useState(0)
@@ -44,6 +43,7 @@ export const RecordAudioDialog = ({
   const audioRef = useRef<HTMLAudioElement | null>(null)
   const animationFrameRef = useRef<number | null>(null)
   const audioContextRef = useRef<AudioContext | null>(null)
+  const durationRef = useRef<number>(0)
 
   const MAX_DURATION = 600 // 600 seconds (10 minutes)
 
@@ -82,6 +82,7 @@ export const RecordAudioDialog = ({
       setRecordedBlob(null)
       setAudioUrl(null)
       setDuration(0)
+      durationRef.current = 0
       setIsPlaying(false)
       setPlaybackPosition(0)
     }
@@ -139,14 +140,13 @@ export const RecordAudioDialog = ({
 
       mediaRecorder.start()
       setIsRecording(true)
-      setIsPaused(false)
 
       // Start timer
-      let currentDuration = 0
+      durationRef.current = 0
       timerRef.current = setInterval(() => {
-        currentDuration += 0.1
-        setDuration(currentDuration)
-        if (currentDuration >= MAX_DURATION) {
+        durationRef.current += 0.1
+        setDuration(durationRef.current)
+        if (durationRef.current >= MAX_DURATION) {
           stopRecording()
         }
       }, 100)
@@ -160,7 +160,6 @@ export const RecordAudioDialog = ({
     if (mediaRecorderRef.current && isRecording) {
       mediaRecorderRef.current.stop()
       setIsRecording(false)
-      setIsPaused(false)
     }
     if (timerRef.current) {
       clearInterval(timerRef.current)
@@ -180,19 +179,6 @@ export const RecordAudioDialog = ({
     }
   }
 
-  const pauseRecording = () => {
-    if (mediaRecorderRef.current && isRecording) {
-      if (isPaused) {
-        mediaRecorderRef.current.resume()
-        setIsPaused(false)
-      } else {
-        mediaRecorderRef.current.pause()
-        setIsPaused(true)
-      }
-    }
-  }
-
-
   const handleConfirm = () => {
     if (recordedBlob) {
       onConfirm(recordedBlob, duration)
@@ -211,9 +197,10 @@ export const RecordAudioDialog = ({
       audioRef.current.pause()
       audioRef.current = null
     }
-      setIsPlaying(false)
-      setPlaybackPosition(0)
-      setDuration(0)
+    setIsPlaying(false)
+    setPlaybackPosition(0)
+    setDuration(0)
+    durationRef.current = 0
   }
 
   return (
@@ -288,10 +275,16 @@ export const RecordAudioDialog = ({
               <Button
                 type="button"
                 onClick={isRecording ? stopRecording : startRecording}
-                className="h-20 w-20 rounded-full bg-red-500 hover:bg-red-600 text-white"
+                className={`h-20 w-20 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl ${
+                  isRecording
+                    ? "bg-red-500 hover:bg-red-600 text-white"
+                    : "bg-accent hover:bg-accent/90 text-accent-foreground"
+                }`}
               >
                 {isRecording ? (
-                  <div className="w-8 h-8 rounded bg-white"></div>
+                  <div className="w-8 h-8 rounded bg-white flex items-center justify-center">
+                    <div className="w-4 h-4 bg-red-500 rounded-sm"></div>
+                  </div>
                 ) : (
                   <FiMic className="h-8 w-8" />
                 )}
@@ -303,7 +296,7 @@ export const RecordAudioDialog = ({
                   variant="outline"
                   size="lg"
                   onClick={handleDelete}
-                  className="h-16 w-16 rounded-full border-2 border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground"
+                  className="h-16 w-16 rounded-full border-2 border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground transition-all duration-200"
                 >
                   <FiX className="h-6 w-6" />
                 </Button>
@@ -311,7 +304,7 @@ export const RecordAudioDialog = ({
                   type="button"
                   size="lg"
                   onClick={handleConfirm}
-                  className="h-16 w-16 rounded-full bg-accent hover:bg-accent/90 text-accent-foreground"
+                  className="h-16 w-16 rounded-full bg-accent hover:bg-accent/90 text-accent-foreground transition-all duration-200 shadow-lg hover:shadow-xl"
                 >
                   <FiCheck className="h-6 w-6" />
                 </Button>

@@ -39,3 +39,23 @@ alwaysApply: true
 - **颜色对比度**：确保文本与背景的对比度符合 WCAG AA 标准（至少 4.5:1）。
 - **卡片式布局**：使用卡片容器组织内容，保持一致的 padding 和 border-radius。
 - **状态反馈**：交互元素应有明确的 hover、active、focus 状态反馈。
+
+## 移动端响应式设计
+- **断点策略**：使用 Tailwind 默认断点（sm: 640px, md: 768px, lg: 1024px, xl: 1280px）。
+- **布局适配**：
+  - 移动端优先：默认样式针对移动端，使用 `sm:`, `md:`, `lg:` 前缀适配更大屏幕。
+  - 弹窗宽度：移动端使用 `w-[95vw]` 或 `max-w-[95vw]`，桌面端使用 `sm:w-full` 或固定宽度。
+  - 网格布局：移动端单列（`grid-cols-1`），平板双列（`sm:grid-cols-2`），桌面多列（`md:grid-cols-3` 或 `lg:grid-cols-4`）。
+- **文本处理**：
+  - 使用 `truncate` 防止文本溢出，配合 `min-w-0` 确保 flex 容器内文本正确截断。
+  - 移动端使用较小字号（`text-xs`），桌面端使用正常字号（`sm:text-sm` 或 `sm:text-base`）。
+- **按钮与控件**：
+  - 移动端使用较小尺寸（`h-9 px-2`），桌面端使用标准尺寸（`sm:h-10 sm:px-3`）。
+  - 使用 `flex-wrap` 允许控件在空间不足时换行。
+  - 图标尺寸：移动端 `h-3.5 w-3.5`，桌面端 `sm:h-4 sm:w-4`。
+- **间距调整**：
+  - 移动端使用较小间距（`gap-2`），桌面端使用标准间距（`sm:gap-3` 或 `sm:gap-4`）。
+  - 垂直布局：移动端使用 `flex-col`，桌面端使用 `sm:flex-row`。
+- **滚动与溢出**：
+  - 使用 `overflow-y-auto` 和 `custom-scrollbar` 类处理长列表。
+  - 设置合理的 `min-h` 和 `max-h` 防止内容区域过大或过小。
