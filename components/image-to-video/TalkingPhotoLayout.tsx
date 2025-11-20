@@ -624,7 +624,7 @@ export const TalkingPhotoLayout = ({
       } else if (finalAudioUrl) {
         // TTS HTTP URL - download and convert to File
         try {
-          toast.loading("Downloading audio...", { id: "download-audio" })
+          // toast.loading("Downloading audio...", { id: "download-audio" })
           const audioResponse = await fetch(finalAudioUrl)
           if (!audioResponse.ok) {
             throw new Error("Failed to download audio")

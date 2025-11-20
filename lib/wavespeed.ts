@@ -54,12 +54,20 @@ export async function submitImageToVideoTask(params: {
   prompt?: string
   seed?: number
   mask_image?: string // URL
+  webhook?: string // URL
 }): Promise<{ id: string; status: string; urls: { get: string } }> {
   if (!WAVESPEED_API_KEY) {
     throw new Error("WAVESPEED_KEY is not configured")
   }
 
-  const response = await fetch(`${WAVESPEED_API_URL}/api/v3/wavespeed-ai/infinitetalk`, {
+  let url = `${WAVESPEED_API_URL}/api/v3/wavespeed-ai/infinitetalk`
+  
+  // Add webhook parameter if provided
+  if (params.webhook) {
+    url += `?webhook=${encodeURIComponent(params.webhook)}`
+  }
+
+  const response = await fetch(url, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -103,12 +111,20 @@ export async function submitVideoToVideoTask(params: {
   prompt?: string
   seed?: number
   mask_image?: string // URL
+  webhook?: string // URL
 }): Promise<{ id: string; status: string; urls: { get: string } }> {
   if (!WAVESPEED_API_KEY) {
     throw new Error("WAVESPEED_KEY is not configured")
   }
 
-  const response = await fetch(`${WAVESPEED_API_URL}/api/v3/wavespeed-ai/infinitetalk/video-to-video`, {
+  let url = `${WAVESPEED_API_URL}/api/v3/wavespeed-ai/infinitetalk/video-to-video`
+  
+  // Add webhook parameter if provided
+  if (params.webhook) {
+    url += `?webhook=${encodeURIComponent(params.webhook)}`
+  }
+
+  const response = await fetch(url, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

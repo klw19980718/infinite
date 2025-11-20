@@ -149,9 +149,10 @@ alwaysApply: true
 2. 验证必需文件（image, audio）
 3. 上传文件到 WaveSpeedAI 媒体存储
 4. 调用 `create_video_task` RPC 函数创建任务并扣除积分
-5. 提交任务到 WaveSpeedAI API
-6. 更新任务状态为 'processing'
-7. 返回任务 ID
+5. 构建 Webhook URL（包含 task_id）
+6. 提交任务到 WaveSpeedAI API（携带 Webhook URL）
+7. 更新任务状态为 'processing'
+8. 返回任务 ID
 
 **认证方式**: 使用 cookie-based 认证，从 `NextRequest` 读取用户 session
 
@@ -160,7 +161,7 @@ alwaysApply: true
 - 720p: 2 积分/秒，最小 10 积分
 - 最大: 600 秒（480p=600积分，720p=1200积分）
 
-**环境变量**: `WAVESPEED_KEY`
+**环境变量**: `WAVESPEED_KEY`, `WAVESPEED_WEBHOOK_SECRET`
 
 #### POST `/api/video/video-to-video`
 **功能**: 提交视频转视频任务，从视频和音频生成说话视频  
@@ -180,6 +181,33 @@ alwaysApply: true
 **流程**: 同 image-to-video 接口（使用 video 文件而非 image）
 **认证方式**: 使用 cookie-based 认证，从 `NextRequest` 读取用户 session
 **积分扣除**: 同 image-to-video 接口
+
+#### POST `/api/video/webhook`
+**功能**: 接收 WaveSpeedAI 任务完成/失败回调，更新任务状态
+**请求头**:
+- `webhook-signature` (HMAC 签名)
+- `webhook-id` (事件ID)
+- `webhook-timestamp` (时间戳)
+**请求体**: WaveSpeed Webhook JSON
+```typescript
+{
+  id: string,
+  status: 'completed' | 'failed',
+  outputs: string[],
+  error?: string
+  // ...
+}
+```
+**返回**: `200 OK`
+**流程**:
+1. 验证 HMAC 签名（使用 `WAVESPEED_WEBHOOK_SECRET`）
+2. 幂等性检查（查询 `webhook_events` 表）
+3. 提取 `task_id`（从 URL query 参数）
+4. 调用 `update_video_task` RPC 更新任务状态和结果
+5. 如果任务完成，设置 `expires_at`（7天保留期）
+6. 记录 webhook 事件到 `webhook_events` 表
+
+**环境变量**: `WAVESPEED_WEBHOOK_SECRET`
 
 #### GET `/api/video/result`
 **功能**: 查询视频生成任务结果  
@@ -398,6 +426,18 @@ alwaysApply: true
 **用途**: 存储用户上传的文件元数据
 **RLS**: ✅ 启用
 
+#### 🔄 webhook_events 表
+```sql
+- id (uuid, 主键, 默认: uuid_generate_v4())
+- webhook_id (text, 唯一, 非空) → WaveSpeed Webhook ID
+- task_id (uuid, 关联 video_tasks.id)
+- event_type (text) → 事件类型 (e.g. 'completed', 'failed')
+- payload_json (jsonb) → 完整 payload
+- created_at (timestamptz, 默认: now())
+```
+**用途**: 记录 Webhook 事件，用于幂等性检查和审计
+**RLS**: ❌ 仅服务端使用（Service Role）
+
 #### 📦 orders 表
 ```sql
 - id (uuid, 主键, 默认: uuid_generate_v4())
@@ -446,10 +486,10 @@ orders (订单表) → payments (支付记录)
 ```
 
 ### 📈 数据统计
-- **总表数**: 7个
+- **总表数**: 8个 (新增 webhook_events)
 - **有数据的表**: products (3行)
-- **空表**: user_info, credit_ledger, orders, payments, video_tasks, uploaded_files
-- **RLS状态**: 全部启用 ✅
+- **空表**: user_info, credit_ledger, orders, payments, video_tasks, uploaded_files, webhook_events
+- **RLS状态**: video_tasks 需开启 Realtime Publication，且必须有 SELECT policy 允许用户读取自己的数据以便前端订阅。
 
 ## 触发器与函数（必须保持同步维护）
 

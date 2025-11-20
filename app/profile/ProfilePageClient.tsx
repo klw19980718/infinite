@@ -104,10 +104,13 @@ export function ProfilePageClient() {
         setDeleteConfirmOpen(false)
         setWorkToDelete(null)
         router.push("/auth")
-      } else if (event === "SIGNED_IN" || event === "TOKEN_REFRESHED") {
-        // Refresh profile when user signs in or token is refreshed
+      } else if (event === "SIGNED_IN") {
+        // Only refresh profile when user signs in (not on token refresh)
+        // Token refresh happens automatically and shouldn't trigger data reload
         fetchProfile()
       }
+      // Note: TOKEN_REFRESHED is intentionally ignored to prevent unnecessary data reloads
+      // when switching browser tabs or when Supabase automatically refreshes the token
     })
 
     return () => {
@@ -352,7 +355,58 @@ export function ProfilePageClient() {
   }
 
 
-  // Note: Auto-polling for works has been removed.
+  // Realtime subscription for updates
+  useEffect(() => {
+    if (!profile) return
+
+    const supabase = getSupabaseClient()
+    const channel = supabase
+      .channel(`user-works-${profile.id}`)
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "video_tasks",
+          filter: `user_id=eq.${profile.id}`,
+        },
+        (payload) => {
+          if (payload.eventType === "INSERT") {
+            // New task created - only refresh if we're on the first page
+            // Otherwise, user can manually refresh or navigate to see new items
+            setWorksPage((currentPage) => {
+              if (currentPage === 1) {
+                fetchWorks(profile.id, 1)
+              }
+              return currentPage
+            })
+          } else if (payload.eventType === "UPDATE") {
+            // Task updated (e.g. completed) - update local state
+            setWorks((prev) => {
+              if (!prev) return prev
+              return prev.map((work) => {
+                if (work.id === payload.new.id) {
+                  return { ...work, ...payload.new }
+                }
+                return work
+              })
+            })
+          } else if (payload.eventType === "DELETE") {
+             // Task deleted
+             setWorks((prev) => prev?.filter((w) => w.id !== payload.old.id) || null)
+          }
+        }
+      )
+      .subscribe()
+
+    return () => {
+      supabase.removeChannel(channel)
+    }
+    // Only re-subscribe when profile changes, not when worksPage changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [profile?.id, fetchWorks])
+
+  // Note: Auto-polling for works has been removed in favor of Realtime.
   // Users can manually refresh works from the UI when needed.
 
   if (loading) {

@@ -97,6 +97,10 @@ export async function POST(request: NextRequest) {
     // Submit task to WaveSpeedAI
     let wavespeedTaskId: string
     try {
+      // Use NGROK_DEV_URL for local development, fallback to NEXT_PUBLIC_SITE_URL
+      const baseUrl = process.env.NGROK_DEV_URL || process.env.NEXT_PUBLIC_SITE_URL
+      const webhookUrl = `${baseUrl}/api/video/webhook?task_id=${taskId}`
+      
       const result = await submitVideoToVideoTask({
         video: videoUrl,
         audio: audioUrl,
@@ -104,6 +108,7 @@ export async function POST(request: NextRequest) {
         prompt: prompt || undefined,
         seed: seed ?? undefined,
         mask_image: maskImageUrl || undefined,
+        webhook: webhookUrl,
       })
       wavespeedTaskId = result.id
     } catch (error) {
