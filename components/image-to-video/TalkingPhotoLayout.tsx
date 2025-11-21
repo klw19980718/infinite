@@ -125,6 +125,14 @@ export const TalkingPhotoLayout = ({
   // Submission state
   const [isSubmitting, setIsSubmitting] = useState(false)
 
+  // TTS usage state
+  const [ttsUsage, setTtsUsage] = useState<{
+    characters_used: number
+    remaining_free: number
+    daily_limit: number
+  } | null>(null)
+  const [ttsUsageLoading, setTtsUsageLoading] = useState(true)
+
   // Load avatars on mount
   useEffect(() => {
     const loadAvatars = async () => {
@@ -141,6 +149,33 @@ export const TalkingPhotoLayout = ({
 
     loadAvatars()
   }, [])
+
+  // Load TTS usage on mount and when audioTab changes to "input"
+  useEffect(() => {
+    const fetchTtsUsage = async () => {
+      if (audioTab !== "input") return
+
+      setTtsUsageLoading(true)
+      try {
+        const response = await fetch("/api/speech/usage", {
+          credentials: "include",
+        })
+        const data = await response.json()
+
+        if (data.ok && data.usage) {
+          setTtsUsage(data.usage)
+        } else {
+          console.error("Failed to fetch TTS usage:", data.message)
+        }
+      } catch (error) {
+        console.error("Error fetching TTS usage:", error)
+      } finally {
+        setTtsUsageLoading(false)
+      }
+    }
+
+    fetchTtsUsage()
+  }, [audioTab])
 
   // Get default avatars to display - 3 from each category matching the aspect ratio
   const defaultAvatars = useMemo(() => {
@@ -599,6 +634,19 @@ export const TalkingPhotoLayout = ({
             setTtsAudioDuration(finalAudioDuration || 0)
             setTtsLoading(false)
 
+            // Refresh TTS usage after generation
+            try {
+              const usageResponse = await fetch("/api/speech/usage", {
+                credentials: "include",
+              })
+              const usageData = await usageResponse.json()
+              if (usageData.ok && usageData.usage) {
+                setTtsUsage(usageData.usage)
+              }
+            } catch (error) {
+              console.error("Error refreshing TTS usage:", error)
+            }
+
             // toast.success("Audio generated successfully", { id: "tts-generating" })
           } catch (error) {
             setTtsLoading(false)
@@ -753,6 +801,15 @@ export const TalkingPhotoLayout = ({
 
       if (!data.ok) {
         throw new Error(data.message || "Failed to create TTS task")
+      }
+
+      // Update TTS usage from API response
+      if (data.tts_usage) {
+        setTtsUsage({
+          characters_used: data.tts_usage.total_used_today,
+          remaining_free: data.tts_usage.remaining_free,
+          daily_limit: 3000, // Daily free limit
+        })
       }
 
       setTtsTaskId(data.task_id)
@@ -956,7 +1013,7 @@ export const TalkingPhotoLayout = ({
             </div>
 
             {/* Avatar Grid - Fixed height with scroll */}
-            <div className="h-[400px] overflow-y-auto custom-scrollbar">
+            <div className="h-[420px] overflow-y-auto custom-scrollbar">
               {loading ? (
                 <div className="flex items-center justify-center h-full">
                   <p className="text-sm text-muted-foreground">Loading avatars...</p>
@@ -1381,6 +1438,26 @@ export const TalkingPhotoLayout = ({
                         {inputText.length} / 1000
                       </span>
                     </div>
+
+                    {/* TTS Free Quota Display - Separate row */}
+                    {ttsUsage && (
+                      <div className="flex-shrink-0 pt-2 border-t border-border/50">
+                        <div className="flex items-center justify-between px-1">
+                          <div className="flex items-center gap-2">
+                            <div className="w-2 h-2 rounded-full bg-accent"></div>
+                            <span className="text-xs text-muted-foreground">Daily Free Quota</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs font-medium text-foreground">
+                              {ttsUsage.remaining_free.toLocaleString()} / {ttsUsage.daily_limit.toLocaleString()} chars
+                            </span>
+                            {ttsUsage.remaining_free === 0 && (
+                              <span className="text-xs text-orange-500 font-medium">(Paid)</span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )}
               </TabsContent>

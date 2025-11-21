@@ -59,14 +59,59 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Upload files to WaveSpeedAI
+    // Calculate required credits BEFORE uploading files
+    const creditsPerSecond = resolution === "480p" ? 1 : 2
+    const minCredits = resolution === "480p" ? 5 : 10
+    const maxDuration = 600 // 10 minutes
+    const actualDuration = audioDurationSeconds ? Math.min(audioDurationSeconds, maxDuration) : 0
+    const requiredCredits = Math.max(minCredits, actualDuration * creditsPerSecond)
+
+    // Check user credits BEFORE uploading files
+    const { data: userInfo, error: userInfoError } = await supabase
+      .from("user_info")
+      .select("credits")
+      .eq("user_id", user.id)
+      .single()
+
+    if (userInfoError || !userInfo) {
+      // User info might not exist yet, treat as 0 credits
+      const userCredits = 0
+      if (userCredits < requiredCredits) {
+        return NextResponse.json(
+          {
+            ok: false,
+            code: "INSUFFICIENT_CREDITS",
+            message: `Insufficient credits. Required: ${requiredCredits}, Available: ${userCredits}`,
+            required_credits: requiredCredits,
+            available_credits: userCredits,
+          },
+          { status: 402 } // 402 Payment Required
+        )
+      }
+    } else {
+      const userCredits = userInfo.credits || 0
+      if (userCredits < requiredCredits) {
+        return NextResponse.json(
+          {
+            ok: false,
+            code: "INSUFFICIENT_CREDITS",
+            message: `Insufficient credits. Required: ${requiredCredits}, Available: ${userCredits}`,
+            required_credits: requiredCredits,
+            available_credits: userCredits,
+          },
+          { status: 402 } // 402 Payment Required
+        )
+      }
+    }
+
+    // Upload files to WaveSpeedAI (only after credits check passes)
     const [videoUrl, audioUrl, maskImageUrl] = await Promise.all([
       uploadFileToWaveSpeed(videoFile),
       uploadFileToWaveSpeed(audioFile),
       maskImageFile ? uploadFileToWaveSpeed(maskImageFile) : Promise.resolve(null),
     ])
 
-    // Create task and deduct credits (this will validate credits and create the task record)
+    // Create task and deduct credits (this will validate credits again and create the task record)
     // For video-to-video, we still use the same create_video_task function
     // but store video URL in input_image_url field (we might need to adjust this later)
     const { data: taskId, error: taskError } = await supabase.rpc("create_video_task", {
@@ -81,6 +126,18 @@ export async function POST(request: NextRequest) {
 
     if (taskError) {
       console.error("Error creating video task:", taskError)
+      // Check if error is related to insufficient credits
+      const errorMessage = taskError.message || ""
+      if (errorMessage.toLowerCase().includes("insufficient") || errorMessage.toLowerCase().includes("credit")) {
+        return NextResponse.json(
+          {
+            ok: false,
+            code: "INSUFFICIENT_CREDITS",
+            message: taskError.message,
+          },
+          { status: 402 } // 402 Payment Required
+        )
+      }
       return NextResponse.json(
         { ok: false, code: "TASK_CREATION_FAILED", message: taskError.message },
         { status: 500 }

@@ -276,23 +276,41 @@ alwaysApply: true
   outputs?: string[],  // 仅在 wait=true 时存在
   urls: {
     get: string  // 获取任务结果的 URL
+  },
+  tts_usage: {
+    free_characters_used: number,  // 本次使用的免费字符数
+    paid_characters: number,       // 本次需要付费的字符数
+    credits_deducted: number,      // 本次扣除的积分数
+    remaining_free: number,        // 今日剩余免费字符数
+    total_used_today: number       // 今日总使用字符数
   }
 }
 // 错误情况：
 {
   ok: false,
-  code: 'UNAUTHORIZED' | 'MISSING_TEXT' | 'TEXT_TOO_LONG' | 'INVALID_SPEED' | 'INVALID_VOLUME' | 'INVALID_PITCH' | 'INVALID_EMOTION' | 'WAVESPEED_ERROR' | 'INTERNAL_ERROR',
-  message: string
+  code: 'UNAUTHORIZED' | 'MISSING_TEXT' | 'TEXT_TOO_LONG' | 'INVALID_SPEED' | 'INVALID_VOLUME' | 'INVALID_PITCH' | 'INVALID_EMOTION' | 'INSUFFICIENT_CREDITS' | 'CREDIT_DEDUCTION_ERROR' | 'WAVESPEED_ERROR' | 'INTERNAL_ERROR',
+  message: string,
+  required_credits?: number,  // 当 code='INSUFFICIENT_CREDITS' 时存在
+  available_credits?: number  // 当 code='INSUFFICIENT_CREDITS' 时存在
 }
 ```
 **流程**:
 1. 从 cookie 验证用户身份（使用 `createServerSupabaseClientForRouteHandler`）
 2. 验证必需字段（text）
 3. 验证可选参数范围（speed, vol, pitch, emotion）
-4. 调用 WaveSpeedAI API 提交文本转语音任务（模型: minimax-speech-02-hd）
-5. 返回任务 ID 和状态
+4. **调用 `deduct_tts_credits` RPC 函数扣除积分**：
+   - 每日免费额度：3,000 字符
+   - 超出后：每 1,000 字符扣 2 积分
+   - 如果积分不足，返回 402 错误
+5. 调用 WaveSpeedAI API 提交文本转语音任务（模型: minimax-speech-02-hd）
+6. 返回任务 ID、状态和使用情况
 
 **认证方式**: 使用 cookie-based 认证，从 `NextRequest` 读取用户 session
+
+**积分扣除规则**:
+- 每日免费额度：3,000 字符（UTC 时间每天重置）
+- 超出免费额度：每 1,000 字符扣 2 积分（向上取整）
+- 积分不足时返回 402 Payment Required 错误
 
 **环境变量**: `WAVESPEED_KEY`
 
@@ -470,6 +488,19 @@ alwaysApply: true
 **用途**: 支付事件记录
 **RLS**: ✅ 启用
 
+#### 📝 tts_usage 表
+```sql
+- id (uuid, 主键, 默认: uuid_generate_v4())
+- user_id (uuid) → 关联 auth.users.id
+- usage_date (date, 默认: CURRENT_DATE) → 使用日期
+- characters_used (integer, 默认: 0) → 当日使用的字符数
+- created_at (timestamptz, 默认: now())
+- updated_at (timestamptz, 默认: now())
+- UNIQUE(user_id, usage_date) → 每个用户每天一条记录
+```
+**用途**: 记录用户每日 TTS 字符使用量（用于免费额度追踪）
+**RLS**: ✅ 启用（用户只能查看自己的使用记录）
+
 ### 🔗 表关系图
 ```
 auth.users (Supabase Auth)
@@ -486,9 +517,9 @@ orders (订单表) → payments (支付记录)
 ```
 
 ### 📈 数据统计
-- **总表数**: 8个 (新增 webhook_events)
+- **总表数**: 9个 (新增 tts_usage)
 - **有数据的表**: products (3行)
-- **空表**: user_info, credit_ledger, orders, payments, video_tasks, uploaded_files, webhook_events
+- **空表**: user_info, credit_ledger, orders, payments, video_tasks, uploaded_files, webhook_events, tts_usage
 - **RLS状态**: video_tasks 需开启 Realtime Publication，且必须有 SELECT policy 允许用户读取自己的数据以便前端订阅。
 
 ## 触发器与函数（必须保持同步维护）
@@ -547,6 +578,45 @@ orders (订单表) → payments (支付记录)
 -- 名称：trg_video_tasks_updated_at  表：public.video_tasks  时机：BEFORE UPDATE
 -- 函数：public.tg_update_updated_at()
 -- 语义：写入 NEW.updated_at = now()
+```
+
+### tts_usage 更新触发器
+```sql
+-- 名称：trg_tts_usage_updated_at  表：public.tts_usage  时机：BEFORE UPDATE
+-- 函数：public.tg_tts_usage_touch_updated_at()
+-- 语义：写入 NEW.updated_at = now()
+```
+
+### RPC：public.deduct_tts_credits
+```sql
+-- 参数：p_user_id uuid, p_characters integer
+-- 权限：SECURITY DEFINER（仅服务端调用）
+-- 返回：jsonb
+-- 行为：
+--   1) 检查用户今日 TTS 使用量（从 tts_usage 表）
+--   2) 计算免费额度剩余（每日 3,000 字符）
+--   3) 如果超出免费额度，计算需要扣除的积分（每 1,000 字符 2 积分，向上取整）
+--   4) 检查用户积分是否足够
+--   5) 扣除积分（写入 credit_ledger，note 包含字符数）
+--   6) 更新 tts_usage 表的使用量
+--   7) 返回使用情况（免费字符数、付费字符数、扣除积分、剩余免费额度等）
+-- 返回格式：
+--   {
+--     success: boolean,
+--     free_characters_used: integer,
+--     paid_characters: integer,
+--     credits_deducted: integer,
+--     remaining_free: integer,
+--     total_used_today: integer
+--   }
+--   或错误：
+--   {
+--     success: false,
+--     error: 'INSUFFICIENT_CREDITS',
+--     message: string,
+--     required_credits: integer,
+--     available_credits: integer
+--   }
 ```
 
 ## Webhook 幂等与订单映射

@@ -74,7 +74,37 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Submit task to WaveSpeedAI
+    // Deduct TTS credits BEFORE calling WaveSpeedAI (check free quota and deduct if needed)
+    const textLength = text.trim().length
+    const { data: deductResult, error: deductError } = await supabase.rpc("deduct_tts_credits", {
+      p_user_id: user.id,
+      p_characters: textLength,
+    })
+
+    if (deductError) {
+      console.error("Error deducting TTS credits:", deductError)
+      return NextResponse.json(
+        { ok: false, code: "CREDIT_DEDUCTION_ERROR", message: "Failed to process credits" },
+        { status: 500 }
+      )
+    }
+
+    if (!deductResult || !deductResult.success) {
+      const errorCode = deductResult?.error || "INSUFFICIENT_CREDITS"
+      const errorMessage = deductResult?.message || "Insufficient credits for TTS generation"
+      return NextResponse.json(
+        {
+          ok: false,
+          code: errorCode,
+          message: errorMessage,
+          required_credits: deductResult?.required_credits,
+          available_credits: deductResult?.available_credits,
+        },
+        { status: 402 } // 402 Payment Required
+      )
+    }
+
+    // Submit task to WaveSpeedAI (only after credits are deducted)
     let result
     try {
       result = await submitTextToSpeechTask({
@@ -89,6 +119,8 @@ export async function POST(request: NextRequest) {
       })
     } catch (error) {
       console.error("Error submitting text-to-speech task to WaveSpeedAI:", error)
+      // Note: Credits are already deducted, but task failed
+      // In production, you might want to refund credits if task creation fails
       return NextResponse.json(
         { 
           ok: false, 
@@ -106,6 +138,14 @@ export async function POST(request: NextRequest) {
         status: result.status,
         outputs: result.outputs,
         urls: result.urls,
+        // Include TTS usage info
+        tts_usage: {
+          free_characters_used: deductResult.free_characters_used,
+          paid_characters: deductResult.paid_characters,
+          credits_deducted: deductResult.credits_deducted,
+          remaining_free: deductResult.remaining_free,
+          total_used_today: deductResult.total_used_today,
+        },
       },
       {
         headers: response.headers,

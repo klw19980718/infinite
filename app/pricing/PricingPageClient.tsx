@@ -136,6 +136,11 @@ export function PricingPageClient() {
         "Standard costs 1 credit/sec; HD costs 2 credits/sec. Minimum 5 (Std) / 10 (HD). Max per job 600 seconds.",
     },
     {
+      question: "Is text-to-speech (TTS) free?",
+      answer:
+        "Yes! Every user gets 3,000 characters of free TTS per day. Beyond that, TTS costs 2 credits per 1,000 characters. This free quota resets daily at midnight UTC.",
+    },
+    {
       question: "Can I use the results commercially?",
       answer: "Yes, paid plans include a commercial use license.",
     },
@@ -175,7 +180,7 @@ export function PricingPageClient() {
             Simple Pricing — Credits Never Expire
           </h1>
           <p className="text-lg md:text-xl text-muted-foreground mb-12 max-w-2xl mx-auto text-balance font-light">
-            Pay once in USD. Use credits anytime for Standard or HD generation.
+            Pay once in USD. Use credits anytime for Standard or HD generation. <span className="text-accent font-medium">3,000 characters of text-to-speech free daily!</span>
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
@@ -360,6 +365,10 @@ export function PricingPageClient() {
                     <span className="font-semibold text-foreground">2 credits / sec</span>
                   </div>
                   <div className="flex justify-between items-center p-3 rounded-lg bg-muted/50">
+                    <span className="text-muted-foreground">Text-to-Speech</span>
+                    <span className="font-semibold text-foreground">2 credits / 1K chars</span>
+                  </div>
+                  <div className="flex justify-between items-center p-3 rounded-lg bg-muted/50">
                     <span className="text-muted-foreground text-sm">Minimum charge</span>
                     <span className="font-semibold text-foreground text-sm">5 / 5 credits</span>
                   </div>
@@ -391,6 +400,12 @@ export function PricingPageClient() {
                       <FiCheck className="w-3 h-3 text-accent" />
                     </div>
                     <span className="text-muted-foreground">You can split credits across multiple renders</span>
+                  </div>
+                  <div className="flex items-start gap-3 p-4 rounded-lg glass" style={{ borderColor: 'var(--accent)', borderWidth: '2px' }}>
+                    <div className="w-5 h-5 rounded-full bg-accent/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <FiCheck className="w-3 h-3 text-accent" />
+                    </div>
+                    <span className="text-muted-foreground"><span className="font-semibold text-foreground">3,000 characters</span> of text-to-speech free daily (resets at midnight UTC)</span>
                   </div>
                 </div>
               </div>
