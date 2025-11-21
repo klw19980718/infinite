@@ -27,7 +27,7 @@ export const VideoToVideoHero = () => {
   const [audioFile, setAudioFile] = useState<File | null>(null)
   const [audioDuration, setAudioDuration] = useState<number | null>(null)
   const [status, setStatus] = useState<"idle" | "loading" | "completed">("idle")
-  const [resolution, setResolution] = useState<"480p" | "720p">("480p")
+  const [resolution, setResolution] = useState<"fast" | "480p" | "720p">("fast")
   const [taskId, setTaskId] = useState<string | null>(null)
   const [videoUrl, setVideoUrl] = useState<string | null>(null)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
@@ -73,19 +73,23 @@ export const VideoToVideoHero = () => {
   }
 
   // Calculate credits based on duration and resolution
-  const calculateCredits = (duration: number | null, resolution: "480p" | "720p"): number => {
+  const calculateCredits = (duration: number | null, resolution: "fast" | "480p" | "720p"): number => {
     if (!duration) {
-      // Minimum charge: 5 credits for 480p, 10 credits for 720p
-      return resolution === "480p" ? 5 : 10
+      // Minimum charge: 3 credits for fast, 5 credits for 480p, 10 credits for 720p
+      return resolution === "fast" ? 3 : resolution === "480p" ? 5 : 10
     }
     
-    const creditsPerSecond = resolution === "480p" ? 1 : 2
-    const credits = duration * creditsPerSecond
-    const minCredits = resolution === "480p" ? 5 : 10
+    // Fast: 0.5 credit/s, 480p: 1 credit/s, 720p: 2 credits/s
+    const creditsPerSecond = resolution === "fast" ? 0.5 : resolution === "480p" ? 1 : 2
+    const minCredits = resolution === "fast" ? 3 : resolution === "480p" ? 5 : 10
     const maxDuration = 600 // 10 minutes
     const actualDuration = Math.min(duration, maxDuration)
     
-    return Math.max(minCredits, actualDuration * creditsPerSecond)
+    // For fast mode, round up to nearest integer
+    const calculatedCredits = actualDuration * creditsPerSecond
+    const roundedCredits = resolution === "fast" ? Math.ceil(calculatedCredits) : calculatedCredits
+    
+    return Math.max(minCredits, roundedCredits)
   }
 
   // Update estimated credits when resolution or audio duration changes
@@ -456,15 +460,16 @@ export const VideoToVideoHero = () => {
                           aria-label="Select resolution"
                         >
                           <span className="text-foreground font-medium">
-                            {resolution === "480p" ? "Standard (480p)" : "HD (720p)"}
+                            {resolution === "fast" ? "Fast" : resolution === "480p" ? "Standard (480p)" : "HD (720p)"}
                           </span>
                           <FiChevronDown className="w-4 h-4 text-muted-foreground" />
                         </button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="start" className="w-[var(--radix-dropdown-menu-trigger-width)]">
                         <DropdownMenuRadioGroup value={resolution} onValueChange={(v) => setResolution(v as any)}>
-                          <DropdownMenuRadioItem value="480p">Standard (480p)</DropdownMenuRadioItem>
-                          <DropdownMenuRadioItem value="720p">HD (720p)</DropdownMenuRadioItem>
+                          <DropdownMenuRadioItem value="fast">Fast (0.5 credit/s)</DropdownMenuRadioItem>
+                          <DropdownMenuRadioItem value="480p">Standard (480p) - 1 credit/s</DropdownMenuRadioItem>
+                          <DropdownMenuRadioItem value="720p">HD (720p) - 2 credits/s</DropdownMenuRadioItem>
                         </DropdownMenuRadioGroup>
                       </DropdownMenuContent>
                     </DropdownMenu>
@@ -661,6 +666,13 @@ export const VideoToVideoHero = () => {
 
                     {/* Billing Rules */}
                     <div className="space-y-2 text-sm">
+                      <div className="flex items-start gap-2">
+                        <span className="w-1.5 h-1.5 rounded-full bg-accent mt-1.5 flex-shrink-0"></span>
+                        <div>
+                          <span className="font-medium text-foreground">Fast:</span>
+                          <span className="text-muted-foreground"> 0.5 credit/second (rounded up), minimum 3 credits</span>
+                        </div>
+                      </div>
                       <div className="flex items-start gap-2">
                         <span className="w-1.5 h-1.5 rounded-full bg-accent mt-1.5 flex-shrink-0"></span>
                         <div>

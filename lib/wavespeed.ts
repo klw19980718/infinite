@@ -102,6 +102,61 @@ export async function submitImageToVideoTask(params: {
 }
 
 /**
+ * Submit an image-to-video fast task to WaveSpeedAI
+ */
+export async function submitImageToVideoFastTask(params: {
+  image: string // URL
+  audio: string // URL
+  prompt?: string
+  seed?: number
+  mask_image?: string // URL
+  webhook?: string // URL
+}): Promise<{ id: string; status: string; urls: { get: string } }> {
+  if (!WAVESPEED_API_KEY) {
+    throw new Error("WAVESPEED_KEY is not configured")
+  }
+
+  let url = `${WAVESPEED_API_URL}/api/v3/wavespeed-ai/infinitetalk-fast`
+  
+  // Add webhook parameter if provided
+  if (params.webhook) {
+    url += `?webhook=${encodeURIComponent(params.webhook)}`
+  }
+
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${WAVESPEED_API_KEY}`,
+    },
+    body: JSON.stringify({
+      image: params.image,
+      audio: params.audio,
+      prompt: params.prompt || "",
+      seed: params.seed ?? -1,
+      mask_image: params.mask_image,
+    }),
+  })
+
+  if (!response.ok) {
+    const errorText = await response.text()
+    throw new Error(`WaveSpeedAI API error: ${response.status} ${errorText}`)
+  }
+
+  const data = await response.json()
+  
+  if (data.code !== 200) {
+    throw new Error(`WaveSpeedAI API error: ${data.message || "Unknown error"}`)
+  }
+
+  return {
+    id: data.data.id,
+    status: data.data.status,
+    urls: data.data.urls,
+  }
+}
+
+/**
  * Submit a video-to-video task to WaveSpeedAI
  */
 export async function submitVideoToVideoTask(params: {
@@ -134,6 +189,61 @@ export async function submitVideoToVideoTask(params: {
       video: params.video,
       audio: params.audio,
       resolution: params.resolution || "480p",
+      prompt: params.prompt || "",
+      seed: params.seed ?? -1,
+      mask_image: params.mask_image,
+    }),
+  })
+
+  if (!response.ok) {
+    const errorText = await response.text()
+    throw new Error(`WaveSpeedAI API error: ${response.status} ${errorText}`)
+  }
+
+  const data = await response.json()
+  
+  if (data.code !== 200) {
+    throw new Error(`WaveSpeedAI API error: ${data.message || "Unknown error"}`)
+  }
+
+  return {
+    id: data.data.id,
+    status: data.data.status,
+    urls: data.data.urls,
+  }
+}
+
+/**
+ * Submit a video-to-video fast task to WaveSpeedAI
+ */
+export async function submitVideoToVideoFastTask(params: {
+  video: string // URL
+  audio: string // URL
+  prompt?: string
+  seed?: number
+  mask_image?: string // URL
+  webhook?: string // URL
+}): Promise<{ id: string; status: string; urls: { get: string } }> {
+  if (!WAVESPEED_API_KEY) {
+    throw new Error("WAVESPEED_KEY is not configured")
+  }
+
+  let url = `${WAVESPEED_API_URL}/api/v3/wavespeed-ai/infinitetalk-fast/video-to-video`
+  
+  // Add webhook parameter if provided
+  if (params.webhook) {
+    url += `?webhook=${encodeURIComponent(params.webhook)}`
+  }
+
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${WAVESPEED_API_KEY}`,
+    },
+    body: JSON.stringify({
+      video: params.video,
+      audio: params.audio,
       prompt: params.prompt || "",
       seed: params.seed ?? -1,
       mask_image: params.mask_image,

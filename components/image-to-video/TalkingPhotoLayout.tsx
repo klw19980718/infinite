@@ -41,12 +41,12 @@ interface TalkingPhotoLayoutProps {
   audioFileName: string | null
   audioFile: File | null
   audioDuration: number | null
-  resolution: "480p" | "720p"
+  resolution: "fast" | "480p" | "720p"
   estimatedCredits: number
   status: "idle" | "loading" | "completed"
   onImageChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   onAudioChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-  onResolutionChange: (resolution: "480p" | "720p") => void
+  onResolutionChange: (resolution: "fast" | "480p" | "720p") => void
   onClearImage: () => void
   onClearAudio: () => void
   onSubmit?: (e: React.FormEvent<HTMLFormElement>) => void
@@ -1061,6 +1061,31 @@ export const TalkingPhotoLayout = ({
             <div className="flex flex-wrap gap-3">
               <button
                 type="button"
+                onClick={() => onResolutionChange("fast")}
+                className={`relative w-full sm:w-[200px] p-5 rounded-xl border-2 transition-all flex flex-col items-start ${
+                  resolution === "fast"
+                    ? "border-accent bg-card shadow-lg"
+                    : "border-border/50 bg-card/50 hover:border-accent/50 hover:bg-card/80"
+                }`}
+              >
+                {resolution === "fast" && (
+                  <div className="absolute top-3 right-3 w-6 h-6 rounded-full bg-accent flex items-center justify-center">
+                    <FiCheck className="w-4 h-4 text-accent-foreground" />
+                  </div>
+                )}
+                <h4 className="text-lg font-semibold text-foreground mb-1 pr-8">Fast</h4>
+                <p className="text-sm text-muted-foreground mb-4">Fastest generation</p>
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2 text-sm text-foreground">
+                    <FiDollarSign className="w-4 h-4" />
+                    <span>0.5 Credit/s</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground">Minimum 3 credits</p>
+                </div>
+              </button>
+
+              <button
+                type="button"
                 onClick={() => onResolutionChange("480p")}
                 className={`relative w-full sm:w-[200px] p-5 rounded-xl border-2 transition-all flex flex-col items-start ${
                   resolution === "480p"
@@ -1073,8 +1098,8 @@ export const TalkingPhotoLayout = ({
                     <FiCheck className="w-4 h-4 text-accent-foreground" />
                   </div>
                 )}
-                <h4 className="text-lg font-semibold text-foreground mb-1 pr-8">480P</h4>
-                <p className="text-sm text-muted-foreground mb-4">Fastest, basic effect</p>
+                <h4 className="text-lg font-semibold text-foreground mb-1 pr-8">Quality 480P</h4>
+                <p className="text-sm text-muted-foreground mb-4">Standard quality</p>
                 <div className="space-y-1">
                   <div className="flex items-center gap-2 text-sm text-foreground">
                     <FiDollarSign className="w-4 h-4" />
@@ -1098,7 +1123,7 @@ export const TalkingPhotoLayout = ({
                     <FiCheck className="w-4 h-4 text-accent-foreground" />
                   </div>
                 )}
-                <h4 className="text-lg font-semibold text-foreground mb-1 pr-8">720P</h4>
+                <h4 className="text-lg font-semibold text-foreground mb-1 pr-8">Quality 720P</h4>
                 <p className="text-sm text-muted-foreground mb-4">High quality</p>
                 <div className="space-y-1">
                   <div className="flex items-center gap-2 text-sm text-foreground">
@@ -1606,7 +1631,7 @@ export const TalkingPhotoLayout = ({
                             {new Date().toISOString().replace(/[:.]/g, "-").slice(0, -5)}.webm
                           </p>
                           <p className="text-xs text-muted-foreground mt-0.5">
-                            {Math.ceil(recordedDuration)}s • ~{Math.ceil(recordedDuration * (resolution === "480p" ? 1 : 2))} credits
+                            {Math.ceil(recordedDuration)}s • ~{Math.ceil(recordedDuration * (resolution === "fast" ? 0.5 : resolution === "480p" ? 1 : 2))} credits
                           </p>
                         </div>
                       </div>
@@ -1712,7 +1737,7 @@ export const TalkingPhotoLayout = ({
                 <>Generating...</>
               ) : (
                 (() => {
-                  const minCredits = resolution === "480p" ? 5 : 10
+                  const minCredits = resolution === "fast" ? 3 : resolution === "480p" ? 5 : 10
                   if (audioTab === "input") {
                     return <>Generate (minimum -{minCredits} credits)</>
                   }

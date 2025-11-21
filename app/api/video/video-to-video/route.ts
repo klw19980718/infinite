@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import { createServerSupabaseClientForRouteHandler } from "@/lib/supabase/server.server"
-import { uploadFileToWaveSpeed, submitVideoToVideoTask } from "@/lib/wavespeed"
+import { uploadFileToWaveSpeed, submitVideoToVideoTask, submitVideoToVideoFastTask } from "@/lib/wavespeed"
 
 // Use Node.js runtime for Supabase compatibility
 export const runtime = 'nodejs'
@@ -42,9 +42,9 @@ export async function POST(request: NextRequest) {
     }
 
     // Validate resolution
-    if (resolution !== "480p" && resolution !== "720p") {
+    if (resolution !== "fast" && resolution !== "480p" && resolution !== "720p") {
       return NextResponse.json(
-        { ok: false, code: "INVALID_RESOLUTION", message: "Resolution must be 480p or 720p" },
+        { ok: false, code: "INVALID_RESOLUTION", message: "Resolution must be fast, 480p, or 720p" },
         { status: 400 }
       )
     }
@@ -60,11 +60,15 @@ export async function POST(request: NextRequest) {
     }
 
     // Calculate required credits BEFORE uploading files
-    const creditsPerSecond = resolution === "480p" ? 1 : 2
-    const minCredits = resolution === "480p" ? 5 : 10
+    // Fast: 0.5 credit/s (rounded up), min 3 credits
+    // 480p: 1 credit/s, min 5 credits
+    // 720p: 2 credits/s, min 10 credits
+    const creditsPerSecond = resolution === "fast" ? 0.5 : resolution === "480p" ? 1 : 2
+    const minCredits = resolution === "fast" ? 3 : resolution === "480p" ? 5 : 10
     const maxDuration = 600 // 10 minutes
     const actualDuration = audioDurationSeconds ? Math.min(audioDurationSeconds, maxDuration) : 0
-    const requiredCredits = Math.max(minCredits, actualDuration * creditsPerSecond)
+    const calculatedCredits = actualDuration * creditsPerSecond
+    const requiredCredits = Math.max(minCredits, resolution === "fast" ? Math.ceil(calculatedCredits) : calculatedCredits)
 
     // Check user credits BEFORE uploading files
     const { data: userInfo, error: userInfoError } = await supabase
@@ -158,15 +162,25 @@ export async function POST(request: NextRequest) {
       const baseUrl = process.env.NGROK_DEV_URL || process.env.NEXT_PUBLIC_SITE_URL
       const webhookUrl = `${baseUrl}/api/video/webhook?task_id=${taskId}`
       
-      const result = await submitVideoToVideoTask({
-        video: videoUrl,
-        audio: audioUrl,
-        resolution: resolution as "480p" | "720p",
-        prompt: prompt || undefined,
-        seed: seed ?? undefined,
-        mask_image: maskImageUrl || undefined,
-        webhook: webhookUrl,
-      })
+      // Use fast API if resolution is "fast", otherwise use regular API
+      const result = resolution === "fast"
+        ? await submitVideoToVideoFastTask({
+            video: videoUrl,
+            audio: audioUrl,
+            prompt: prompt || undefined,
+            seed: seed ?? undefined,
+            mask_image: maskImageUrl || undefined,
+            webhook: webhookUrl,
+          })
+        : await submitVideoToVideoTask({
+            video: videoUrl,
+            audio: audioUrl,
+            resolution: resolution as "480p" | "720p",
+            prompt: prompt || undefined,
+            seed: seed ?? undefined,
+            mask_image: maskImageUrl || undefined,
+            webhook: webhookUrl,
+          })
       wavespeedTaskId = result.id
     } catch (error) {
       console.error("Error submitting task to WaveSpeedAI:", error)

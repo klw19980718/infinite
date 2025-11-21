@@ -15,7 +15,7 @@ export const ImageToVideoHero = () => {
   const [audioFileName, setAudioFileName] = useState<string | null>(null)
   const [audioFile, setAudioFile] = useState<File | null>(null)
   const [audioDuration, setAudioDuration] = useState<number | null>(null)
-  const [resolution, setResolution] = useState<"480p" | "720p">("480p")
+  const [resolution, setResolution] = useState<"fast" | "480p" | "720p">("fast")
   const [estimatedCredits, setEstimatedCredits] = useState<number>(0)
   
   const imageInputRef = useRef<HTMLInputElement>(null)
@@ -68,19 +68,23 @@ export const ImageToVideoHero = () => {
   }
 
   // Calculate credits based on duration and resolution
-  const calculateCredits = (duration: number | null, resolution: "480p" | "720p"): number => {
+  const calculateCredits = (duration: number | null, resolution: "fast" | "480p" | "720p"): number => {
     if (!duration) {
-      // Minimum charge: 5 credits for 480p, 10 credits for 720p
-      return resolution === "480p" ? 5 : 10
+      // Minimum charge: 3 credits for fast, 5 credits for 480p, 10 credits for 720p
+      return resolution === "fast" ? 3 : resolution === "480p" ? 5 : 10
     }
     
-    const creditsPerSecond = resolution === "480p" ? 1 : 2
-    const credits = duration * creditsPerSecond
-    const minCredits = resolution === "480p" ? 5 : 10
+    // Fast: 0.5 credit/s, 480p: 1 credit/s, 720p: 2 credits/s
+    const creditsPerSecond = resolution === "fast" ? 0.5 : resolution === "480p" ? 1 : 2
+    const minCredits = resolution === "fast" ? 3 : resolution === "480p" ? 5 : 10
     const maxDuration = 600 // 10 minutes
     const actualDuration = Math.min(duration, maxDuration)
     
-    return Math.max(minCredits, actualDuration * creditsPerSecond)
+    // For fast mode, round up to nearest integer
+    const calculatedCredits = actualDuration * creditsPerSecond
+    const roundedCredits = resolution === "fast" ? Math.ceil(calculatedCredits) : calculatedCredits
+    
+    return Math.max(minCredits, roundedCredits)
   }
 
   // Update estimated credits when resolution or audio duration changes
