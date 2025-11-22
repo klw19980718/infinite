@@ -68,8 +68,8 @@ infinite-talk/
 │   │   ├── page.tsx         - 登录/注册整合页面（Email OTP）
 │   │   └── AuthPageClient.tsx - 认证页面客户端组件
 │   ├── infinite-talk-ai/    - AI 功能相关页面
-│   │   ├── image-to-video/  - 图片转视频功能
-│   │   │   └── page.tsx     - 图片转视频页面
+│   │   ├── image-to-video/  - 图片转视频功能（已废弃，重定向到首页）
+│   │   │   └── page.tsx     - 重定向到首页
 │   │   └── video-to-video/  - 视频转视频功能
 │   │       └── page.tsx     - 视频转视频页面
 │   ├── pricing/             - 定价页面
@@ -96,7 +96,7 @@ infinite-talk/
 │   │   └── UserMenu.tsx     - 用户头像下拉菜单
 │   ├── home/                - 首页相关组件
 │   │   ├── FAQ.tsx          - 常见问题组件
-│   │   ├── hero.tsx         - 首屏英雄区组件
+│   │   ├── hero.tsx         - 首屏英雄区组件（包含 TalkingPhotoLayout 和 Tabs）
 │   │   ├── Highlights.tsx   - 亮点展示组件
 │   │   ├── HowItWorks.tsx   - 工作原理说明组件
 │   │   ├── Specs.tsx        - 规格参数组件
@@ -106,9 +106,11 @@ infinite-talk/
 │   │   ├── AudioWaveform.tsx - 音频波形可视化组件
 │   │   ├── AvatarDialog.tsx - 头像选择对话框组件
 │   │   ├── cta.tsx          - 行动号召组件
-│   │   ├── hero.tsx         - 图片转视频英雄区组件
+│   │   ├── InputTextTab.tsx - 文本输入 Tab 组件
 │   │   ├── RecordAudioDialog.tsx - 录音对话框组件
+│   │   ├── RecordAudioTab.tsx - 录音 Tab 组件
 │   │   ├── TalkingPhotoLayout.tsx - 图片转视频布局组件（包含图片上传、音频处理、模型选择等）
+│   │   ├── UploadAudioTab.tsx - 音频上传 Tab 组件
 │   │   ├── VoiceSelectDialog.tsx - 声音选择对话框组件
 │   │   └── index.ts         - 组件统一导出
 │   ├── video-to-video/      - 视频转视频相关组件

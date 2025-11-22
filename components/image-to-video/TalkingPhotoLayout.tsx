@@ -25,6 +25,14 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import { InputTextTab } from "./InputTextTab"
+import { UploadAudioTab } from "./UploadAudioTab"
+import { RecordAudioTab } from "./RecordAudioTab"
+
+// Local helper for formatting pause seconds (used when inserting pause elements)
+const formatPauseSeconds = (seconds: number): string => {
+  return parseFloat(seconds.toFixed(1)).toString()
+}
 
 interface Avatar {
   url: string
@@ -446,12 +454,6 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
     }
     
     return text
-  }
-
-  // Format pause seconds to avoid floating point precision issues
-  const formatPauseSeconds = (seconds: number): string => {
-    // Round to 1 decimal place to avoid precision issues
-    return parseFloat(seconds.toFixed(1)).toString()
   }
 
   // Handle deleting pause element
@@ -1216,337 +1218,54 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
                 </TabsTrigger>
               </TabsList>
 
-              <TabsContent value="input" className="flex-1 flex flex-col min-h-0 mt-0">
-                {ttsLoading ? (
-                  // Loading state
-                  <div key="loading" className="flex items-center justify-center w-full flex-1 min-h-[200px] border-2 border-dashed border-border/50 rounded-lg bg-card/50 dark:bg-card">
-                    <div className="text-center space-y-4">
-                      <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center mx-auto">
-                        <FiLoader className="w-6 h-6 text-accent animate-spin" />
-                      </div>
-                      <p className="text-sm font-medium text-foreground">Generating audio...</p>
-                      <p className="text-xs text-muted-foreground">This may take a few moments</p>
-                    </div>
-                  </div>
-                ) : ttsAudioUrl ? (
-                  // Audio result state (same layout as upload tab)
-                  <div key="result" className="relative w-full flex-1 min-h-[200px] rounded-lg border border-border/50 bg-card/50 dark:bg-card p-4 flex flex-col">
-                    {/* Top: Audio Info and Actions */}
-                    <div className="flex items-center justify-between mb-3 flex-shrink-0">
-                      <div className="flex items-center gap-3 min-w-0 flex-1">
-                        <div className="w-8 h-8 rounded-full bg-accent/10 flex items-center justify-center flex-shrink-0">
-                          <FiMusic className="w-4 h-4 text-accent" />
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <p className="text-sm font-medium text-foreground truncate">
-                            TTS Audio
-                          </p>
-                          <p className="text-xs text-muted-foreground mt-0.5">
-                            {ttsAudioDuration > 0 ? `${Math.ceil(ttsAudioDuration)}s` : "Loading..."}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex gap-2">
-                        {/* <Button
-                          type="button"
-                          variant="ghost"
-                          size="sm"
-                          className="h-7 px-2 text-xs"
-                          onClick={handleTextToSpeech}
-                          disabled={!inputText.trim()}
-                        >
-                          <FiMusic className="mr-1 h-3 w-3" /> Re-generate
-                        </Button> */}
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="sm"
-                          className="h-7 w-7 p-0"
-                          onClick={handleDeleteTtsAudio}
-                        >
-                          <FiTrash2 className="h-3 w-3" />
-                        </Button>
-                      </div>
-                    </div>
+              <InputTextTab
+                ttsLoading={ttsLoading}
+                ttsAudioUrl={ttsAudioUrl}
+                ttsAudioDuration={ttsAudioDuration}
+                ttsAudioBlob={ttsAudioBlob}
+                isPlayingTts={isPlayingTts}
+                ttsPlaybackPosition={ttsPlaybackPosition}
+                inputText={inputText}
+                editableDivRef={editableDivRef}
+                onEditableDivChange={handleEditableDivChange}
+                onOpenVoiceDialog={() => setVoiceDialogOpen(true)}
+                selectedVoiceName={selectedVoiceName}
+                emotion={emotion}
+                onEmotionChange={setEmotion}
+                speed={speed}
+                onSpeedChange={setSpeed}
+                volume={volume}
+                onVolumeChange={setVolume}
+                pitch={pitch}
+                onPitchChange={setPitch}
+                pauseSeconds={pauseSeconds}
+                setPauseSeconds={(value) => setPauseSeconds(value)}
+                pausePopoverOpen={pausePopoverOpen}
+                setPausePopoverOpen={setPausePopoverOpen}
+                onInsertPause={handleInsertPause}
+                onDeleteTtsAudio={handleDeleteTtsAudio}
+                onToggleTtsPlayback={() => {
+                  if (!ttsAudioRef.current && ttsAudioUrl) {
+                    ttsAudioRef.current = new Audio(ttsAudioUrl)
+                    ttsAudioRef.current.addEventListener("ended", () => {
+                      setIsPlayingTts(false)
+                      setTtsPlaybackPosition(0)
+                    })
+                  }
 
-                    {/* Middle: Waveform - Takes remaining space */}
-                    <div className="flex-1 min-h-0 mb-3">
-                      {ttsAudioBlob ? (
-                        <AudioWaveform
-                          audioBlob={ttsAudioBlob}
-                          audioUrl={ttsAudioUrl}
-                          isPlaying={isPlayingTts}
-                          playbackPosition={ttsPlaybackPosition}
-                          duration={ttsAudioDuration}
-                        />
-                      ) : (
-                        <div className="flex items-center justify-center h-full">
-                          <p className="text-sm text-muted-foreground">Loading audio waveform...</p>
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Bottom: Playback Controls */}
-                    <div className="flex items-center justify-between flex-shrink-0">
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        className="h-8 px-3"
-                        onClick={() => {
-                          if (!ttsAudioRef.current && ttsAudioUrl) {
-                            ttsAudioRef.current = new Audio(ttsAudioUrl)
-                            ttsAudioRef.current.addEventListener("ended", () => {
-                              setIsPlayingTts(false)
-                              setTtsPlaybackPosition(0)
-                            })
-                          }
-
-                          if (ttsAudioRef.current) {
-                            if (isPlayingTts) {
-                              ttsAudioRef.current.pause()
-                              setIsPlayingTts(false)
-                            } else {
-                              ttsAudioRef.current.play()
-                              setIsPlayingTts(true)
-                            }
-                          }
-                        }}
-                      >
-                        {isPlayingTts ? (
-                          <FiPause className="mr-2 h-3 w-3" />
-                        ) : (
-                          <FiPlay className="mr-2 h-3 w-3" />
-                        )}
-                        {isPlayingTts ? "Pause" : "Play"}
-                      </Button>
-                      <span className="text-xs text-muted-foreground">
-                        {Math.floor(ttsPlaybackPosition)}s / {ttsAudioDuration > 0 ? Math.ceil(ttsAudioDuration) : 0}s
-                      </span>
-                    </div>
-                  </div>
-                ) : (
-                  // Input state
-                  <div key="input" className="flex-1 min-h-[200px] rounded-lg border border-border/50 bg-card/50 dark:bg-card p-4 flex flex-col">
-                    {/* Editable Div (replacing Textarea) */}
-                    <div className="flex-shrink-0 mb-4" style={{ height: "130px" }}>
-                      <div
-                        key="editable-div"
-                        ref={editableDivRef}
-                        contentEditable
-                        suppressContentEditableWarning
-                        onInput={handleEditableDivChange}
-                        onPaste={(e) => {
-                          e.preventDefault()
-                          const text = e.clipboardData.getData("text/plain")
-                          const selection = window.getSelection()
-                          if (selection && selection.rangeCount > 0) {
-                            const range = selection.getRangeAt(0)
-                            range.deleteContents()
-                            range.insertNode(document.createTextNode(text))
-                            range.collapse(false)
-                            selection.removeAllRanges()
-                            selection.addRange(range)
-                            handleEditableDivChange()
-                          }
-                        }}
-                        className="w-full h-full resize-none border-0 bg-transparent focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 text-foreground overflow-y-auto custom-scrollbar [&:empty]:before:content-[attr(data-placeholder)] [&:empty]:before:text-muted-foreground"
-                        data-placeholder="Type what you want to say..."
-                      />
-                    </div>
-
-                    {/* Character Counter and Bottom Controls */}
-                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2 sm:gap-0 flex-shrink-0 pt-2 border-t border-border/50">
-                      <div className="flex items-center gap-2 sm:gap-3 flex-wrap sm:flex-nowrap min-w-0">
-                        {/* Voice Select */}
-                        <Button
-                          type="button"
-                          variant="outline"
-                          className="flex items-center gap-1 sm:gap-1.5 h-7 sm:h-8 px-1.5 sm:px-2 text-xs flex-shrink-0 min-w-0"
-                          onClick={() => setVoiceDialogOpen(true)}
-                        >
-                          <FiMusic className="h-3 w-3 sm:h-3.5 sm:w-3.5 flex-shrink-0" />
-                          <span className="text-xs truncate">{selectedVoiceName}</span>
-                        </Button>
-
-                        {/* Emotion Select */}
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button
-                              type="button"
-                              variant="outline"
-                              className="flex items-center gap-1 sm:gap-1.5 h-7 sm:h-8 px-1.5 sm:px-2 text-xs flex-shrink-0 min-w-0"
-                            >
-                              <span className="text-sm sm:text-base flex-shrink-0">😊</span>
-                              <span className="text-xs truncate">{emotion}</span>
-                              <FiChevronRight className="h-3 w-3 sm:h-3.5 sm:w-3.5 flex-shrink-0" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="start">
-                            {["Neutral", "Happy", "Sad", "Angry", "Fearful", "Disgusted", "Surprised"].map((emo) => (
-                              <DropdownMenuItem
-                                key={emo}
-                                onClick={() => setEmotion(emo)}
-                                className={emotion === emo ? "bg-accent text-accent-foreground" : ""}
-                              >
-                                {emo}
-                              </DropdownMenuItem>
-                            ))}
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-
-                        {/* Settings (Speed, Volume, Pitch) */}
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button
-                              type="button"
-                              variant="outline"
-                              className="h-7 w-7 sm:h-8 sm:w-8 p-0 flex-shrink-0"
-                            >
-                              <FiSettings className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end" className="w-64 p-4">
-                            <div className="space-y-4">
-                              {/* Speed */}
-                              <div className="space-y-2">
-                                <div className="flex items-center justify-between">
-                                  <Label className="text-sm">Speed: {speed[0]}</Label>
-                                </div>
-                                <Slider
-                                  value={speed}
-                                  onValueChange={setSpeed}
-                                  min={0}
-                                  max={2}
-                                  step={0.1}
-                                />
-                              </div>
-
-                              {/* Volume */}
-                              <div className="space-y-2">
-                                <div className="flex items-center justify-between">
-                                  <Label className="text-sm">Volume: {volume[0]}</Label>
-                                </div>
-                                <Slider
-                                  value={volume}
-                                  onValueChange={setVolume}
-                                  min={0}
-                                  max={10}
-                                  step={1}
-                                />
-                              </div>
-
-                              {/* Pitch */}
-                              <div className="space-y-2">
-                                <div className="flex items-center justify-between">
-                                  <Label className="text-sm">Pitch: {pitch[0]}</Label>
-                                </div>
-                                <Slider
-                                  value={pitch}
-                                  onValueChange={setPitch}
-                                  min={-12}
-                                  max={12}
-                                  step={1}
-                                />
-                              </div>
-                            </div>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-
-                        {/* Pause Button */}
-                        <Popover open={pausePopoverOpen} onOpenChange={setPausePopoverOpen}>
-                          <PopoverTrigger asChild>
-                            <Button
-                              type="button"
-                              variant="outline"
-                              className="h-7 sm:h-8 px-1.5 sm:px-2 flex-shrink-0"
-                            >
-                              <FiClock className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
-                            </Button>
-                          </PopoverTrigger>
-                          <PopoverContent className="w-auto p-2" align="start">
-                            <div className="flex items-center gap-2">
-                              <Button
-                                type="button"
-                                variant="outline"
-                                size="sm"
-                                className="h-7 w-7 p-0"
-                                onClick={() => {
-                                  const newValue = Math.max(0.1, parseFloat((pauseSeconds - 0.1).toFixed(1)))
-                                  setPauseSeconds(newValue)
-                                }}
-                                disabled={pauseSeconds <= 0.1}
-                              >
-                                <FiMinus className="h-3 w-3" />
-                              </Button>
-                              <div className="flex items-center gap-2 min-w-[50px] justify-center">
-                                <span className="text-sm font-medium">{formatPauseSeconds(pauseSeconds)}</span>
-                              </div>
-                              <Button
-                                type="button"
-                                variant="outline"
-                                size="sm"
-                                className="h-7 w-7 p-0"
-                                onClick={() => {
-                                  const newValue = Math.min(2, parseFloat((pauseSeconds + 0.1).toFixed(1)))
-                                  setPauseSeconds(newValue)
-                                }}
-                                disabled={pauseSeconds >= 2}
-                              >
-                                <FiPlus className="h-3 w-3" />
-                              </Button>
-                              <div className="text-xs text-muted-foreground px-2">
-                                Seconds Pause
-                              </div>
-                              <Button
-                                type="button"
-                                size="sm"
-                                className="h-7 px-2 bg-accent hover:bg-accent/90 text-accent-foreground"
-                                onClick={handleInsertPause}
-                              >
-                                <FiCheck className="h-3 w-3" />
-                              </Button>
-                            </div>
-                          </PopoverContent>
-                        </Popover>
-
-                        {/* Run Button */}
-                        <Button
-                          type="button"
-                          className="h-7 sm:h-8 px-2 sm:px-3 text-xs bg-accent hover:bg-accent/90 text-accent-foreground flex-shrink-0"
-                          onClick={handleTextToSpeech}
-                          disabled={!inputText.trim()}
-                        >
-                          Run
-                        </Button>
-                      </div>
-                      <span className="text-xs text-muted-foreground flex-shrink-0 text-right sm:text-left">
-                        {inputText.length} / 1000
-                      </span>
-                    </div>
-
-                    {/* TTS Free Quota Display - Separate row */}
-                    {ttsUsage && (
-                      <div className="flex-shrink-0 pt-2 border-t border-border/50">
-                        <div className="flex items-center justify-between px-1">
-                          <div className="flex items-center gap-2">
-                            <div className="w-2 h-2 rounded-full bg-accent"></div>
-                            <span className="text-xs text-muted-foreground">Daily Free Quota</span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <span className="text-xs font-medium text-foreground">
-                              {ttsUsage.remaining_free.toLocaleString()} / {ttsUsage.daily_limit.toLocaleString()} chars
-                            </span>
-                            {ttsUsage.remaining_free === 0 && (
-                              <span className="text-xs text-orange-500 font-medium">(Paid)</span>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                )}
-              </TabsContent>
+                  if (ttsAudioRef.current) {
+                    if (isPlayingTts) {
+                      ttsAudioRef.current.pause()
+                      setIsPlayingTts(false)
+                    } else {
+                      ttsAudioRef.current.play()
+                      setIsPlayingTts(true)
+                    }
+                  }
+                }}
+                onRunTts={handleTextToSpeech}
+                ttsUsage={ttsUsage}
+              />
 
               <TabsContent value="upload" className="flex-1 flex flex-col min-h-0 mt-0">
                 {!audioFile ? (

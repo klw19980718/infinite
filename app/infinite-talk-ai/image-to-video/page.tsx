@@ -1,8 +1,5 @@
-import { ImageToVideoHero } from '@/components/image-to-video'
 import type { Metadata } from 'next'
-import { ImageToVideoCTA } from '@/components/image-to-video'
-import { WhatIsImageToVideo } from '@/components/content/WhatIsImageToVideo'
-import { Beams } from '@/components/ui/beams'
+import { redirect } from 'next/navigation'
 
 export const metadata: Metadata = {
   title: 'Infinite Talk AI image-to-video — Fast, Natural Lip Sync',
@@ -59,17 +56,5 @@ export const metadata: Metadata = {
 }
 
 export default function ImageToVideoPage() {
-  return (
-    <>
-      <main className="bg-background relative min-h-screen">
-        <Beams />
-        
-        <div className="relative z-10">
-          <ImageToVideoHero />
-          <WhatIsImageToVideo />
-          <ImageToVideoCTA />
-        </div>
-      </main>
-    </>
-  )
+  redirect('/')
 }
