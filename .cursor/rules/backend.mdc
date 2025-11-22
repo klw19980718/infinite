@@ -353,6 +353,34 @@ alwaysApply: true
 
 **认证方式**: 使用 cookie-based 认证，从 `NextRequest` 读取用户 session
 
+#### GET `/api/proxy-file`
+**功能**: 作为受限的文件代理，解决从 `cdn.infinitetalkai.org` 加载图片/音频时的 CORS 问题  
+**请求方式**: `GET`  
+**查询参数**:
+```typescript
+{
+  url: string  // 必需，要代理的完整文件 URL，仅支持 https://cdn.infinitetalkai.org 域名
+}
+```
+**返回**: 透传上游的二进制响应（图片或音频流），带关键头部：
+`content-type`, `content-length`, `accept-ranges`, `content-range`, `cache-control`, `etag`, `last-modified`  
+错误情况（JSON）：
+```typescript
+{
+  ok: false,
+  code: 'MISSING_URL' | 'INVALID_URL' | 'UNSUPPORTED_PROTOCOL' | 'HOST_NOT_ALLOWED',
+  message: string
+}
+```
+**流程**:
+1. 从 query 中读取 `url` 参数
+2. 校验 URL 协议为 `http/https`
+3. 校验 `hostname === 'cdn.infinitetalkai.org'`，否则拒绝（防止变成通用代理）
+4. 将请求转发到上游 CDN，并透传关键响应头与响应体
+5. 不添加 CORS 头，由于同源（`/api`），前端可直接 `fetch` 获取 blob
+
+**认证方式**: 无（仅限代理固定白名单域名，内部使用）
+
 #### DELETE `/api/video/delete`
 **功能**: 删除用户视频生成任务（作品）  
 **查询参数**:
@@ -411,6 +439,7 @@ alwaysApply: true
 ```
 **用途**: 存储用户积分信息
 **RLS**: ✅ 启用
+**新用户初始化**: 通过 `auth.users` 表的触发器 `on_auth_user_created` 自动初始化，用户注册后立即获得 10 积分欢迎奖励
 
 #### 🛍️ products 表
 ```sql
@@ -626,6 +655,43 @@ orders (订单表) → payments (支付记录)
 -- 名称：trg_tts_usage_updated_at  表：public.tts_usage  时机：BEFORE UPDATE
 -- 函数：public.tg_tts_usage_touch_updated_at()
 -- 语义：写入 NEW.updated_at = now()
+```
+
+### RPC：public.initialize_user_with_welcome_credits
+```sql
+-- 参数：p_user_id uuid
+-- 权限：SECURITY DEFINER（仅服务端调用）
+-- 返回：jsonb
+-- 行为：
+--   1) 检查 user_info 是否已存在（幂等性检查）
+--   2) 如果已存在，直接返回成功（不重复赠送）
+--   3) 如果不存在：
+--      - 创建 user_info 记录（credits = 0）
+--      - 通过 credit_ledger 添加欢迎积分（10 积分）
+--      - 触发器自动同步到 user_info.credits
+--   4) 返回初始化结果（success, already_initialized, credits_added）
+-- 返回格式：
+--   {
+--     success: boolean,
+--     already_initialized: boolean,
+--     credits_added?: integer (仅当 already_initialized=false 时存在),
+--     message: string
+--   }
+-- 用途：新用户注册时自动初始化并赠送 10 积分欢迎奖励
+```
+
+### auth.users 触发器：自动初始化新用户
+```sql
+-- 名称：on_auth_user_created  表：auth.users  时机：AFTER INSERT
+-- 函数：public.handle_new_user()
+-- 语义：当用户通过 Supabase Auth 注册时，自动调用 initialize_user_with_welcome_credits
+--       确保新用户注册后立即获得 10 积分欢迎奖励
+-- 流程：
+--   1) 用户通过 Supabase Auth 注册（Email OTP 或 Google OAuth）
+--   2) auth.users 表插入新记录
+--   3) 触发器自动执行 handle_new_user()
+--   4) 调用 initialize_user_with_welcome_credits 初始化用户并赠送 10 积分
+--   5) 用户注册完成后即可在个人中心看到 10 积分
 ```
 
 ### RPC：public.deduct_tts_credits

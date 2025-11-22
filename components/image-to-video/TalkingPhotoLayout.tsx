@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useRef, useEffect, useMemo } from "react"
+import { useState, useRef, useEffect, useMemo, useCallback } from "react"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
@@ -34,50 +34,10 @@ interface Avatar {
 }
 
 interface TalkingPhotoLayoutProps {
-  imagePreview: string | null
-  imageFileName: string | null
-  imageFile: File | null
-  audioPreview: string | null
-  audioFileName: string | null
-  audioFile: File | null
-  audioDuration: number | null
-  resolution: "fast" | "480p" | "720p"
-  estimatedCredits: number
-  status: "idle" | "loading" | "completed"
-  onImageChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-  onAudioChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-  onResolutionChange: (resolution: "fast" | "480p" | "720p") => void
-  onClearImage: () => void
-  onClearAudio: () => void
-  onSubmit?: (e: React.FormEvent<HTMLFormElement>) => void
-  imageInputRef: React.RefObject<HTMLInputElement | null>
-  audioInputRef: React.RefObject<HTMLInputElement | null>
-  onAvatarSelect?: (url: string) => void
   onTaskCreated?: (taskId: string) => void
 }
 
-export const TalkingPhotoLayout = ({
-  imagePreview,
-  imageFileName,
-  imageFile,
-  audioPreview,
-  audioFileName,
-  audioFile,
-  audioDuration,
-  resolution,
-  estimatedCredits,
-  status,
-  onImageChange,
-  onAudioChange,
-  onResolutionChange,
-  onClearImage,
-  onClearAudio,
-  onSubmit,
-  imageInputRef,
-  audioInputRef,
-  onAvatarSelect,
-  onTaskCreated,
-}: TalkingPhotoLayoutProps) => {
+export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) => {
   const [aspectRatio, setAspectRatio] = useState<"9:16" | "16:9">("9:16")
   const [audioTab, setAudioTab] = useState<"input" | "upload" | "record">("input")
   const [inputText, setInputText] = useState("")
@@ -88,6 +48,14 @@ export const TalkingPhotoLayout = ({
   const [pitch, setPitch] = useState([0])
   const [voiceDialogOpen, setVoiceDialogOpen] = useState(false)
   const [selectedVoiceName, setSelectedVoiceName] = useState("Trustworthy Man")
+  const [imagePreview, setImagePreview] = useState<string | null>(null)
+  const [imageFileName, setImageFileName] = useState<string | null>(null)
+  const [imageFile, setImageFile] = useState<File | null>(null)
+  const [audioFileName, setAudioFileName] = useState<string | null>(null)
+  const [audioFile, setAudioFile] = useState<File | null>(null)
+  const [audioDuration, setAudioDuration] = useState<number | null>(null)
+  const [resolution, setResolution] = useState<"fast" | "480p" | "720p">("fast")
+  const [estimatedCredits, setEstimatedCredits] = useState<number>(0)
   const [avatars, setAvatars] = useState<Avatar[]>([])
   const [loading, setLoading] = useState(true)
   const [dialogOpen, setDialogOpen] = useState(false)
@@ -104,6 +72,8 @@ export const TalkingPhotoLayout = ({
   const uploadedAudioRef = useRef<HTMLAudioElement | null>(null)
   const animationFrameRef = useRef<number | null>(null)
   const uploadedAnimationFrameRef = useRef<number | null>(null)
+  const imageInputRef = useRef<HTMLInputElement | null>(null)
+  const audioInputRef = useRef<HTMLInputElement | null>(null)
   
   // TTS (Text-to-Speech) states
   const [ttsLoading, setTtsLoading] = useState(false)
@@ -132,6 +102,115 @@ export const TalkingPhotoLayout = ({
     daily_limit: number
   } | null>(null)
   const [ttsUsageLoading, setTtsUsageLoading] = useState(true)
+
+  // Helper to proxy CDN URLs through our Next.js API to avoid CORS issues
+  const getProxiedUrlIfNeeded = useCallback((url: string): string => {
+    if (!url || !url.startsWith("http")) {
+      return url
+    }
+
+    try {
+      const parsed = new URL(url)
+      if (parsed.hostname === "cdn.infinitetalkai.org") {
+        return `/api/proxy-file?url=${encodeURIComponent(url)}`
+      }
+    } catch {
+      // Ignore URL parsing errors and fall back to original URL
+      return url
+    }
+
+    return url
+  }, [])
+
+  // Handle image file upload
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    setImageFile(file)
+    setImageFileName(file.name)
+
+    const reader = new FileReader()
+    reader.onloadend = () => {
+      setImagePreview(reader.result as string)
+    }
+    reader.readAsDataURL(file)
+  }
+
+  const handleClearImage = () => {
+    setImagePreview(null)
+    setImageFileName(null)
+    setImageFile(null)
+    if (imageInputRef.current) {
+      imageInputRef.current.value = ""
+    }
+  }
+
+  // Handle audio file upload
+  const handleAudioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    setAudioFile(file)
+    setAudioFileName(file.name)
+
+    const audio = new Audio()
+    const url = URL.createObjectURL(file)
+    audio.src = url
+    audio.addEventListener("loadedmetadata", () => {
+      const duration = Math.ceil(audio.duration)
+      const maxDuration = 600 // 10 minutes
+      if (duration > maxDuration) {
+        toast.error(`Audio duration exceeds maximum of ${maxDuration}s (${Math.floor(maxDuration / 60)} minutes)`)
+        setAudioFile(null)
+        setAudioFileName(null)
+        setAudioDuration(null)
+        URL.revokeObjectURL(url)
+        return
+      }
+      setAudioDuration(duration)
+      URL.revokeObjectURL(url)
+    })
+    audio.addEventListener("error", () => {
+      URL.revokeObjectURL(url)
+      setAudioDuration(null)
+    })
+  }
+
+  const handleClearAudio = () => {
+    setAudioFile(null)
+    setAudioFileName(null)
+    setAudioDuration(null)
+    if (audioInputRef.current) {
+      audioInputRef.current.value = ""
+    }
+  }
+
+  // Calculate credits based on duration and resolution
+  const calculateCredits = useCallback((duration: number | null, res: "fast" | "480p" | "720p"): number => {
+    if (!duration) {
+      // Minimum charge: 3 credits for fast, 5 credits for 480p, 10 credits for 720p
+      return res === "fast" ? 3 : res === "480p" ? 5 : 10
+    }
+
+    // Fast: 0.5 credit/s, 480p: 1 credit/s, 720p: 2 credits/s
+    const creditsPerSecond = res === "fast" ? 0.5 : res === "480p" ? 1 : 2
+    const minCredits = res === "fast" ? 3 : res === "480p" ? 5 : 10
+    const maxDuration = 600 // 10 minutes
+    const actualDuration = Math.min(duration, maxDuration)
+
+    // For fast mode, round up to nearest integer
+    const calculatedCredits = actualDuration * creditsPerSecond
+    const roundedCredits = res === "fast" ? Math.ceil(calculatedCredits) : calculatedCredits
+
+    return Math.max(minCredits, roundedCredits)
+  }, [])
+
+  // Update estimated credits when resolution or audio duration changes
+  useEffect(() => {
+    const credits = calculateCredits(audioDuration, resolution)
+    setEstimatedCredits(credits)
+  }, [audioDuration, resolution, calculateCredits])
 
   // Load avatars on mount
   useEffect(() => {
@@ -197,24 +276,15 @@ export const TalkingPhotoLayout = ({
     return result
   }, [avatars, aspectRatio])
 
-  const handleAvatarClick = async (avatarUrl: string) => {
-    if (onAvatarSelect) {
-      onAvatarSelect(avatarUrl)
-    } else {
-      // Fallback: try to load image and set it
-      try {
-        const response = await fetch(avatarUrl)
-        const blob = await response.blob()
-        const file = new File([blob], avatarUrl.split("/").pop() || "avatar.webp", { type: blob.type })
-        const dataTransfer = new DataTransfer()
-        dataTransfer.items.add(file)
-        const fakeEvent = {
-          target: { files: dataTransfer.files },
-        } as React.ChangeEvent<HTMLInputElement>
-        onImageChange(fakeEvent)
-      } catch (error) {
-        console.error("Failed to load avatar:", error)
-      }
+  const handleAvatarClick = (avatarUrl: string) => {
+    // For built-in avatars we only need the URL for preview.
+    // We convert to File only when submitting the form.
+    setImagePreview(avatarUrl)
+    setImageFile(null)
+    const nameFromUrl = avatarUrl.split("/").pop() || "avatar"
+    setImageFileName(nameFromUrl)
+    if (imageInputRef.current) {
+      imageInputRef.current.value = ""
     }
   }
 
@@ -567,12 +637,6 @@ export const TalkingPhotoLayout = ({
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    // If custom onSubmit is provided, use it
-    if (onSubmit) {
-      onSubmit(e)
-      return
-    }
-
     if (!imageFile && !imagePreview) {
       toast.error("Please upload an image")
       return
@@ -616,7 +680,7 @@ export const TalkingPhotoLayout = ({
             finalAudioUrl = audioUrl
             
             // Fetch audio to get duration and blob
-            const audioResponse = await fetch(audioUrl)
+            const audioResponse = await fetch(getProxiedUrlIfNeeded(audioUrl))
             const audioBlob = await audioResponse.blob()
             const audio = new Audio(audioUrl)
             
@@ -673,7 +737,7 @@ export const TalkingPhotoLayout = ({
         // TTS HTTP URL - download and convert to File
         try {
           // toast.loading("Downloading audio...", { id: "download-audio" })
-          const audioResponse = await fetch(finalAudioUrl)
+          const audioResponse = await fetch(getProxiedUrlIfNeeded(finalAudioUrl))
           if (!audioResponse.ok) {
             throw new Error("Failed to download audio")
           }
@@ -699,7 +763,7 @@ export const TalkingPhotoLayout = ({
       if (!imageFile && imagePreview && imagePreview.startsWith("http")) {
         try {
           toast.loading("Downloading image...", { id: "download-image" })
-          const imageResponse = await fetch(imagePreview)
+          const imageResponse = await fetch(getProxiedUrlIfNeeded(imagePreview))
           if (!imageResponse.ok) {
             throw new Error("Failed to download image")
           }
@@ -837,7 +901,7 @@ export const TalkingPhotoLayout = ({
             const audioUrl = resultData.outputs[0]
             
             // Fetch audio as blob
-            const audioResponse = await fetch(audioUrl)
+            const audioResponse = await fetch(getProxiedUrlIfNeeded(audioUrl))
             const audioBlob = await audioResponse.blob()
             
             // Create object URL
@@ -853,12 +917,9 @@ export const TalkingPhotoLayout = ({
 
             // Convert blob to file and trigger audio change
             const file = new File([audioBlob], `tts-${Date.now()}.mp3`, { type: audioBlob.type })
-            const dataTransfer = new DataTransfer()
-            dataTransfer.items.add(file)
-            const fakeEvent = {
-              target: { files: dataTransfer.files },
-            } as React.ChangeEvent<HTMLInputElement>
-            onAudioChange(fakeEvent)
+            // Use TTS audio as the current audio file for upload/submit logic
+            setAudioFile(file)
+            setAudioFileName(file.name)
 
             setTtsLoading(false)
             if (pollingIntervalRef.current) {
@@ -939,7 +1000,7 @@ export const TalkingPhotoLayout = ({
                     ref={imageInputRef}
                     type="file"
                     accept="image/jpeg,image/jpg,image/png,image/webp"
-                    onChange={onImageChange}
+                      onChange={handleImageChange}
                     className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                   />
                 </div>
@@ -953,7 +1014,7 @@ export const TalkingPhotoLayout = ({
                     className="absolute top-2 right-2 h-8 w-8 p-0 bg-background/80 hover:bg-background hover:text-foreground z-10"
                     onClick={(e) => {
                       e.stopPropagation()
-                      onClearImage()
+                      handleClearImage()
                     }}
                   >
                     <FiX className="h-4 w-4" />
@@ -962,7 +1023,7 @@ export const TalkingPhotoLayout = ({
                     ref={imageInputRef}
                     type="file"
                     accept="image/jpeg,image/jpg,image/png,image/webp"
-                    onChange={onImageChange}
+                    onChange={handleImageChange}
                     className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-0"
                   />
                 </div>
@@ -1061,7 +1122,7 @@ export const TalkingPhotoLayout = ({
             <div className="flex flex-wrap gap-3">
               <button
                 type="button"
-                onClick={() => onResolutionChange("fast")}
+                onClick={() => setResolution("fast")}
                 className={`relative w-full sm:w-[200px] p-5 rounded-xl border-2 transition-all flex flex-col items-start ${
                   resolution === "fast"
                     ? "border-accent bg-card shadow-lg"
@@ -1086,7 +1147,7 @@ export const TalkingPhotoLayout = ({
 
               <button
                 type="button"
-                onClick={() => onResolutionChange("480p")}
+                onClick={() => setResolution("480p")}
                 className={`relative w-full sm:w-[200px] p-5 rounded-xl border-2 transition-all flex flex-col items-start ${
                   resolution === "480p"
                     ? "border-accent bg-card shadow-lg"
@@ -1111,7 +1172,7 @@ export const TalkingPhotoLayout = ({
 
               <button
                 type="button"
-                onClick={() => onResolutionChange("720p")}
+                onClick={() => setResolution("720p")}
                 className={`relative w-full sm:w-[200px] p-5 rounded-xl border-2 transition-all flex flex-col items-start ${
                   resolution === "720p"
                     ? "border-accent bg-card shadow-lg"
@@ -1490,7 +1551,7 @@ export const TalkingPhotoLayout = ({
               <TabsContent value="upload" className="flex-1 flex flex-col min-h-0 mt-0">
                 {!audioFile ? (
                   <div className="flex items-center justify-center w-full flex-1 min-h-[200px] border-2 border-dashed border-border/50 rounded-lg bg-card/50 dark:bg-card">
-                    <div className="relative w-full h-full">
+                        <div className="relative w-full h-full">
                       <div className="flex items-center justify-center w-full h-full">
                         <div className="text-center space-y-2">
                           <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center mx-auto">
@@ -1503,7 +1564,7 @@ export const TalkingPhotoLayout = ({
                         ref={audioInputRef}
                         type="file"
                         accept="audio/mpeg,audio/mp3,audio/wav,audio/wave,audio/x-wav"
-                        onChange={onAudioChange}
+                        onChange={handleAudioChange}
                         className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                       />
                     </div>
@@ -1540,7 +1601,7 @@ export const TalkingPhotoLayout = ({
                           variant="ghost"
                           size="sm"
                           className="h-7 w-7 p-0"
-                          onClick={onClearAudio}
+                          onClick={handleClearAudio}
                         >
                           <FiTrash2 className="h-3 w-3" />
                         </Button>
@@ -1728,12 +1789,12 @@ export const TalkingPhotoLayout = ({
               type="submit"
               className="w-full h-14 rounded-xl bg-accent text-accent-foreground font-semibold text-base hover:bg-accent/90 transition-all duration-300 shadow-lg hover:shadow-xl"
               disabled={
-                status === "loading" || isSubmitting ||
+                isSubmitting ||
                 !imageFile || 
                 (audioTab === "input" ? !inputText.trim() : !audioFile && !ttsAudioBlob)
               }
             >
-              {status === "loading" || isSubmitting ? (
+              {isSubmitting ? (
                 <>Generating...</>
               ) : (
                 (() => {
@@ -1770,14 +1831,10 @@ export const TalkingPhotoLayout = ({
           setRecordedAudioUrl(url)
           setRecordedDuration(duration)
           
-          // Convert blob to file and trigger audio change
+          // Convert blob to file for submission and waveform
           const file = new File([blob], `recording-${Date.now()}.webm`, { type: blob.type })
-          const dataTransfer = new DataTransfer()
-          dataTransfer.items.add(file)
-          const fakeEvent = {
-            target: { files: dataTransfer.files },
-          } as React.ChangeEvent<HTMLInputElement>
-          onAudioChange(fakeEvent)
+          setAudioFile(file)
+          setAudioFileName(file.name)
         }}
       />
 

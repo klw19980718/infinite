@@ -106,6 +106,12 @@ export const VoiceSelectDialog = ({
   }, [open])
 
   const loadVoices = async () => {
+    // Avoid refetching voices if already loaded
+    if (voices.length > 0) {
+      setLoading(false)
+      return
+    }
+
     try {
       const response = await fetch("/audio/voices.json")
       const data = await response.json()
@@ -315,6 +321,7 @@ export const VoiceSelectDialog = ({
                       <img
                         src={voice.coverfile}
                         alt={voice.voice_name}
+                        loading="lazy"
                         className="w-full h-full object-cover"
                         onError={(e) => {
                           // Fallback if image fails to load

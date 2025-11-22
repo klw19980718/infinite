@@ -43,6 +43,12 @@ export const AvatarDialog = ({
 
   useEffect(() => {
     const loadAvatars = async () => {
+      // Avoid refetching avatars if already loaded
+      if (avatars.length > 0) {
+        setLoading(false)
+        return
+      }
+
       try {
         const response = await fetch("/image-to-video/avatars.json")
         const data = await response.json()
@@ -57,7 +63,7 @@ export const AvatarDialog = ({
     if (open) {
       loadAvatars()
     }
-  }, [open])
+  }, [open, avatars.length])
 
   // Update dialog aspect ratio when prop changes
   useEffect(() => {
@@ -206,6 +212,7 @@ export const AvatarDialog = ({
                   <img
                     src={avatar.url}
                     alt={avatar.filename}
+                    loading="lazy"
                     className="w-full h-full object-cover"
                   />
                 </button>
