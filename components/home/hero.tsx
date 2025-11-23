@@ -23,18 +23,16 @@ export const AuroraHero = () => {
 
             {/* Anchor Tab Links */}
             <div className="pt-4">
-              <div className="inline-flex h-14 px-2 gap-2 bg-muted/50 border border-border/50 rounded-lg">
+              <div className="inline-flex h-14 items-center px-2 gap-2 bg-muted/50 border border-border/50 rounded-lg">
                 <a
                   href="#photo-talking"
-                  className="px-6 py-3 text-base font-semibold bg-accent text-accent-foreground shadow-lg rounded-md hover:bg-accent/90 transition-all"
+                  className="px-6 py-3 flex items-center text-base font-semibold bg-accent text-accent-foreground shadow-lg rounded-md hover:bg-accent/90 transition-all"
                 >
                   infinitetalk photo
                 </a>
                 <a
-                  href="/infinite-talk-ai/video-to-video"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-6 py-3 text-base font-semibold text-foreground hover:text-accent transition-all rounded-md"
+                  href="/infinite-talk-ai/video-to-video#video-talking"
+                  className="px-6 py-3 flex items-center text-base font-semibold text-foreground hover:text-accent transition-all rounded-md"
                 >
                   infinitetalk video
                 </a>

@@ -10,10 +10,9 @@ import {
 import { Button } from "@/components/ui/button"
 
 interface Avatar {
-  url: string
-  category: string
-  filename: string
-  aspectRatio: string | null
+  tagList: string[]
+  videoUrl: string
+  preview_image_url: string
 }
 
 interface AvatarDialogProps {
@@ -25,7 +24,7 @@ interface AvatarDialogProps {
   onAspectRatioChange?: (aspectRatio: "9:16" | "16:9") => void
 }
 
-const categories = ["All", "business", "education", "health", "lifestyle", "news", "outdoors", "studio"]
+const categories = ["All", "halloween", "lifestyle", "outdoors", "business", "studio", "health & fitness", "education", "news"]
 
 export const AvatarDialog = ({
   open,
@@ -50,7 +49,7 @@ export const AvatarDialog = ({
       }
 
       try {
-        const response = await fetch("/image-to-video/avatars.json")
+        const response = await fetch("/video-to-video/avatar.json")
         const data = await response.json()
         setAvatars(data)
       } catch (error) {
@@ -74,13 +73,16 @@ export const AvatarDialog = ({
   const filteredAvatars = useMemo(() => {
     let filtered = avatars
 
-    // Filter by category
+    // Filter by category (based on tagList)
     if (activeCategory !== "All") {
-      filtered = filtered.filter((avatar) => avatar.category === activeCategory)
+      filtered = filtered.filter((avatar) => avatar.tagList.includes(activeCategory))
     }
 
-    // Filter by aspect ratio
-    filtered = filtered.filter((avatar) => avatar.aspectRatio === dialogAspectRatio)
+    // Filter by aspect ratio (tagList contains "9:16" or "16:9")
+    filtered = filtered.filter((avatar) => {
+      const ratioTag = avatar.tagList.find((tag) => tag === "9:16" || tag === "16:9")
+      return ratioTag === dialogAspectRatio
+    })
 
     return filtered
   }, [avatars, activeCategory, dialogAspectRatio])
@@ -92,8 +94,8 @@ export const AvatarDialog = ({
     }
   }
 
-  const handleAvatarClick = (url: string) => {
-    setSelectedAvatarUrl(url)
+  const handleAvatarClick = (videoUrl: string) => {
+    setSelectedAvatarUrl(videoUrl)
   }
 
   const handleConfirm = () => {
@@ -198,23 +200,35 @@ export const AvatarDialog = ({
             >
               {filteredAvatars.map((avatar, index) => (
                 <button
-                  key={`${avatar.url}-${index}`}
+                  key={`${avatar.videoUrl}-${index}`}
                   type="button"
-                  onClick={() => handleAvatarClick(avatar.url)}
+                  onClick={() => handleAvatarClick(avatar.videoUrl)}
                   className={`relative rounded-lg overflow-hidden border-2 transition-colors bg-muted/20 ${
-                    selectedAvatarUrl === avatar.url
+                    selectedAvatarUrl === avatar.videoUrl
                       ? "border-accent bg-accent/10"
                       : "border-border/50 hover:border-accent/50"
                   } ${
                     dialogAspectRatio === "9:16" ? "aspect-[9/16]" : "aspect-video"
                   }`}
                 >
-                  <img
-                    src={avatar.url}
-                    alt={avatar.filename}
-                    loading="lazy"
-                    className="w-full h-full object-cover"
-                  />
+                  {selectedAvatarUrl === avatar.videoUrl ? (
+                    <video
+                      src={avatar.videoUrl}
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      poster={avatar.preview_image_url}
+                      className="w-full h-full object-contain"
+                    />
+                  ) : (
+                    <img
+                      src={avatar.preview_image_url}
+                      alt={avatar.videoUrl.split("/").pop() || "template"}
+                      loading="lazy"
+                      className="w-full h-full object-contain"
+                    />
+                  )}
                 </button>
               ))}
             </div>

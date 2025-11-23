@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { FiImage, FiMic, FiX, FiChevronRight, FiCheck, FiDollarSign, FiSearch, FiSettings, FiLoader, FiClock, FiMinus, FiPlus } from "react-icons/fi"
+import { FiVideo, FiMic, FiX, FiChevronRight, FiCheck, FiDollarSign, FiSearch, FiSettings, FiLoader, FiClock, FiMinus, FiPlus } from "react-icons/fi"
 import { toast } from "sonner"
 import { AvatarDialog } from "./AvatarDialog"
 import { RecordAudioDialog } from "./RecordAudioDialog"
@@ -36,10 +36,9 @@ const formatPauseSeconds = (seconds: number): string => {
 }
 
 interface Avatar {
-  url: string
-  category: string
-  filename: string
-  aspectRatio: string | null
+  tagList: string[]
+  videoUrl: string
+  preview_image_url: string
 }
 
 interface TalkingPhotoLayoutProps {
@@ -134,15 +133,15 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
     return url
   }, [])
 
-  // Handle image file upload
+  // Handle video file upload
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
 
-    // Check file size (10MB = 10 * 1024 * 1024 bytes)
-    const maxSize = 10 * 1024 * 1024
+    // Check file size (max 200MB for video)
+    const maxSize = 200 * 1024 * 1024
     if (file.size > maxSize) {
-      toast.error(`Image size exceeds maximum of 10MB`)
+      toast.error(`Video size exceeds maximum of 200MB`)
       if (imageInputRef.current) {
         imageInputRef.current.value = ""
       }
@@ -150,26 +149,39 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
     }
 
     // Check file type
-    const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp"]
+    const allowedTypes = [
+      "video/mp4",
+      "video/quicktime",
+      "video/x-m4v",
+      "video/avi",
+      "video/x-msvideo",
+      "video/mpeg",
+    ]
     if (!allowedTypes.includes(file.type)) {
-      toast.error("Only PNG, JPG, and WebP formats are supported")
+      toast.error("Only MP4, MOV, and AVI video formats are supported")
       if (imageInputRef.current) {
         imageInputRef.current.value = ""
       }
       return
     }
 
+    // Revoke previous object URL if any
+    if (imagePreview && imagePreview.startsWith("blob:")) {
+      URL.revokeObjectURL(imagePreview)
+    }
+
     setImageFile(file)
     setImageFileName(file.name)
 
-    const reader = new FileReader()
-    reader.onloadend = () => {
-      setImagePreview(reader.result as string)
-    }
-    reader.readAsDataURL(file)
+    // For video, use Object URL for preview
+    const url = URL.createObjectURL(file)
+    setImagePreview(url)
   }
 
   const handleClearImage = () => {
+    if (imagePreview && imagePreview.startsWith("blob:")) {
+      URL.revokeObjectURL(imagePreview)
+    }
     setImagePreview(null)
     setImageFileName(null)
     setImageFile(null)
@@ -277,11 +289,11 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
     }
   }, [])
 
-  // Load avatars on mount
+  // Load avatars (video templates) on mount
   useEffect(() => {
     const loadAvatars = async () => {
       try {
-        const response = await fetch("/image-to-video/avatars.json")
+        const response = await fetch("/video-to-video/avatar.json")
         const data = await response.json()
         setAvatars(data)
       } catch (error) {
@@ -331,32 +343,36 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
     fetchTtsUsage()
   }, [audioTab, checkUserLoggedIn])
 
-  // Get default avatars to display - 3 from each category matching the aspect ratio
+  // Get default avatars (video templates) to display - 3 from each category matching the aspect ratio
   const defaultAvatars = useMemo(() => {
     if (avatars.length === 0) {
       return []
     }
-    
-    const categories = ['business', 'education', 'health', 'lifestyle', 'news', 'outdoors', 'studio']
+
+    const categories = ["halloween", "lifestyle", "outdoors", "business", "studio", "health & fitness", "education", "news"]
     const result: Avatar[] = []
-    
-    // For each category, get up to 3 avatars matching the selected aspect ratio
-    categories.forEach(category => {
+
+    // For each category, get up to 3 avatars matching the selected aspect ratio and category tag
+    categories.forEach((category) => {
       const categoryAvatars = avatars
-        .filter(avatar => avatar.category === category && avatar.aspectRatio === aspectRatio)
+        .filter((avatar) => {
+          const hasCategory = avatar.tagList.includes(category)
+          const ratioTag = avatar.tagList.find((tag) => tag === "9:16" || tag === "16:9")
+          return hasCategory && ratioTag === aspectRatio
+        })
         .slice(0, 3)
       result.push(...categoryAvatars)
     })
-    
+
     return result
   }, [avatars, aspectRatio])
 
-  const handleAvatarClick = (avatarUrl: string) => {
-    // For built-in avatars we only need the URL for preview.
-    // We convert to File only when submitting the form.
-    setImagePreview(avatarUrl)
+  const handleAvatarClick = (videoUrl: string) => {
+    // For built-in templates we keep the original video URL for preview.
+    // Only when submitting the task will we proxy the video through /api/proxy-file.
+    setImagePreview(videoUrl)
     setImageFile(null)
-    const nameFromUrl = avatarUrl.split("/").pop() || "avatar"
+    const nameFromUrl = videoUrl.split("/").pop() || "video"
     setImageFileName(nameFromUrl)
     if (imageInputRef.current) {
       imageInputRef.current.value = ""
@@ -714,7 +730,7 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
     }
 
     if (!imageFile && !imagePreview) {
-      toast.error("Please upload an image")
+      toast.error("Please upload a video")
       return
     }
 
@@ -755,8 +771,8 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
             const audioUrl = await generateTTSAudio()
             finalAudioUrl = audioUrl
             
-            // Fetch audio to get duration and blob
-            const audioResponse = await fetch(getProxiedUrlIfNeeded(audioUrl))
+            // Fetch audio to get duration and blob（audio 不走代理）
+            const audioResponse = await fetch(audioUrl)
             const audioBlob = await audioResponse.blob()
             const audio = new Audio(audioUrl)
             
@@ -825,7 +841,7 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
         // TTS HTTP URL - download and convert to File
         try {
           // toast.loading("Downloading audio...", { id: "download-audio" })
-          const audioResponse = await fetch(getProxiedUrlIfNeeded(finalAudioUrl))
+          const audioResponse = await fetch(finalAudioUrl)
           if (!audioResponse.ok) {
             throw new Error("Failed to download audio")
           }
@@ -847,31 +863,31 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
       // Create form data with File objects
       let finalImageFile: File = imageFile!
       
-      // Handle image - convert URL to File if needed
+      // Handle video - convert URL to File if needed
       if (!imageFile && imagePreview && imagePreview.startsWith("http")) {
         try {
-          // toast.loading("Downloading image...", { id: "download-image" })
+          // toast.loading("Downloading video...", { id: "download-video" })
           const imageResponse = await fetch(getProxiedUrlIfNeeded(imagePreview))
           if (!imageResponse.ok) {
-            throw new Error("Failed to download image")
+            throw new Error("Failed to download video")
           }
           const imageBlob = await imageResponse.blob()
-          const imageFileName = imagePreview.split("/").pop() || "image.jpg"
+          const imageFileName = imagePreview.split("/").pop() || "video.mp4"
           finalImageFile = new File([imageBlob], imageFileName, { type: imageBlob.type })
-          // toast.success("Image downloaded", { id: "download-image" })
+          // toast.success("Video downloaded", { id: "download-video" })
         } catch (error) {
-          toast.error(error instanceof Error ? error.message : "Failed to download image", { id: "download-image" })
+          toast.error(error instanceof Error ? error.message : "Failed to download video", { id: "download-video" })
           setIsSubmitting(false)
           return
         }
       } else if (!imageFile) {
-        toast.error("Invalid image")
+        toast.error("Invalid video")
         setIsSubmitting(false)
         return
       }
 
       const formData = new FormData()
-      formData.append("image", finalImageFile)
+      formData.append("video", finalImageFile)
       formData.append("audio", finalAudioFileForSubmit)
       formData.append("resolution", resolution)
       
@@ -879,7 +895,7 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
         formData.append("audio_duration", Math.ceil(finalAudioDuration).toString())
       }
 
-      const response = await fetch("/api/video/image-to-video", {
+      const response = await fetch("/api/video/video-to-video", {
         method: "POST",
         credentials: "include",
         body: formData,
@@ -995,8 +1011,8 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
             // Task completed, fetch audio
             const audioUrl = resultData.outputs[0]
             
-            // Fetch audio as blob
-            const audioResponse = await fetch(getProxiedUrlIfNeeded(audioUrl))
+            // Fetch audio as blob（audio 不走代理）
+            const audioResponse = await fetch(audioUrl)
             const audioBlob = await audioResponse.blob()
             
             // Create object URL
@@ -1072,36 +1088,44 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[38%_62%] gap-8 max-w-7xl mx-auto">
-      {/* Left Panel: Image Upload & Sample Avatars - Single Container */}
+      {/* Left Panel: Video Upload & Sample Avatars - Single Container */}
       <Card className="p-6 glass-strong" style={{ borderColor: 'var(--accent)', borderWidth: '2px' }}>
         <div className="space-y-8">
-          {/* Image Upload Section */}
+          {/* Video Upload Section */}
           <div>
-            <h3 className="text-base font-semibold text-foreground mb-4">1. Upload your photo</h3>
+            <h3 className="text-base font-semibold text-foreground mb-4">1. Upload your video</h3>
             
             <div className="relative">
               {!imagePreview ? (
                 <div className="flex items-center justify-center w-full h-32 border-2 border-dashed rounded-lg transition-colors bg-card/50 dark:bg-card border-border dark:border-border/80 hover:border-accent/50 hover:bg-card/80 dark:hover:bg-card">
                   <div className="text-center space-y-3">
                     <div className="w-16 h-16 rounded-full bg-accent/20 dark:bg-accent/15 flex items-center justify-center mx-auto">
-                      <FiImage className="w-8 h-8 text-accent" />
+                      <FiVideo className="w-8 h-8 text-accent" />
                     </div>
                     <div className="space-y-1">
-                      <p className="text-sm font-medium text-foreground dark:text-foreground">Supported formats: PNG, JPG, WebP</p>
-                      <p className="text-xs text-muted-foreground dark:text-muted-foreground/90">Maximum file size: 10MB</p>
+                      <p className="text-sm font-medium text-foreground dark:text-foreground">Supported formats: MP4, MOV, AVI</p>
+                      <p className="text-xs text-muted-foreground dark:text-muted-foreground/90">Maximum file size: 200MB</p>
                     </div>
                   </div>
                   <Input
                     ref={imageInputRef}
                     type="file"
-                    accept="image/png,image/jpeg,image/jpg,image/webp"
+                    accept="video/mp4,video/mov,video/quicktime,video/avi"
                     onChange={handleImageChange}
                     className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                   />
                 </div>
               ) : (
                 <div className="relative w-full h-32 rounded-lg overflow-hidden border-2 border-border dark:border-border/80 bg-card/50 dark:bg-card flex items-center justify-center">
-                  <img src={imagePreview} alt="Preview" className="max-w-full max-h-full object-contain" />
+                  <video
+                    src={imagePreview}
+                    className="max-w-full max-h-full object-contain"
+                    controls
+                    autoPlay
+                    muted
+                    playsInline
+                    loop
+                  />
                   <Button
                     type="button"
                     variant="ghost"
@@ -1117,9 +1141,9 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
                   <Input
                     ref={imageInputRef}
                     type="file"
-                    accept="image/jpeg,image/jpg,image/png,image/webp"
+                    accept="video/mp4,video/mov,video/quicktime,video/avi"
                     onChange={handleImageChange}
-                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-0"
+                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-0 pointer-events-none"
                   />
                 </div>
               )}
@@ -1168,7 +1192,7 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
               </div>
             </div>
 
-            {/* Avatar Grid - Fixed height with scroll */}
+              {/* Template Grid - Fixed height with scroll */}
             <div className="h-[420px] overflow-y-auto custom-scrollbar">
               {loading ? (
                 <div className="flex items-center justify-center h-full">
@@ -1186,16 +1210,16 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
                 >
                   {defaultAvatars.map((avatar, index) => (
                     <button
-                      key={`${avatar.url}-${index}`}
+                      key={`${avatar.videoUrl}-${index}`}
                       type="button"
-                      onClick={() => handleAvatarClick(avatar.url)}
+                      onClick={() => handleAvatarClick(avatar.videoUrl)}
                       className={`relative rounded-lg overflow-hidden border-2 border-border/50 hover:border-accent/50 transition-colors bg-muted/20 group ${
                         aspectRatio === "9:16" ? "aspect-[9/16]" : "aspect-video"
                       }`}
                     >
                       <img
-                        src={avatar.url}
-                        alt={avatar.filename}
+                        src={avatar.preview_image_url}
+                        alt={avatar.videoUrl.split("/").pop() || "template"}
                         className="w-full h-full object-cover"
                       />
                     </button>

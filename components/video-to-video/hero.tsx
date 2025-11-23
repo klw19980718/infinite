@@ -32,11 +32,30 @@ export const VideoToVideoHero = () => {
             <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-4xl mx-auto text-pretty px-4">
               Transform any video into a lifelike talking clip with perfect lip sync. Infinite Talk AI pairs video-to-video generation with precise Lip Sync and natural expressions for creators, brands, and educators.
             </p>
+
+            {/* Anchor Tab Links */}
+            <div className="pt-4">
+              <div className="inline-flex h-14 items-center px-2 gap-2 bg-muted/50 border border-border/50 rounded-lg">
+                <a
+                  href="/#photo-talking"
+                  className="px-6 py-3 flex items-center text-base font-semibold text-foreground hover:text-accent transition-all rounded-md"
+                >
+                  infinitetalk photo
+                </a>
+                <a
+                  href="#video-talking"
+                  className="px-6 py-3 flex items-center text-base font-semibold bg-accent text-accent-foreground shadow-lg rounded-md hover:bg-accent/90 transition-all"
+                >
+                  infinitetalk video
+                </a>
+              </div>
+            </div>
           </div>
 
           {/* Main Content: Video-to-Video generator layout */}
           <div className="w-full max-w-6xl mx-auto mt-12">
-            <TalkingPhotoLayout
+            <div id="video-talking">
+              <TalkingPhotoLayout
               onTaskCreated={() => {
                 // Show success message and guide to profile
                 toast.custom(
@@ -76,6 +95,7 @@ export const VideoToVideoHero = () => {
                 )
               }}
             />
+            </div>
           </div>
         </div>
       </div>
