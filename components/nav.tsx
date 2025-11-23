@@ -70,7 +70,7 @@ export default function Nav() {
             >
               Home
             </Link>
-            <Link 
+            {/* <Link 
               href="/infinite-talk-ai/image-to-video" 
               className="px-3.5 py-2 text-xs font-medium text-foreground/70 hover:text-foreground hover:bg-white/5 rounded-lg transition-all duration-300"
             >
@@ -81,7 +81,7 @@ export default function Nav() {
               className="px-3.5 py-2 text-xs font-medium text-foreground/70 hover:text-foreground hover:bg-white/5 rounded-lg transition-all duration-300"
             >
               Video to Video
-            </Link>
+            </Link> */}
             <Link 
               href="/pricing" 
               className="px-3.5 py-2 text-xs font-medium text-foreground/70 hover:text-foreground hover:bg-white/5 rounded-lg transition-all duration-300"

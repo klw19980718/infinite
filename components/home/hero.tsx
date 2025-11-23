@@ -2,8 +2,7 @@
 
 import { FiX, FiCheck } from "react-icons/fi"
 import { toast } from "sonner"
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { TalkingPhotoLayout } from "@/components/image-to-video/TalkingPhotoLayout"
+import { TalkingPhotoLayout } from "@/components/talking-components/TalkingPhotoLayout"
 
 export const AuroraHero = () => {
   return (
@@ -22,31 +21,25 @@ export const AuroraHero = () => {
               Audio-driven, whole-frame dubbing that turns images or footage into identity-stable talking video. It enables infinite-length generation—syncing lips, head motion, posture, and expressions to speech for natural continuity.
             </p>
 
-            {/* Anchor Tab Links (from image-to-video hero) */}
-            <Tabs defaultValue="photo-talking" className="pt-4">
-              <TabsList className="h-14 px-2 gap-2 bg-muted/50 border border-border/50">
-                <TabsTrigger
-                  value="photo-talking"
-                  onClick={() => {
-                    const element = document.getElementById("photo-talking")
-                    element?.scrollIntoView({ behavior: "smooth" })
-                  }}
-                  className="px-6 py-3 text-base font-semibold data-[state=active]:bg-accent data-[state=active]:text-accent-foreground data-[state=active]:shadow-lg hover:text-accent transition-all"
+            {/* Anchor Tab Links */}
+            <div className="pt-4">
+              <div className="inline-flex h-14 px-2 gap-2 bg-muted/50 border border-border/50 rounded-lg">
+                <a
+                  href="#photo-talking"
+                  className="px-6 py-3 text-base font-semibold bg-accent text-accent-foreground shadow-lg rounded-md hover:bg-accent/90 transition-all"
                 >
-                  Photo Talking
-                </TabsTrigger>
-                <TabsTrigger
-                  value="video-lip-sync"
-                  onClick={() => {
-                    const element = document.getElementById("video-lip-sync")
-                    element?.scrollIntoView({ behavior: "smooth" })
-                  }}
-                  className="px-6 py-3 text-base font-semibold data-[state=active]:bg-accent data-[state=active]:text-accent-foreground data-[state=active]:shadow-lg hover:text-accent transition-all"
+                  infinitetalk photo
+                </a>
+                <a
+                  href="/infinite-talk-ai/video-to-video"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-6 py-3 text-base font-semibold text-foreground hover:text-accent transition-all rounded-md"
                 >
-                  Video Lip Sync
-                </TabsTrigger>
-              </TabsList>
-            </Tabs>
+                  infinitetalk video
+                </a>
+              </div>
+            </div>
           </div>
         </div>
 

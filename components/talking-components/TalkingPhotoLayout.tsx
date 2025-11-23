@@ -5,12 +5,11 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
-import { FiUpload, FiImage, FiMusic, FiMic, FiX, FiChevronRight, FiCheck, FiDollarSign, FiPlay, FiPause, FiTrash2, FiSearch, FiSettings, FiLoader, FiClock, FiMinus, FiPlus } from "react-icons/fi"
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { FiImage, FiMic, FiX, FiChevronRight, FiCheck, FiDollarSign, FiSearch, FiSettings, FiLoader, FiClock, FiMinus, FiPlus } from "react-icons/fi"
 import { toast } from "sonner"
 import { AvatarDialog } from "./AvatarDialog"
 import { RecordAudioDialog } from "./RecordAudioDialog"
-import { AudioWaveform } from "./AudioWaveform"
 import { VoiceSelectDialog } from "./VoiceSelectDialog"
 import { Textarea } from "@/components/ui/textarea"
 import { Slider } from "@/components/ui/slider"
@@ -28,6 +27,8 @@ import {
 import { InputTextTab } from "./InputTextTab"
 import { UploadAudioTab } from "./UploadAudioTab"
 import { RecordAudioTab } from "./RecordAudioTab"
+import LoginDialog from "@/components/auth/LoginDialog"
+import { getSupabaseClient } from "@/lib/supabase"
 
 // Local helper for formatting pause seconds (used when inserting pause elements)
 const formatPauseSeconds = (seconds: number): string => {
@@ -111,6 +112,9 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
   } | null>(null)
   const [ttsUsageLoading, setTtsUsageLoading] = useState(true)
 
+  // Login dialog state
+  const [loginDialogOpen, setLoginDialogOpen] = useState(false)
+
   // Helper to proxy CDN URLs through our Next.js API to avoid CORS issues
   const getProxiedUrlIfNeeded = useCallback((url: string): string => {
     if (!url || !url.startsWith("http")) {
@@ -135,6 +139,26 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
     const file = e.target.files?.[0]
     if (!file) return
 
+    // Check file size (10MB = 10 * 1024 * 1024 bytes)
+    const maxSize = 10 * 1024 * 1024
+    if (file.size > maxSize) {
+      toast.error(`Image size exceeds maximum of 10MB`)
+      if (imageInputRef.current) {
+        imageInputRef.current.value = ""
+      }
+      return
+    }
+
+    // Check file type
+    const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp"]
+    if (!allowedTypes.includes(file.type)) {
+      toast.error("Only PNG, JPG, and WebP formats are supported")
+      if (imageInputRef.current) {
+        imageInputRef.current.value = ""
+      }
+      return
+    }
+
     setImageFile(file)
     setImageFileName(file.name)
 
@@ -158,6 +182,27 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
   const handleAudioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
+
+    // Check file type
+    const allowedTypes = [
+      "audio/mpeg",
+      "audio/mp3",
+      "audio/wav",
+      "audio/wave",
+      "audio/x-wav",
+      "audio/mp4",
+      "audio/m4a",
+      "audio/ogg",
+      "audio/flac",
+      "audio/x-flac",
+    ]
+    if (!allowedTypes.includes(file.type)) {
+      toast.error("Only MP3, WAV, M4A, OGG, and FLAC formats are supported")
+      if (audioInputRef.current) {
+        audioInputRef.current.value = ""
+      }
+      return
+    }
 
     setAudioFile(file)
     setAudioFileName(file.name)
@@ -220,6 +265,18 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
     setEstimatedCredits(credits)
   }, [audioDuration, resolution, calculateCredits])
 
+  // Check if user is logged in
+  const checkUserLoggedIn = useCallback(async (): Promise<boolean> => {
+    try {
+      const supabase = getSupabaseClient()
+      const { data: { session } } = await supabase.auth.getSession()
+      return !!session
+    } catch (error) {
+      console.error("Error checking user session:", error)
+      return false
+    }
+  }, [])
+
   // Load avatars on mount
   useEffect(() => {
     const loadAvatars = async () => {
@@ -242,6 +299,13 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
     const fetchTtsUsage = async () => {
       if (audioTab !== "input") return
 
+      // Check if user is logged in before fetching TTS usage
+      const isLoggedIn = await checkUserLoggedIn()
+      if (!isLoggedIn) {
+        setTtsUsageLoading(false)
+        return
+      }
+
       setTtsUsageLoading(true)
       try {
         const response = await fetch("/api/speech/usage", {
@@ -252,7 +316,10 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
         if (data.ok && data.usage) {
           setTtsUsage(data.usage)
         } else {
-          console.error("Failed to fetch TTS usage:", data.message)
+          // Only log error if it's not an authentication error
+          if (data.message !== "User not authenticated") {
+            console.error("Failed to fetch TTS usage:", data.message)
+          }
         }
       } catch (error) {
         console.error("Error fetching TTS usage:", error)
@@ -262,7 +329,7 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
     }
 
     fetchTtsUsage()
-  }, [audioTab])
+  }, [audioTab, checkUserLoggedIn])
 
   // Get default avatars to display - 3 from each category matching the aspect ratio
   const defaultAvatars = useMemo(() => {
@@ -639,6 +706,13 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
+    // Check if user is logged in
+    const isLoggedIn = await checkUserLoggedIn()
+    if (!isLoggedIn) {
+      setLoginDialogOpen(true)
+      return
+    }
+
     if (!imageFile && !imagePreview) {
       toast.error("Please upload an image")
       return
@@ -723,6 +797,18 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
         }
       }
 
+      // For record tab, use recordedAudioBlob instead of audioFile
+      if (audioTab === "record") {
+        if (!recordedAudioBlob) {
+          toast.error("Please record audio")
+          setIsSubmitting(false)
+          return
+        }
+        // Convert recorded blob to File for submission
+        finalAudioFile = new File([recordedAudioBlob], `recording-${Date.now()}.webm`, { type: recordedAudioBlob.type })
+        finalAudioDuration = recordedDuration
+      }
+
       // For non-input tabs (upload/record), only check audioFile (no URL)
       if (audioTab !== "input" && !finalAudioFile) {
         toast.error("Please provide audio")
@@ -764,7 +850,7 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
       // Handle image - convert URL to File if needed
       if (!imageFile && imagePreview && imagePreview.startsWith("http")) {
         try {
-          toast.loading("Downloading image...", { id: "download-image" })
+          // toast.loading("Downloading image...", { id: "download-image" })
           const imageResponse = await fetch(getProxiedUrlIfNeeded(imagePreview))
           if (!imageResponse.ok) {
             throw new Error("Failed to download image")
@@ -772,7 +858,7 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
           const imageBlob = await imageResponse.blob()
           const imageFileName = imagePreview.split("/").pop() || "image.jpg"
           finalImageFile = new File([imageBlob], imageFileName, { type: imageBlob.type })
-          toast.success("Image downloaded", { id: "download-image" })
+          // toast.success("Image downloaded", { id: "download-image" })
         } catch (error) {
           toast.error(error instanceof Error ? error.message : "Failed to download image", { id: "download-image" })
           setIsSubmitting(false)
@@ -820,6 +906,13 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
 
   // Handle TTS task creation and polling
   const handleTextToSpeech = async () => {
+    // Check if user is logged in
+    const isLoggedIn = await checkUserLoggedIn()
+    if (!isLoggedIn) {
+      setLoginDialogOpen(true)
+      return
+    }
+
     const textToSend = editableDivRef.current ? getTextFromEditableDiv() : inputText.trim()
     
     if (!textToSend.trim()) {
@@ -994,15 +1087,15 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
                       <FiImage className="w-8 h-8 text-accent" />
                     </div>
                     <div className="space-y-1">
-                      <p className="text-sm font-medium text-foreground dark:text-foreground">Supported formats: jpg, png, webp</p>
-                      <p className="text-xs text-muted-foreground dark:text-muted-foreground/90">Maximum file size: 30MB</p>
+                      <p className="text-sm font-medium text-foreground dark:text-foreground">Supported formats: PNG, JPG, WebP</p>
+                      <p className="text-xs text-muted-foreground dark:text-muted-foreground/90">Maximum file size: 10MB</p>
                     </div>
                   </div>
                   <Input
                     ref={imageInputRef}
                     type="file"
-                    accept="image/jpeg,image/jpg,image/png,image/webp"
-                      onChange={handleImageChange}
+                    accept="image/png,image/jpeg,image/jpg,image/webp"
+                    onChange={handleImageChange}
                     className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                   />
                 </div>
@@ -1267,238 +1360,78 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
                 ttsUsage={ttsUsage}
               />
 
-              <TabsContent value="upload" className="flex-1 flex flex-col min-h-0 mt-0">
-                {!audioFile ? (
-                  <div className="flex items-center justify-center w-full flex-1 min-h-[200px] border-2 border-dashed border-border/50 rounded-lg bg-card/50 dark:bg-card">
-                        <div className="relative w-full h-full">
-                      <div className="flex items-center justify-center w-full h-full">
-                        <div className="text-center space-y-2">
-                          <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center mx-auto">
-                            <FiMusic className="w-6 h-6 text-accent" />
-                          </div>
-                          <p className="text-sm font-medium text-foreground">Upload Audio Up to 600s</p>
-                        </div>
-                      </div>
-                      <Input
-                        ref={audioInputRef}
-                        type="file"
-                        accept="audio/mpeg,audio/mp3,audio/wav,audio/wave,audio/x-wav"
-                        onChange={handleAudioChange}
-                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                      />
-                    </div>
-                  </div>
-                ) : (
-                  <div className="relative w-full flex-1 min-h-[200px] rounded-lg border border-border/50 bg-card/50 dark:bg-card p-4 flex flex-col">
-                    {/* Top: Audio Info and Actions */}
-                    <div className="flex items-center justify-between mb-3 flex-shrink-0">
-                      <div className="flex items-center gap-3 min-w-0 flex-1">
-                        <div className="w-8 h-8 rounded-full bg-accent/10 flex items-center justify-center flex-shrink-0">
-                          <FiMusic className="w-4 h-4 text-accent" />
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <p className="text-sm font-medium text-foreground truncate" title={audioFileName || undefined}>
-                            {audioFileName}
-                          </p>
-                          <p className="text-xs text-muted-foreground mt-0.5">
-                            {audioDuration !== null ? `${Math.ceil(audioDuration)}s` : "Loading..."} • ~{estimatedCredits} credits
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex gap-2">
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="sm"
-                          className="h-7 px-2 text-xs"
-                          onClick={() => audioInputRef.current?.click()}
-                        >
-                          <FiUpload className="mr-1 h-3 w-3" /> Replace
-                        </Button>
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="sm"
-                          className="h-7 w-7 p-0"
-                          onClick={handleClearAudio}
-                        >
-                          <FiTrash2 className="h-3 w-3" />
-                        </Button>
-                      </div>
-                    </div>
+              <UploadAudioTab
+                audioFile={audioFile}
+                audioFileName={audioFileName}
+                audioDuration={audioDuration}
+                estimatedCredits={estimatedCredits}
+                audioInputRef={audioInputRef}
+                uploadedAudioUrl={uploadedAudioUrl}
+                isPlayingUploaded={isPlayingUploaded}
+                uploadedPlaybackPosition={uploadedPlaybackPosition}
+                onAudioFileChange={handleAudioChange}
+                onClearAudio={handleClearAudio}
+                onTogglePlayback={() => {
+                  if (!uploadedAudioRef.current && uploadedAudioUrl) {
+                    uploadedAudioRef.current = new Audio(uploadedAudioUrl)
+                    uploadedAudioRef.current.addEventListener("ended", () => {
+                      setIsPlayingUploaded(false)
+                      setUploadedPlaybackPosition(0)
+                    })
+                  }
 
-                    {/* Middle: Waveform - Takes remaining space */}
-                    <div className="flex-1 min-h-0 mb-3">
-                      <AudioWaveform
-                        audioBlob={audioFile}
-                        audioUrl={uploadedAudioUrl}
-                        isPlaying={isPlayingUploaded}
-                        playbackPosition={uploadedPlaybackPosition}
-                        duration={audioDuration || 0}
-                      />
-                    </div>
+                  if (uploadedAudioRef.current) {
+                    if (isPlayingUploaded) {
+                      uploadedAudioRef.current.pause()
+                      setIsPlayingUploaded(false)
+                    } else {
+                      uploadedAudioRef.current.play()
+                      setIsPlayingUploaded(true)
+                    }
+                  }
+                }}
+              />
 
-                    {/* Bottom: Playback Controls */}
-                    <div className="flex items-center justify-between flex-shrink-0">
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        className="h-8 px-3"
-                        onClick={() => {
-                          if (!uploadedAudioRef.current && uploadedAudioUrl) {
-                            uploadedAudioRef.current = new Audio(uploadedAudioUrl)
-                            uploadedAudioRef.current.addEventListener("ended", () => {
-                              setIsPlayingUploaded(false)
-                              setUploadedPlaybackPosition(0)
-                            })
-                          }
+              <RecordAudioTab
+                recordedAudioBlob={recordedAudioBlob}
+                recordedAudioUrl={recordedAudioUrl}
+                recordedDuration={recordedDuration}
+                resolution={resolution}
+                isPlayingRecorded={isPlayingRecorded}
+                playbackPosition={playbackPosition}
+                onStartRecord={() => setRecordDialogOpen(true)}
+                onReRecord={() => setRecordDialogOpen(true)}
+                onClearRecorded={() => {
+                  setRecordedAudioBlob(null)
+                  setRecordedAudioUrl(null)
+                  setRecordedDuration(0)
+                  setIsPlayingRecorded(false)
+                  setPlaybackPosition(0)
+                  if (recordedAudioRef.current) {
+                    recordedAudioRef.current.pause()
+                    recordedAudioRef.current = null
+                  }
+                }}
+                onTogglePlayback={() => {
+                  if (!recordedAudioRef.current && recordedAudioUrl) {
+                    recordedAudioRef.current = new Audio(recordedAudioUrl)
+                    recordedAudioRef.current.addEventListener("ended", () => {
+                      setIsPlayingRecorded(false)
+                      setPlaybackPosition(0)
+                    })
+                  }
 
-                          if (uploadedAudioRef.current) {
-                            if (isPlayingUploaded) {
-                              uploadedAudioRef.current.pause()
-                              setIsPlayingUploaded(false)
-                            } else {
-                              uploadedAudioRef.current.play()
-                              setIsPlayingUploaded(true)
-                            }
-                          }
-                        }}
-                      >
-                        {isPlayingUploaded ? (
-                          <FiPause className="mr-2 h-3 w-3" />
-                        ) : (
-                          <FiPlay className="mr-2 h-3 w-3" />
-                        )}
-                        {isPlayingUploaded ? "Pause" : "Play"}
-                      </Button>
-                      <span className="text-xs text-muted-foreground">
-                        {Math.floor(uploadedPlaybackPosition)}s / {audioDuration !== null ? Math.ceil(audioDuration) : 0}s
-                      </span>
-                    </div>
-                  </div>
-                )}
-              </TabsContent>
-
-              <TabsContent value="record" className="flex-1 flex flex-col min-h-0 mt-0">
-                {!recordedAudioBlob ? (
-                  <div className="flex items-center justify-center w-full flex-1 min-h-[200px] border-2 border-dashed border-border/50 rounded-lg bg-card/50 dark:bg-card">
-                    <div className="text-center space-y-4">
-                      <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center mx-auto">
-                        <FiMic className="w-6 h-6 text-accent" />
-                      </div>
-                      <p className="text-sm font-medium text-foreground">Click to start recording</p>
-                      <Button
-                        type="button"
-                        onClick={() => setRecordDialogOpen(true)}
-                        className="bg-accent hover:bg-accent/90 text-accent-foreground"
-                      >
-                        <FiMic className="mr-2 h-4 w-4" />
-                        Start Recording
-                      </Button>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="relative w-full flex-1 min-h-[200px] rounded-lg border border-border/50 bg-card/50 dark:bg-card p-4 flex flex-col">
-                    {/* Top: Audio Info and Actions */}
-                    <div className="flex items-center justify-between mb-3 flex-shrink-0">
-                      <div className="flex items-center gap-3 min-w-0 flex-1">
-                        <div className="w-8 h-8 rounded-full bg-accent/10 flex items-center justify-center flex-shrink-0">
-                          <FiMusic className="w-4 h-4 text-accent" />
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <p className="text-sm font-medium text-foreground truncate">
-                            {new Date().toISOString().replace(/[:.]/g, "-").slice(0, -5)}.webm
-                          </p>
-                          <p className="text-xs text-muted-foreground mt-0.5">
-                            {Math.ceil(recordedDuration)}s • ~{Math.ceil(recordedDuration * (resolution === "fast" ? 0.5 : resolution === "480p" ? 1 : 2))} credits
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex gap-2">
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="sm"
-                          className="h-7 px-2 text-xs"
-                          onClick={() => setRecordDialogOpen(true)}
-                        >
-                          <FiMic className="mr-1 h-3 w-3" /> Re-record
-                        </Button>
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="sm"
-                          className="h-7 w-7 p-0"
-                          onClick={() => {
-                            setRecordedAudioBlob(null)
-                            setRecordedAudioUrl(null)
-                            setRecordedDuration(0)
-                            setIsPlayingRecorded(false)
-                            setPlaybackPosition(0)
-                            if (recordedAudioRef.current) {
-                              recordedAudioRef.current.pause()
-                              recordedAudioRef.current = null
-                            }
-                          }}
-                        >
-                          <FiTrash2 className="h-3 w-3" />
-                        </Button>
-                      </div>
-                    </div>
-
-                    {/* Middle: Waveform - Takes remaining space */}
-                    <div className="flex-1 min-h-0 mb-3">
-                      <AudioWaveform
-                        audioBlob={recordedAudioBlob}
-                        audioUrl={recordedAudioUrl}
-                        isPlaying={isPlayingRecorded}
-                        playbackPosition={playbackPosition}
-                        duration={recordedDuration}
-                      />
-                    </div>
-
-                    {/* Bottom: Playback Controls */}
-                    <div className="flex items-center justify-between flex-shrink-0">
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        className="h-8 px-3"
-                        onClick={() => {
-                          if (!recordedAudioRef.current && recordedAudioUrl) {
-                            recordedAudioRef.current = new Audio(recordedAudioUrl)
-                            recordedAudioRef.current.addEventListener("ended", () => {
-                              setIsPlayingRecorded(false)
-                              setPlaybackPosition(0)
-                            })
-                          }
-
-                          if (recordedAudioRef.current) {
-                            if (isPlayingRecorded) {
-                              recordedAudioRef.current.pause()
-                              setIsPlayingRecorded(false)
-                            } else {
-                              recordedAudioRef.current.play()
-                              setIsPlayingRecorded(true)
-                            }
-                          }
-                        }}
-                      >
-                        {isPlayingRecorded ? (
-                          <FiPause className="mr-2 h-3 w-3" />
-                        ) : (
-                          <FiPlay className="mr-2 h-3 w-3" />
-                        )}
-                        {isPlayingRecorded ? "Pause" : "Play"}
-                      </Button>
-                      <span className="text-xs text-muted-foreground">
-                        {Math.floor(playbackPosition)}s / {Math.ceil(recordedDuration)}s
-                      </span>
-                    </div>
-                  </div>
-                )}
-              </TabsContent>
+                  if (recordedAudioRef.current) {
+                    if (isPlayingRecorded) {
+                      recordedAudioRef.current.pause()
+                      setIsPlayingRecorded(false)
+                    } else {
+                      recordedAudioRef.current.play()
+                      setIsPlayingRecorded(true)
+                    }
+                  }
+                }}
+              />
             </Tabs>
           </div>
 
@@ -1509,8 +1442,12 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
               className="w-full h-14 rounded-xl bg-accent text-accent-foreground font-semibold text-base hover:bg-accent/90 transition-all duration-300 shadow-lg hover:shadow-xl"
               disabled={
                 isSubmitting ||
-                !imageFile || 
-                (audioTab === "input" ? !inputText.trim() : !audioFile && !ttsAudioBlob)
+                (!imageFile && !imagePreview) ||
+                (audioTab === "input" 
+                  ? !inputText.trim() 
+                  : audioTab === "upload" 
+                    ? !audioFile 
+                    : !recordedAudioBlob)
               }
             >
               {isSubmitting ? (
@@ -1549,11 +1486,6 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
           const url = URL.createObjectURL(blob)
           setRecordedAudioUrl(url)
           setRecordedDuration(duration)
-          
-          // Convert blob to file for submission and waveform
-          const file = new File([blob], `recording-${Date.now()}.webm`, { type: blob.type })
-          setAudioFile(file)
-          setAudioFileName(file.name)
         }}
       />
 
@@ -1575,6 +1507,12 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
             })
             .catch(console.error)
         }}
+      />
+
+      {/* Login Dialog */}
+      <LoginDialog
+        open={loginDialogOpen}
+        onOpenChange={setLoginDialogOpen}
       />
     </div>
   )

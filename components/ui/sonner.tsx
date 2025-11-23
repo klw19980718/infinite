@@ -16,7 +16,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
           toast: "rounded-lg border shadow-lg p-4 bg-background text-foreground border-border flex items-center gap-3 min-w-[400px] max-w-[600px]",
           title: "font-semibold text-foreground flex-1",
           description: "text-sm text-muted-foreground",
-          error: "bg-destructive text-destructive-foreground border-destructive",
+          error: "bg-destructive text-white border-destructive ",
           success: "bg-emerald-600 text-white border-emerald-500",
           loading: "bg-background text-foreground border-border",
           actionButton: "bg-primary text-primary-foreground hover:bg-primary/90",

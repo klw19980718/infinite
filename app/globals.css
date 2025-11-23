@@ -210,11 +210,21 @@
 /* Sonner Toast Custom Styles */
 @layer components {
   [data-sonner-toast][data-type="error"] {
-    @apply bg-destructive text-destructive-foreground border-destructive;
+    @apply bg-destructive text-white border-destructive;
   }
   
   [data-sonner-toast][data-type="error"] [data-description] {
-    @apply text-destructive-foreground/90;
+    @apply text-white/90;
+  }
+  
+  /* Ensure white text in light mode for error toast */
+  .light [data-sonner-toast][data-type="error"] {
+    color: white !important;
+  }
+  
+  .light [data-sonner-toast][data-type="error"] [data-title],
+  .light [data-sonner-toast][data-type="error"] [data-description] {
+    color: white !important;
   }
   
   [data-sonner-toast][data-type="success"] {

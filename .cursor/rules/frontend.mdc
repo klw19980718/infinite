@@ -13,6 +13,7 @@ alwaysApply: true
 - 页面专用块：放 /components/home 等子目录；不要混入 ui。
 - 命名：PascalCase 文件名；导出默认组件名与文件名一致。
 - **首页结构**：`components/home/hero.tsx` 包含完整的 TalkingPhotoLayout 和 Tabs，图片转视频功能已整合到首页，不再使用独立的 `/infinite-talk-ai/image-to-video` 页面。
+- **视频转视频页面结构**：`components/video-to-video/hero.tsx` 包含标题、subtitle 和 `TalkingPhotoLayout` 组件（从 `@/components/talking-conponents-video/TalkingPhotoLayout` 导入），用于视频转视频功能。
 
 ## Tailwind v4
 - 使用 `@tailwind base; components; utilities;`；样式只写在组件中。

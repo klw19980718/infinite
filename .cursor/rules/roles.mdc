@@ -114,8 +114,10 @@ infinite-talk/
 │   │   ├── VoiceSelectDialog.tsx - 声音选择对话框组件
 │   │   └── index.ts         - 组件统一导出
 │   ├── video-to-video/      - 视频转视频相关组件
-│   │   ├── hero.tsx         - 视频转视频英雄区组件
+│   │   ├── hero.tsx         - 视频转视频英雄区组件（包含标题、subtitle 和 TalkingPhotoLayout）
 │   │   └── index.ts         - 组件统一导出
+│   ├── talking-conponents-video/ - 视频转视频功能核心组件
+│   │   └── TalkingPhotoLayout.tsx - 视频转视频布局组件（包含视频上传、音频处理、模型选择等）
 │   ├── ui/                  - 可复用 UI 组件（shadcn/ui 风格）
 │   │   ├── avatar.tsx       - 头像组件
 │   │   ├── beams.tsx        - 光束效果组件

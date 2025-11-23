@@ -45,12 +45,13 @@ export const UploadAudioTab: React.FC<UploadAudioTabProps> = ({
                   <FiMusic className="w-6 h-6 text-accent" />
                 </div>
                 <p className="text-sm font-medium text-foreground">Upload Audio Up to 600s</p>
+                <p className="text-xs text-muted-foreground">Supported formats: MP3, WAV, M4A, OGG, FLAC</p>
               </div>
             </div>
             <Input
               ref={audioInputRef}
               type="file"
-              accept="audio/mpeg,audio/mp3,audio/wav,audio/wave,audio/x-wav"
+              accept="audio/mpeg,audio/mp3,audio/wav,audio/wave,audio/x-wav,audio/mp4,audio/m4a,audio/ogg,audio/flac,audio/x-flac"
               onChange={onAudioFileChange}
               className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
             />
