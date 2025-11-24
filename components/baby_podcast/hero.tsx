@@ -1,12 +1,12 @@
- "use client"
+"use client"
 
-import { FiX, FiCheck, FiGift } from "react-icons/fi"
+import { FiX, FiCheck } from "react-icons/fi"
 import { toast } from "sonner"
 import { usePathname } from "next/navigation"
 import Link from "next/link"
-import { TalkingPhotoLayout } from "@/components/talking-components/TalkingPhotoLayout"
+import { TalkingPhotoLayout } from "@/components/talking-components-baby/TalkingPhotoLayout"
 
-export const AuroraHero = () => {
+export const BabyPodcastHero = () => {
   const pathname = usePathname()
   
   return (
@@ -16,24 +16,17 @@ export const AuroraHero = () => {
         <div className="w-full max-w-6xl mx-auto">
           <div className="flex flex-col items-center text-center space-y-10 md:space-y-12">
             {/* Title - Apple-style large and bold */}
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-accent leading-[1.1] tracking-tight">
-              Infinite Talk AI
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-balance px-4">
+              <span className="text-accent">
+                Baby Podcast with Infinite Talk AI
+              </span>
+              
             </h1>
             
-            {/* Description - Larger, more readable */}
+            {/* Subtitle - Larger, more readable */}
             <p className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-6xl mx-auto font-light">
-              Audio-driven, whole-frame dubbing that turns images or footage into identity-stable talking video. It enables infinite-length generation—syncing lips, head motion, posture, and expressions to speech for natural continuity.
+              Create engaging baby podcast videos with AI-powered talking video technology. Transform photos into natural talking videos with precise lip sync and expressive motion.
             </p>
-
-            {/* New User Bonus Credit Banner */}
-            <div className="inline-flex items-center gap-2.5 px-4 py-2.5 bg-orange-500/10 border border-orange-500/20 rounded-xl backdrop-blur-sm">
-              <div className="flex-shrink-0 w-5 h-5 rounded-full bg-orange-500/20 flex items-center justify-center">
-                <FiGift className="w-3.5 h-3.5 text-orange-500" />
-              </div>
-              <p className="text-sm md:text-base font-medium text-orange-500">
-                New users get <span className="font-bold">10 free credits</span> to get started!
-              </p>
-            </div>
 
             {/* Anchor Tab Links */}
             <div className="pt-4">
@@ -75,7 +68,7 @@ export const AuroraHero = () => {
 
         {/* Main Content: Talking Photo generator layout */}
         <div className="w-full max-w-6xl mx-auto mt-12">
-          <div id="photo-talking" className="mb-16">
+          <div id="baby-podcast-talking" className="mb-16">
             <TalkingPhotoLayout
               onTaskCreated={() => {
                 // Show success message and guide to profile
@@ -122,3 +115,4 @@ export const AuroraHero = () => {
     </section>
   )
 }
+

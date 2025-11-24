@@ -93,7 +93,7 @@ export default function LoginDialog({ open, onOpenChange }: LoginDialogProps) {
           <div className="flex justify-center mb-6 ">
             <div className="relative w-20 h-20 rounded-2xl overflow-hidden shadow-2xl ring-2 ring-border flex flex-col justify-center">
               <Image 
-                src="/logo.png" 
+                src="/logo-new.png" 
                 alt="Infinite Talk" 
                 width={80} 
                 height={80}

@@ -20,10 +20,10 @@ export function VideoToVideoCTA() {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-6">
             <Link
-              href="/infinite-talk-ai/image-to-video"
+              href="/"
               className="group relative px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-300 hover:scale-105 flex items-center gap-2"
             >
-              <span>Image to Video</span>
+              <span>infinitetalk photo</span>
               <FiArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Link>
             <Link
