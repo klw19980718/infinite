@@ -37,13 +37,13 @@ export const VideoToVideoHero = () => {
             <div className="pt-4">
               <div className="inline-flex h-14 items-center px-2 gap-2 bg-muted/50 border border-border/50 rounded-lg">
                 <a
-                  href="/#photo-talking"
+                  href="/"
                   className="px-6 py-3 flex items-center text-base font-semibold text-foreground hover:text-accent transition-all rounded-md"
                 >
                   infinitetalk photo
                 </a>
                 <a
-                  href="#video-talking"
+                  href="/infinite-talk-ai/video-to-video"
                   className="px-6 py-3 flex items-center text-base font-semibold bg-accent text-accent-foreground shadow-lg rounded-md hover:bg-accent/90 transition-all"
                 >
                   infinitetalk video
