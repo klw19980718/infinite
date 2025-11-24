@@ -158,13 +158,21 @@ export async function POST(request: NextRequest) {
     // Submit task to WaveSpeedAI
     let wavespeedTaskId: string
     try {
-      // Use NGROK_DEV_URL for local development, fallback to NEXT_PUBLIC_SITE_URL
-      const baseUrl = process.env.NGROK_DEV_URL || process.env.NEXT_PUBLIC_SITE_URL
+      // In production, always use NEXT_PUBLIC_SITE_URL
+      // In development, use NGROK_DEV_URL if set, otherwise NEXT_PUBLIC_SITE_URL
+      const isProduction = process.env.NODE_ENV === 'production'
+      const baseUrl = isProduction
+        ? process.env.NEXT_PUBLIC_SITE_URL
+        : (process.env.NGROK_DEV_URL || process.env.NEXT_PUBLIC_SITE_URL)
+      
       if (!baseUrl) {
-        console.error("Missing NGROK_DEV_URL or NEXT_PUBLIC_SITE_URL for webhook URL")
+        console.error("Missing NEXT_PUBLIC_SITE_URL for webhook URL")
         throw new Error("Webhook URL configuration missing")
       }
-      const webhookUrl = `${baseUrl}/api/video/webhook?task_id=${taskId}`
+      
+      // Remove trailing slash if present to avoid double slashes
+      const cleanBaseUrl = baseUrl.replace(/\/+$/, '')
+      const webhookUrl = `${cleanBaseUrl}/api/video/webhook?task_id=${taskId}`
       console.log("[Video-to-Video] Webhook URL:", webhookUrl)
       
       // Use fast API if resolution is "fast", otherwise use regular API
