@@ -115,24 +115,6 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
   // Login dialog state
   const [loginDialogOpen, setLoginDialogOpen] = useState(false)
 
-  // Helper to proxy CDN URLs through our Next.js API to avoid CORS issues
-  const getProxiedUrlIfNeeded = useCallback((url: string): string => {
-    if (!url || !url.startsWith("http")) {
-      return url
-    }
-
-    try {
-      const parsed = new URL(url)
-      if (parsed.hostname === "cdn.infinitetalkai.org") {
-        return `/api/proxy-file?url=${encodeURIComponent(url)}`
-      }
-    } catch {
-      // Ignore URL parsing errors and fall back to original URL
-      return url
-    }
-
-    return url
-  }, [])
 
   // Handle image file upload
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -756,7 +738,7 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
             finalAudioUrl = audioUrl
             
             // Fetch audio to get duration and blob
-            const audioResponse = await fetch(getProxiedUrlIfNeeded(audioUrl))
+            const audioResponse = await fetch(audioUrl)
             const audioBlob = await audioResponse.blob()
             const audio = new Audio(audioUrl)
             
@@ -825,7 +807,7 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
         // TTS HTTP URL - download and convert to File
         try {
           // toast.loading("Downloading audio...", { id: "download-audio" })
-          const audioResponse = await fetch(getProxiedUrlIfNeeded(finalAudioUrl))
+          const audioResponse = await fetch(finalAudioUrl)
           if (!audioResponse.ok) {
             throw new Error("Failed to download audio")
           }
@@ -851,7 +833,7 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
       if (!imageFile && imagePreview && imagePreview.startsWith("http")) {
         try {
           // toast.loading("Downloading image...", { id: "download-image" })
-          const imageResponse = await fetch(getProxiedUrlIfNeeded(imagePreview))
+          const imageResponse = await fetch(imagePreview)
           if (!imageResponse.ok) {
             throw new Error("Failed to download image")
           }
@@ -996,7 +978,7 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
             const audioUrl = resultData.outputs[0]
             
             // Fetch audio as blob
-            const audioResponse = await fetch(getProxiedUrlIfNeeded(audioUrl))
+            const audioResponse = await fetch(audioUrl)
             const audioBlob = await audioResponse.blob()
             
             // Create object URL

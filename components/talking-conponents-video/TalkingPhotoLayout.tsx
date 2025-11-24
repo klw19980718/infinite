@@ -114,24 +114,6 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
   // Login dialog state
   const [loginDialogOpen, setLoginDialogOpen] = useState(false)
 
-  // Helper to proxy CDN URLs through our Next.js API to avoid CORS issues
-  const getProxiedUrlIfNeeded = useCallback((url: string): string => {
-    if (!url || !url.startsWith("http")) {
-      return url
-    }
-
-    try {
-      const parsed = new URL(url)
-      if (parsed.hostname === "cdn.infinitetalkai.org") {
-        return `/api/proxy-file?url=${encodeURIComponent(url)}`
-      }
-    } catch {
-      // Ignore URL parsing errors and fall back to original URL
-      return url
-    }
-
-    return url
-  }, [])
 
   // Handle video file upload
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -867,7 +849,7 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
       if (!imageFile && imagePreview && imagePreview.startsWith("http")) {
         try {
           // toast.loading("Downloading video...", { id: "download-video" })
-          const imageResponse = await fetch(getProxiedUrlIfNeeded(imagePreview))
+          const imageResponse = await fetch(imagePreview)
           if (!imageResponse.ok) {
             throw new Error("Failed to download video")
           }

@@ -7,13 +7,13 @@ import { Button } from "@/components/ui/button"
 type Theme = "dark" | "light"
 
 export function ThemeToggle() {
-  const [theme, setTheme] = useState<Theme>("light")
+  const [theme, setTheme] = useState<Theme>("dark")
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
     setMounted(true)
-    // Get theme from localStorage or default to light
-    const savedTheme = (localStorage.getItem("theme") as Theme) || "light"
+    // Get theme from localStorage or default to dark
+    const savedTheme = (localStorage.getItem("theme") as Theme) || "dark"
     setTheme(savedTheme)
     // Theme is already applied by the script in layout.tsx, but ensure it's correct
     applyTheme(savedTheme)
@@ -46,7 +46,7 @@ export function ThemeToggle() {
         className="h-9 w-9 rounded-xl hover:bg-white/10 transition-all duration-300"
         aria-label="Toggle theme"
       >
-        <Sun className="h-4 w-4" />
+        <Moon className="h-4 w-4" />
       </Button>
     )
   }

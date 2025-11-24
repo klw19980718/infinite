@@ -48,10 +48,10 @@ export const VideoToVideoHero = () => {
                 >
                   infinitetalk video
                 </a>
-              </div>
-            </div>
-          </div>
-
+                  </div>
+                  </div>
+                </div>
+                
           {/* Main Content: Video-to-Video generator layout */}
           <div className="w-full max-w-6xl mx-auto mt-12">
             <div id="video-talking">
@@ -78,13 +78,13 @@ export const VideoToVideoHero = () => {
                             className="text-blue-500 hover:text-blue-600 font-medium hover:underline"
                           >
                             My Creations
-                          </button>
+                        </button>
                         </p>
                       </div>
                       <button
                         onClick={() => toast.dismiss(t)}
                         className="absolute top-3 right-3 text-muted-foreground hover:text-foreground transition-colors"
-                      >
+                        >
                         <FiX className="w-4 h-4" />
                       </button>
                     </div>

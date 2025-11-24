@@ -213,7 +213,8 @@ export function ExampleVideos() {
                   {cat.ids.length > 0 ? (
                     <div className="flex items-center justify-between gap-4">
                       <p className="text-sm text-muted-foreground flex-1">{cat.description}</p>
-                      <div className="hidden sm:flex items-center gap-2">
+                      {/* 桌面端：横向滚动按钮 */}
+                      <div className="hidden md:flex items-center gap-2">
                         <button
                           aria-label="Scroll left"
                           onClick={() => scrollCategory(cat.key, -1)}
@@ -239,53 +240,122 @@ export function ExampleVideos() {
 
                 {cat.ids.length > 0 ? (
                   <div className="relative">
-                    {/* 横向滚动区域：去除左右安全区，铺满到视口边缘 */}
-                    <div
-                      ref={(el) => { scrollRefs.current[cat.key] = el }}
-                      className="overflow-x-auto mx-[-1.5rem] px-6 pb-2 nice-scroll-x"
-                    >
-                      <div className="flex gap-6 min-w-max">
-                        {cat.ids.map((id) => {
-                          const videoKey = `${cat.key}-${id}`
-                          const isPlaying = playingVideos[videoKey] || false
-                          
-                          return (
-                            <div
-                              key={id}
+                    {/* 移动端：轮播图（一次显示一个视频） */}
+                    <div className="block md:hidden">
+                      <div className="relative">
+                        {/* 当前视频 */}
+                        <div
+                          ref={(el) => {
+                            const currentId = cat.ids[currentIndex]
+                            const videoKey = `${cat.key}-${currentId}`
+                            cardRefs.current[videoKey] = el
+                          }}
+                          className="relative overflow-hidden rounded-2xl border border-border bg-card shadow-md"
+                        >
+                          <div
+                            className="relative w-full h-[240px] cursor-pointer"
+                            onClick={() => {
+                              const currentId = cat.ids[currentIndex]
+                              const videoKey = `${cat.key}-${currentId}`
+                              toggleVideo(videoKey)
+                            }}
+                          >
+                            <video
                               ref={(el) => {
-                                cardRefs.current[videoKey] = el
+                                const currentId = cat.ids[currentIndex]
+                                const videoKey = `${cat.key}-${currentId}`
+                                videoRefs.current[videoKey] = el
                               }}
-                              className="shrink-0 w-auto rounded-2xl border border-border bg-card"
+                              controls
+                              className="w-full h-full object-contain bg-black"
+                              poster={getImageSrc(cat.ids[currentIndex], cat.key)}
                             >
-                              {/* 只展示视频 */}
-                              <div
-                                className="relative flex-none overflow-hidden rounded-2xl border border-border bg-card shadow-md cursor-pointer group h-[180px] md:h-[280px]"
-                                onClick={() => toggleVideo(videoKey)}
-                              >
-                                <video
-                                  ref={(el) => {
-                                    videoRefs.current[videoKey] = el
-                                  }}
-                                  controls
-                                  className="w-full h-full object-contain bg-black"
-                                  poster={getImageSrc(id, cat.key)}
-                                >
-                                  <source src={getVideoSrc(id, cat.key)} />
-                                </video>
-                      
-                              </div>
-                            </div>
-                          )
-                        })}
+                              <source src={getVideoSrc(cat.ids[currentIndex], cat.key)} />
+                            </video>
+                          </div>
+                        </div>
+
+                        {/* 左右切换按钮 */}
+                        {cat.ids.length > 1 && (
+                          <>
+                            <button
+                              aria-label="Previous video"
+                              onClick={() => handlePrev(cat.key, cat.ids.length)}
+                              className="absolute left-2 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full border-2 bg-card/90 backdrop-blur-sm hover:bg-accent/10 transition z-10 flex items-center justify-center"
+                              style={{ borderColor: 'var(--accent)' }}
+                            >
+                              <ChevronLeft className="h-5 w-5 text-accent" />
+                            </button>
+                            <button
+                              aria-label="Next video"
+                              onClick={() => handleNext(cat.key, cat.ids.length)}
+                              className="absolute right-2 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full border-2 bg-card/90 backdrop-blur-sm hover:bg-accent/10 transition z-10 flex items-center justify-center"
+                              style={{ borderColor: 'var(--accent)' }}
+                            >
+                              <ChevronRight className="h-5 w-5 text-accent" />
+                            </button>
+                          </>
+                        )}
+
+                        {/* 指示器（dots） */}
+                        {cat.ids.length > 1 && (
+                          <div className="flex items-center justify-center gap-2 mt-4">
+                            {cat.ids.map((_, idx) => (
+                              <button
+                                key={idx}
+                                aria-label={`Go to video ${idx + 1}`}
+                                onClick={() => setActiveIndexes((prev) => ({ ...prev, [cat.key]: idx }))}
+                                className={`h-2 rounded-full transition-all ${
+                                  idx === currentIndex
+                                    ? 'w-8 bg-accent'
+                                    : 'w-2 bg-muted-foreground/30 hover:bg-muted-foreground/50'
+                                }`}
+                              />
+                            ))}
+                          </div>
+                        )}
                       </div>
                     </div>
 
-                    {/* 滚动提示 */}
-                    {cat.ids.length > 1 && (
-                      <div className="text-center mt-4 text-sm text-muted-foreground">
-                       
+                    {/* 桌面端：横向滚动区域 */}
+                    <div className="hidden md:block">
+                      <div
+                        ref={(el) => { scrollRefs.current[cat.key] = el }}
+                        className="overflow-x-auto mx-[-1.5rem] px-6 pb-2 nice-scroll-x"
+                      >
+                        <div className="flex gap-6 min-w-max">
+                          {cat.ids.map((id) => {
+                            const videoKey = `${cat.key}-${id}`
+                            
+                            return (
+                              <div
+                                key={id}
+                                ref={(el) => {
+                                  cardRefs.current[videoKey] = el
+                                }}
+                                className="shrink-0 w-auto rounded-2xl border border-border bg-card"
+                              >
+                                <div
+                                  className="relative flex-none overflow-hidden rounded-2xl border border-border bg-card shadow-md cursor-pointer group h-[280px]"
+                                  onClick={() => toggleVideo(videoKey)}
+                                >
+                                  <video
+                                    ref={(el) => {
+                                      videoRefs.current[videoKey] = el
+                                    }}
+                                    controls
+                                    className="w-full h-full object-contain bg-black"
+                                    poster={getImageSrc(id, cat.key)}
+                                  >
+                                    <source src={getVideoSrc(id, cat.key)} />
+                                  </video>
+                                </div>
+                              </div>
+                            )
+                          })}
+                        </div>
                       </div>
-                    )}
+                    </div>
                   </div>
                 ) : (
                   <div className="rounded-xl border border-dashed border-border bg-card p-8 text-center">
