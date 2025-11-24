@@ -160,7 +160,12 @@ export async function POST(request: NextRequest) {
     try {
       // Use NGROK_DEV_URL for local development, fallback to NEXT_PUBLIC_SITE_URL
       const baseUrl = process.env.NGROK_DEV_URL || process.env.NEXT_PUBLIC_SITE_URL
+      if (!baseUrl) {
+        console.error("Missing NGROK_DEV_URL or NEXT_PUBLIC_SITE_URL for webhook URL")
+        throw new Error("Webhook URL configuration missing")
+      }
       const webhookUrl = `${baseUrl}/api/video/webhook?task_id=${taskId}`
+      console.log("[Video-to-Video] Webhook URL:", webhookUrl)
       
       // Use fast API if resolution is "fast", otherwise use regular API
       const result = resolution === "fast"

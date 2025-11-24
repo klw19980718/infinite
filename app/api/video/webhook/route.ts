@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { createServerSupabaseClientForRouteHandler } from "@/lib/supabase/server.server"
+import { getServerSupabase } from "@/lib/supabase"
 import crypto from "crypto"
 
 // Use Node.js runtime for crypto and Supabase compatibility
@@ -44,18 +44,32 @@ export async function POST(request: NextRequest) {
   try {
     const rawBody = await request.text()
     
+    // Log webhook request for debugging
+    console.log("[Webhook] Received request:", {
+      url: request.url,
+      method: request.method,
+      headers: {
+        "webhook-id": request.headers.get("webhook-id"),
+        "webhook-timestamp": request.headers.get("webhook-timestamp"),
+        "webhook-signature": request.headers.get("webhook-signature") ? "present" : "missing",
+      },
+      bodyLength: rawBody.length,
+    })
+    
     // Verify signature if secret is available
     const secret = process.env.WAVESPEED_WEBHOOK_SECRET
     if (secret) {
       const isValid = verifySignature(rawBody, request.headers, secret)
       if (!isValid) {
+        console.error("[Webhook] Invalid signature")
         return NextResponse.json(
           { ok: false, message: "Invalid signature" },
           { status: 401 }
         )
       }
+      console.log("[Webhook] Signature verified")
     } else {
-      console.warn("WAVESPEED_WEBHOOK_SECRET not set, skipping signature verification")
+      console.warn("[Webhook] WAVESPEED_WEBHOOK_SECRET not set, skipping signature verification")
     }
 
     const body = JSON.parse(rawBody)
@@ -65,16 +79,23 @@ export async function POST(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams
     const taskId = searchParams.get("task_id")
 
+    console.log("[Webhook] Processing:", {
+      taskId,
+      webhookId,
+      status: body.status,
+      outputs: body.outputs?.length || 0,
+    })
+
     if (!taskId) {
+      console.error("[Webhook] Missing task_id")
       return NextResponse.json(
         { ok: false, message: "Missing task_id" },
         { status: 400 }
       )
     }
 
-    // Initialize Supabase client
-    const response = new NextResponse()
-    const supabase = createServerSupabaseClientForRouteHandler(request, response)
+    // Initialize Supabase client with service role key (webhook is called externally, no cookies)
+    const supabase = getServerSupabase()
 
     // Check for idempotency and log event
     if (webhookId) {
@@ -129,20 +150,32 @@ export async function POST(request: NextRequest) {
     const { error } = await supabase.rpc("update_video_task", updateData)
 
     if (error) {
-      console.error("Error updating video task:", error)
+      console.error("[Webhook] Error updating video task:", error)
       return NextResponse.json(
-        { ok: false, message: "Failed to update task" },
+        { ok: false, message: "Failed to update task", error: error.message },
         { status: 500 }
       )
     }
 
+    console.log("[Webhook] Task updated successfully:", {
+      taskId,
+      status: updateData.p_status,
+      hasOutput: !!updateData.p_output_video_url,
+    })
+
     // If completed, set expiry
     if (body.status === "completed") {
       const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
-      await supabase
+      const { error: expiryError } = await supabase
         .from("video_tasks")
         .update({ expires_at: expiresAt })
         .eq("id", taskId)
+      
+      if (expiryError) {
+        console.error("[Webhook] Error setting expiry:", expiryError)
+      } else {
+        console.log("[Webhook] Expiry set:", expiresAt)
+      }
     }
 
     return NextResponse.json({ ok: true })
