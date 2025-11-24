@@ -266,6 +266,7 @@ export function ExampleVideos() {
                                 const videoKey = `${cat.key}-${currentId}`
                                 videoRefs.current[videoKey] = el
                               }}
+                              preload="none"
                               controls
                               className="w-full h-full object-contain bg-black"
                               poster={getImageSrc(cat.ids[currentIndex], cat.key)}
@@ -343,6 +344,7 @@ export function ExampleVideos() {
                                     ref={(el) => {
                                       videoRefs.current[videoKey] = el
                                     }}
+                                    preload="none"
                                     controls
                                     className="w-full h-full object-contain bg-black"
                                     poster={getImageSrc(id, cat.key)}
