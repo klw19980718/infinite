@@ -88,6 +88,12 @@ export default function Nav() {
             >
               Pricing
             </Link>
+            <Link 
+              href="/lib" 
+              className="px-3.5 py-2 text-xs font-medium text-foreground/70 hover:text-foreground hover:bg-white/5 rounded-lg transition-all duration-300"
+            >
+              Docs
+            </Link>
             
             <div className="ml-2 flex items-center gap-2">
               <ThemeToggle />
@@ -173,6 +179,15 @@ export default function Nav() {
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       Pricing
+                    </Link>
+                  </SheetClose>
+                  <SheetClose asChild>
+                    <Link 
+                      href="/lib" 
+                      className="text-foreground hover:text-foreground hover:bg-white/5 transition-all duration-300 font-medium text-base py-3 px-4 rounded-xl"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      Docs
                     </Link>
                   </SheetClose>
                   

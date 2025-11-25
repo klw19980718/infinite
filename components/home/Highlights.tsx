@@ -4,39 +4,39 @@ export function Highlights() {
   const highlights = [
     {
       icon: FiClock,
-      title: "Whole-Frame Control with infinite talk ai",
+      title: "Whole-Frame Control with Infinite Talk AI",
       description:
-        "Instead of nudging only the mouth, infinite talk ai aligns lips, eye focus, head turns, and posture to audio. infinite talk ai preserves identity and keeps motion coherent across extended segments.",
+        "Infinite Talk AI aligns lips, eye focus, head turns, and posture to audio, delivering audio-synchronized full-body motion over extended sequences while preserving identity.",
     },
     {
       icon: FiTarget,
-      title: "Sparse-Frame Dubbing in infinitetalk",
+      title: "Sparse-Frame Dubbing in InfiniteTalk",
       description:
-        "A selective keyframe strategy lets infinitetalk place control points where perception matters most, then interpolate smoothly. infinitetalk avoids robotic stutter and maintains expressive rhythm.",
+        " A sparse keyframe strategy lets InfiniteTalk place control points where perception matters most. Those keyframes preserve identity, emotional cadence, iconic gestures, and camera trajectories, while the in-between frames follow the dubbed audio naturally. This avoids robotic stutter and keeps the performance expressive.",
     },
     {
       icon: FiTrendingUp,
-      title: "Temporal Context Windows in infinity talk",
+      title: "Temporal Context Windows in InfiniteTalk",
       description:
-        "Chunked processing with overlapping context carries motion momentum forward. infinity talk reduces seams, flicker, and jitter between segments without flattening expression.",
+        "Chunked processing with overlapping temporal context windows (context frames) carries motion momentum forward between segments. InfiniteTalk reduces seams, flicker, and jitter across long sequences without flattening expression.",
     },
     {
       icon: FiUser,
-      title: "Soft Reference Control in infinite talk",
+      title: "Soft Reference Control in InfiniteTalk",
       description:
-        "Control strength adapts to similarity between current context and the reference. infinite talk locks facial identity yet keeps head-and-body dynamics flexible and lifelike.",
+        "Control strength adapts to similarity between the current context and the reference. InfiniteTalk locks facial identity yet keeps head-and-body dynamics flexible and lifelike, based on a keyframe sampling strategy validated across multiple training regimes.",
     },
     {
       icon: FiLayers,
-      title: "Multi-Speaker Pipelines via infinitetalk ai",
+      title: "Multi-Speaker Pipelines via Infinite Talk AI",
       description:
-        "Drive multiple characters with independent audio tracks and masks. infinitetalk ai keeps each speaker distinct, even in fast, back-and-forth dialog.",
+        "Drive multiple characters with independent audio tracks and masks. Infinite Talk AI keeps each speaker distinct, even in fast, back-and-forth dialog, building multi-speaker control on top of the core InfiniteTalk architecture.",
     },
     {
       icon: FiUsers,
-      title: "Clarity & Prompt Controls in infinite talk ai",
+      title: "Clarity & Prompt Controls in Infinite Talk AI",
       description:
-        "Guide output with clarity controls and prompt adjustments. infinite talk ai exposes concise switches for lip strength, expression damping, and wording-based style cues to match voice tone and script density.",
+        "Guide output with clarity controls and prompt adjustments. Infinite Talk AI exposes concise switches for lip strength, expression damping, and wording-based style cues to match voice tone and script density.",
     },
   ]
 

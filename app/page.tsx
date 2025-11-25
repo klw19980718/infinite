@@ -204,7 +204,7 @@ export default function Home() {
             "name": "What inputs does Infinite Talk AI support?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Upload a single image or a source video plus audio narration (WAV/MP3). Infinite Talk AI analyzes phonemes and timing to drive motion and exports MP4."
+              "text": "Upload a single image or a source video plus audio narration (WAV/MP3). infinite talk ai analyzes phonemes and timing to drive motion and exports MP4."
             }
           },
           {
@@ -212,7 +212,7 @@ export default function Home() {
             "name": "How does Infinite Talk AI keep identity stable?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Soft reference control and context overlap preserve facial structure and style while keeping expressions natural."
+              "text": "Soft reference control and context overlap preserve facial structure and style while keeping expressions natural — in infinitetalk."
             }
           },
           {
@@ -220,7 +220,7 @@ export default function Home() {
             "name": "Can Infinite Talk AI handle multiple speakers?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Yes. Provide separate audio tracks and references, and Infinite Talk AI animates each speaker independently in the same scene."
+              "text": "Yes. Provide separate audio tracks and references, and infinitetalk ai animates each speaker independently in the same scene."
             }
           },
           {
@@ -228,7 +228,7 @@ export default function Home() {
             "name": "Does Infinite Talk AI reduce flicker and seams?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Temporal context windows carry motion across chunks, reducing flicker and visible joins on long timelines."
+              "text": "Temporal context windows carry motion across chunks, reducing flicker and visible joins on long timelines — a strength of InfiniteTalk."
             }
           },
           {
@@ -236,7 +236,7 @@ export default function Home() {
             "name": "How precise is lip-sync in Infinite Talk AI?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Phoneme-aware mapping keeps visemes aligned to speech rhythm for accurate articulation over long runs."
+              "text": "Phoneme-aware mapping keeps visemes aligned to speech rhythm for accurate articulation over long runs in infinite talk."
             }
           },
           {
@@ -244,7 +244,7 @@ export default function Home() {
             "name": "Is data private when using Infinite Talk AI?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Uploads are encrypted in transit. Retention controls and one-click deletion are provided; model training is opt-in only."
+              "text": "When using infinitetalk ai, uploads are encrypted in transit. Retention controls and one-click deletion are provided; model training is opt-in only."
             }
           },
           {
@@ -252,7 +252,7 @@ export default function Home() {
             "name": "What hardware suits Infinite Talk AI?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "From lightweight previews to heavier passes, Infinite Talk AI offers acceleration and quantization for limited VRAM."
+              "text": "From lightweight previews to heavier passes, infinitetalk ai offers acceleration and quantization for limited VRAM."
             }
           },
           {
@@ -260,7 +260,7 @@ export default function Home() {
             "name": "What content types fit Infinite Talk AI best?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Education, corporate explainers, podcasts, creator content, and multilingual dubbing benefit from whole-frame control."
+              "text": "Education, corporate explainers, podcasts, creator content, and multilingual dubbing benefit from whole-frame control — popular use cases for infinite talk."
             }
           }
         ]
@@ -280,9 +280,9 @@ export default function Home() {
         
         <div className="relative z-10">
           <AuroraHero />
+          <HowItWorks />
           <WhyItStandsOut />
           <ExampleVideos />
-          <HowItWorks />
           <Specs />
           <Highlights />
           <UnderTheHood />

@@ -4,31 +4,31 @@ export function UnderTheHood() {
   const techFeatures = [
     {
       icon: FiRefreshCw,
-      title: "Phoneme-Aware Alignment in infinite talk",
+      title: "Phoneme-Aware Alignment in InfiniteTalk",
       description:
         "Speech cues map to visemes, head timing, and posture shifts. infinite talk fuses audio features with spatial priors so articulation stays crisp at natural pace.",
     },
     {
       icon: FiLayers,
-      title: "Keyframe Sampling Strategy in infinitetalk",
+      title: "Keyframe Sampling Strategy in InfiniteTalk",
       description:
         "Fine-grained placement balances constraint and freedom. infinitetalk lets expressive beats land precisely while smoothing in-between frames.",
     },
     {
       icon: FiZap,
-      title: "Memory-Aware Processing in infinity talk",
+      title: "Memory-Aware Processing in InfiniteTalk",
       description:
-        "Overlapping windows minimize discontinuities. infinity talk maintains temporal consistency without over-regularizing natural variation.",
+        "Overlapping windows minimize discontinuities. InfiniteTalk maintains temporal consistency without over-regularizing natural variation.",
     },
     {
       icon: FiCpu,
-      title: "Prompt-Driven Style & Clarity in infinitetalk ai",
+      title: "Prompt-Driven Style & Clarity in Infinite Talk AI",
       description:
         "Concise prompts and clarity switches influence articulation intensity, expression range, and stabilization. infinitetalk ai keeps prompts human-readable and domain-aware for technical scripts.",
     },
     {
       icon: FiRefreshCw,
-      title: "Latency & Throughput in infinite talk ai",
+      title: "Latency & Throughput in Infinite Talk AI",
       description:
         "Pipeline stages are tuned for predictable latency under load. infinite talk ai exposes batch-friendly behavior for production workflows and queue-based rendering.",
     },

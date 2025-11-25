@@ -13,17 +13,26 @@ export const AuroraHero = () => {
     <section className="relative min-h-screen overflow-hidden">
       {/* Content container - centered layout */}
       <div className="relative z-10 container mx-auto px-6 min-h-screen flex flex-col items-center justify-center py-32 md:py-40">
-        <div className="w-full max-w-6xl mx-auto">
+        <div className="w-full max-w-7xl mx-auto">
           <div className="flex flex-col items-center text-center space-y-10 md:space-y-12">
             {/* Title - Apple-style large and bold */}
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-accent leading-[1.1] tracking-tight">
-              Infinite Talk AI
+            <h1 className="text-4xl md:text-4xl lg:text-5xl font-bold text-accent leading-[1.1] tracking-tight">
+            Infinite Talk AI — Sparse-Frame Video Dubbing Engine
             </h1>
             
             {/* Description - Larger, more readable */}
             <p className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-6xl mx-auto font-light">
-              Audio-driven, whole-frame dubbing that turns images or footage into identity-stable talking video. It enables infinite-length generation—syncing lips, head motion, posture, and expressions to speech for natural continuity.
+            Audio-driven, sparse-frame video dubbing that turns images or footage into identity-stable talking video. A streaming generator scales to effectively infinite sequences, syncing lips, head motion, posture, and expressions to speech while preserving the original camera feel.
             </p>
+
+            {/* Learn More Link */}
+            <Link
+              href="/lib/sparse-frame-video-dubbing"
+              className="text-sm text-muted-foreground/70 hover:text-accent/80 transition-colors inline-flex items-center gap-1 group"
+            >
+              Learn how sparse-frame video dubbing works
+              <span className="group-hover:translate-x-0.5 transition-transform inline-block">→</span>
+            </Link>
 
             {/* New User Bonus Credit Banner */}
             <div className="inline-flex items-center gap-2.5 px-4 py-2.5 bg-orange-500/10 border border-orange-500/20 rounded-xl backdrop-blur-sm">

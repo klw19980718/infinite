@@ -19,9 +19,9 @@ export function Specs() {
     },
     {
       icon: FiMonitor,
-      title: "Podcasts & Media powered by infinity talk",
+      title: "Podcasts & Media powered by InfiniteTalk",
       content:
-        "Turn audio-only shows into visual episodes. infinity talk provides lip-true on-screen hosts without reshoots or studio time.",
+        "Turn audio-only shows into visual episodes. InfiniteTalk provides lip-true on-screen hosts without reshoots or studio time.",
     },
     {
       icon: FiUsers,

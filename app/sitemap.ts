@@ -55,6 +55,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.5,
+    },
+    {
+      url: baseUrl + '/lib',
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: baseUrl + '/lib/sparse-frame-video-dubbing',
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.7,
     }
   ]
 }

@@ -8,19 +8,19 @@ export default function WhyItStandsOut() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl mx-auto">
           <a href="#multilingual-content" className="glass rounded-2xl p-8 hover:glass-strong hover:scale-[1.02] transition-all duration-300 cursor-pointer group" style={{ borderColor: 'var(--accent)', borderWidth: '2px' }}>
             <h3 className="font-semibold text-xl text-foreground group-hover:text-accent transition-colors">Multilingual to the core</h3>
-            <p className="text-muted-foreground text-base mt-3 leading-relaxed">Tested on 500+ languages and dialects—that's our current test ceiling, not the model's limit. Global voices, one pipeline.</p>
+            <p className="text-muted-foreground text-base mt-3 leading-relaxed">Tested across 500+ languages and dialects in our internal pipeline — that’s our current test ceiling, not the model’s theoretical limit. Global voices, one pipeline.</p>
           </a>
           <a href="#infinitetalk" className="glass rounded-2xl p-8 hover:glass-strong hover:scale-[1.02] transition-all duration-300 cursor-pointer group" style={{ borderColor: 'var(--accent)', borderWidth: '2px' }}>
             <h3 className="font-semibold text-xl text-foreground group-hover:text-accent transition-colors">Infinite-length generation</h3>
-            <p className="text-muted-foreground text-base mt-3 leading-relaxed">Designed for unlimited duration. Today we render up to 600s per pass and offer seamless batching & stitching for chaptered episodes and hour-scale programs.</p>
+            <p className="text-muted-foreground text-base mt-3 leading-relaxed">Designed for practically unlimited duration. Today we render up to 600s per pass with overlapping context windows, then batch and stitch chaptered episodes and hour-scale programs while preserving motion continuity.</p>
           </a>
           <a href="#shorts" className="glass rounded-2xl p-8 hover:glass-strong hover:scale-[1.02] transition-all duration-300 cursor-pointer group" style={{ borderColor: 'var(--accent)', borderWidth: '2px' }}>
-            <h3 className="font-semibold text-xl text-foreground group-hover:text-accent transition-colors">Beyond lip sync: whole-frame dubbing</h3>
-            <p className="text-muted-foreground text-base mt-3 leading-relaxed">Not just mouths. We align lips, head motion, posture, and micro-expressions to speech, so performances feel natural across the entire frame.</p>
+            <h3 className="font-semibold text-xl text-foreground group-hover:text-accent transition-colors">Beyond lip sync: sparse-frame, whole-frame dubbing</h3>
+            <p className="text-muted-foreground text-base mt-3 leading-relaxed">Traditional video dubbing only edits the mouth region. Infinite Talk AI uses sparse-frame video dubbing to drive lips, head motion, posture, and micro-expressions from audio while referencing keyframes to preserve identity, emotional cadence, and camera trajectories.</p>
           </a>
           <a href="#podcasts" className="glass rounded-2xl p-8 hover:glass-strong hover:scale-[1.02] transition-all duration-300 cursor-pointer group" style={{ borderColor: 'var(--accent)', borderWidth: '2px' }}>
             <h3 className="font-semibold text-xl text-foreground group-hover:text-accent transition-colors">Fast, high-quality outputs for any platform</h3>
-            <p className="text-muted-foreground text-base mt-3 leading-relaxed">Optimized for 480p / 720p / 1080p with crisp timing and identity stability—ready for YouTube, TikTok, ads, podcasts, shorts, explainers, memes, and pro NLEs.</p>
+            <p className="text-muted-foreground text-base mt-3 leading-relaxed"> Infinite Talk AI targets 480p / 720p with crisp timing and identity stability, and achieves state-of-the-art lip and body motion synchronization on public dubbing benchmarks compared to systems like MuseTalk, LatentSync, OmniAvatar, and MultiTalk.</p>
           </a>
         </div>
       </div>

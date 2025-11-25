@@ -35,7 +35,7 @@ export function FAQ() {
     {
       question: "Does Infinite Talk AI reduce flicker and seams?",
       answer:
-        "Temporal context windows carry motion across chunks, reducing flicker and visible joins on long timelines — a strength of infinity talk.",
+        "Temporal context windows carry motion across chunks, reducing flicker and visible joins on long timelines — a strength of InfiniteTalk.",
     },
     {
       question: "How precise is lip-sync in Infinite Talk AI?",
