@@ -118,7 +118,7 @@ export default function SparseFrameDubbingPage() {
       />
       <main className="bg-background relative min-h-screen">
         <Beams />
-        
+
         <article className="relative z-10 py-16 md:py-24">
           <div className="container mx-auto px-6 max-w-4xl">
             {/* Breadcrumb Navigation */}
@@ -171,14 +171,16 @@ export default function SparseFrameDubbingPage() {
                 <div className="relative w-full aspect-video rounded-xl overflow-hidden">
                   <Image
                     src="https://cdn.infinitetalkai.org/lib/fig1.png"
-                    alt="Sparse-Frame Video Dubbing Comparison - Figure 1 from InfiniteTalk"
+                    alt="Compared to the traditional paradigm, sparse-frame video dubbing will not only edit mouth regions. It gives the model freedom to generate audio aligned mouth, facial, and body movements while referencing on sparse keyframes to preserve identity, emotional cadence, and iconic gestures."
                     fill
                     className="object-contain"
                     priority
                   />
                 </div>
                 <p className="text-sm text-muted-foreground mt-4 text-center">
-                  Figure 1: Comparison of dubbing approaches
+                  Figure 1: : Compared to the traditional paradigm, sparse-frame video dubbing will not only edit mouth
+                  regions. It gives the model freedom to generate audio aligned mouth, facial, and body movements
+                  while referencing on sparse keyframes to preserve identity, emotional cadence, and iconic gestures.
                 </p>
               </div>
             </div>
@@ -521,13 +523,13 @@ export default function SparseFrameDubbingPage() {
                     <div className="relative w-full aspect-video rounded-xl overflow-hidden">
                       <Image
                         src="https://cdn.infinitetalkai.org/lib/fig2.png"
-                        alt="Comparison of naive dubbing methods - Figure 2 from InfiniteTalk"
+                        alt="(left): I2V model accumulates error for long video sequences. (right): A new chunk starts from frame 82. FL2V model suffers from abrupt inter-chunk transitions."
                         fill
                         className="object-contain"
                       />
                     </div>
                     <p className="text-sm text-muted-foreground mt-4 text-center">
-                      Figure 2: Comparison of naive dubbing methods
+                      Figure 2: (left): I2V model accumulates error for long video sequences. (right): A new chunk starts from frame 82. FL2V model suffers from abrupt inter-chunk transitions.
                     </p>
                   </div>
                 </div>
@@ -746,10 +748,10 @@ export default function SparseFrameDubbingPage() {
               </div>
             </section>
 
-       
+
           </div>
         </article>
-        
+
         <ScrollToTop />
       </main>
     </>

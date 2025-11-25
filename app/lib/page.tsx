@@ -65,6 +65,30 @@ const documentationItems = [
     category: 'Technical Guide',
     icon: FileText,
   },
+  {
+    id: 'infinite-length-streaming-architecture',
+    title: 'Infinite-Length Streaming Architecture',
+    description: 'How Infinite Talk AI uses a streaming architecture with chunks, context frames, and reference frames to scale sparse-frame video dubbing to practically infinite length.',
+    href: '/lib/infinite-length-streaming-architecture',
+    category: 'Architecture',
+    icon: FileText,
+  },
+  {
+    id: 'soft-reference-control',
+    title: 'Soft Reference Control and Keyframe Sampling',
+    description: 'How InfiniteTalk uses soft reference control and keyframe sampling strategies to balance identity stability and natural motion in sparse-frame video dubbing.',
+    href: '/lib/soft-reference-control',
+    category: 'Technical Guide',
+    icon: FileText,
+  },
+  {
+    id: 'benchmarks',
+    title: 'Benchmarks & Evaluation',
+    description: 'Benchmarks of InfiniteTalk sparse-frame video dubbing on HDTF, CelebV-HQ, and EMTD, compared with traditional dubbing and audio-driven I2V baselines.',
+    href: '/lib/benchmarks',
+    category: 'Evaluation',
+    icon: FileText,
+  },
   // Add more documentation items here as they are created
 ]
 
