@@ -51,8 +51,49 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Bottom Section */}
+        {/* Badges Section */}
         <div className="mt-12 pt-8 border-t border-white/10">
+          <div className="flex flex-wrap items-center justify-center gap-6 mb-8">
+            {/* ProjectHunt Badge */}
+            <a
+              href="https://projecthunt.me"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block hover:opacity-80 transition-opacity"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="180" height="48" role="img" aria-label="Featured on: projecthunt.me">
+                <title>Featured on projecthunt.me</title>
+                <g>
+                  <rect width="180" height="48" rx="4" fill="#FFFFFF" stroke="#E85C0D" strokeWidth="1.5"/>
+                </g>
+                <g transform="translate(10, 8)">
+                  <image href="https://projecthunt.me/favicon.ico" width="32" height="32"/>
+                </g>
+                <g fill="#666666" textAnchor="start" fontFamily="Verdana,Geneva,DejaVu Sans,sans-serif">
+                  <text x="50" y="22" fontSize="13" fontWeight="500">Featured on</text>
+                  <text x="50" y="38" fontSize="14" fontWeight="600" fill="#E85C0D">projecthunt.me</text>
+                </g>
+              </svg>
+            </a>
+
+            {/* Findly Tools Badge */}
+            <a
+              href="https://findly.tools/infinite-talk-ai?utm_source=infinite-talk-ai"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block hover:opacity-80 transition-opacity"
+            >
+              <img
+                src="https://findly.tools/badges/findly-tools-badge-light.svg"
+                alt="Featured on findly.tools"
+                width="150"
+              />
+            </a>
+          </div>
+        </div>
+
+        {/* Bottom Section */}
+        <div className="mt-8 pt-8 border-t border-white/10">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-sm text-muted-foreground">
               © 2025 Infinitetalk.ai. All rights reserved.
