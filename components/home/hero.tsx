@@ -11,6 +11,28 @@ export const AuroraHero = () => {
   
   return (
     <section className="relative min-h-screen overflow-hidden">
+      {/* ProjectHunt Badge - Fixed in top left */}
+      <Link
+        href="https://projecthunt.me"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="absolute top-20 left-4 z-50 hover:opacity-80 transition-opacity hidden md:block"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="180" height="48" role="img" aria-label="Featured on: projecthunt.me">
+          <title>Featured on projecthunt.me</title>
+          <g>
+            <rect width="180" height="48" rx="4" fill="#FFFFFF" stroke="#E85C0D" strokeWidth="1.5"/>
+          </g>
+          <g transform="translate(10, 8)">
+            <image href="https://projecthunt.me/favicon.ico" width="32" height="32"/>
+          </g>
+          <g fill="#666666" textAnchor="start" fontFamily="Verdana,Geneva,DejaVu Sans,sans-serif">
+            <text x="50" y="22" fontSize="13" fontWeight="500">Featured on</text>
+            <text x="50" y="38" fontSize="14" fontWeight="600" fill="#E85C0D">projecthunt.me</text>
+          </g>
+        </svg>
+      </Link>
+
       {/* Content container - centered layout */}
       <div className="relative z-10 container mx-auto px-6 min-h-screen flex flex-col items-center justify-center py-32 md:py-40">
         <div className="w-full max-w-7xl mx-auto">
