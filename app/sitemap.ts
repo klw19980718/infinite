@@ -25,6 +25,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 0.8,
     },
+    // Blog 页面
+    {
+      url: baseUrl + '/blog',
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.7,
+    },
+    {
+      url: baseUrl + '/blog/how-to-make-a-photo-talk-with-ai',
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
     // 个人中心页面 - 不包含在 sitemap 中（需要认证，不允许抓取）
     // 法律页面
     {

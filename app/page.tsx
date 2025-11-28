@@ -1,5 +1,5 @@
 
-import { AuroraHero, HowItWorks, Highlights, UnderTheHood, FAQ, Specs, WhyItStandsOut, ExampleVideos } from '@/components/home';
+import { AuroraHero, HowItWorks, Highlights, UnderTheHood, LearnMore, FAQ, Specs, WhyItStandsOut, ExampleVideos } from '@/components/home';
 import { Beams } from '@/components/ui/beams';
 import type { Metadata } from 'next';
 
@@ -286,6 +286,7 @@ export default function Home() {
           <Specs />
           <Highlights />
           <UnderTheHood />
+          <LearnMore />
           <FAQ />
           
           {/* Final CTA */}

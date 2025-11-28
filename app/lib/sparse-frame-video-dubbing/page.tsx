@@ -163,6 +163,17 @@ export default function SparseFrameDubbingPage() {
                   How Infinite Talk AI goes beyond mouth-only dubbing to deliver full-frame, audio-synchronized performances.
                 </p>
               </div>
+              <div className="mt-6 p-4 rounded-xl bg-muted/50 border border-border/50">
+                <p className="text-sm md:text-base text-muted-foreground">
+                  If you just want a practical, non-technical guide for using this engine to turn a single image into a talking video, see our tutorial on{' '}
+                  <Link 
+                    href="/blog/how-to-make-a-photo-talk-with-ai" 
+                    className="text-accent hover:underline font-medium"
+                  >
+                    how to make a photo talk with AI
+                  </Link>.
+                </p>
+              </div>
             </header>
 
             {/* Main Visual - Figure 1 */}

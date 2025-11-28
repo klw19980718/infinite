@@ -89,6 +89,12 @@ export default function Nav() {
               Pricing
             </Link>
             <Link 
+              href="/blog" 
+              className="px-3.5 py-2 text-xs font-medium text-foreground/70 hover:text-foreground hover:bg-white/5 rounded-lg transition-all duration-300"
+            >
+              Blog
+            </Link>
+            <Link 
               href="/lib" 
               className="px-3.5 py-2 text-xs font-medium text-foreground/70 hover:text-foreground hover:bg-white/5 rounded-lg transition-all duration-300"
             >
@@ -154,42 +160,71 @@ export default function Nav() {
                       Home
                     </Link>
                   </SheetClose>
-                  <SheetClose asChild>
-                    <Link 
-                      href="/infinite-talk-ai/image-to-video" 
-                      className="text-foreground hover:text-foreground hover:bg-white/5 transition-all duration-300 font-medium text-base py-3 px-4 rounded-xl"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      Image to Video
-                    </Link>
-                  </SheetClose>
-                  <SheetClose asChild>
-                    <Link 
-                      href="/infinite-talk-ai/video-to-video" 
-                      className="text-foreground hover:text-foreground hover:bg-white/5 transition-all duration-300 font-medium text-base py-3 px-4 rounded-xl"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      Video to Video
-                    </Link>
-                  </SheetClose>
-                  <SheetClose asChild>
-                    <Link 
-                      href="/pricing" 
-                      className="text-foreground hover:text-foreground hover:bg-white/5 transition-all duration-300 font-medium text-base py-3 px-4 rounded-xl"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      Pricing
-                    </Link>
-                  </SheetClose>
-                  <SheetClose asChild>
-                    <Link 
-                      href="/lib" 
-                      className="text-foreground hover:text-foreground hover:bg-white/5 transition-all duration-300 font-medium text-base py-3 px-4 rounded-xl"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      Docs
-                    </Link>
-                  </SheetClose>
+                  
+                  {/* Feature Links */}
+                  <div className="pt-2 pb-2 border-t border-border/50">
+                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider px-4 mb-2">
+                      Features
+                    </p>
+                    <SheetClose asChild>
+                      <Link 
+                        href="/" 
+                        className="text-foreground hover:text-foreground hover:bg-white/5 transition-all duration-300 font-medium text-base py-3 px-4 rounded-xl block"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        infinitetalk photo
+                      </Link>
+                    </SheetClose>
+                    <SheetClose asChild>
+                      <Link 
+                        href="/infinite-talk-ai/video-to-video" 
+                        className="text-foreground hover:text-foreground hover:bg-white/5 transition-all duration-300 font-medium text-base py-3 px-4 rounded-xl block"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        infinitetalk video
+                      </Link>
+                    </SheetClose>
+                    <SheetClose asChild>
+                      <Link 
+                        href="/infinite-talk-ai/baby-podcast" 
+                        className="text-foreground hover:text-foreground hover:bg-white/5 transition-all duration-300 font-medium text-base py-3 px-4 rounded-xl block"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        baby podcast
+                      </Link>
+                    </SheetClose>
+                  </div>
+
+                  {/* Other Links */}
+                  <div className="pt-2 border-t border-border/50">
+                    <SheetClose asChild>
+                      <Link 
+                        href="/pricing" 
+                        className="text-foreground hover:text-foreground hover:bg-white/5 transition-all duration-300 font-medium text-base py-3 px-4 rounded-xl"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        Pricing
+                      </Link>
+                    </SheetClose>
+                    <SheetClose asChild>
+                      <Link 
+                        href="/blog" 
+                        className="text-foreground hover:text-foreground hover:bg-white/5 transition-all duration-300 font-medium text-base py-3 px-4 rounded-xl"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        Blog
+                      </Link>
+                    </SheetClose>
+                    <SheetClose asChild>
+                      <Link 
+                        href="/lib" 
+                        className="text-foreground hover:text-foreground hover:bg-white/5 transition-all duration-300 font-medium text-base py-3 px-4 rounded-xl"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        Docs
+                      </Link>
+                    </SheetClose>
+                  </div>
                   
                   <div className="pt-4 mt-4 border-t border-border/50">
                     <div className="flex items-center justify-between px-4 py-2">
