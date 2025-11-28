@@ -856,10 +856,6 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
       formData.append("image", finalImageFile)
       formData.append("audio", finalAudioFileForSubmit)
       formData.append("resolution", resolution)
-      
-      if (finalAudioDuration !== null) {
-        formData.append("audio_duration", Math.ceil(finalAudioDuration).toString())
-      }
 
       const response = await fetch("/api/video/image-to-video", {
         method: "POST",

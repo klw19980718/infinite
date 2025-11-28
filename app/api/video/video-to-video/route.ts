@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { createServerSupabaseClientForRouteHandler } from "@/lib/supabase/server.server"
 import { uploadFileToWaveSpeed, submitVideoToVideoTask, submitVideoToVideoFastTask } from "@/lib/wavespeed"
+import { getAudioDuration } from "@/lib/audio-utils"
 
 // Use Node.js runtime for Supabase compatibility
 export const runtime = 'nodejs'
@@ -49,14 +50,31 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Get audio duration from form data (calculated on frontend)
-    const audioDurationParam = formData.get("audio_duration")
+    // Calculate audio duration from audio file (server-side)
     let audioDurationSeconds: number | null = null
-    if (audioDurationParam) {
-      const duration = parseInt(audioDurationParam as string, 10)
-      if (!isNaN(duration) && duration > 0) {
-        audioDurationSeconds = duration
+    try {
+      audioDurationSeconds = await getAudioDuration(audioFile)
+      if (!audioDurationSeconds || audioDurationSeconds <= 0) {
+        return NextResponse.json(
+          { ok: false, code: "INVALID_AUDIO", message: "Unable to determine audio duration. Please ensure the audio file is valid." },
+          { status: 400 }
+        )
       }
+      
+      // Validate max duration (10 minutes)
+      const maxDuration = 600
+      if (audioDurationSeconds > maxDuration) {
+        return NextResponse.json(
+          { ok: false, code: "AUDIO_TOO_LONG", message: `Audio duration (${audioDurationSeconds}s) exceeds maximum of ${maxDuration}s (${Math.floor(maxDuration / 60)} minutes)` },
+          { status: 400 }
+        )
+      }
+    } catch (error) {
+      console.error("Error calculating audio duration:", error)
+      return NextResponse.json(
+        { ok: false, code: "AUDIO_DURATION_ERROR", message: "Failed to calculate audio duration" },
+        { status: 500 }
+      )
     }
 
     // Calculate required credits BEFORE uploading files
