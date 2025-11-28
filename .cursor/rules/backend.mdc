@@ -20,6 +20,13 @@ alwaysApply: true
 - 🔴 当项目app/api有任何改动时，必须立即更新此文件
 - 🔴 保持此内容为最新
 
+## 音频处理工具
+- **音频时长计算**: 使用 `@/lib/audio-utils` 中的 `getAudioDuration()` 函数
+- **实现方式**: 基于 `music-metadata` 库，从音频文件 Buffer 中解析元数据获取时长
+- **支持格式**: MP3, WAV, M4A, OGG, FLAC 等常见音频格式
+- **使用场景**: 视频生成 API（image-to-video, video-to-video）中，后端自动计算音频时长用于积分计算
+- **注意**: 前端不再需要传递 `audio_duration` 字段，后端会从上传的音频文件中直接读取
+
 ### 🚀 Creem 支付集成
 
 #### POST `/api/creem/checkout`
@@ -140,31 +147,40 @@ alwaysApply: true
 // 错误情况：
 {
   ok: false,
-  code: 'UNAUTHORIZED' | 'MISSING_FILES' | 'INVALID_RESOLUTION' | 'TASK_CREATION_FAILED' | 'WAVESPEED_ERROR' | 'INTERNAL_ERROR',
+  code: 'UNAUTHORIZED' | 'MISSING_FILES' | 'INVALID_RESOLUTION' | 'INVALID_AUDIO' | 'AUDIO_TOO_LONG' | 'AUDIO_DURATION_ERROR' | 'TASK_CREATION_FAILED' | 'WAVESPEED_ERROR' | 'INTERNAL_ERROR',
   message: string
 }
 ```
 **流程**:
 1. 从 cookie 验证用户身份（使用 `createServerSupabaseClientForRouteHandler`）
 2. 验证必需文件（image, audio）
-3. **先检查用户积分是否足够（在文件上传前）**
-4. 上传文件到 WaveSpeedAI 媒体存储
-5. 调用 `create_video_task` RPC 函数创建任务并扣除积分
-6. 构建 Webhook URL（包含 task_id）
-7. **根据 resolution 选择 API 接口**：
+3. **后端计算音频时长**（使用 `@/lib/audio-utils` 的 `getAudioDuration` 函数，基于 `music-metadata` 库）
+4. 验证音频时长有效性（必须 > 0）和最大时长限制（600秒）
+5. **根据音频时长和 resolution 计算所需积分，先检查用户积分是否足够（在文件上传前）**
+6. 上传文件到 WaveSpeedAI 媒体存储
+7. 调用 `create_video_task` RPC 函数创建任务并扣除积分（传入后端计算的音频时长）
+8. 构建 Webhook URL（包含 task_id）
+9. **根据 resolution 选择 API 接口**：
    - `fast`: 调用 `/api/v3/wavespeed-ai/infinitetalk-fast`（不传 resolution 参数）
    - `480p` 或 `720p`: 调用 `/api/v3/wavespeed-ai/infinitetalk`（传递 resolution 参数）
-8. 提交任务到 WaveSpeedAI API（携带 Webhook URL）
-9. 更新任务状态为 'processing'
-10. 返回任务 ID
+10. 提交任务到 WaveSpeedAI API（携带 Webhook URL）
+11. 更新任务状态为 'processing'
+12. 返回任务 ID
 
 **认证方式**: 使用 cookie-based 认证，从 `NextRequest` 读取用户 session
+
+**音频时长计算**: 
+- 后端使用 `music-metadata` 库从音频文件直接读取时长
+- 支持格式：MP3, WAV, M4A, OGG, FLAC 等
+- 如果无法读取时长，返回 `INVALID_AUDIO` 错误
+- 如果时长超过 600 秒，返回 `AUDIO_TOO_LONG` 错误
 
 **积分扣除**: 
 - **fast**: 0.5 积分/秒（向上取整），最小 3 积分
 - **480p**: 1 积分/秒，最小 5 积分
 - **720p**: 2 积分/秒，最小 10 积分
 - 最大: 600 秒（fast=300积分，480p=600积分，720p=1200积分）
+- 基于后端计算的音频时长进行积分计算
 
 **环境变量**: `WAVESPEED_KEY`, `WAVESPEED_WEBHOOK_SECRET`, `NGROK_DEV_URL` (开发环境)
 
@@ -185,10 +201,14 @@ alwaysApply: true
 **返回**: 同 image-to-video 接口
 **流程**: 
 1. 同 image-to-video 接口（使用 video 文件而非 image）
-2. **根据 resolution 选择 API 接口**：
+2. **后端计算音频时长**（使用 `@/lib/audio-utils` 的 `getAudioDuration` 函数）
+3. 验证音频时长有效性（必须 > 0）和最大时长限制（600秒）
+4. **根据音频时长和 resolution 计算所需积分，先检查用户积分是否足够（在文件上传前）**
+5. **根据 resolution 选择 API 接口**：
    - `fast`: 调用 `/api/v3/wavespeed-ai/infinitetalk-fast/video-to-video`（不传 resolution 参数）
    - `480p` 或 `720p`: 调用 `/api/v3/wavespeed-ai/infinitetalk/video-to-video`（传递 resolution 参数）
 **认证方式**: 使用 cookie-based 认证，从 `NextRequest` 读取用户 session
+**音频时长计算**: 同 image-to-video 接口
 **积分扣除**: 同 image-to-video 接口
 
 #### POST `/api/video/webhook`
@@ -623,15 +643,17 @@ orders (订单表) → payments (支付记录)
 --       p_audio_duration_seconds integer, p_prompt text, p_seed integer
 -- 权限：SECURITY DEFINER（仅服务端调用）
 -- 行为：
---   1) 计算所需积分：
+--   1) 接收后端计算的音频时长（p_audio_duration_seconds，由 API 路由通过 music-metadata 库计算）
+--   2) 计算所需积分：
 --      - fast: 0.5积分/秒（向上取整），最小3积分
 --      - 480p: 1积分/秒，最小5积分
 --      - 720p: 2积分/秒，最小10积分
 --      - 最大时长: 600秒
---   2) 检查用户积分是否足够
---   3) 创建任务记录（status = 'pending'）
---   4) 扣除积分（写入 credit_ledger，关联 task_id）
---   5) 返回任务 ID
+--   3) 检查用户积分是否足够
+--   4) 创建任务记录（status = 'pending'）
+--   5) 扣除积分（写入 credit_ledger，关联 task_id）
+--   6) 返回任务 ID
+-- 注意：音频时长由后端 API 路由计算，前端不再传递 audio_duration 字段
 ```
 
 ### RPC：public.update_video_task

@@ -998,10 +998,16 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
             setTtsAudioUrl(url)
             setTtsAudioBlob(audioBlob)
 
-            // Get audio duration
+            // Get audio duration - wait for loadedmetadata event
             const audio = new Audio(url)
-            audio.addEventListener("loadedmetadata", () => {
-              setTtsAudioDuration(audio.duration)
+            await new Promise<void>((resolve, reject) => {
+              audio.addEventListener("loadedmetadata", () => {
+                setTtsAudioDuration(audio.duration)
+                resolve()
+              })
+              audio.addEventListener("error", () => {
+                reject(new Error("Failed to load audio metadata"))
+              })
             })
 
             // Convert blob to file and trigger audio change
