@@ -1450,6 +1450,7 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
               className="w-full h-14 rounded-xl bg-accent text-accent-foreground font-semibold text-base hover:bg-accent/90 transition-all duration-300 shadow-lg hover:shadow-xl"
               disabled={
                 isSubmitting ||
+                ttsLoading ||
                 (!imageFile && !imagePreview) ||
                 (audioTab === "input" 
                   ? !inputText.trim() 
@@ -1460,6 +1461,8 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
             >
               {isSubmitting ? (
                 <>Generating...</>
+              ) : ttsLoading ? (
+                <>Please wait for audio generation</>
               ) : (
                 (() => {
                   const minCredits = resolution === "fast" ? 3 : resolution === "480p" ? 5 : 10
