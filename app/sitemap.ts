@@ -25,6 +25,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 0.8,
     },
+    // Text to Speech 页面
+    {
+      url: baseUrl + '/text-to-speech',
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
     // Blog 页面
     {
       url: baseUrl + '/blog',
@@ -107,6 +114,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: baseUrl + '/blog/how-to-make-a-photo-talk-with-ai',
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: baseUrl + '/text-to-speech/donald-trump',
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: baseUrl + '/text-to-speech',
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.8,

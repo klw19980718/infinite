@@ -83,6 +83,12 @@ export default function Nav() {
               Video to Video
             </Link> */}
             <Link 
+              href="/text-to-speech" 
+              className="px-3.5 py-2 text-xs font-medium text-foreground/70 hover:text-foreground hover:bg-white/5 rounded-lg transition-all duration-300"
+            >
+              Text to Speech
+            </Link>
+            <Link 
               href="/pricing" 
               className="px-3.5 py-2 text-xs font-medium text-foreground/70 hover:text-foreground hover:bg-white/5 rounded-lg transition-all duration-300"
             >
@@ -199,8 +205,17 @@ export default function Nav() {
                   <div className="pt-2 border-t border-border/50">
                     <SheetClose asChild>
                       <Link 
+                        href="/text-to-speech" 
+                        className="text-foreground hover:text-foreground hover:bg-white/5 transition-all duration-300 font-medium text-base py-3 px-4 rounded-xl block"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        Text to Speech
+                      </Link>
+                    </SheetClose>
+                    <SheetClose asChild>
+                      <Link 
                         href="/pricing" 
-                        className="text-foreground hover:text-foreground hover:bg-white/5 transition-all duration-300 font-medium text-base py-3 px-4 rounded-xl"
+                        className="text-foreground hover:text-foreground hover:bg-white/5 transition-all duration-300 font-medium text-base py-3 px-4 rounded-xl block"
                         onClick={() => setMobileMenuOpen(false)}
                       >
                         Pricing
