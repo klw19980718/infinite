@@ -9,7 +9,6 @@ User-agent: *
 Allow: /
 Allow: /favicon.ico    # Website favicon (important for branding)
 Disallow: /api/        # API endpoints (not meant for indexing)
-Disallow: /_next/      # Next.js internal assets
 Disallow: /admin/      # Admin dashboard (protected)
 Disallow: /dashboard/  # User dashboard
 Disallow: /profile/    # User profile page (private) - 禁止抓取
@@ -30,7 +29,6 @@ Allow: /terms         # Terms of Service
 Allow: /privacy       # Privacy Policy
 
 Disallow: /api/
-Disallow: /_next/
 Disallow: /admin/
 Disallow: /dashboard/
 Disallow: /user/
@@ -46,7 +44,6 @@ Disallow: /profile    # Profile page (private)
 Allow: /terms         # Terms of Service
 Allow: /privacy       # Privacy Policy
 Disallow: /api/
-Disallow: /_next/
 Disallow: /admin/
 Disallow: /dashboard/
 Disallow: /user/
@@ -62,7 +59,6 @@ Disallow: /profile    # Profile page (private)
 Allow: /terms         # Terms of Service
 Allow: /privacy       # Privacy Policy
 Disallow: /api/
-Disallow: /_next/
 Disallow: /admin/
 Disallow: /dashboard/
 Disallow: /user/
