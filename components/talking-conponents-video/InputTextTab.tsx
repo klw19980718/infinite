@@ -110,8 +110,8 @@ export const InputTextTab: React.FC<InputTextTabProps> = ({
           className="flex items-center justify-center w-full flex-1 min-h-[200px] border-2 border-dashed border-border/50 rounded-lg bg-card/50 dark:bg-card"
         >
           <div className="text-center space-y-4">
-            <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center mx-auto">
-              <FiLoader className="w-6 h-6 text-accent animate-spin" />
+            <div className="w-12 h-12 rounded-full bg-primary/10 dark:bg-primary/20 flex items-center justify-center mx-auto">
+              <FiLoader className="w-6 h-6 text-primary animate-spin" />
             </div>
             <p className="text-sm font-medium text-foreground">Generating audio...</p>
             <p className="text-xs text-muted-foreground">This may take a few moments</p>
@@ -126,8 +126,8 @@ export const InputTextTab: React.FC<InputTextTabProps> = ({
           {/* Top: Audio Info and Actions */}
           <div className="flex items-center justify-between mb-3 flex-shrink-0">
             <div className="flex items-center gap-3 min-w-0 flex-1">
-              <div className="w-8 h-8 rounded-full bg-accent/10 flex items-center justify-center flex-shrink-0">
-                <FiMusic className="w-4 h-4 text-accent" />
+              <div className="w-8 h-8 rounded-full bg-primary/10 dark:bg-primary/20 flex items-center justify-center flex-shrink-0">
+                <FiMusic className="w-4 h-4 text-primary" />
               </div>
               <div className="min-w-0 flex-1">
                 <p className="text-sm font-medium text-foreground truncate">TTS Audio</p>
@@ -242,7 +242,7 @@ export const InputTextTab: React.FC<InputTextTabProps> = ({
                     <DropdownMenuItem
                       key={emo}
                       onClick={() => onEmotionChange(emo)}
-                      className={emotion === emo ? "bg-accent text-accent-foreground" : ""}
+                      className={emotion === emo ? "bg-primary text-primary-foreground" : ""}
                     >
                       {emo}
                     </DropdownMenuItem>
@@ -336,7 +336,7 @@ export const InputTextTab: React.FC<InputTextTabProps> = ({
                     <Button
                       type="button"
                       size="sm"
-                      className="h-7 px-2 bg-accent hover:bg-accent/90 text-accent-foreground"
+                      className="h-7 px-2 bg-primary hover:bg-primary/90 text-primary-foreground"
                       onClick={onInsertPause}
                     >
                       <FiCheck className="h-3 w-3" />
@@ -348,7 +348,7 @@ export const InputTextTab: React.FC<InputTextTabProps> = ({
               {/* Run Button */}
               <Button
                 type="button"
-                className="h-7 sm:h-8 px-2 sm:px-3 text-xs bg-accent hover:bg-accent/90 text-accent-foreground flex-shrink-0"
+                className="h-7 sm:h-8 px-2 sm:px-3 text-xs bg-primary hover:bg-primary/90 text-primary-foreground flex-shrink-0"
                 onClick={onRunTts}
                 disabled={!inputText.trim()}
               >
@@ -365,7 +365,7 @@ export const InputTextTab: React.FC<InputTextTabProps> = ({
             <div className="flex-shrink-0 pt-2 border-t border-border/50">
               <div className="flex items-center justify-between px-1">
                 <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-accent"></div>
+                  <div className="w-2 h-2 rounded-full bg-primary"></div>
                   <span className="text-xs text-muted-foreground">Daily Free Quota</span>
                 </div>
                 <div className="flex items-center gap-2">

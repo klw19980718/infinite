@@ -10,6 +10,7 @@ import { FiDollarSign, FiClock, FiPlayCircle, FiAlertTriangle, FiLoader, FiDownl
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "@/components/ui/dialog"
 import { toast } from "sonner"
 import { Beams } from "@/components/ui/beams"
+import Image from "next/image"
 
 interface UserProfile {
   id: string
@@ -438,11 +439,33 @@ export function ProfilePageClient() {
       {/* Content */}
       <section className="relative z-10 py-32 px-4 sm:px-6 lg:px-8">
         <div className="max-w-[1600px] mx-auto">
-          <div className="mb-8">
-            <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-2">
-              My Profile
-            </h1>
-            <p className="text-muted-foreground">Manage your account and view your creations</p>
+          {/* Header Section - Two Column Layout */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center mb-12">
+            {/* Left Column - Content */}
+            <div className="flex flex-col items-center lg:items-start text-center lg:text-left space-y-4">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight">
+                <span className="text-primary">
+                  My Profile
+                </span>
+              </h1>
+              <p className="text-sm sm:text-base md:text-lg text-muted-foreground leading-relaxed max-w-2xl font-normal">
+                Manage your account and view your creations
+              </p>
+            </div>
+
+            {/* Right Column - SVG Image */}
+            <div className="flex items-center justify-center lg:justify-end order-first lg:order-last">
+              <div className="w-full max-w-[200px] sm:max-w-[240px] lg:max-w-[280px]">
+                <Image
+                  src="/svg/my.svg"
+                  alt="My Profile illustration"
+                  width={759}
+                  height={684}
+                  className="w-full h-auto"
+                  priority
+                />
+              </div>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-[260px_minmax(0,1fr)] gap-8">

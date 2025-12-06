@@ -210,7 +210,7 @@ export const VoiceSelectDialog = ({
                 <DropdownMenuContent className="w-[200px] max-h-[300px] overflow-y-auto custom-scrollbar">
                   <DropdownMenuItem
                     onClick={() => setSelectedLanguage("")}
-                    className={selectedLanguage === "" ? "bg-accent text-accent-foreground" : ""}
+                    className={selectedLanguage === "" ? "bg-primary text-primary-foreground" : ""}
                   >
                     All
                   </DropdownMenuItem>
@@ -218,7 +218,7 @@ export const VoiceSelectDialog = ({
                     <DropdownMenuItem
                       key={lang}
                       onClick={() => setSelectedLanguage(lang)}
-                      className={selectedLanguage === lang ? "bg-accent text-accent-foreground" : ""}
+                      className={selectedLanguage === lang ? "bg-primary text-primary-foreground" : ""}
                     >
                       {lang}
                     </DropdownMenuItem>
@@ -243,7 +243,7 @@ export const VoiceSelectDialog = ({
                 <DropdownMenuContent className="w-[200px]">
                   <DropdownMenuItem
                     onClick={() => setSelectedGender("")}
-                    className={selectedGender === "" ? "bg-accent text-accent-foreground" : ""}
+                    className={selectedGender === "" ? "bg-primary text-primary-foreground" : ""}
                   >
                     All
                   </DropdownMenuItem>
@@ -251,7 +251,7 @@ export const VoiceSelectDialog = ({
                     <DropdownMenuItem
                       key={gender}
                       onClick={() => setSelectedGender(gender)}
-                      className={selectedGender === gender ? "bg-accent text-accent-foreground" : ""}
+                      className={selectedGender === gender ? "bg-primary text-primary-foreground" : ""}
                     >
                       {gender}
                     </DropdownMenuItem>
@@ -276,7 +276,7 @@ export const VoiceSelectDialog = ({
                 <DropdownMenuContent className="w-[200px] max-h-[300px] overflow-y-auto custom-scrollbar">
                   <DropdownMenuItem
                     onClick={() => setSelectedAge("")}
-                    className={selectedAge === "" ? "bg-accent text-accent-foreground" : ""}
+                    className={selectedAge === "" ? "bg-primary text-primary-foreground" : ""}
                   >
                     All
                   </DropdownMenuItem>
@@ -284,7 +284,7 @@ export const VoiceSelectDialog = ({
                     <DropdownMenuItem
                       key={age}
                       onClick={() => setSelectedAge(age)}
-                      className={selectedAge === age ? "bg-accent text-accent-foreground" : ""}
+                      className={selectedAge === age ? "bg-primary text-primary-foreground" : ""}
                     >
                       {age}
                     </DropdownMenuItem>
@@ -311,8 +311,8 @@ export const VoiceSelectDialog = ({
                     key={voice.uniq_id}
                     className={`relative rounded-lg border-2 overflow-hidden cursor-pointer transition-all flex items-center gap-2 p-2 ${
                       isSelected
-                        ? "border-accent bg-accent/10"
-                        : "border-border/50 hover:border-accent/50 bg-card/50"
+                        ? "border-primary bg-primary/10 dark:bg-primary/20"
+                        : "border-border/50 dark:border-[#5a5a5a] hover:border-primary/50 dark:hover:border-primary/50 bg-card/50 dark:bg-card"
                     }`}
                     onClick={() => onSelect(voice.uniq_id)}
                   >
@@ -329,8 +329,8 @@ export const VoiceSelectDialog = ({
                         }}
                       />
                       {isSelected && (
-                        <div className="absolute top-0.5 right-0.5 w-3 h-3 rounded-full bg-accent flex items-center justify-center">
-                          <FiCheck className="w-2 h-2 text-accent-foreground" />
+                        <div className="absolute top-0.5 right-0.5 w-3 h-3 rounded-full bg-primary flex items-center justify-center">
+                          <FiCheck className="w-2 h-2 text-primary-foreground" />
                         </div>
                       )}
                     </div>
@@ -344,7 +344,7 @@ export const VoiceSelectDialog = ({
                         {voice.tag_list.slice(0, 2).map((tag, index) => (
                           <span
                             key={index}
-                            className="text-[9px] px-1 py-0.5 rounded bg-muted text-muted-foreground"
+                            className="text-[9px] px-1.5 py-0.5 rounded-md bg-gray-100 dark:bg-[#3a3a3a] text-muted-foreground border border-gray-200 dark:border-[#5a5a5a]/50"
                           >
                             {tag}
                           </span>

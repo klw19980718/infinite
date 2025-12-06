@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
+import Image from 'next/image'
 import { ArrowRight, Calendar } from 'lucide-react'
 
 export const metadata: Metadata = {
@@ -38,14 +39,39 @@ const blogPosts = [
 export default function BlogPage() {
   return (
     <div className="min-h-screen pt-16 pb-20 bg-background">
-      <div className="container mx-auto px-4 sm:px-6 max-w-4xl">
+      <div className="container mx-auto px-4 sm:px-6">
         <div className="py-12 sm:py-16">
-          <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-4">Blog</h1>
-          <p className="text-lg text-muted-foreground mb-12">
-            Latest news, updates, and insights about Infinite Talk AI
-          </p>
+          {/* Header Section - Two Column Layout */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center mb-12">
+            {/* Left Column - Content */}
+            <div className="flex flex-col items-center lg:items-start text-center lg:text-left space-y-4">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight">
+                <span className="text-primary">
+                  Blog
+                </span>
+              </h1>
+              <p className="text-sm sm:text-base md:text-lg text-muted-foreground leading-relaxed max-w-2xl font-normal">
+                Latest news, updates, and insights about Infinite Talk AI
+              </p>
+            </div>
+
+            {/* Right Column - SVG Image */}
+            <div className="flex items-center justify-center lg:justify-end order-first lg:order-last">
+              <div className="w-full max-w-[200px] sm:max-w-[240px] lg:max-w-[280px]">
+                <Image
+                  src="/svg/blog.svg"
+                  alt="Blog illustration"
+                  width={644}
+                  height={569}
+                  className="w-full h-auto"
+                  priority
+                />
+              </div>
+            </div>
+          </div>
           
-          <div className="space-y-6">
+          <div className="max-w-4xl mx-auto">
+            <div className="space-y-6">
             {blogPosts.map((post) => (
               <article
                 key={post.slug}
@@ -86,6 +112,7 @@ export default function BlogPage() {
                 </Link>
               </article>
             ))}
+            </div>
           </div>
         </div>
       </div>

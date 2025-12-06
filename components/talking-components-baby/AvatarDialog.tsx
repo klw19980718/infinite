@@ -111,7 +111,7 @@ export const AvatarDialog = ({
               onClick={() => handleAspectRatioChange("9:16")}
               className={`px-3 py-1.5 text-xs font-medium transition-colors ${
                 dialogAspectRatio === "9:16"
-                  ? "bg-accent text-accent-foreground"
+                  ? "bg-primary text-primary-foreground"
                   : "bg-background/50 text-muted-foreground hover:bg-muted/50"
               }`}
             >
@@ -122,7 +122,7 @@ export const AvatarDialog = ({
               onClick={() => handleAspectRatioChange("16:9")}
               className={`px-3 py-1.5 text-xs font-medium transition-colors ${
                 dialogAspectRatio === "16:9"
-                  ? "bg-accent text-accent-foreground"
+                  ? "bg-primary text-primary-foreground"
                   : "bg-background/50 text-muted-foreground hover:bg-muted/50"
               }`}
             >
@@ -152,8 +152,8 @@ export const AvatarDialog = ({
                     onClick={() => handleAvatarClick(avatar.imageUrl)}
                     className={`relative rounded-lg overflow-hidden border-2 transition-colors bg-muted/20 ${
                       selectedAvatarUrl === avatar.imageUrl
-                        ? "border-accent bg-accent/10"
-                        : "border-border/50 hover:border-accent/50"
+                        ? "border-primary bg-primary/10 dark:bg-primary/20"
+                        : "border-border/50 dark:border-[#5a5a5a] hover:border-primary/50 dark:hover:border-primary/50"
                     } ${
                       dialogAspectRatio === "9:16" ? "aspect-[9/16]" : "aspect-video"
                     }`}

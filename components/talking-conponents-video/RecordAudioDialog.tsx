@@ -278,7 +278,7 @@ export const RecordAudioDialog = ({
                 className={`h-20 w-20 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl ${
                   isRecording
                     ? "bg-red-500 hover:bg-red-600 text-white"
-                    : "bg-accent hover:bg-accent/90 text-accent-foreground"
+                    : "bg-primary hover:bg-primary/90 text-primary-foreground"
                 }`}
               >
                 {isRecording ? (
@@ -304,7 +304,7 @@ export const RecordAudioDialog = ({
                   type="button"
                   size="lg"
                   onClick={handleConfirm}
-                  className="h-16 w-16 rounded-full bg-accent hover:bg-accent/90 text-accent-foreground transition-all duration-200 shadow-lg hover:shadow-xl"
+                  className="h-16 w-16 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground transition-all duration-200 shadow-lg hover:shadow-xl"
                 >
                   <FiCheck className="h-6 w-6" />
                 </Button>

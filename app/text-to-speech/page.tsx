@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { ArrowRight, FileText, Inbox, Users } from 'lucide-react'
 
@@ -98,7 +99,7 @@ export default function TextToSpeechPage() {
       <div className="min-h-screen bg-background">
         {/* Hero Section */}
         <section className="relative pt-32 pb-16 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto">
+          <div className="container mx-auto px-6">
             <nav
               className="mb-4 text-xs sm:text-sm text-muted-foreground"
               aria-label="Breadcrumb"
@@ -113,16 +114,39 @@ export default function TextToSpeechPage() {
                 <li className="text-foreground">Text to Speech</li>
               </ol>
             </nav>
-            <div className="text-center">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 text-foreground">
-              Text to Speech Hub – AI Voices for Infinite Talk AI
-              </h1>
-              <p className="text-lg sm:text-xl text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed">
-                Turn scripts into AI voices and plug them into Infinite Talk AI for lip-synced talking videos, talking photos, and full-frame dubbing.
-              </p>
-              <p className="text-base text-muted-foreground">
-                Use this hub to jump to the right tool, voice style, or tutorial.
-              </p>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+              {/* Left Column - Content */}
+              <div className="flex flex-col items-center lg:items-start text-center lg:text-left space-y-6">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight">
+                  <span className="text-primary">
+                    Text to Speech Hub
+                  </span>
+                  <br />
+                  <span className="text-foreground">
+                    AI Voices for Infinite Talk AI
+                  </span>
+                </h1>
+                <p className="text-sm sm:text-base md:text-lg text-muted-foreground leading-relaxed max-w-2xl font-normal">
+                  Turn scripts into AI voices and plug them into Infinite Talk AI for lip-synced talking videos, talking photos, and full-frame dubbing.
+                </p>
+                <p className="text-sm sm:text-base text-muted-foreground">
+                  Use this hub to jump to the right tool, voice style, or tutorial.
+                </p>
+              </div>
+
+              {/* Right Column - SVG Image */}
+              <div className="flex items-center justify-center lg:justify-end order-first lg:order-last">
+                <div className="w-full max-w-xs sm:max-w-sm lg:max-w-md">
+                  <Image
+                    src="/svg/vioce.svg"
+                    alt="Text to Speech illustration"
+                    width={800}
+                    height={564}
+                    className="w-full h-auto"
+                    priority
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </section>

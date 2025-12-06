@@ -532,7 +532,7 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
     
     // Create pause element
     const pauseElement = document.createElement("span")
-    pauseElement.className = "inline-flex items-center gap-1.5 px-2 py-1 rounded bg-accent/20 text-accent text-xs font-medium my-0.5"
+    pauseElement.className = "inline-flex items-center gap-1.5 px-2 py-1 rounded bg-primary/20 dark:bg-primary/30 text-primary text-xs font-medium my-0.5"
     pauseElement.dataset.pause = formattedSeconds
     pauseElement.contentEditable = "false"
     
@@ -547,7 +547,7 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
     // Delete button
     const deleteButton = document.createElement("button")
     deleteButton.type = "button"
-    deleteButton.className = "ml-1 h-4 w-4 rounded-full bg-accent/30 hover:bg-accent/50 flex items-center justify-center transition-colors flex-shrink-0"
+    deleteButton.className = "ml-1 h-4 w-4 rounded-full bg-primary/30 dark:bg-primary/40 hover:bg-primary/50 dark:hover:bg-primary/60 flex items-center justify-center transition-colors flex-shrink-0"
     deleteButton.innerHTML = "×"
     deleteButton.style.fontSize = "14px"
     deleteButton.style.lineHeight = "1"
@@ -1047,7 +1047,7 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[38%_62%] gap-8 max-w-7xl mx-auto">
       {/* Left Panel: Image Upload & Sample Avatars - Single Container */}
-      <Card className="p-6 glass-strong" style={{ borderColor: 'var(--accent)', borderWidth: '2px' }}>
+      <Card className="p-6 bg-card dark:bg-[#4a4a4a] shadow-lg dark:shadow-xl">
         <div className="space-y-8">
           {/* Image Upload Section */}
           <div>
@@ -1055,10 +1055,10 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
             
             <div className="relative">
               {!imagePreview ? (
-                <div className="flex items-center justify-center w-full h-32 border-2 border-dashed rounded-lg transition-colors bg-card/50 dark:bg-card border-border dark:border-border/80 hover:border-accent/50 hover:bg-card/80 dark:hover:bg-card">
+                <div className="flex items-center justify-center w-full h-32 border-2 border-dashed rounded-lg transition-colors bg-card/50 dark:bg-card border-border dark:border-[#5a5a5a] hover:border-primary/50 dark:hover:border-primary/50 hover:bg-card/80 dark:hover:bg-card">
                   <div className="text-center space-y-3">
-                    <div className="w-16 h-16 rounded-full bg-accent/20 dark:bg-accent/15 flex items-center justify-center mx-auto">
-                      <FiImage className="w-8 h-8 text-accent" />
+                    <div className="w-16 h-16 rounded-full bg-primary/20 dark:bg-primary/30 flex items-center justify-center mx-auto">
+                      <FiImage className="w-8 h-8 text-primary" />
                     </div>
                     <div className="space-y-1">
                       <p className="text-sm font-medium text-foreground dark:text-foreground">Supported formats: PNG, JPG, WebP</p>
@@ -1111,7 +1111,7 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
                     onClick={() => setAspectRatio("9:16")}
                     className={`px-2 py-1 text-[10px] font-medium transition-colors ${
                       aspectRatio === "9:16"
-                        ? "bg-accent text-accent-foreground"
+                        ? "bg-primary text-primary-foreground"
                         : "bg-background/50 text-muted-foreground hover:bg-muted/50"
                     }`}
                   >
@@ -1122,7 +1122,7 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
                     onClick={() => setAspectRatio("16:9")}
                     className={`px-2 py-1 text-[10px] font-medium transition-colors ${
                       aspectRatio === "16:9"
-                        ? "bg-accent text-accent-foreground"
+                        ? "bg-primary text-primary-foreground"
                         : "bg-background/50 text-muted-foreground hover:bg-muted/50"
                     }`}
                   >
@@ -1133,7 +1133,7 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
                   <button
                     type="button"
                     onClick={() => setDialogOpen(true)}
-                    className="flex items-center gap-1 text-xs text-accent hover:text-accent/80 font-medium"
+                    className="flex items-center gap-1 text-xs text-primary hover:text-primary/80 font-medium"
                   >
                     More <FiChevronRight className="w-3 h-3" />
                   </button>
@@ -1165,7 +1165,7 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
                         key={`${avatar.imageUrl}-${index}`}
                         type="button"
                         onClick={() => handleAvatarClick(avatar.imageUrl)}
-                        className={`relative rounded-lg overflow-hidden border-2 border-border/50 hover:border-accent/50 transition-colors bg-muted/20 group ${
+                        className={`relative rounded-lg overflow-hidden border-2 border-border/50 dark:border-[#5a5a5a] hover:border-primary/50 dark:hover:border-primary/50 transition-colors bg-muted/20 dark:bg-muted/30 group ${
                           aspectRatio === "9:16" ? "aspect-[9/16]" : "aspect-video"
                         }`}
                       >
@@ -1185,7 +1185,7 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
       </Card>
 
       {/* Right Panel: Model Select, Audio Upload & Generate - Single Container */}
-      <Card className="p-6 glass-strong flex flex-col" style={{ borderColor: 'var(--accent)', borderWidth: '2px' }}>
+      <Card className="p-6 bg-card dark:bg-[#4a4a4a] shadow-lg dark:shadow-xl flex flex-col">
         <div className="flex flex-col flex-1 space-y-8">
           {/* Model Selection */}
           <div>
@@ -1197,13 +1197,13 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
                 onClick={() => setResolution("fast")}
                 className={`relative w-full sm:w-[200px] p-5 rounded-xl border-2 transition-all flex flex-col items-start ${
                   resolution === "fast"
-                    ? "border-accent bg-card shadow-lg"
-                    : "border-border/50 bg-card/50 hover:border-accent/50 hover:bg-card/80"
+                    ? "border-primary dark:border-primary/50 bg-primary/10 dark:bg-primary/20 shadow-lg dark:shadow-xl"
+                    : "border-border/50 dark:border-[#5a5a5a] bg-card/50 dark:bg-card hover:border-primary/50 dark:hover:border-primary/50 hover:bg-card/80 dark:hover:bg-card"
                 }`}
               >
                 {resolution === "fast" && (
-                  <div className="absolute top-3 right-3 w-6 h-6 rounded-full bg-accent flex items-center justify-center">
-                    <FiCheck className="w-4 h-4 text-accent-foreground" />
+                  <div className="absolute top-3 right-3 w-6 h-6 rounded-full bg-primary flex items-center justify-center">
+                    <FiCheck className="w-4 h-4 text-primary-foreground" />
                   </div>
                 )}
                 <h4 className="text-lg font-semibold text-foreground mb-1 pr-8">Fast</h4>
@@ -1222,13 +1222,13 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
                 onClick={() => setResolution("480p")}
                 className={`relative w-full sm:w-[200px] p-5 rounded-xl border-2 transition-all flex flex-col items-start ${
                   resolution === "480p"
-                    ? "border-accent bg-card shadow-lg"
-                    : "border-border/50 bg-card/50 hover:border-accent/50 hover:bg-card/80"
+                    ? "border-primary dark:border-primary/50 bg-primary/10 dark:bg-primary/20 shadow-lg dark:shadow-xl"
+                    : "border-border/50 dark:border-[#5a5a5a] bg-card/50 dark:bg-card hover:border-primary/50 dark:hover:border-primary/50 hover:bg-card/80 dark:hover:bg-card"
                 }`}
               >
                 {resolution === "480p" && (
-                  <div className="absolute top-3 right-3 w-6 h-6 rounded-full bg-accent flex items-center justify-center">
-                    <FiCheck className="w-4 h-4 text-accent-foreground" />
+                  <div className="absolute top-3 right-3 w-6 h-6 rounded-full bg-primary flex items-center justify-center">
+                    <FiCheck className="w-4 h-4 text-primary-foreground" />
                   </div>
                 )}
                 <h4 className="text-lg font-semibold text-foreground mb-1 pr-8">Quality 480P</h4>
@@ -1247,13 +1247,13 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
                 onClick={() => setResolution("720p")}
                 className={`relative w-full sm:w-[200px] p-5 rounded-xl border-2 transition-all flex flex-col items-start ${
                   resolution === "720p"
-                    ? "border-accent bg-card shadow-lg"
-                    : "border-border/50 bg-card/50 hover:border-accent/50 hover:bg-card/80"
+                    ? "border-primary dark:border-primary/50 bg-primary/10 dark:bg-primary/20 shadow-lg dark:shadow-xl"
+                    : "border-border/50 dark:border-[#5a5a5a] bg-card/50 dark:bg-card hover:border-primary/50 dark:hover:border-primary/50 hover:bg-card/80 dark:hover:bg-card"
                 }`}
               >
                 {resolution === "720p" && (
-                  <div className="absolute top-3 right-3 w-6 h-6 rounded-full bg-accent flex items-center justify-center">
-                    <FiCheck className="w-4 h-4 text-accent-foreground" />
+                  <div className="absolute top-3 right-3 w-6 h-6 rounded-full bg-primary flex items-center justify-center">
+                    <FiCheck className="w-4 h-4 text-primary-foreground" />
                   </div>
                 )}
                 <h4 className="text-lg font-semibold text-foreground mb-1 pr-8">Quality 720P</h4>
@@ -1276,14 +1276,14 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
             </h3>
 
             <Tabs value={audioTab} onValueChange={(v) => setAudioTab(v as "input" | "upload" | "record")} className="w-full flex flex-col flex-1 min-h-0">
-              <TabsList className="grid w-full grid-cols-3 mb-4 flex-shrink-0">
-                <TabsTrigger value="input" className="data-[state=active]:bg-accent data-[state=active]:text-accent-foreground">
+              <TabsList className="grid w-full grid-cols-3 mb-4 flex-shrink-0 bg-card dark:bg-[#4a4a4a] border border-border dark:border-[#5a5a5a] rounded-lg shadow-md dark:shadow-lg gap-1.5">
+                <TabsTrigger value="input" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg dark:data-[state=active]:shadow-xl data-[state=inactive]:text-muted-foreground data-[state=inactive]:hover:text-foreground data-[state=inactive]:hover:bg-primary/5 dark:data-[state=inactive]:hover:bg-primary/10 transition-all rounded-md">
                   Input Text
                 </TabsTrigger>
-                <TabsTrigger value="upload" className="data-[state=active]:bg-accent data-[state=active]:text-accent-foreground">
+                <TabsTrigger value="upload" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg dark:data-[state=active]:shadow-xl data-[state=inactive]:text-muted-foreground data-[state=inactive]:hover:text-foreground data-[state=inactive]:hover:bg-primary/5 dark:data-[state=inactive]:hover:bg-primary/10 transition-all rounded-md">
                   Upload Audio
                 </TabsTrigger>
-                <TabsTrigger value="record" className="data-[state=active]:bg-accent data-[state=active]:text-accent-foreground">
+                <TabsTrigger value="record" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg dark:data-[state=active]:shadow-xl data-[state=inactive]:text-muted-foreground data-[state=inactive]:hover:text-foreground data-[state=inactive]:hover:bg-primary/5 dark:data-[state=inactive]:hover:bg-primary/10 transition-all rounded-md">
                   Record Audio
                 </TabsTrigger>
               </TabsList>
@@ -1416,7 +1416,7 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
           <form onSubmit={handleSubmit} className="flex-shrink-0">
             <Button
               type="submit"
-              className="w-full h-14 rounded-xl bg-accent text-accent-foreground font-semibold text-base hover:bg-accent/90 transition-all duration-300 shadow-lg hover:shadow-xl"
+              className="w-full h-14 rounded-xl bg-primary text-primary-foreground font-semibold text-base hover:bg-primary/90 transition-all duration-300 shadow-lg dark:shadow-xl hover:shadow-xl dark:hover:shadow-2xl"
               disabled={
                 isSubmitting ||
                 ttsLoading ||

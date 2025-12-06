@@ -74,7 +74,7 @@ export const AudioWaveform = ({
             waveformData.map((height, i) => (
               <div
                 key={i}
-                className="flex-1 bg-accent rounded-t transition-all"
+                className="flex-1 bg-primary rounded-t transition-all"
                 style={{
                   height: `${Math.max(height, 10)}%`,
                   minHeight: "3px",
@@ -98,7 +98,7 @@ export const AudioWaveform = ({
       {/* Progress indicator line */}
       {isPlaying && duration > 0 && (
         <div
-          className="absolute top-0 bottom-0 w-0.5 bg-accent z-10"
+          className="absolute top-0 bottom-0 w-0.5 bg-primary z-10"
           style={{
             left: `${Math.min((playbackPosition / duration) * 100, 100)}%`,
           }}

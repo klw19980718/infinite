@@ -41,8 +41,8 @@ export const UploadAudioTab: React.FC<UploadAudioTabProps> = ({
           <div className="relative w-full h-full">
             <div className="flex items-center justify-center w-full h-full">
               <div className="text-center space-y-2">
-                <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center mx-auto">
-                  <FiMusic className="w-6 h-6 text-accent" />
+                <div className="w-12 h-12 rounded-full bg-primary/10 dark:bg-primary/20 flex items-center justify-center mx-auto">
+                  <FiMusic className="w-6 h-6 text-primary" />
                 </div>
                 <p className="text-sm font-medium text-foreground">Upload Audio Up to 600s</p>
                 <p className="text-xs text-muted-foreground">Supported formats: MP3, WAV, M4A, OGG, FLAC</p>
@@ -62,8 +62,8 @@ export const UploadAudioTab: React.FC<UploadAudioTabProps> = ({
           {/* Top: Audio Info and Actions */}
           <div className="flex items-center justify-between mb-3 flex-shrink-0">
             <div className="flex items-center gap-3 min-w-0 flex-1">
-              <div className="w-8 h-8 rounded-full bg-accent/10 flex items-center justify-center flex-shrink-0">
-                <FiMusic className="w-4 h-4 text-accent" />
+              <div className="w-8 h-8 rounded-full bg-primary/10 dark:bg-primary/20 flex items-center justify-center flex-shrink-0">
+                <FiMusic className="w-4 h-4 text-primary" />
               </div>
               <div className="min-w-0 flex-1">
                 <p className="text-sm font-medium text-foreground truncate" title={audioFileName || undefined}>

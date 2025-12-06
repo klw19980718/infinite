@@ -9,13 +9,13 @@ export default function Footer() {
           {/* Logo & Description */}
           <div className="md:col-span-1">
             <Link href="/" className="flex items-center gap-3 mb-4 group">
-              <div className="relative w-12 h-12 rounded-2xl overflow-hidden  flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+              <div className="relative w-12 h-12 rounded-2xl overflow-hidden flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                 <Image 
                   src="/logo-new.png" 
                   alt="Infinite Talk AI" 
                   width={36} 
                   height={36}
-                  className="object-cover"
+                  className="object-cover rounded-2xl"
                 />
               </div>
               <span className="font-semibold text-xl text-foreground">Infinite Talk AI</span>

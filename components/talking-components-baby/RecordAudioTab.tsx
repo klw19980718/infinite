@@ -36,14 +36,14 @@ export const RecordAudioTab: React.FC<RecordAudioTabProps> = ({
       {!recordedAudioBlob ? (
         <div className="flex items-center justify-center w-full flex-1 min-h-[200px] border-2 border-dashed border-border/50 rounded-lg bg-card/50 dark:bg-card">
           <div className="text-center space-y-4">
-            <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center mx-auto">
-              <FiMic className="w-6 h-6 text-accent" />
+            <div className="w-12 h-12 rounded-full bg-primary/10 dark:bg-primary/20 flex items-center justify-center mx-auto">
+              <FiMic className="w-6 h-6 text-primary" />
             </div>
             <p className="text-sm font-medium text-foreground">Click to start recording</p>
             <Button
               type="button"
               onClick={onStartRecord}
-              className="bg-accent hover:bg-accent/90 text-accent-foreground"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground"
             >
               <FiMic className="mr-2 h-4 w-4" />
               Start Recording
@@ -55,8 +55,8 @@ export const RecordAudioTab: React.FC<RecordAudioTabProps> = ({
           {/* Top: Audio Info and Actions */}
           <div className="flex items-center justify-between mb-3 flex-shrink-0">
             <div className="flex items-center gap-3 min-w-0 flex-1">
-              <div className="w-8 h-8 rounded-full bg-accent/10 flex items-center justify-center flex-shrink-0">
-                <FiMusic className="w-4 h-4 text-accent" />
+              <div className="w-8 h-8 rounded-full bg-primary/10 dark:bg-primary/20 flex items-center justify-center flex-shrink-0">
+                <FiMusic className="w-4 h-4 text-primary" />
               </div>
               <div className="min-w-0 flex-1">
                 <p className="text-sm font-medium text-foreground truncate">

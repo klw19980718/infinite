@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Beams } from '@/components/ui/beams'
 import { ScrollToTop } from '@/components/ui/scroll-to-top'
 import { ArrowRight, BookOpen, FileText } from 'lucide-react'
@@ -126,21 +127,42 @@ export default function DocumentationCenterPage() {
         
         
         <article className="relative z-10 py-16 md:py-24">
-          <div className="container mx-auto px-6 max-w-5xl">
-            {/* Header */}
-            <header className="mb-12 md:mb-16 text-center">
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-card dark:bg-[#4a4a4a] border border-border dark:border-[#5a5a5a] shadow-lg dark:shadow-xl mb-6">
-                <BookOpen className="w-8 h-8 text-primary" />
-              </div>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 text-balance">
-                Documentation <span className="text-primary">Center</span>
-              </h1>
-              <div className="bg-card dark:bg-[#4a4a4a] rounded-2xl p-6 md:p-8 border border-border dark:border-[#5a5a5a] shadow-lg dark:shadow-xl max-w-3xl mx-auto">
-                <p className="text-lg md:text-xl text-muted-foreground leading-relaxed text-pretty">
-                  Explore technical documentation, guides, and resources to understand how Infinite Talk AI works and how to get the most out of it.
-                </p>
+          <div className="container mx-auto px-6">
+            {/* Header Section - Two Column Layout */}
+            <header className="mb-12 md:mb-16">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+                {/* Left Column - Content */}
+                <div className="flex flex-col items-center lg:items-start text-center lg:text-left space-y-6">
+                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-card dark:bg-[#4a4a4a] border border-border dark:border-[#5a5a5a] shadow-lg dark:shadow-xl">
+                    <BookOpen className="w-8 h-8 text-primary" />
+                  </div>
+                  <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight">
+                    <span className="text-foreground">Documentation</span>
+                    <br />
+                    <span className="text-primary">Center</span>
+                  </h1>
+                  <p className="text-sm sm:text-base md:text-lg text-muted-foreground leading-relaxed max-w-2xl font-normal">
+                    Explore technical documentation, guides, and resources to understand how Infinite Talk AI works and how to get the most out of it.
+                  </p>
+                </div>
+
+                {/* Right Column - SVG Image */}
+                <div className="flex items-center justify-center lg:justify-end order-first lg:order-last">
+                  <div className="w-full max-w-xs sm:max-w-sm lg:max-w-md">
+                    <Image
+                      src="/svg/docs.svg"
+                      alt="Documentation Center illustration"
+                      width={952}
+                      height={586}
+                      className="w-full h-auto"
+                      priority
+                    />
+                  </div>
+                </div>
               </div>
             </header>
+
+            <div className="max-w-5xl mx-auto">
 
             {/* Documentation List */}
             <section className="space-y-6">
@@ -190,16 +212,17 @@ export default function DocumentationCenterPage() {
               </section>
             )}
 
-            {/* Back to Home Link */}
-            <section className="mt-16 text-center">
-              <Link
-                href="/"
-                className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
-              >
-                <ArrowRight className="w-4 h-4 rotate-180" />
-                <span>Back to Home</span>
-              </Link>
-            </section>
+              {/* Back to Home Link */}
+              <section className="mt-16 text-center">
+                <Link
+                  href="/"
+                  className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
+                >
+                  <ArrowRight className="w-4 h-4 rotate-180" />
+                  <span>Back to Home</span>
+                </Link>
+              </section>
+            </div>
           </div>
         </article>
         

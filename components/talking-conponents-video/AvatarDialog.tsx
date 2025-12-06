@@ -129,8 +129,8 @@ export const AvatarDialog = ({
               onClick={() => setActiveCategory("All")}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap ${
                 activeCategory === "All"
-                  ? "bg-accent/20 text-accent font-semibold"
-                  : "text-muted-foreground hover:text-accent"
+                  ? "bg-primary/20 dark:bg-primary/30 text-primary font-semibold"
+                  : "text-muted-foreground hover:text-primary"
               }`}
             >
               All
@@ -144,8 +144,8 @@ export const AvatarDialog = ({
                   onClick={() => setActiveCategory(category)}
                   className={`px-3 py-2 text-sm font-medium transition-colors whitespace-nowrap ${
                     activeCategory === category
-                      ? "text-accent font-semibold"
-                      : "text-muted-foreground hover:text-accent"
+                      ? "text-primary font-semibold"
+                      : "text-muted-foreground hover:text-primary"
                   }`}
                 >
                   {category.charAt(0).toUpperCase() + category.slice(1)}
@@ -166,7 +166,7 @@ export const AvatarDialog = ({
               onClick={() => handleAspectRatioChange("9:16")}
               className={`px-3 py-1.5 text-xs font-medium transition-colors ${
                 dialogAspectRatio === "9:16"
-                  ? "bg-accent text-accent-foreground"
+                  ? "bg-primary text-primary-foreground"
                   : "bg-background/50 text-muted-foreground hover:bg-muted/50"
               }`}
             >
@@ -177,7 +177,7 @@ export const AvatarDialog = ({
               onClick={() => handleAspectRatioChange("16:9")}
               className={`px-3 py-1.5 text-xs font-medium transition-colors ${
                 dialogAspectRatio === "16:9"
-                  ? "bg-accent text-accent-foreground"
+                  ? "bg-primary text-primary-foreground"
                   : "bg-background/50 text-muted-foreground hover:bg-muted/50"
               }`}
             >
@@ -205,8 +205,8 @@ export const AvatarDialog = ({
                   onClick={() => handleAvatarClick(avatar.videoUrl)}
                   className={`relative rounded-lg overflow-hidden border-2 transition-colors bg-muted/20 ${
                     selectedAvatarUrl === avatar.videoUrl
-                      ? "border-accent bg-accent/10"
-                      : "border-border/50 hover:border-accent/50"
+                      ? "border-primary bg-primary/10 dark:bg-primary/20"
+                      : "border-border/50 dark:border-[#5a5a5a] hover:border-primary/50 dark:hover:border-primary/50"
                   } ${
                     dialogAspectRatio === "9:16" ? "aspect-[9/16]" : "aspect-video"
                   }`}

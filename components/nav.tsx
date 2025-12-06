@@ -89,8 +89,8 @@ export default function Nav() {
             href="/"
             className="flex items-center gap-2 sm:gap-2.5 transition-all duration-200 group flex-shrink-0 min-w-0"
           >
-            <div className="relative w-9 h-9 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-200">
-              <Image src="/logo-new.png" alt="Infinite Talk AI" width={28} height={28} className="object-cover" />
+            <div className="relative w-9 h-9 rounded-full overflow-hidden flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-200">
+              <Image src="/logo-new.png" alt="Infinite Talk AI" width={28} height={28} className="object-cover " />
             </div>
             <span className="hidden sm:inline font-medium text-sm text-foreground tracking-tight whitespace-nowrap">
               Infinite Talk AI

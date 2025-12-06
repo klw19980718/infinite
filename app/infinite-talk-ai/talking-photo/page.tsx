@@ -1,4 +1,5 @@
-import { TalkingPhotoHero } from '@/components/talking-photo'
+import { TalkingPhotoHero, TalkingPhotoCTA } from '@/components/talking-photo'
+import { WhatIsImageToVideo } from '@/components/content/WhatIsImageToVideo'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -61,6 +62,8 @@ export default function TalkingPhotoPage() {
       <main className="bg-background relative min-h-screen">
         <div className="relative z-10">
           <TalkingPhotoHero />
+          <WhatIsImageToVideo />
+          <TalkingPhotoCTA />
         </div>
       </main>
     </>

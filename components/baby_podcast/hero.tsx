@@ -4,73 +4,91 @@ import { FiX, FiCheck } from "react-icons/fi"
 import { toast } from "sonner"
 import { usePathname } from "next/navigation"
 import Link from "next/link"
+import Image from "next/image"
 import { TalkingPhotoLayout } from "@/components/talking-components-baby/TalkingPhotoLayout"
 
 export const BabyPodcastHero = () => {
   const pathname = usePathname()
   
   return (
-    <section className="relative min-h-screen overflow-hidden">
-      {/* Content container - centered layout */}
-      <div className="relative z-10 container mx-auto px-6 min-h-screen flex flex-col items-center justify-center py-32 md:py-40">
-        <div className="w-full max-w-6xl mx-auto">
-          <div className="flex flex-col items-center text-center space-y-10 md:space-y-12">
-            {/* Title - Apple-style large and bold */}
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-balance px-4">
-              <span className="text-primary">
-                Baby Podcast with Infinite Talk AI
-              </span>
-              
-            </h1>
-            
-            {/* Subtitle - Larger, more readable */}
-            <p className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-6xl mx-auto font-light">
-              Create engaging baby podcast videos with AI-powered talking video technology. Transform photos into natural talking videos with precise lip sync and expressive motion.
-            </p>
+    <section className="relative min-h-screen overflow-hidden py-32">
+      <div className="relative z-10 container mx-auto px-6">
+        <div className="max-w-7xl mx-auto">
+          {/* Header Section - Two Column Layout */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center mb-16">
+            {/* Left Column - Content */}
+            <div className="flex flex-col items-center lg:items-start text-center lg:text-left space-y-6">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight">
+                <span className="text-primary">
+                  Baby Podcast
+                </span>
+                <br />
+                <span className="text-foreground">
+                  with Infinite Talk AI
+                </span>
+              </h1>
 
-            {/* Anchor Tab Links */}
-            <div className="pt-4">
-              <div className="inline-flex h-14 items-center px-2 gap-2 bg-card dark:bg-[#4a4a4a] border border-border dark:border-[#5a5a5a] rounded-lg shadow-md dark:shadow-lg">
-                <Link
-                  href="/infinite-talk-ai/talking-photo"
-                  className={`px-6 py-3 flex items-center text-base font-semibold rounded-md transition-all ${
-                    pathname === "/infinite-talk-ai/talking-photo"
-                      ? "bg-primary text-primary-foreground shadow-lg dark:shadow-xl hover:bg-primary/90"
-                      : "text-foreground hover:text-primary hover:bg-primary/5 dark:hover:bg-primary/10"
-                  }`}
-                >
-                  infinitetalk photo
-                </Link>
-                <Link
-                  href="/infinite-talk-ai/video-to-video"
-                  className={`px-6 py-3 flex items-center text-base font-semibold rounded-md transition-all ${
-                    pathname === "/infinite-talk-ai/video-to-video"
-                      ? "bg-primary text-primary-foreground shadow-lg dark:shadow-xl hover:bg-primary/90"
-                      : "text-foreground hover:text-primary hover:bg-primary/5 dark:hover:bg-primary/10"
-                  }`}
-                >
-                  infinitetalk video
-                </Link>
-                <Link
-                  href="/infinite-talk-ai/baby-podcast"
-                  className={`px-6 py-3 flex items-center text-base font-semibold rounded-md transition-all ${
-                    pathname === "/infinite-talk-ai/baby-podcast"
-                      ? "bg-primary text-primary-foreground shadow-lg dark:shadow-xl hover:bg-primary/90"
-                      : "text-foreground hover:text-primary hover:bg-primary/5 dark:hover:bg-primary/10"
-                  }`}
-                >
-                  baby podcast
-                </Link>
+              <p className="text-sm sm:text-base md:text-lg text-muted-foreground leading-relaxed max-w-2xl font-normal">
+                Create engaging baby podcast videos with AI-powered talking video technology.
+              </p>
+
+              {/* Anchor Tab Links */}
+              <div className="pt-2">
+                <div className="inline-flex h-14 items-center px-1 gap-2 bg-card dark:bg-[#4a4a4a] border border-border dark:border-[#5a5a5a] rounded-lg shadow-md dark:shadow-lg">
+                  <Link
+                    href="/infinite-talk-ai/talking-photo"
+                    className={`px-6 py-3 flex items-center text-base font-semibold rounded-md transition-all ${
+                      pathname === "/infinite-talk-ai/talking-photo"
+                        ? "bg-primary text-primary-foreground shadow-lg dark:shadow-xl hover:bg-primary/90"
+                        : "text-foreground hover:text-primary hover:bg-primary/5 dark:hover:bg-primary/10"
+                    }`}
+                  >
+                    infinitetalk photo
+                  </Link>
+                  <Link
+                    href="/infinite-talk-ai/video-to-video"
+                    className={`px-6 py-3 flex items-center text-base font-semibold rounded-md transition-all ${
+                      pathname === "/infinite-talk-ai/video-to-video"
+                        ? "bg-primary text-primary-foreground shadow-lg dark:shadow-xl hover:bg-primary/90"
+                        : "text-foreground hover:text-primary hover:bg-primary/5 dark:hover:bg-primary/10"
+                    }`}
+                  >
+                    infinitetalk video
+                  </Link>
+                  <Link
+                    href="/infinite-talk-ai/baby-podcast"
+                    className={`px-6 py-3 flex items-center text-base font-semibold rounded-md transition-all ${
+                      pathname === "/infinite-talk-ai/baby-podcast"
+                        ? "bg-primary text-primary-foreground shadow-lg dark:shadow-xl hover:bg-primary/90"
+                        : "text-foreground hover:text-primary hover:bg-primary/5 dark:hover:bg-primary/10"
+                    }`}
+                  >
+                    baby podcast
+                  </Link>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Column - SVG Image */}
+            <div className="flex items-center justify-center lg:justify-end order-first lg:order-last">
+              <div className="w-full max-w-sm sm:max-w-md lg:max-w-lg">
+                <Image
+                  src="/svg/baby.svg"
+                  alt="Baby podcast illustration"
+                  width={1094}
+                  height={811}
+                  className="w-full h-auto"
+                  priority
+                />
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Main Content: Talking Photo generator layout */}
-        <div className="w-full max-w-6xl mx-auto mt-12">
-          <div id="baby-podcast-talking" className="mb-16">
-            <TalkingPhotoLayout
-              onTaskCreated={() => {
+          {/* Main Content: Talking Photo generator layout */}
+          <div className="w-full max-w-6xl mx-auto mt-12">
+            <div id="baby-podcast-talking">
+              <TalkingPhotoLayout
+                onTaskCreated={() => {
                 // Show success message and guide to profile
                 toast.custom(
                   (t) => (
@@ -108,7 +126,8 @@ export const BabyPodcastHero = () => {
                   },
                 )
               }}
-            />
+              />
+            </div>
           </div>
         </div>
       </div>

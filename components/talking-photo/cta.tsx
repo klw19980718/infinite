@@ -2,9 +2,9 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { FiArrowRight, FiDollarSign, FiHome } from "react-icons/fi"
+import { FiArrowRight, FiHome } from "react-icons/fi"
 
-export function VideoToVideoCTA() {
+export function TalkingPhotoCTA() {
   return (
     <section className="py-24 md:py-32 relative overflow-hidden">
       <div className="container mx-auto px-6 relative z-10">
@@ -33,13 +33,12 @@ export function VideoToVideoCTA() {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 items-center sm:items-start mb-6">
                 <Link
-                  href="/infinite-talk-ai/talking-photo"
+                  href="/infinite-talk-ai/video-to-video"
                   className="group relative flex items-center justify-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-primary-foreground text-sm font-semibold hover:bg-primary/90 hover:scale-105 active:scale-95 transition-all duration-200 shadow-lg hover:shadow-xl"
                 >
-                  <span>infinitetalk photo</span>
+                  <span>infinitetalk video</span>
                   <FiArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                 </Link>
-      
               </div>
 
               <div className="text-center sm:text-left">
