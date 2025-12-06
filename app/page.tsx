@@ -1,6 +1,7 @@
 
-import { AuroraHero, HowItWorks, Highlights, UnderTheHood, LearnMore, FAQ, Specs, WhyItStandsOut, ExampleVideos } from '@/components/home';
+import { AuroraHero, HowItWorks, Highlights, UnderTheHood, LearnMore, FAQ, WhyItStandsOut, ExampleVideos } from '@/components/home';
 import { Beams } from '@/components/ui/beams';
+import Image from 'next/image';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -276,36 +277,59 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <main className="bg-background relative min-h-screen">
-        <Beams />
+        
         
         <div className="relative z-10">
           <AuroraHero />
           <HowItWorks />
-          <WhyItStandsOut />
           <ExampleVideos />
-          <Specs />
           <Highlights />
+          <WhyItStandsOut />
           <UnderTheHood />
           <LearnMore />
           <FAQ />
           
           {/* Final CTA */}
-          <section className="py-32 md:py-40 relative overflow-hidden">
-            <div className="container mx-auto px-6 text-center relative z-10">
-              <div className="max-w-4xl mx-auto glass-strong rounded-3xl p-16">
-                <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 text-balance">
-                  Ship courses, demos, and episodes faster.
-                </h2>
-                <p className="text-lg md:text-xl text-muted-foreground mb-10 text-pretty font-light max-w-2xl mx-auto">
-                  Start free, adjust clarity and prompts as needed, and build your production pipeline with Infinite Talk AI.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-5 items-center justify-center">
-                  <a href="/infinite-talk-ai/image-to-video" className="group relative flex items-center gap-3 rounded-full bg-accent px-10 py-5 text-accent-foreground text-lg font-semibold hover:bg-accent/90 hover:scale-105 transition-all duration-300 shadow-2xl glow-lime">
-                    <span>Start Generating</span>
-                  </a>
-                  <a href="/pricing" className="group relative flex items-center gap-3 rounded-full glass px-10 py-5 text-foreground text-lg font-semibold hover:glass-strong transition-all duration-300">
-                    <span>Get Credits</span>
-                  </a>
+          <section className="py-24 md:py-32 relative overflow-hidden">
+            <div className="container mx-auto px-6 relative z-10">
+              <div className="max-w-6xl mx-auto rounded-3xl border border-border bg-card/50 backdrop-blur-xl shadow-2xl overflow-hidden">
+                <div className="flex flex-col lg:flex-row items-center">
+                  {/* SVG 图片区域 */}
+                  <div className="w-full lg:w-1/2 flex items-center justify-center p-8 md:p-12 lg:p-16 bg-muted/30 dark:bg-muted/20">
+                    <div className="relative w-full max-w-md aspect-[4/3]">
+                      <Image
+                        src="/svg/start.svg"
+                        alt="Start with Infinite Talk AI"
+                        fill
+                        className="object-contain"
+                        priority
+                      />
+                    </div>
+                  </div>
+                  
+                  {/* 文字和按钮区域 */}
+                  <div className="w-full lg:w-1/2 p-8 md:p-12 lg:p-16 flex flex-col justify-center">
+                    <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4 md:mb-6 text-balance leading-tight">
+                      Ship courses, demos, and episodes faster.
+                    </h2>
+                    <p className="text-base md:text-lg text-muted-foreground mb-8 md:mb-10 text-pretty leading-relaxed">
+                      Start free, adjust clarity and prompts as needed, and build your production pipeline with Infinite Talk AI.
+                    </p>
+                    <div className="flex flex-col sm:flex-row gap-4 md:gap-5 items-center sm:items-start">
+                      <a 
+                        href="/infinite-talk-ai/image-to-video" 
+                        className="group relative flex items-center justify-center gap-2 rounded-full bg-primary px-8 md:px-10 py-3 md:py-4 text-primary-foreground text-base md:text-lg font-semibold hover:bg-primary/90 hover:scale-105 active:scale-95 transition-all duration-200 shadow-lg hover:shadow-xl w-full sm:w-auto"
+                      >
+                        <span>Start Generating</span>
+                      </a>
+                      <a 
+                        href="/pricing" 
+                        className="group relative flex items-center justify-center gap-2 rounded-full border-2 border-border bg-transparent hover:bg-accent/50 px-8 md:px-10 py-3 md:py-4 text-foreground text-base md:text-lg font-semibold hover:border-primary/50 transition-all duration-200 w-full sm:w-auto"
+                      >
+                        <span>Get Credits</span>
+                      </a>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

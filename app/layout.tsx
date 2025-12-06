@@ -4,9 +4,14 @@ import Script from 'next/script';
 import Nav from '@/components/nav'
 import Footer from '@/components/Footer'
 import { Toaster } from '@/components/ui/sonner'
-import { Inter } from 'next/font/google'
+import { Outfit } from 'next/font/google'
 
-const inter = Inter({ subsets: ['latin'] })
+const outfit = Outfit({
+  subsets: ['latin'],
+  display: 'swap',
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-outfit',
+})
 
 export const metadata: Metadata = {
   icons: {
@@ -25,7 +30,7 @@ export default function RootLayout({
 
   return (
     <html lang="en" suppressHydrationWarning className="dark">
-      <body className={`${inter.className} bg-background text-foreground`}>
+      <body className={`${outfit.className} bg-background text-foreground`}>
         <Script
           id="theme-init"
           strategy="beforeInteractive"

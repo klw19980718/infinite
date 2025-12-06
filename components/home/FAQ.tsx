@@ -15,46 +15,46 @@ export function FAQ() {
     {
       question: "What's the Infinite Talk AI?",
       answer:
-        "Infinite Talk AI is an audio-driven, sparse-frame dubbing system that turns images or videos into long-form, lip-accurate talking footage with whole-frame control and multi-speaker support.",
+        "An audio‑driven dubbing system that turns images or videos into lip‑accurate talking footage.",
     },
     {
       question: "What inputs does Infinite Talk AI support?",
       answer:
-        "Upload a single image or a source video plus audio narration (WAV/MP3). infinite talk ai analyzes phonemes and timing to drive motion and exports MP4.",
+        "Upload a single image or a source video plus WAV/MP3 narration; we export MP4.",
     },
     {
       question: "How does Infinite Talk AI keep identity stable?",
       answer:
-        "Soft reference control and context overlap preserve facial structure and style while keeping expressions natural — in infinitetalk.",
+        "Soft reference control and overlapping context preserve facial structure and style.",
     },
     {
       question: "Can Infinite Talk AI handle multiple speakers?",
       answer:
-        "Yes. Provide separate audio tracks and references, and infinitetalk ai animates each speaker independently in the same scene.",
+        "Yes. Provide separate audio tracks and references, and each speaker is animated independently.",
     },
     {
       question: "Does Infinite Talk AI reduce flicker and seams?",
       answer:
-        "Temporal context windows carry motion across chunks, reducing flicker and visible joins on long timelines — a strength of InfiniteTalk.",
+        "Overlapping temporal windows carry motion across chunks to reduce flicker and joins.",
     },
     {
       question: "How precise is lip-sync in Infinite Talk AI?",
-      answer: "Phoneme-aware mapping keeps visemes aligned to speech rhythm for accurate articulation over long runs in infinite talk.",
+      answer: "Phoneme‑aware mapping keeps visemes aligned to speech rhythm over long runs.",
     },
     {
       question: "Is data private when using Infinite Talk AI?",
       answer:
-        "When using infinitetalk ai, uploads are encrypted in transit. Retention controls and one-click deletion are provided; model training is opt-in only.",
+        "Uploads are encrypted in transit, with retention controls and one‑click deletion. Training is opt‑in only.",
     },
     {
       question: "What hardware suits Infinite Talk AI?",
       answer:
-        "From lightweight previews to heavier passes, infinitetalk ai offers acceleration and quantization for limited VRAM.",
+        "Runs from lightweight previews to longer passes with acceleration and quantization for limited VRAM.",
     },
     {
       question: "What content types fit Infinite Talk AI best?",
       answer:
-        "Education, corporate explainers, podcasts, creator content, and multilingual dubbing benefit from whole-frame control — popular use cases for infinite talk.",
+        "Education, explainers, podcasts, creator content and multilingual dubbing work especially well.",
     },
   ]
 
@@ -65,34 +65,29 @@ export function FAQ() {
   return (
     <section id="faq" className="py-24 md:py-32 relative overflow-hidden">
       <div className="container mx-auto px-6 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-16 lg:gap-20 items-start">
-          <div className="lg:sticky lg:top-32">
-            <div className="text-sm font-semibold text-accent uppercase tracking-wider mb-3">
-              FAQ
-            </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-foreground text-balance">
-              Frequently Asked Questions
-            </h2>
-          </div>
+        <div className="rounded-3xl border border-border bg-card shadow-md p-8 md:p-10">
+          <h2 className="mb-6 text-3xl md:text-4xl lg:text-5xl font-medium leading-tight text-foreground">
+            Frequently Asked
+            <span className="block text-primary">Questions</span>
+          </h2>
 
           <div className="space-y-4">
             {faqs.map((faq, index) => (
-              <div key={index} className="glass rounded-2xl overflow-hidden hover:glass-strong transition-all duration-300" style={{ borderColor: 'var(--accent)', borderWidth: '2px' }}>
+              <div key={index} className="border-b last:border-b-0 border-border/80 dark:border-white/12 pb-4">
                 <button
-                  className="w-full px-8 py-6 text-left hover:bg-white/5 transition-colors flex justify-between items-center group"
+                  className="flex w-full items-center justify-between py-3 text-left font-medium text-foreground hover:text-primary transition-colors"
                   onClick={() => toggleFAQ(index)}
+                  aria-expanded={openIndex === index}
                 >
-                  <span className="font-semibold text-foreground text-base md:text-lg pr-4">{faq.question}</span>
+                  <span className="pr-4 text-base md:text-lg">{faq.question}</span>
                   <FiChevronDown
-                    className={`flex-shrink-0 w-5 h-5 text-accent transform transition-transform duration-300 ${openIndex === index ? "rotate-180" : ""}`}
+                    className={`w-5 h-5 transition-transform ${openIndex === index ? "rotate-180 text-primary" : ""}`}
                   />
                 </button>
 
                 {openIndex === index && (
-                  <div className="overflow-hidden transition-all duration-300">
-                    <div className="px-8 py-6 border-t border-white/10">
-                      <p className="text-muted-foreground text-base leading-relaxed text-pretty">{faq.answer}</p>
-                    </div>
+                  <div className="mt-2 text-sm md:text-base text-muted-foreground">
+                    {faq.answer}
                   </div>
                 )}
               </div>

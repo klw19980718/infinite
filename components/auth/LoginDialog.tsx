@@ -82,80 +82,98 @@ export default function LoginDialog({ open, onOpenChange }: LoginDialogProps) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[440px] bg-card p-0 overflow-hidden" style={{ border: '2px solid var(--accent)' }}>
+      <DialogContent className="sm:max-w-[900px] lg:max-w-[1000px] bg-card dark:bg-[#3a3a3a] p-0 overflow-hidden rounded-3xl border border-border dark:border-[#5a5a5a] shadow-2xl dark:shadow-[0_20px_60px_rgba(0,0,0,0.5)]">
         <DialogHeader className="sr-only">
           <DialogTitle>Sign in to Infinite Talk</DialogTitle>
         </DialogHeader>
         
-        {/* Header with gradient background */}
-        <div className="relative px-8 pt-8 pb-6 bg-accent/10">
-          {/* Logo */}
-          <div className="flex justify-center mb-6 ">
-            <div className="relative w-20 h-20 rounded-2xl overflow-hidden shadow-2xl ring-2 ring-border flex flex-col justify-center">
-              <Image 
-                src="/logo-new.png" 
-                alt="Infinite Talk" 
-                width={80} 
-                height={80}
-                className="object-cover"
+        {/* 左右布局：PC端 */}
+        <div className="flex flex-col lg:flex-row">
+          {/* 左侧：SVG 图片区域 */}
+          <div className="hidden lg:flex lg:w-1/2 items-center justify-center p-8 lg:p-12 bg-primary dark:bg-primary">
+            <div className="relative w-full max-w-md aspect-square">
+              <Image
+                src="/svg/auth.svg"
+                alt="Authentication illustration"
+                fill
+                className="object-contain"
+                priority
               />
             </div>
           </div>
 
-          {/* Heading */}
-          <div className="text-center space-y-2">
-            <h2 id="auth_login_title" className="text-3xl font-bold text-foreground">
-              Welcome Back
-            </h2>
-            <p className="text-muted-foreground text-base">
-              Sign in to continue to your account
-            </p>
-          </div>
-        </div>
+          {/* 右侧：表单区域 */}
+          <div className="w-full lg:w-1/2 p-6 md:p-8 lg:p-10 flex flex-col">
+            {/* Header */}
+            <div className="mb-6 md:mb-8">
+              <div className="flex justify-center mb-6">
+                <div className="relative w-16 h-16 md:w-20 md:h-20 rounded-2xl overflow-hidden shadow-md ring-2 ring-border flex flex-col justify-center">
+                  <Image 
+                    src="/logo-new.png" 
+                    alt="Infinite Talk" 
+                    width={80} 
+                    height={80}
+                    className="object-cover"
+                  />
+                </div>
+              </div>
 
-        {/* Content */}
-        <div className="px-8 pb-8">
-          {/* Google OAuth Button */}
-          <Button
-            onClick={handleGoogleLogin}
-            disabled={googleLoading}
-            className="w-full h-12 rounded-2xl font-semibold bg-card border-2 hover:bg-accent/10 transition-all duration-200 shadow-lg hover:shadow-xl"
-            style={{ borderColor: 'var(--accent)' }}
-            aria-label="Continue with Google"
-          >
-            <FcGoogle className="w-6 h-6 mr-3" />
-            <span className="text-foreground font-semibold">{googleLoading ? 'Connecting...' : 'Continue with Google'}</span>
-          </Button>
-
-          {/* Divider */}
-          <div className="relative my-8">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-border" />
+              <div className="text-center space-y-2">
+                <h2 id="auth_login_title" className="text-2xl md:text-3xl font-bold text-foreground">
+                  Welcome Back
+                </h2>
+                <p className="text-sm md:text-base text-muted-foreground">
+                  Sign in to continue to your account
+                </p>
+              </div>
             </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="bg-card px-4 text-muted-foreground font-medium">OR</span>
+
+            {/* Content */}
+            <div className="flex-1 flex flex-col">
+              {/* Google OAuth Button */}
+              <Button
+                onClick={handleGoogleLogin}
+                disabled={googleLoading}
+                className="w-full h-12 rounded-2xl font-semibold bg-card dark:bg-[#4a4a4a] border border-border dark:border-[#5a5a5a] hover:bg-accent/10 dark:hover:bg-[#5a5a5a] hover:border-primary/50 dark:hover:border-[#7A7FEE] dark:focus:ring-[#7A7FEE] transition-all duration-200 shadow-md dark:shadow-lg hover:shadow-lg dark:hover:shadow-xl"
+                aria-label="Continue with Google"
+              >
+                <FcGoogle className="w-5 h-5 md:w-6 md:h-6 mr-3" />
+                <span className="text-foreground font-semibold">{googleLoading ? 'Connecting...' : 'Continue with Google'}</span>
+              </Button>
+
+              {/* Divider */}
+              <div className="relative my-6 md:my-8">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-border" />
+                </div>
+                <div className="relative flex justify-center text-sm">
+                  <span className="bg-card dark:bg-[#3a3a3a] px-4 text-muted-foreground font-medium">OR</span>
+                </div>
+              </div>
+
+              {/* Email OTP Form */}
+              <div className="flex-1">
+                <OtpForm 
+                  onSuccess={() => setEmailSent(true)}
+                  emailSent={emailSent}
+                  onBackToEmail={() => setEmailSent(false)}
+                />
+              </div>
+
+              {/* Footer */}
+              <div className="mt-6 md:mt-8 pt-6 border-t border-border dark:border-[#5a5a5a]">
+                <p className="text-center text-xs text-muted-foreground leading-relaxed">
+                  By continuing, you agree to our{' '}
+                  <a href="/terms" className="text-primary hover:text-primary/80 transition-colors underline">
+                    Terms
+                  </a>{' '}
+                  and{' '}
+                  <a href="/privacy" className="text-primary hover:text-primary/80 transition-colors underline">
+                    Privacy Policy
+                  </a>
+                </p>
+              </div>
             </div>
-          </div>
-
-          {/* Email OTP Form */}
-          <OtpForm 
-            onSuccess={() => setEmailSent(true)}
-            emailSent={emailSent}
-            onBackToEmail={() => setEmailSent(false)}
-          />
-
-          {/* Footer */}
-          <div className="mt-8 pt-6 border-t border-border">
-            <p className="text-center text-xs text-muted-foreground leading-tight whitespace-nowrap">
-              By continuing, you agree to our{' '}
-              <a href="/terms" className="text-accent hover:text-accent/80 transition-colors underline">
-                Terms
-              </a>{' '}
-              and{' '}
-              <a href="/privacy" className="text-accent hover:text-accent/80 transition-colors underline">
-                Privacy Policy
-              </a>
-            </p>
           </div>
         </div>
       </DialogContent>

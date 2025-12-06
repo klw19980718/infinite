@@ -4,71 +4,60 @@ export function UnderTheHood() {
   const techFeatures = [
     {
       icon: FiRefreshCw,
-      title: "Phoneme-Aware Alignment in InfiniteTalk",
-      description:
-        "Speech cues map to visemes, head timing, and posture shifts. infinite talk fuses audio features with spatial priors so articulation stays crisp at natural pace.",
+      title: "Phoneme‑aware alignment",
+      description: "Speech cues map to visemes, head timing and posture so articulation stays crisp.",
     },
     {
       icon: FiLayers,
-      title: "Keyframe Sampling Strategy in InfiniteTalk",
-      description:
-        "Fine-grained placement balances constraint and freedom. infinitetalk lets expressive beats land precisely while smoothing in-between frames.",
+      title: "Keyframe sampling",
+      description: "Keyframes land on important beats while in‑betweens stay smooth and expressive.",
     },
     {
       icon: FiZap,
-      title: "Memory-Aware Processing in InfiniteTalk",
-      description:
-        "Overlapping windows minimize discontinuities. InfiniteTalk maintains temporal consistency without over-regularizing natural variation.",
+      title: "Memory‑aware windows",
+      description: "Overlapping context windows cut visible joins without flattening motion.",
     },
     {
       icon: FiCpu,
-      title: "Prompt-Driven Style & Clarity in Infinite Talk AI",
-      description:
-        "Concise prompts and clarity switches influence articulation intensity, expression range, and stabilization. infinitetalk ai keeps prompts human-readable and domain-aware for technical scripts.",
+      title: "Prompt‑driven style",
+      description: "Prompts and clarity switches control expression range and stabilization.",
     },
     {
       icon: FiRefreshCw,
-      title: "Latency & Throughput in Infinite Talk AI",
-      description:
-        "Pipeline stages are tuned for predictable latency under load. infinite talk ai exposes batch-friendly behavior for production workflows and queue-based rendering.",
+      title: "Latency & throughput",
+      description: "The pipeline is tuned for predictable latency and batch‑friendly rendering.",
     },
   ]
 
   return (
     <section id="under-the-hood" className="py-24 md:py-32 relative overflow-hidden">
       <div className="container mx-auto px-6 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-[400px_1fr] gap-16 max-w-7xl mx-auto">
-          {/* Left: Sticky title */}
-          <div className="lg:sticky lg:top-32 lg:self-start">
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground text-balance leading-tight">
-              Under the Hood — Infinite Talk AI <span className="text-accent">(Technical Notes)</span>
-            </h2>
-          </div>
+        <h2 className="text-3xl md:text-4xl font-medium text-foreground mb-8 leading-tight">
+          Under the Hood — Infinite Talk AI <span className="text-primary">(Technical Notes)</span>
+        </h2>
 
-          {/* Right: Technical features list */}
-          <div className="space-y-5">
-            {techFeatures.map((feature, index) => {
-              const Icon = feature.icon
-              return (
-                <div
-                  key={index}
-                  className="group glass rounded-2xl p-8 hover:glass-strong transition-all duration-300"
-                  style={{ borderColor: 'var(--accent)', borderWidth: '2px' }}
-                >
-                  <div className="flex items-start gap-5">
-                    <div className="flex-shrink-0 p-3 rounded-xl bg-accent/10">
-                      <Icon className="w-6 h-6 text-accent" />
-                    </div>
-
-                    <div className="flex-1 space-y-2">
-                      <h3 className="text-lg md:text-xl font-semibold text-foreground group-hover:text-accent transition-colors">{feature.title}</h3>
-                      <p className="text-base text-muted-foreground leading-relaxed text-pretty">{feature.description}</p>
-                    </div>
-                  </div>
+        {/* Technical features list */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {techFeatures.map((feature, index) => {
+            const Icon = feature.icon
+            return (
+              <div
+                key={index}
+                className="rounded-3xl border border-border bg-card p-6 md:p-7 shadow-md hover:shadow-lg transition-shadow duration-200"
+              >
+                <div className="w-12 h-12 rounded-full flex items-center justify-center mb-4 bg-primary/10">
+                  <Icon className="w-6 h-6 text-primary" />
                 </div>
-              )
-            })}
-          </div>
+
+                <h3 className="text-lg md:text-xl font-semibold text-foreground mb-2">
+                  {feature.title}
+                </h3>
+                <p className="text-sm md:text-base text-muted-foreground leading-relaxed text-pretty">
+                  {feature.description}
+                </p>
+              </div>
+            )
+          })}
         </div>
       </div>
     </section>

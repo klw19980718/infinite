@@ -23,12 +23,7 @@ module.exports = {
     },
     extend: {
       fontFamily: {
-        sans: ['var(--font-inter)', 'Inter', 'system-ui', 'sans-serif'],
-        playfair: ['var(--font-playfair)'],
-        inter: ['var(--font-inter)'],
-        fredoka: ['Fredoka One', 'cursive'],
-        baloo: ['var(--font-baloo)'],
-        nunito: ['var(--font-nunito)']
+        sans: ['var(--font-outfit)', 'Outfit', 'system-ui', 'sans-serif'],
       },
       maxWidth: {
         '7xl': '80rem',

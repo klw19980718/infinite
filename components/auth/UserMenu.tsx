@@ -75,36 +75,42 @@ export default function UserMenu({ email }: UserMenuProps) {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <button
-          className="relative h-10 w-10 rounded-full bg-accent text-accent-foreground hover:opacity-90 transition-opacity focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background"
+          className="relative h-10 w-10 rounded-full bg-primary/10 dark:bg-primary/20 text-primary hover:bg-primary/20 dark:hover:bg-primary/30 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary/50 dark:focus:ring-[#7A7FEE] focus:ring-offset-2 focus:ring-offset-background shadow-sm dark:shadow-md hover:shadow-md dark:hover:shadow-lg"
           aria-label="User menu"
         >
-          <Avatar className="h-10 w-10">
+          <Avatar className="h-10 w-10 border-2 border-primary/20 dark:border-primary/30">
             <AvatarImage src={avatarUrl || undefined} alt={email || "User"} />
-            <AvatarFallback className="bg-accent text-accent-foreground font-semibold">{avatarChar}</AvatarFallback>
+            <AvatarFallback className="bg-primary/10 dark:bg-primary/20 text-primary font-semibold">{avatarChar}</AvatarFallback>
           </Avatar>
         </button>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent align="end" className="w-56">
-        <DropdownMenuLabel>
+      <DropdownMenuContent 
+        align="end" 
+        className="w-56 rounded-2xl bg-card dark:bg-[#4a4a4a] border border-border dark:border-[#5a5a5a] shadow-lg dark:shadow-xl p-2"
+      >
+        <DropdownMenuLabel className="px-3 py-2.5">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium">My Account</p>
-            {email && <p className="text-xs text-muted-foreground truncate">{email}</p>}
+            <p className="text-sm font-semibold text-foreground">My Account</p>
+            {email && <p className="text-xs text-muted-foreground dark:text-muted-foreground/80 truncate">{email}</p>}
           </div>
         </DropdownMenuLabel>
 
-        <DropdownMenuSeparator />
+        <DropdownMenuSeparator className="bg-border dark:bg-[#5a5a5a] my-2" />
 
-        <DropdownMenuItem onClick={() => router.push("/profile")} className="cursor-pointer">
+        <DropdownMenuItem 
+          onClick={() => router.push("/profile")} 
+          className="cursor-pointer rounded-xl px-3 py-2.5 text-sm font-medium text-foreground hover:bg-accent/10 dark:hover:bg-[#5a5a5a] focus:bg-accent/10 dark:focus:bg-[#5a5a5a] transition-colors duration-200"
+        >
           Profile
         </DropdownMenuItem>
 
-        <DropdownMenuSeparator />
+        <DropdownMenuSeparator className="bg-border dark:bg-[#5a5a5a] my-2" />
 
         <DropdownMenuItem
           onClick={handleSignOut}
           disabled={loading}
-          className="cursor-pointer text-destructive focus:text-destructive"
+          className="cursor-pointer rounded-xl px-3 py-2.5 text-sm font-medium text-destructive hover:bg-destructive/10 dark:hover:bg-destructive/20 focus:bg-destructive/10 dark:focus:bg-destructive/20 focus:text-destructive transition-colors duration-200"
         >
           {loading ? "Signing out..." : "Sign out"}
         </DropdownMenuItem>

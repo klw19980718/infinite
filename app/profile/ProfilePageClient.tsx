@@ -433,7 +433,7 @@ export function ProfilePageClient() {
 
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
-      <Beams />
+      
 
       {/* Content */}
       <section className="relative z-10 py-32 px-4 sm:px-6 lg:px-8">

@@ -4,67 +4,68 @@ export function Highlights() {
   const highlights = [
     {
       icon: FiClock,
-      title: "Whole-Frame Control with Infinite Talk AI",
+      title: "Whole-frame control",
       description:
-        "Infinite Talk AI aligns lips, eye focus, head turns, and posture to audio, delivering audio-synchronized full-body motion over extended sequences while preserving identity.",
+        "Audio drives lips, gaze, head turns, and posture together so motion stays in sync while identity stays stable.",
     },
     {
       icon: FiTarget,
-      title: "Sparse-Frame Dubbing in InfiniteTalk",
+      title: "Sparse-frame dubbing",
       description:
-        " A sparse keyframe strategy lets InfiniteTalk place control points where perception matters most. Those keyframes preserve identity, emotional cadence, iconic gestures, and camera trajectories, while the in-between frames follow the dubbed audio naturally. This avoids robotic stutter and keeps the performance expressive.",
+        "Keyframes land on important beats; in‑between frames follow audio so performance feels smooth instead of robotic.",
     },
     {
       icon: FiTrendingUp,
-      title: "Temporal Context Windows in InfiniteTalk",
+      title: "Temporal context windows",
       description:
-        "Chunked processing with overlapping temporal context windows (context frames) carries motion momentum forward between segments. InfiniteTalk reduces seams, flicker, and jitter across long sequences without flattening expression.",
+        "Overlapping windows carry motion across chunks, cutting seams and flicker on long videos.",
     },
     {
       icon: FiUser,
-      title: "Soft Reference Control in InfiniteTalk",
+      title: "Soft reference control",
       description:
-        "Control strength adapts to similarity between the current context and the reference. InfiniteTalk locks facial identity yet keeps head-and-body dynamics flexible and lifelike, based on a keyframe sampling strategy validated across multiple training regimes.",
+        "Reference strength adapts to the frame, keeping faces on‑model while head and body stay expressive.",
     },
     {
       icon: FiLayers,
-      title: "Multi-Speaker Pipelines via Infinite Talk AI",
+      title: "Multi‑speaker pipelines",
       description:
-        "Drive multiple characters with independent audio tracks and masks. Infinite Talk AI keeps each speaker distinct, even in fast, back-and-forth dialog, building multi-speaker control on top of the core InfiniteTalk architecture.",
+        "Drive several characters with separate audio tracks and masks in the same scene.",
     },
     {
       icon: FiUsers,
-      title: "Clarity & Prompt Controls in Infinite Talk AI",
+      title: "Clarity & style controls",
       description:
-        "Guide output with clarity controls and prompt adjustments. Infinite Talk AI exposes concise switches for lip strength, expression damping, and wording-based style cues to match voice tone and script density.",
+        "Simple sliders and prompts adjust lip strength, expression range, and style without touching code.",
     },
   ]
 
   return (
     <section id="highlights" className="py-24 md:py-32 relative overflow-hidden">
       <div className="container mx-auto px-6 relative z-10">
-        <div className="text-center mb-20">
-          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4 text-balance">
-            Key Features — <span className="text-accent">Infinite Talk AI</span>
-          </h2>
-        </div>
+        <h2 className="text-3xl md:text-4xl font-medium text-foreground mb-8">
+          Key Features — <span className="text-primary">Infinite Talk AI</span>
+        </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {highlights.map((highlight, index) => {
             const Icon = highlight.icon
 
             return (
               <div
                 key={index}
-                className="glass rounded-2xl p-8 hover:glass-strong hover:scale-[1.02] transition-all duration-300 group"
-                style={{ borderColor: 'var(--accent)', borderWidth: '2px' }}
+                className="rounded-3xl border border-border bg-card p-6 md:p-7 shadow-md hover:shadow-lg transition-shadow duration-200"
               >
-                <div className="inline-flex p-4 rounded-2xl bg-accent/10 border border-accent/20 group-hover:bg-accent/20 transition-all duration-300 mb-5">
-                  <Icon className="w-7 h-7 text-accent" />
+                <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-4 bg-primary`}>
+                  <Icon className="w-6 h-6 text-primary-foreground" />
                 </div>
 
-                <h3 className="text-xl font-semibold text-foreground mb-3 group-hover:text-accent transition-colors">{highlight.title}</h3>
-                <p className="text-base text-muted-foreground leading-relaxed text-pretty">{highlight.description}</p>
+                <h3 className="text-lg md:text-xl font-semibold text-foreground mb-2">
+                  {highlight.title}
+                </h3>
+                <p className="text-sm md:text-base text-muted-foreground leading-relaxed text-pretty">
+                  {highlight.description}
+                </p>
               </div>
             )
           })}

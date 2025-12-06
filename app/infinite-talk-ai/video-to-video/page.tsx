@@ -61,7 +61,7 @@ export default function VideoToVideoPage() {
   return (
     <>
       <main className="bg-background relative min-h-screen">
-        <Beams />
+        
         
         <div className="relative z-10">
           <VideoToVideoHero />

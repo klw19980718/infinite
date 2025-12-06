@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import Image from "next/image"
+import { usePathname } from "next/navigation"
 import { getSupabaseClient } from "@/lib/supabase"
 import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
@@ -26,6 +27,15 @@ export default function Nav() {
   const [profile, setProfile] = useState<Profile | null>(null)
   const [loginDialogOpen, setLoginDialogOpen] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
+  const pathname = usePathname()
+
+  const isActive = (href: string) => {
+    if (href === "/") {
+      return pathname === "/"
+    }
+    return pathname.startsWith(href)
+  }
 
   useEffect(() => {
     const supabase = getSupabaseClient()
@@ -47,26 +57,54 @@ export default function Nav() {
     }
   }, [])
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 10) {
+        setIsScrolled(true)
+      } else {
+        setIsScrolled(false)
+      }
+    }
+
+    window.addEventListener("scroll", handleScroll)
+    handleScroll()
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll)
+    }
+  }, [])
+
   return (
     <>
-      <nav 
-        className="fixed top-0 left-0 right-0 z-50 w-full h-16 overflow-hidden bg-background border-b-2 border-accent"
+      <nav
+        className={`fixed top-0 left-0 right-0 z-50 w-full h-16 overflow-hidden transition-all duration-200 ${
+          isScrolled
+            ? "bg-background/90 border-b border-border/60 backdrop-blur-sm shadow-nav"
+            : "bg-transparent border-b border-transparent"
+        }`}
       >
         <div className="container mx-auto h-full flex items-center justify-between px-4 sm:px-6 min-w-0">
-          <Link href="/" className="flex items-center gap-2 sm:gap-2.5 hover:opacity-90 transition-all duration-300 group flex-shrink-0 min-w-0">
-            <div className="relative w-9 h-9 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+          <Link
+            href="/"
+            className="flex items-center gap-2 sm:gap-2.5 transition-all duration-200 group flex-shrink-0 min-w-0"
+          >
+            <div className="relative w-9 h-9 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-200">
               <Image src="/logo-new.png" alt="Infinite Talk AI" width={28} height={28} className="object-cover" />
             </div>
-            <span className="font-semibold text-base hidden sm:inline transition-colors text-foreground tracking-tight whitespace-nowrap">
+            <span className="hidden sm:inline font-medium text-sm text-foreground tracking-tight whitespace-nowrap">
               Infinite Talk AI
             </span>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-0.5">
-            <Link 
-              href="/" 
-              className="px-3.5 py-2 text-xs font-medium text-foreground/70 hover:text-foreground hover:bg-white/5 rounded-lg transition-all duration-300"
+          <div className="hidden md:flex items-center gap-4">
+            <Link
+              href="/"
+              className={`text-sm font-medium transition-colors ${
+                isActive("/")
+                  ? "text-primary"
+                  : "text-foreground/70 hover:text-primary"
+              }`}
             >
               Home
             </Link>
@@ -82,27 +120,43 @@ export default function Nav() {
             >
               Video to Video
             </Link> */}
-            <Link 
-              href="/text-to-speech" 
-              className="px-3.5 py-2 text-xs font-medium text-foreground/70 hover:text-foreground hover:bg-white/5 rounded-lg transition-all duration-300"
+            <Link
+              href="/text-to-speech"
+              className={`text-sm font-medium transition-colors ${
+                isActive("/text-to-speech")
+                  ? "text-primary"
+                  : "text-foreground/70 hover:text-primary"
+              }`}
             >
               Text to Speech
             </Link>
-            <Link 
-              href="/pricing" 
-              className="px-3.5 py-2 text-xs font-medium text-foreground/70 hover:text-foreground hover:bg-white/5 rounded-lg transition-all duration-300"
+            <Link
+              href="/pricing"
+              className={`text-sm font-medium transition-colors ${
+                isActive("/pricing")
+                  ? "text-primary"
+                  : "text-foreground/70 hover:text-primary"
+              }`}
             >
               Pricing
             </Link>
-            <Link 
-              href="/blog" 
-              className="px-3.5 py-2 text-xs font-medium text-foreground/70 hover:text-foreground hover:bg-white/5 rounded-lg transition-all duration-300"
+            <Link
+              href="/blog"
+              className={`text-sm font-medium transition-colors ${
+                isActive("/blog")
+                  ? "text-primary"
+                  : "text-foreground/70 hover:text-primary"
+              }`}
             >
               Blog
             </Link>
-            <Link 
-              href="/lib" 
-              className="px-3.5 py-2 text-xs font-medium text-foreground/70 hover:text-foreground hover:bg-white/5 rounded-lg transition-all duration-300"
+            <Link
+              href="/lib"
+              className={`text-sm font-medium transition-colors ${
+                isActive("/lib")
+                  ? "text-primary"
+                  : "text-foreground/70 hover:text-primary"
+              }`}
             >
               Docs
             </Link>
@@ -115,7 +169,7 @@ export default function Nav() {
                 <Button
                   onClick={() => setLoginDialogOpen(true)}
                   size="sm"
-                  className="px-5 py-2 rounded-full bg-accent text-accent-foreground hover:bg-accent/90 hover:scale-105 transition-all duration-300 font-semibold text-xs glow-lime"
+                  className="px-4 py-2 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-colors text-xs sm:text-sm font-medium shadow-sm"
                 >
                   Log in
                 </Button>
@@ -135,7 +189,7 @@ export default function Nav() {
                 onClick={() => setLoginDialogOpen(true)}
                 variant="ghost"
                 size="sm"
-                className="rounded-full px-3 sm:px-4 py-2 text-xs sm:text-sm bg-accent text-accent-foreground hover:bg-accent/90 font-semibold whitespace-nowrap flex-shrink-0"
+                className="rounded-full px-3 sm:px-4 py-2 text-xs sm:text-sm bg-primary text-primary-foreground hover:bg-primary/90 font-medium whitespace-nowrap flex-shrink-0"
               >
                 Log in
               </Button>
@@ -146,10 +200,10 @@ export default function Nav() {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="h-9 w-9 sm:h-10 sm:w-10 rounded-xl hover:bg-white/10 transition-all duration-300 flex-shrink-0"
+                  className="h-9 w-9 sm:h-10 sm:w-10 rounded-xl hover:bg-foreground/5 transition-colors flex-shrink-0"
                   aria-label="Open menu"
                 >
-                  <Menu className="h-5 w-5 sm:h-6 sm:w-6 text-accent" />
+                  <Menu className="h-5 w-5 sm:h-6 sm:w-6 text-foreground" />
                 </Button>
               </SheetTrigger>
               <SheetContent side="right" className="w-[300px] sm:w-[400px]">
@@ -160,7 +214,11 @@ export default function Nav() {
                   <SheetClose asChild>
                     <Link 
                       href="/" 
-                      className="text-foreground hover:text-foreground hover:bg-white/5 transition-all duration-300 font-medium text-base py-3 px-4 rounded-xl"
+                      className={`text-base font-medium py-3 px-4 rounded-xl transition-colors ${
+                        isActive("/")
+                          ? "text-primary bg-primary/5"
+                          : "text-foreground hover:text-primary hover:bg-foreground/5"
+                      }`}
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       Home
@@ -175,7 +233,11 @@ export default function Nav() {
                     <SheetClose asChild>
                       <Link 
                         href="/" 
-                        className="text-foreground hover:text-foreground hover:bg-white/5 transition-all duration-300 font-medium text-base py-3 px-4 rounded-xl block"
+                        className={`block text-base font-medium py-3 px-4 rounded-xl transition-colors ${
+                          isActive("/")
+                            ? "text-primary bg-primary/5"
+                            : "text-foreground hover:text-primary hover:bg-foreground/5"
+                        }`}
                         onClick={() => setMobileMenuOpen(false)}
                       >
                         infinitetalk photo
@@ -184,7 +246,11 @@ export default function Nav() {
                     <SheetClose asChild>
                       <Link 
                         href="/infinite-talk-ai/video-to-video" 
-                        className="text-foreground hover:text-foreground hover:bg-white/5 transition-all duration-300 font-medium text-base py-3 px-4 rounded-xl block"
+                        className={`block text-base font-medium py-3 px-4 rounded-xl transition-colors ${
+                          isActive("/infinite-talk-ai/video-to-video")
+                            ? "text-primary bg-primary/5"
+                            : "text-foreground hover:text-primary hover:bg-foreground/5"
+                        }`}
                         onClick={() => setMobileMenuOpen(false)}
                       >
                         infinitetalk video
@@ -193,7 +259,11 @@ export default function Nav() {
                     <SheetClose asChild>
                       <Link 
                         href="/infinite-talk-ai/baby-podcast" 
-                        className="text-foreground hover:text-foreground hover:bg-white/5 transition-all duration-300 font-medium text-base py-3 px-4 rounded-xl block"
+                        className={`block text-base font-medium py-3 px-4 rounded-xl transition-colors ${
+                          isActive("/infinite-talk-ai/baby-podcast")
+                            ? "text-primary bg-primary/5"
+                            : "text-foreground hover:text-primary hover:bg-foreground/5"
+                        }`}
                         onClick={() => setMobileMenuOpen(false)}
                       >
                         baby podcast
@@ -206,7 +276,11 @@ export default function Nav() {
                     <SheetClose asChild>
                       <Link 
                         href="/text-to-speech" 
-                        className="text-foreground hover:text-foreground hover:bg-white/5 transition-all duration-300 font-medium text-base py-3 px-4 rounded-xl block"
+                        className={`block text-base font-medium py-3 px-4 rounded-xl transition-colors ${
+                          isActive("/text-to-speech")
+                            ? "text-primary bg-primary/5"
+                            : "text-foreground hover:text-primary hover:bg-foreground/5"
+                        }`}
                         onClick={() => setMobileMenuOpen(false)}
                       >
                         Text to Speech
@@ -215,7 +289,11 @@ export default function Nav() {
                     <SheetClose asChild>
                       <Link 
                         href="/pricing" 
-                        className="text-foreground hover:text-foreground hover:bg-white/5 transition-all duration-300 font-medium text-base py-3 px-4 rounded-xl block"
+                        className={`block text-base font-medium py-3 px-4 rounded-xl transition-colors ${
+                          isActive("/pricing")
+                            ? "text-primary bg-primary/5"
+                            : "text-foreground hover:text-primary hover:bg-foreground/5"
+                        }`}
                         onClick={() => setMobileMenuOpen(false)}
                       >
                         Pricing
@@ -224,7 +302,11 @@ export default function Nav() {
                     <SheetClose asChild>
                       <Link 
                         href="/blog" 
-                        className="text-foreground hover:text-foreground hover:bg-white/5 transition-all duration-300 font-medium text-base py-3 px-4 rounded-xl"
+                        className={`block text-base font-medium py-3 px-4 rounded-xl transition-colors ${
+                          isActive("/blog")
+                            ? "text-primary bg-primary/5"
+                            : "text-foreground hover:text-primary hover:bg-foreground/5"
+                        }`}
                         onClick={() => setMobileMenuOpen(false)}
                       >
                         Blog
@@ -233,7 +315,11 @@ export default function Nav() {
                     <SheetClose asChild>
                       <Link 
                         href="/lib" 
-                        className="text-foreground hover:text-foreground hover:bg-white/5 transition-all duration-300 font-medium text-base py-3 px-4 rounded-xl"
+                        className={`block text-base font-medium py-3 px-4 rounded-xl transition-colors ${
+                          isActive("/lib")
+                            ? "text-primary bg-primary/5"
+                            : "text-foreground hover:text-primary hover:bg-foreground/5"
+                        }`}
                         onClick={() => setMobileMenuOpen(false)}
                       >
                         Docs

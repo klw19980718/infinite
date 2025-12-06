@@ -123,7 +123,7 @@ export default function DocumentationCenterPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <main className="bg-background relative min-h-screen">
-        <Beams />
+        
         
         <article className="relative z-10 py-16 md:py-24">
           <div className="container mx-auto px-6 max-w-5xl">

@@ -7,108 +7,101 @@
 }
 
 .dark {
-  /* Modern Agency - Liquid Glass + Apple Design System - Dark Theme */
-  --background: oklch(0.08 0 0); /* Deep black background */
-  --foreground: oklch(0.98 0 0); /* Pure white text */
-  
-  /* Glassmorphism cards - semi-transparent with blur */
-  --card: oklch(0.15 0.01 270); /* Dark with subtle purple tint */
-  --card-foreground: oklch(0.98 0 0); /* White text */
-  
-  --popover: oklch(0.12 0.01 270);
-  --popover-foreground: oklch(0.98 0 0);
-  
-  /* Lime Green CTA - Apple-style vibrant accent */
-  --primary: oklch(0.85 0.18 130); /* Lime Green for CTAs */
-  --primary-foreground: oklch(0.10 0 0); /* Dark text on lime */
-  --accent: oklch(0.85 0.18 130); /* Lime Green accent */
-  --accent-foreground: oklch(0.10 0 0); /* Dark text on lime */
-  
-  /* Purple accent for highlights */
-  --purple-accent: oklch(0.60 0.20 290); /* Purple glow */
-  --blue-accent: oklch(0.55 0.20 250); /* Blue glow */
-  
-  --secondary: oklch(0.20 0.01 270);
-  --secondary-foreground: oklch(0.98 0 0);
-  --muted: oklch(0.25 0.01 270);
-  --muted-foreground: oklch(0.70 0 0);
-  
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.98 0 0);
-  
-  /* Subtle borders for glass effect */
-  --border: oklch(0.25 0.01 270); /* Subtle purple-tinted border */
-  --input: oklch(0.18 0.01 270);
-  --ring: oklch(0.85 0.18 130); /* Lime green for focus rings */
-  --chart-1: oklch(0.72 0.19 264);
-  --chart-2: oklch(0.65 0.2 310);
-  --chart-3: oklch(0.7 0.18 200);
-  --chart-4: oklch(0.68 0.21 150);
-  --chart-5: oklch(0.75 0.17 50);
-  --radius: 1.25rem; /* Larger radius for modern look */
-  --sidebar: oklch(0.12 0.01 270);
-  --sidebar-foreground: oklch(0.98 0 0);
-  --sidebar-primary: oklch(0.85 0.18 130);
-  --sidebar-primary-foreground: oklch(0.10 0 0);
-  --sidebar-accent: oklch(0.20 0.01 270);
-  --sidebar-accent-foreground: oklch(0.98 0 0);
-  --sidebar-border: oklch(0.25 0.01 270);
-  --sidebar-ring: oklch(0.85 0.18 130);
+  /* Project theme - Dark mode */
+  --background: #101112;
+  --foreground: #d9d9d9;
+
+  --card: #272829;
+  --card-foreground: #ffffff;
+
+  --popover: #272829;
+  --popover-foreground: #ffffff;
+
+  --primary: #7a7fee;
+  --primary-foreground: #ffffff;
+  --accent: #2a2a2a;
+  --accent-foreground: #ffffff;
+
+  /* Additional accents (kept for existing glow utilities) */
+  --purple-accent: #7a7fee;
+  --blue-accent: #4f46e5;
+
+  --secondary: #272829;
+  --secondary-foreground: #ffffff;
+  --muted: #a1a1aa;
+  --muted-foreground: #d4d4d8;
+
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+
+  --border: #2a2a2a;
+  --input: #2a2a2a;
+  --ring: #7a7fee;
+  --chart-1: #4f46e5;
+  --chart-2: #22c55e;
+  --chart-3: #0ea5e9;
+  --chart-4: #f97316;
+  --chart-5: #e11d48;
+  --radius: 0.75rem;
+  --sidebar: #111111;
+  --sidebar-foreground: #f9fafb;
+  --sidebar-primary: #7a7fee;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #272829;
+  --sidebar-accent-foreground: #f9fafb;
+  --sidebar-border: #2a2a2a;
+  --sidebar-ring: #7a7fee;
 }
 
 .light {
-  /* Modern Agency - Liquid Glass + Apple Design System - Light Theme */
-  --background: oklch(0.98 0 0); /* Light background */
-  --foreground: oklch(0.15 0 0); /* Dark text */
-  
-  /* Glassmorphism cards - semi-transparent with blur */
-  --card: oklch(0.95 0.005 270); /* Light with subtle tint */
-  --card-foreground: oklch(0.15 0 0); /* Dark text */
-  
-  --popover: oklch(0.97 0.005 270);
-  --popover-foreground: oklch(0.15 0 0);
-  
-  /* Lime Green CTA - Apple-style vibrant accent */
-  --primary: oklch(0.75 0.20 130); /* Slightly darker lime for light theme */
-  --primary-foreground: oklch(0.10 0 0); /* Dark text on lime */
-  --accent: oklch(0.75 0.20 130); /* Lime Green accent */
-  --accent-foreground: oklch(0.10 0 0); /* Dark text on lime */
-  
-  /* Purple accent for highlights */
-  --purple-accent: oklch(0.55 0.18 290); /* Purple glow */
-  --blue-accent: oklch(0.50 0.18 250); /* Blue glow */
-  
-  --secondary: oklch(0.90 0.01 270);
-  --secondary-foreground: oklch(0.15 0 0);
-  --muted: oklch(0.85 0.01 270);
-  --muted-foreground: oklch(0.40 0 0);
-  
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.98 0 0);
-  
-  /* Subtle borders for glass effect */
-  --border: oklch(0.80 0.01 270); /* Subtle border */
-  --input: oklch(0.92 0.01 270);
-  --ring: oklch(0.75 0.20 130); /* Lime green for focus rings */
-  --chart-1: oklch(0.65 0.17 264);
-  --chart-2: oklch(0.60 0.18 310);
-  --chart-3: oklch(0.63 0.16 200);
-  --chart-4: oklch(0.61 0.19 150);
-  --chart-5: oklch(0.68 0.15 50);
-  --radius: 1.25rem; /* Larger radius for modern look */
-  --sidebar: oklch(0.96 0.005 270);
-  --sidebar-foreground: oklch(0.15 0 0);
-  --sidebar-primary: oklch(0.75 0.20 130);
-  --sidebar-primary-foreground: oklch(0.10 0 0);
-  --sidebar-accent: oklch(0.90 0.01 270);
-  --sidebar-accent-foreground: oklch(0.15 0 0);
-  --sidebar-border: oklch(0.80 0.01 270);
-  --sidebar-ring: oklch(0.75 0.20 130);
+  /* Project theme - Light mode */
+  --background: #ffffff;
+  --foreground: #111827;
+
+  --card: #ffffff;
+  --card-foreground: #111827;
+
+  --popover: #ffffff;
+  --popover-foreground: #111827;
+
+  --primary: #7a7fee;
+  --primary-foreground: #ffffff;
+  --accent: #f3f4f6;
+  --accent-foreground: #111827;
+
+  --purple-accent: #7a7fee;
+  --blue-accent: #4f46e5;
+
+  --secondary: #f9fafb;
+  --secondary-foreground: #111827;
+  --muted: #6b7280;
+  --muted-foreground: #4b5563;
+
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+
+  --border: #d1d5db;
+  --input: #d1d5db;
+  --ring: #7a7fee;
+  --chart-1: #4f46e5;
+  --chart-2: #22c55e;
+  --chart-3: #0ea5e9;
+  --chart-4: #f97316;
+  --chart-5: #e11d48;
+  --radius: 0.75rem;
+  --sidebar: #f9fafb;
+  --sidebar-foreground: #111827;
+  --sidebar-primary: #7a7fee;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #e5e7eb;
+  --sidebar-accent-foreground: #111827;
+  --sidebar-border: #e5e7eb;
+  --sidebar-ring: #7a7fee;
 }
 
 @theme inline {
-  --font-sans: "Geist", "Geist Fallback";
-  --font-mono: "Geist Mono", "Geist Mono Fallback";
+  --font-sans: var(--font-outfit), "Outfit", system-ui, -apple-system, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);

@@ -1,60 +1,42 @@
 "use client"
 
 import { useRef, useState, useEffect } from "react"
-import { ChevronLeft, ChevronRight, Play, Pause } from "lucide-react"
+import { Play, Pause, Volume2, VolumeX, Loader2 } from "lucide-react"
 
 export function ExampleVideos() {
-  // 定义分类；仅"Multilingual content"提供演示用素材
-  const categories: Array<{ key: string; title: string; description: string; ids: string[] }> = [
-    {
-      key: "multilingual",
-      title: "Multilingual content",
-      description:
-        "many languages (English, Chinese/Mandarin, Japanese, Hindi, Spanish, French, German, Portuguese, Korean, Arabic, Russian, and other major languages)",
-      ids: ["22955", "22969", "22977", "22868"],
-    },
-    {
-      key: "songs",
-      title: "Songs & Music Videos",
-      description: "sing-along covers, duets, lyric-synced performances",
-      ids: ["22742", "22810", "22863", "22935"],
-    },
-    {
-      key: "infinitetalk",
-      title: "Infinitetalk",
-      description: "long-form video generation, extended content creation, hour-scale programs with seamless batching and stitching",
-      ids: ["22947"],
-    },
-    {
-      key: "cartoons",
-      title: "Cartoons & Characters",
-      description: "animated hosts, kid-friendly narration, voice swaps",
-      ids: ["22893", "22943", "22960"],
-    },
-    {
-      key: "ads",
-      title: "Ads & Promos",
-      description: "15–30s product spots, feature highlights, brand intros",
-      ids: ["22737", "22953"],
-    },
-    {
-      key: "podcasts",
-      title: "Podcasts / Product Demos / News",
-      description: "virtual anchors, multilingual briefings, how-tos",
-      ids: ["22800", "22802", "22844", "22928"],
-    },
-    {
-      key: "shorts",
-      title: "Shorts & Vlogs",
-      description: "daily stories, travel explainers, creator intros, social clips",
-      ids: ["22823", "22927", "22956"],
-    },
-    {
-      key: "memes",
-      title: "Memes & Parodies",
-      description: "over-the-top reactions, remixed lines, comedic dubs",
-      ids: [ "22876","22855"],
-    },
+  // 定义所有视频，扁平化结构
+  const allVideos: Array<{ id: string; categoryKey: string }> = [
+    // Multilingual
+    { id: "22955", categoryKey: "multilingual" },
+    { id: "22969", categoryKey: "multilingual" },
+    { id: "22977", categoryKey: "multilingual" },
+    { id: "22868", categoryKey: "multilingual" },
+    // Songs
+    { id: "22742", categoryKey: "songs" },
+    { id: "22810", categoryKey: "songs" },
+    { id: "22863", categoryKey: "songs" },
+    { id: "22935", categoryKey: "songs" },
+    // Infinitetalk
+    { id: "22947", categoryKey: "infinitetalk" },
+    // Cartoons
+    { id: "22893", categoryKey: "cartoons" },
+    { id: "22943", categoryKey: "cartoons" },
+    { id: "22960", categoryKey: "cartoons" },
+    // Ads
+    { id: "22737", categoryKey: "ads" },
+    { id: "22953", categoryKey: "ads" },
+    // Podcasts
+    { id: "22800", categoryKey: "podcasts" },
+    { id: "22802", categoryKey: "podcasts" },
+    { id: "22844", categoryKey: "podcasts" },
+    { id: "22928", categoryKey: "podcasts" },
+    // Shorts
+    { id: "22823", categoryKey: "shorts" },
+    { id: "22927", categoryKey: "shorts" },
+    { id: "22956", categoryKey: "shorts" },
+    // Memes
+    { id: "22876", categoryKey: "memes" },
+    { id: "22855", categoryKey: "memes" },
   ]
 
   // 根据分类获取目录路径
@@ -65,7 +47,7 @@ export function ExampleVideos() {
       case "songs":
         return "songs"
       case "infinitetalk":
-        return "songs" // 使用 songs 目录，因为 22947 原本在 songs 中
+        return "songs"
       case "cartoons":
         return "cartoons"
       case "ads":
@@ -85,51 +67,124 @@ export function ExampleVideos() {
     const dir = getCategoryDir(categoryKey)
     return `https://cdn.infinitetalkai.org/${dir}/infinite-talk-ai-${id}.jpg`
   }
+  
   const getVideoSrc = (id: string, categoryKey: string) => {
     const dir = getCategoryDir(categoryKey)
     return `https://cdn.infinitetalkai.org/${dir}/infinite-talk-ai-${id}.mp4`
   }
 
-  const [activeIndexes, setActiveIndexes] = useState<Record<string, number>>(
-    categories.reduce((acc, cat) => ({ ...acc, [cat.key]: 0 }), {}),
-  )
-  const [playingVideos, setPlayingVideos] = useState<Record<string, boolean>>({})
-  const scrollRefs = useRef<Record<string, HTMLDivElement | null>>({})
   const videoRefs = useRef<Record<string, HTMLVideoElement | null>>({})
   const cardRefs = useRef<Record<string, HTMLDivElement | null>>({})
+  const [playingVideos, setPlayingVideos] = useState<Record<string, boolean>>({})
+  const [mutedVideos, setMutedVideos] = useState<Record<string, boolean>>({})
+  const [loadingVideos, setLoadingVideos] = useState<Record<string, boolean>>({})
+  const [showAll, setShowAll] = useState(false)
   
-  const handleVideoPlay = (videoKey: string) => {
-    setPlayingVideos((prev) => ({ ...prev, [videoKey]: true }))
-  }
+  // 计算显示的视频数量
+  const totalVideos = allVideos.length
+  const pcHalfCount = Math.ceil(totalVideos / 2)
+  const mobileCount = 10
   
-  const handleVideoPause = (videoKey: string) => {
-    setPlayingVideos((prev) => ({ ...prev, [videoKey]: false }))
-  }
-  
-  const toggleVideo = async (videoKey: string) => {
+  const toggleVideo = async (videoKey: string, e?: React.MouseEvent) => {
+    // 如果点击的是控制按钮，阻止事件冒泡
+    if (e) {
+      e.stopPropagation()
+    }
+    
     const video = videoRefs.current[videoKey]
     if (!video) return
     
     if (video.paused) {
+      // 开始加载
+      setLoadingVideos((prev) => ({ ...prev, [videoKey]: true }))
       try {
         await video.play()
-        handleVideoPlay(videoKey)
+        setPlayingVideos((prev) => ({ ...prev, [videoKey]: true }))
       } catch (error) {
-        // 处理播放错误（用户可能取消了播放）
         console.error('Video play error:', error)
+        setLoadingVideos((prev) => ({ ...prev, [videoKey]: false }))
       }
     } else {
       video.pause()
-      handleVideoPause(videoKey)
+      setPlayingVideos((prev) => ({ ...prev, [videoKey]: false }))
     }
   }
+  
+  const toggleMute = (videoKey: string, e: React.MouseEvent) => {
+    e.stopPropagation()
+    
+    const video = videoRefs.current[videoKey]
+    if (!video) return
+    
+    video.muted = !video.muted
+    setMutedVideos((prev) => ({ ...prev, [videoKey]: video.muted }))
+  }
+  
+  // 监听视频播放状态变化和加载状态
+  useEffect(() => {
+    const handlers: Record<string, { 
+      play: () => void
+      pause: () => void
+      waiting: () => void
+      canplay: () => void
+      playing: () => void
+    }> = {}
+    
+    // 为每个视频添加事件监听
+    Object.keys(videoRefs.current).forEach((videoKey) => {
+      const video = videoRefs.current[videoKey]
+      if (video) {
+        const playHandler = () => {
+          setPlayingVideos((prev) => ({ ...prev, [videoKey]: true }))
+        }
+        const pauseHandler = () => {
+          setPlayingVideos((prev) => ({ ...prev, [videoKey]: false }))
+        }
+        const waitingHandler = () => {
+          setLoadingVideos((prev) => ({ ...prev, [videoKey]: true }))
+        }
+        const canplayHandler = () => {
+          setLoadingVideos((prev) => ({ ...prev, [videoKey]: false }))
+        }
+        const playingHandler = () => {
+          setLoadingVideos((prev) => ({ ...prev, [videoKey]: false }))
+        }
+        
+        handlers[videoKey] = { 
+          play: playHandler, 
+          pause: pauseHandler,
+          waiting: waitingHandler,
+          canplay: canplayHandler,
+          playing: playingHandler
+        }
+        video.addEventListener('play', playHandler)
+        video.addEventListener('pause', pauseHandler)
+        video.addEventListener('waiting', waitingHandler)
+        video.addEventListener('canplay', canplayHandler)
+        video.addEventListener('playing', playingHandler)
+      }
+    })
+    
+    return () => {
+      Object.keys(videoRefs.current).forEach((videoKey) => {
+        const video = videoRefs.current[videoKey]
+        const handler = handlers[videoKey]
+        if (video && handler) {
+          video.removeEventListener('play', handler.play)
+          video.removeEventListener('pause', handler.pause)
+          video.removeEventListener('waiting', handler.waiting)
+          video.removeEventListener('canplay', handler.canplay)
+          video.removeEventListener('playing', handler.playing)
+        }
+      })
+    }
+  }, [allVideos.length])
   
   // 点击外部关闭所有视频
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as Node
       
-      // 检查点击是否在任何视频卡片内
       let clickedInsideCard = false
       Object.values(cardRefs.current).forEach((card) => {
         if (card && card.contains(target)) {
@@ -137,15 +192,12 @@ export function ExampleVideos() {
         }
       })
       
-      // 如果点击在卡片外，关闭所有正在播放的视频
       if (!clickedInsideCard) {
-        Object.keys(playingVideos).forEach((videoKey) => {
-          if (playingVideos[videoKey]) {
-            const video = videoRefs.current[videoKey]
-            if (video && !video.paused) {
-              video.pause()
-              setPlayingVideos((prev) => ({ ...prev, [videoKey]: false }))
-            }
+        Object.keys(videoRefs.current).forEach((videoKey) => {
+          const video = videoRefs.current[videoKey]
+          if (video && !video.paused) {
+            video.pause()
+            setPlayingVideos((prev) => ({ ...prev, [videoKey]: false }))
           }
         })
       }
@@ -155,237 +207,124 @@ export function ExampleVideos() {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside)
     }
-  }, [playingVideos])
-
-  const scrollCategory = (key: string, direction: 1 | -1) => {
-    const el = scrollRefs.current[key]
-    if (!el) return
-    const amount = Math.max(320, Math.floor(el.clientWidth * 0.8))
-    el.scrollBy({ left: amount * direction, behavior: 'smooth' })
-  }
-
-  const handlePrev = (categoryKey: string, maxIndex: number) => {
-    setActiveIndexes((prev) => ({
-      ...prev,
-      [categoryKey]: prev[categoryKey] > 0 ? prev[categoryKey] - 1 : maxIndex - 1,
-    }))
-  }
-
-  const handleNext = (categoryKey: string, maxIndex: number) => {
-    setActiveIndexes((prev) => ({
-      ...prev,
-      [categoryKey]: prev[categoryKey] < maxIndex - 1 ? prev[categoryKey] + 1 : 0,
-    }))
-  }
+  }, [])
 
   return (
     <section id="example-videos" className="relative py-20 md:py-28 overflow-hidden">
       <div className="container relative mx-auto px-6 z-10">
-        <div className="max-w-3xl mx-auto text-center mb-16">
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground mb-4">
-            Example Videos ·{" "}
-            <span className="text-accent">
-              Infinite Talk AI
-            </span>
+        <div className="mb-16">
+          <h2 className="text-3xl md:text-4xl font-medium text-foreground mb-4">
+            Example Videos · <span className="text-primary">Infinite Talk AI</span>
           </h2>
-          <p className="text-sm md:text-base text-muted-foreground text-balance leading-relaxed">
+          <p className="text-sm md:text-base text-muted-foreground leading-relaxed max-w-3xl">
             Create any kind of video with infinite talk - delivering studio-grade lip sync, natural expression, and
             multilingual publishing for the world's major languages.
           </p>
         </div>
 
-        <div className="space-y-24">
-          {categories.map((cat, index) => {
-            const currentIndex = activeIndexes[cat.key] || 0
-            const currentId = cat.ids[currentIndex]
-            const isLast = index === categories.length - 1
-
+        {/* 瀑布流布局：使用 CSS columns，一行4个（桌面端），高度完全自适应 */}
+        <div 
+          className="columns-1 sm:columns-2 lg:columns-4 gap-4 md:gap-6"
+        >
+          {allVideos.map((video, index) => {
+            // 控制显示：移动端显示10个，PC端未展开时显示一半
+            const isMobileHidden = !showAll && index >= mobileCount
+            const isPCHidden = !showAll && index >= pcHalfCount
+            const videoKey = `${video.categoryKey}-${video.id}`
+            
             return (
-              <div key={cat.key} className={`relative ${!isLast ? 'border-b-2' : ''}`} style={!isLast ? { borderColor: 'var(--accent)' } : undefined} id={
-                cat.key === 'multilingual' ? 'multilingual-content' :
-                cat.key === 'infinitetalk' ? 'infinitetalk' :
-                cat.key === 'shorts' ? 'shorts' :
-                cat.key === 'podcasts' ? 'podcasts' :
-                undefined
-              }>
-                <div className="mb-6">
-                  <h3 className="text-lg md:text-xl font-bold text-foreground mb-2">{cat.title}</h3>
-                  {cat.ids.length > 0 ? (
-                    <div className="flex items-center justify-between gap-4">
-                      <p className="text-sm text-muted-foreground flex-1">{cat.description}</p>
-                      {/* 桌面端：横向滚动按钮 */}
-                      <div className="hidden md:flex items-center gap-2">
-                        <button
-                          aria-label="Scroll left"
-                          onClick={() => scrollCategory(cat.key, -1)}
-                          className="h-8 w-8 rounded-full border-2 bg-card hover:bg-accent/10 transition"
-                          style={{ borderColor: 'var(--accent)' }}
-                        >
-                          <ChevronLeft className="mx-auto h-4 w-4 text-accent" />
-                        </button>
-                        <button
-                          aria-label="Scroll right"
-                          onClick={() => scrollCategory(cat.key, 1)}
-                          className="h-8 w-8 rounded-full border-2 bg-card hover:bg-accent/10 transition"
-                          style={{ borderColor: 'var(--accent)' }}
-                        >
-                          <ChevronRight className="mx-auto h-4 w-4 text-accent" />
-                        </button>
-                      </div>
+              <div
+                key={videoKey}
+                ref={(el) => {
+                  cardRefs.current[videoKey] = el
+                }}
+                className={`rounded-2xl border border-border bg-card shadow-md hover:shadow-lg transition-shadow duration-200 overflow-hidden mb-4 md:mb-6 break-inside-avoid group ${
+                  isMobileHidden ? 'hidden' : ''
+                } ${isPCHidden ? 'lg:hidden' : ''}`}
+              >
+                <div 
+                  className="relative w-full cursor-pointer"
+                  onClick={() => toggleVideo(videoKey)}
+                >
+                  <video
+                    ref={(el) => {
+                      videoRefs.current[videoKey] = el
+                    }}
+                    preload="none"
+                    className="w-full h-auto object-contain bg-black"
+                    poster={getImageSrc(video.id, video.categoryKey)}
+                    style={{ display: 'block' }}
+                    muted={mutedVideos[videoKey] ?? false}
+                  >
+                    <source src={getVideoSrc(video.id, video.categoryKey)} />
+                  </video>
+                  
+                  {/* Loading 指示器 */}
+                  {loadingVideos[videoKey] && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/30 backdrop-blur-sm z-20">
+                      <Loader2 className="h-8 w-8 text-white animate-spin" />
                     </div>
-                  ) : (
-                    <p className="text-sm text-muted-foreground max-w-3xl">{cat.description}</p>
+                  )}
+                  
+                  {/* 播放/暂停按钮 - 居中显示 */}
+                  {!playingVideos[videoKey] && (
+                    <div className={`absolute inset-0 flex items-center justify-center transition-opacity duration-200 ${
+                      loadingVideos[videoKey] ? 'opacity-0' : 'opacity-0 group-hover:opacity-100'
+                    }`}>
+                      <button
+                        onClick={(e) => toggleVideo(videoKey, e)}
+                        className="h-14 w-14 rounded-full bg-black/70 hover:bg-black/90 backdrop-blur-sm flex items-center justify-center transition-colors z-10"
+                        aria-label="Play"
+                      >
+                        <Play className="h-7 w-7 text-white ml-1" />
+                      </button>
+                    </div>
+                  )}
+                  
+                  {/* 控制按钮栏 - 底部显示 */}
+                  {playingVideos[videoKey] && (
+                    <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between transition-opacity duration-200 opacity-100">
+                      {/* 播放/暂停按钮 */}
+                      <button
+                        onClick={(e) => toggleVideo(videoKey, e)}
+                        className="h-10 w-10 rounded-full bg-black/70 hover:bg-black/90 backdrop-blur-sm flex items-center justify-center transition-colors"
+                        aria-label="Pause"
+                      >
+                        <Pause className="h-5 w-5 text-white" />
+                      </button>
+                      
+                      {/* 静音按钮 */}
+                      <button
+                        onClick={(e) => toggleMute(videoKey, e)}
+                        className="h-10 w-10 rounded-full bg-black/70 hover:bg-black/90 backdrop-blur-sm flex items-center justify-center transition-colors"
+                        aria-label={mutedVideos[videoKey] ? "Unmute" : "Mute"}
+                      >
+                        {mutedVideos[videoKey] ? (
+                          <VolumeX className="h-5 w-5 text-white" />
+                        ) : (
+                          <Volume2 className="h-5 w-5 text-white" />
+                        )}
+                      </button>
+                    </div>
                   )}
                 </div>
-
-                {cat.ids.length > 0 ? (
-                  <div className="relative">
-                    {/* 移动端：轮播图（一次显示一个视频） */}
-                    <div className="block md:hidden">
-                      <div className="relative">
-                        {/* 当前视频 */}
-                        <div
-                          ref={(el) => {
-                            const currentId = cat.ids[currentIndex]
-                            const videoKey = `${cat.key}-${currentId}`
-                            cardRefs.current[videoKey] = el
-                          }}
-                          className="relative overflow-hidden rounded-2xl border border-border bg-card shadow-md"
-                        >
-                          <div
-                            className="relative w-full h-[240px] cursor-pointer"
-                            onClick={() => {
-                              const currentId = cat.ids[currentIndex]
-                              const videoKey = `${cat.key}-${currentId}`
-                              toggleVideo(videoKey)
-                            }}
-                          >
-                            <video
-                              ref={(el) => {
-                                const currentId = cat.ids[currentIndex]
-                                const videoKey = `${cat.key}-${currentId}`
-                                videoRefs.current[videoKey] = el
-                              }}
-                              preload="none"
-                              controls
-                              className="w-full h-full object-contain bg-black"
-                              poster={getImageSrc(cat.ids[currentIndex], cat.key)}
-                            >
-                              <source src={getVideoSrc(cat.ids[currentIndex], cat.key)} />
-                            </video>
-                          </div>
-                        </div>
-
-                        {/* 左右切换按钮 */}
-                        {cat.ids.length > 1 && (
-                          <>
-                            <button
-                              aria-label="Previous video"
-                              onClick={() => handlePrev(cat.key, cat.ids.length)}
-                              className="absolute left-2 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full border-2 bg-card/90 backdrop-blur-sm hover:bg-accent/10 transition z-10 flex items-center justify-center"
-                              style={{ borderColor: 'var(--accent)' }}
-                            >
-                              <ChevronLeft className="h-5 w-5 text-accent" />
-                            </button>
-                            <button
-                              aria-label="Next video"
-                              onClick={() => handleNext(cat.key, cat.ids.length)}
-                              className="absolute right-2 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full border-2 bg-card/90 backdrop-blur-sm hover:bg-accent/10 transition z-10 flex items-center justify-center"
-                              style={{ borderColor: 'var(--accent)' }}
-                            >
-                              <ChevronRight className="h-5 w-5 text-accent" />
-                            </button>
-                          </>
-                        )}
-
-                        {/* 指示器（dots） */}
-                        {cat.ids.length > 1 && (
-                          <div className="flex items-center justify-center gap-2 mt-4">
-                            {cat.ids.map((_, idx) => (
-                              <button
-                                key={idx}
-                                aria-label={`Go to video ${idx + 1}`}
-                                onClick={() => setActiveIndexes((prev) => ({ ...prev, [cat.key]: idx }))}
-                                className={`h-2 rounded-full transition-all ${
-                                  idx === currentIndex
-                                    ? 'w-8 bg-accent'
-                                    : 'w-2 bg-muted-foreground/30 hover:bg-muted-foreground/50'
-                                }`}
-                              />
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* 桌面端：横向滚动区域 */}
-                    <div className="hidden md:block">
-                      <div
-                        ref={(el) => { scrollRefs.current[cat.key] = el }}
-                        className="overflow-x-auto mx-[-1.5rem] px-6 pb-2 nice-scroll-x"
-                      >
-                        <div className="flex gap-6 min-w-max">
-                          {cat.ids.map((id) => {
-                            const videoKey = `${cat.key}-${id}`
-                            
-                            return (
-                              <div
-                                key={id}
-                                ref={(el) => {
-                                  cardRefs.current[videoKey] = el
-                                }}
-                                className="shrink-0 w-auto rounded-2xl border border-border bg-card"
-                              >
-                                <div
-                                  className="relative flex-none overflow-hidden rounded-2xl border border-border bg-card shadow-md cursor-pointer group h-[280px]"
-                                  onClick={() => toggleVideo(videoKey)}
-                                >
-                                  <video
-                                    ref={(el) => {
-                                      videoRefs.current[videoKey] = el
-                                    }}
-                                    preload="none"
-                                    controls
-                                    className="w-full h-full object-contain bg-black"
-                                    poster={getImageSrc(id, cat.key)}
-                                  >
-                                    <source src={getVideoSrc(id, cat.key)} />
-                                  </video>
-                                </div>
-                              </div>
-                            )
-                          })}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="rounded-xl border border-dashed border-border bg-card p-8 text-center">
-                    <p className="text-muted-foreground text-sm">Coming soon...</p>
-                  </div>
-                )}
               </div>
             )
           })}
         </div>
+        
+        {/* 查看更多按钮 */}
+        {!showAll && (
+          <div className="mt-8 text-center">
+            <button
+              onClick={() => setShowAll(true)}
+              className="px-6 py-3 rounded-full border-2 border-primary bg-transparent hover:bg-primary/10 text-primary font-medium transition-colors"
+            >
+              View More
+            </button>
+          </div>
+        )}
       </div>
-
-      <style jsx global>{`
-        @keyframes pulse {
-          0%, 100% { transform: scaleY(1); }
-          50% { transform: scaleY(1.5); }
-        }
-        /* Hide native scrollbar for horizontal rows */
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-
-        /* Nice thin horizontal scrollbar - green accent */
-        .nice-scroll-x { scrollbar-color: rgba(34, 197, 94, 0.4) transparent; scrollbar-width: thin; }
-        .nice-scroll-x::-webkit-scrollbar { height: 6px; }
-        .nice-scroll-x::-webkit-scrollbar-track { background: transparent; }
-        .nice-scroll-x::-webkit-scrollbar-thumb { background: rgba(34, 197, 94, 0.4); border-radius: 9999px; }
-        .nice-scroll-x::-webkit-scrollbar-thumb:hover { background: rgba(34, 197, 94, 0.6); }
-      `}</style>
     </section>
   )
 }

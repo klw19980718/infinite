@@ -103,21 +103,20 @@ export default function OtpForm({ onSuccess, redirectTo, emailSent, onBackToEmai
               required
               disabled={loading}
               autoComplete="one-time-code"
-              className="h-14 rounded-xl px-4 bg-secondary/50 text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-accent/50 text-center text-2xl tracking-[0.5em] font-mono"
-              style={{ border: '2px solid var(--accent)' }}
+              className="h-14 rounded-2xl px-4 bg-card dark:bg-[#4a4a4a] border border-border dark:border-[#5a5a5a] text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-primary/50 dark:focus:ring-[#7A7FEE] focus:border-primary/50 dark:focus:border-[#7A7FEE] text-center text-2xl tracking-[0.5em] font-mono transition-all duration-200 shadow-sm dark:shadow-md"
               maxLength={6}
             />
           </div>
 
           {error && (
-            <div className="text-sm text-destructive-foreground bg-destructive/10 p-4 rounded-xl border border-destructive/20">
+            <div className="text-sm text-destructive-foreground bg-destructive/10 dark:bg-destructive/20 p-4 rounded-2xl border border-destructive/20 dark:border-destructive/40">
               {error}
             </div>
           )}
 
           <Button
             type="submit"
-            className="w-full h-12 rounded-xl font-semibold bg-accent text-accent-foreground hover:bg-accent/90 transition-all duration-200 shadow-lg hover:shadow-xl"
+            className="w-full h-12 rounded-2xl font-semibold bg-primary text-primary-foreground hover:bg-primary/90 transition-all duration-200 shadow-md dark:shadow-lg hover:shadow-lg dark:hover:shadow-xl"
             disabled={loading || otp.length !== 6}
           >
             {loading ? "Verifying…" : "Verify code"}
@@ -129,7 +128,7 @@ export default function OtpForm({ onSuccess, redirectTo, emailSent, onBackToEmai
             type="button"
             variant="ghost"
             onClick={handleBackToEmail}
-            className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+            className="text-sm text-muted-foreground hover:text-foreground transition-colors rounded-2xl"
           >
             ← Back to email
           </Button>
@@ -153,25 +152,23 @@ export default function OtpForm({ onSuccess, redirectTo, emailSent, onBackToEmai
           required
           disabled={loading}
           autoComplete="email"
-          className="h-12 rounded-xl px-4 bg-secondary/50 text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-accent/50 transition-all duration-200"
-          style={{ border: '2px solid var(--accent)' }}
+          className="h-12 rounded-2xl px-4 bg-card dark:bg-[#4a4a4a] border border-border dark:border-[#5a5a5a] text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-primary/50 dark:focus:ring-[#7A7FEE] focus:border-primary/50 dark:focus:border-[#7A7FEE] transition-all duration-200 shadow-sm dark:shadow-md"
           autoFocus
         />
       </div>
 
       {error && (
-        <div className="text-sm text-destructive-foreground bg-destructive/10 p-4 rounded-xl border border-destructive/20">
+        <div className="text-sm text-destructive-foreground bg-destructive/10 dark:bg-destructive/20 p-4 rounded-2xl border border-destructive/20 dark:border-destructive/40">
           {error}
         </div>
       )}
 
       <Button
         type="submit"
-        className="w-full h-12 rounded-xl font-semibold bg-card border-2 hover:bg-accent/10 transition-all duration-200 shadow-lg hover:shadow-xl"
-        style={{ borderColor: 'var(--accent)' }}
+        className="w-full h-12 rounded-2xl font-semibold bg-primary text-primary-foreground hover:bg-primary/90 transition-all duration-200 shadow-md dark:shadow-lg hover:shadow-lg dark:hover:shadow-xl"
         disabled={loading}
       >
-        <span className="text-foreground font-semibold">{loading ? "Sending…" : "Send verification code"}</span>
+        {loading ? "Sending…" : "Send verification code"}
       </Button>
     </form>
   )
