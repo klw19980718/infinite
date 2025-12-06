@@ -51,14 +51,13 @@ export default function PrivacyPage() {
             <section className="mb-8 p-6 rounded-xl bg-card/30 dark:bg-[#3a3a3a] border border-border/50 dark:border-[#5a5a5a]">
               <h2 className="text-2xl font-semibold mb-4 text-foreground">1) Information We Collect</h2>
               <div className="text-muted-foreground leading-relaxed space-y-4">
-              <p><strong>Account & Auth:</strong> email address, Google OAuth basic profile (if used), OTP/magic-link metadata, session IDs (via Supabase).</p>
-              <p><strong>Usage Data:</strong> interactions, device/browser type, timestamps, approximate location from IP, crash/error logs.</p>
-              <p><strong>Content:</strong> prompts, uploads (e.g., images/audio/video), generated outputs, project/workspace metadata.</p>
-              <p><strong>Payments:</strong> billing email and transaction metadata via Stripe; we do not store full card numbers.</p>
-              <p><strong>Cookies/Local Storage:</strong> to keep you signed in, remember preferences, secure sessions, and measure performance.</p>
-            </div>
-            </div>
-          </section>
+                <p><strong>Account & Auth:</strong> email address, Google OAuth basic profile (if used), OTP/magic-link metadata, session IDs (via Supabase).</p>
+                <p><strong>Usage Data:</strong> interactions, device/browser type, timestamps, approximate location from IP, crash/error logs.</p>
+                <p><strong>Content:</strong> prompts, uploads (e.g., images/audio/video), generated outputs, project/workspace metadata.</p>
+                <p><strong>Payments:</strong> billing email and transaction metadata via Stripe; we do not store full card numbers.</p>
+                <p><strong>Cookies/Local Storage:</strong> to keep you signed in, remember preferences, secure sessions, and measure performance.</p>
+              </div>
+            </section>
 
           <section className="mb-8 p-6 rounded-xl bg-card/30 dark:bg-[#3a3a3a] border border-border/50 dark:border-[#5a5a5a]">
             <h2 className="text-2xl font-semibold mb-4 text-foreground">2) How We Use Data</h2>
