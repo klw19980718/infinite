@@ -421,7 +421,7 @@ export function PricingPageClient() {
 
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
             <Link
-              href="/infinite-talk-ai/image-to-video"
+              href="/infinite-talk-ai/talking-photo"
               className="group relative px-8 py-4 bg-primary text-primary-foreground rounded-full font-semibold hover:bg-primary/90 hover:scale-105 transition-all duration-300 shadow-lg dark:shadow-xl"
             >
               <div className="flex items-center justify-center gap-2">

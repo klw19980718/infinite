@@ -32,7 +32,7 @@ export default function ImageToVideoPage() {
             <div className="pt-4">
               <div className="inline-flex h-12 sm:h-14 items-center px-1.5 sm:px-2 gap-1.5 sm:gap-2 bg-muted/50 border border-border/60 rounded-full">
                 <Link
-                  href="/infinite-talk-ai/image-to-video"
+                  href="/infinite-talk-ai/talking-photo"
                   className={`px-4 sm:px-6 py-2 sm:py-3 flex items-center text-xs sm:text-sm font-semibold rounded-full transition-all ${
                     pathname === "/infinite-talk-ai/image-to-video"
                       ? "bg-primary text-primary-foreground shadow-md hover:bg-primary/90"

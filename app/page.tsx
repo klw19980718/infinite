@@ -317,7 +317,7 @@ export default function Home() {
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4 md:gap-5 items-center sm:items-start">
                       <a 
-                        href="/infinite-talk-ai/image-to-video" 
+                        href="/infinite-talk-ai/talking-photo" 
                         className="group relative flex items-center justify-center gap-2 rounded-full bg-primary px-8 md:px-10 py-3 md:py-4 text-primary-foreground text-base md:text-lg font-semibold hover:bg-primary/90 hover:scale-105 active:scale-95 transition-all duration-200 shadow-lg hover:shadow-xl w-full sm:w-auto"
                       >
                         <span>Start Generating</span>
