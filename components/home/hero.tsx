@@ -31,7 +31,7 @@ export const AuroraHero = () => {
       
 
               {/* Start Button */}
-              <Link href="/infinite-talk-ai/image-to-video">
+              <Link href="/infinite-talk-ai/talking-photo">
                 <Button 
                   size="lg" 
                   className="h-12 px-8 text-base font-semibold bg-primary text-primary-foreground hover:bg-primary/90 shadow-md"
