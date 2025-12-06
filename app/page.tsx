@@ -295,7 +295,7 @@ export default function Home() {
               <div className="max-w-6xl mx-auto rounded-3xl border border-border bg-card/50 backdrop-blur-xl shadow-2xl overflow-hidden">
                 <div className="flex flex-col lg:flex-row items-center">
                   {/* SVG 图片区域 */}
-                  <div className="w-full lg:w-1/2 flex items-center justify-center p-8 md:p-12 lg:p-16 bg-muted/30 dark:bg-muted/20">
+                  <div className="w-full lg:w-1/2 flex items-center justify-center p-8 md:p-12 lg:p-16 bg-primary dark:bg-white/50">
                     <div className="relative w-full max-w-md aspect-[4/3]">
                       <Image
                         src="/svg/start.svg"

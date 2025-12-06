@@ -1,5 +1,5 @@
+import { TalkingPhotoHero } from '@/components/talking-photo'
 import type { Metadata } from 'next'
-import { redirect } from 'next/navigation'
 
 export const metadata: Metadata = {
   title: 'Infinite Talk AI image-to-video — Fast, Natural Lip Sync',
@@ -12,13 +12,13 @@ export const metadata: Metadata = {
     'AI presenter',
   ],
   alternates: {
-    canonical: 'https://www.infinitetalkai.org/infinite-talk-ai/image-to-video',
+    canonical: 'https://www.infinitetalkai.org/infinite-talk-ai/talking-photo',
   },
   openGraph: {
     title: 'Infinite Talk AI image-to-video — Fast, Natural Lip Sync',
     description: 'Make talking videos from one photo with infinite-talk-ai. The image-to-video engine delivers precise Lip Sync and expressive motion for marketing and UGC.',
     type: 'website',
-    url: 'https://www.infinitetalkai.org/infinite-talk-ai/image-to-video',
+    url: 'https://www.infinitetalkai.org/infinite-talk-ai/talking-photo',
     siteName: 'Infinite Talk AI',
     locale: 'en_US',
     images: [
@@ -55,6 +55,14 @@ export const metadata: Metadata = {
   category: 'technology',
 }
 
-export default function ImageToVideoPage() {
-  redirect('/')
+export default function TalkingPhotoPage() {
+  return (
+    <>
+      <main className="bg-background relative min-h-screen">
+        <div className="relative z-10">
+          <TalkingPhotoHero />
+        </div>
+      </main>
+    </>
+  )
 }

@@ -4,9 +4,9 @@ import { FiX, FiCheck } from "react-icons/fi"
 import { toast } from "sonner"
 import { usePathname } from "next/navigation"
 import Link from "next/link"
-import { TalkingPhotoLayout } from "@/components/talking-conponents-video/TalkingPhotoLayout"
+import { TalkingPhotoLayout } from "@/components/talking-components/TalkingPhotoLayout"
 
-export const VideoToVideoHero = () => {
+export const TalkingPhotoHero = () => {
   const pathname = usePathname()
   
   return (
@@ -15,11 +15,9 @@ export const VideoToVideoHero = () => {
         <div className="max-w-6xl mx-auto">
           {/* Header Section */}
           <div className="text-center space-y-6 mb-16">
-  
-
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-balance px-4">
               <span className="text-primary">
-                Video-to-Video with Infinite Talk AI
+                Talking Photo with Infinite Talk AI
               </span>
               <br />
               <span className="text-foreground">
@@ -28,7 +26,7 @@ export const VideoToVideoHero = () => {
             </h1>
 
             <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-4xl mx-auto text-pretty px-4">
-              Transform any video into a lifelike talking clip with perfect lip sync. Infinite Talk AI pairs video-to-video generation with precise Lip Sync and natural expressions for creators, brands, and educators.
+              Make talking videos from one photo with perfect lip sync. Infinite Talk AI pairs image-to-video generation with precise Lip Sync and expressive motion for creators, brands, and educators.
             </p>
 
             {/* Anchor Tab Links */}
@@ -68,9 +66,9 @@ export const VideoToVideoHero = () => {
             </div>
           </div>
 
-          {/* Main Content: Video-to-Video generator layout */}
+          {/* Main Content: Talking Photo generator layout */}
           <div className="w-full max-w-6xl mx-auto mt-12">
-            <div id="video-talking">
+            <div id="talking-photo">
               <TalkingPhotoLayout
                 onTaskCreated={() => {
                   // Show success message and guide to profile
@@ -118,3 +116,4 @@ export const VideoToVideoHero = () => {
     </section>
   )
 }
+

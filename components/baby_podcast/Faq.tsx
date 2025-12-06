@@ -72,18 +72,18 @@ export function BabyPodcastFaq() {
             return (
               <div
                 key={index}
-                className="glass rounded-2xl border border-accent/60 overflow-hidden transition-all duration-300"
+                className="bg-card dark:bg-[#4a4a4a] rounded-2xl border border-border dark:border-[#5a5a5a] hover:border-primary/50 dark:hover:border-primary/50 hover:shadow-lg dark:hover:shadow-xl overflow-hidden transition-all duration-300 shadow-md dark:shadow-lg"
               >
                 <button
                   type="button"
-                  className="w-full flex items-center justify-between gap-4 px-4 md:px-5 py-3 md:py-4 text-left"
+                  className="w-full flex items-center justify-between gap-4 px-4 md:px-5 py-3 md:py-4 text-left hover:bg-primary/5 dark:hover:bg-primary/10 transition-colors"
                   onClick={() => setOpenIndex(isOpen ? null : index)}
                 >
                   <span className="text-sm md:text-base font-semibold text-foreground">
                     {item.question}
                   </span>
                   <span
-                    className={`flex h-6 w-6 items-center justify-center rounded-full border border-accent text-accent text-xs md:text-sm transition-transform duration-200 ${
+                    className={`flex h-6 w-6 items-center justify-center rounded-full border border-primary dark:border-primary/50 text-primary text-xs md:text-sm transition-transform duration-200 ${
                       isOpen ? "rotate-180" : "rotate-0"
                     }`}
                   >
@@ -92,7 +92,7 @@ export function BabyPodcastFaq() {
                 </button>
 
                 {isOpen && (
-                  <div className="px-4 md:px-5 pb-4 md:pb-5 pt-0 text-xs md:text-sm text-muted-foreground leading-relaxed border-t border-accent/30">
+                  <div className="px-4 md:px-5 pb-4 md:pb-5 pt-0 text-xs md:text-sm text-muted-foreground leading-relaxed border-t border-border/50 dark:border-[#5a5a5a]">
                     {item.answer}
                   </div>
                 )}

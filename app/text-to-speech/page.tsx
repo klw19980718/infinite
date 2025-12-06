@@ -136,10 +136,10 @@ export default function TextToSpeechPage() {
                   <Link
                     key={item.id}
                     href={item.href}
-                    className="flex items-center gap-4 p-4 rounded-lg border border-border bg-card hover:border-primary/50 hover:bg-accent/5 transition-all group"
+                    className="flex items-center gap-4 p-6 rounded-2xl border border-border dark:border-[#5a5a5a] bg-card dark:bg-[#4a4a4a] hover:border-primary/50 dark:hover:border-primary/50 hover:bg-accent/5 dark:hover:bg-[#5a5a5a] transition-all duration-200 shadow-md dark:shadow-lg hover:shadow-lg dark:hover:shadow-xl group"
                   >
                     {item.icon && (
-                      <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+                      <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-primary/10 dark:bg-primary/20 flex items-center justify-center text-primary">
                         {item.icon}
                       </div>
                     )}

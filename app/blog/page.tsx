@@ -37,7 +37,7 @@ const blogPosts = [
 
 export default function BlogPage() {
   return (
-    <div className="min-h-screen pt-16 pb-20">
+    <div className="min-h-screen pt-16 pb-20 bg-background">
       <div className="container mx-auto px-4 sm:px-6 max-w-4xl">
         <div className="py-12 sm:py-16">
           <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-4">Blog</h1>
@@ -49,12 +49,12 @@ export default function BlogPage() {
             {blogPosts.map((post) => (
               <article
                 key={post.slug}
-                className="group p-6 sm:p-8 rounded-xl border border-border/50 bg-card/50 hover:bg-card/80 hover:border-border transition-all duration-300"
+                className="group p-6 sm:p-8 rounded-2xl border border-border dark:border-[#5a5a5a] bg-card dark:bg-[#4a4a4a] hover:bg-card/80 dark:hover:bg-[#5a5a5a] hover:border-primary/50 dark:hover:border-primary/50 transition-all duration-200 shadow-md dark:shadow-lg hover:shadow-lg dark:hover:shadow-xl"
               >
                 <Link href={`/blog/${post.slug}`} className="block">
                   <div className="flex items-start justify-between gap-4 mb-4">
                     <div className="flex-1">
-                      <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3 group-hover:text-accent transition-colors">
+                      <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors">
                         {post.title}
                       </h2>
                       <p className="text-muted-foreground leading-relaxed mb-4">
@@ -78,7 +78,7 @@ export default function BlogPage() {
                       <span>{post.readTime}</span>
                     </div>
                     
-                    <div className="flex items-center gap-2 text-accent font-medium group-hover:gap-3 transition-all">
+                    <div className="flex items-center gap-2 text-primary font-medium group-hover:gap-3 transition-all">
                       <span>Read more</span>
                       <ArrowRight className="h-4 w-4" />
                     </div>

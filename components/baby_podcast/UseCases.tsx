@@ -49,7 +49,7 @@ export function BabyPodcastUseCases() {
       <div className="container mx-auto px-6 relative z-10">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4 text-balance">
-            Use Cases — <span className="text-accent">InfiniteTalk Baby Podcast</span>
+            Use Cases — <span className="text-primary">InfiniteTalk Baby Podcast</span>
           </h2>
           <p className="text-base md:text-lg text-muted-foreground max-w-3xl mx-auto">
             Discover how creators, brands, and educators use Infinite Talk AI to turn AI baby hosts into engaging podcast-style videos.
@@ -63,13 +63,12 @@ export function BabyPodcastUseCases() {
             return (
               <div
                 key={index}
-                className="glass rounded-3xl px-6 py-6 md:px-8 md:py-7 flex flex-col md:flex-row md:items-start gap-5 md:gap-6 hover:glass-strong hover:-translate-y-0.5 transition-all duration-300"
-                style={{ borderColor: "var(--accent)", borderWidth: "2px" }}
+                className="bg-card dark:bg-[#4a4a4a] rounded-3xl px-6 py-6 md:px-8 md:py-7 flex flex-col md:flex-row md:items-start gap-5 md:gap-6 border border-border dark:border-[#5a5a5a] hover:border-primary/50 dark:hover:border-primary/50 hover:shadow-xl dark:hover:shadow-2xl hover:-translate-y-0.5 transition-all duration-300 shadow-lg dark:shadow-xl"
               >
                 <div className="flex flex-col items-start gap-3 md:w-64 flex-shrink-0">
-                  <div className="inline-flex items-center gap-3 px-3 py-2 rounded-full bg-accent/10 border border-accent/25">
-                    <div className="w-7 h-7 rounded-full bg-accent/20 flex items-center justify-center">
-                      <Icon className="w-4 h-4 text-accent" />
+                  <div className="inline-flex items-center gap-3 px-3 py-2 rounded-full bg-primary/10 dark:bg-primary/20 border border-primary/25 dark:border-primary/40">
+                    <div className="w-7 h-7 rounded-full bg-primary/20 dark:bg-primary/30 flex items-center justify-center">
+                      <Icon className="w-4 h-4 text-primary" />
                     </div>
                     <span className="text-xs md:text-sm font-semibold text-foreground whitespace-nowrap">
                       {item.label}
@@ -88,7 +87,7 @@ export function BabyPodcastUseCases() {
                 <ul className="flex-1 space-y-1.5 md:space-y-2 text-xs md:text-sm text-muted-foreground leading-relaxed">
                   {item.bullets.map((bullet, i) => (
                     <li key={i} className="flex items-start gap-2">
-                      <span className="mt-[6px] h-1 w-1 rounded-full bg-accent flex-shrink-0" />
+                      <span className="mt-[6px] h-1 w-1 rounded-full bg-primary flex-shrink-0" />
                       <span>{bullet}</span>
                     </li>
                   ))}

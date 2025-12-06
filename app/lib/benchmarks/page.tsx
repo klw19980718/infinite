@@ -161,9 +161,9 @@ export default function BenchmarksPage() {
             <header className="mb-12 md:mb-16">
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 text-balance">
                 Benchmarks &amp; Evaluation of{' '}
-                <span className="text-accent">InfiniteTalk</span>
+                <span className="text-primary">InfiniteTalk</span>
               </h1>
-              <div className="glass rounded-2xl p-6 md:p-8 border border-accent/60">
+              <div className="bg-card dark:bg-[#4a4a4a] rounded-2xl p-6 md:p-8 border border-border dark:border-[#5a5a5a] shadow-lg dark:shadow-xl">
                 <p className="text-lg md:text-xl text-muted-foreground leading-relaxed text-pretty italic">
                   How InfiniteTalk compares to traditional dubbing and
                   audio-driven I2V models on public datasets—and what that means
@@ -186,14 +186,14 @@ export default function BenchmarksPage() {
                 </p>
                 <ul className="list-none space-y-2 ml-0">
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span>
                       <strong className="text-foreground">HDTF</strong> – high
                       quality talking-head videos with rich facial dynamics.
                     </span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span>
                       <strong className="text-foreground">CelebV-HQ</strong> –
                       high-resolution celebrity clips with diverse poses,
@@ -201,7 +201,7 @@ export default function BenchmarksPage() {
                     </span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span>
                       <strong className="text-foreground">EMTD</strong> – clips
                       with full-body motion, used to test gesture and
@@ -214,40 +214,40 @@ export default function BenchmarksPage() {
                   We compare InfiniteTalk against two families of baselines:
                 </p>
                 <div className="grid md:grid-cols-2 gap-4">
-                  <div className="glass rounded-xl p-4 border border-border/60">
+                  <div className="bg-card dark:bg-[#4a4a4a] rounded-xl p-4 border border-border dark:border-[#5a5a5a] shadow-md dark:shadow-lg">
                     <p className="font-semibold text-foreground mb-2">
                       Traditional dubbing (mouth-only)
                     </p>
                     <ul className="list-none space-y-1 ml-0">
                       <li className="flex items-start gap-2">
-                        <span className="mt-1.5 h-1 w-1 rounded-full bg-accent/60 flex-shrink-0" />
+                        <span className="mt-1.5 h-1 w-1 rounded-full bg-primary/60 flex-shrink-0" />
                         <span>LatentSync</span>
                       </li>
                       <li className="flex items-start gap-2">
-                        <span className="mt-1.5 h-1 w-1 rounded-full bg-accent/60 flex-shrink-0" />
+                        <span className="mt-1.5 h-1 w-1 rounded-full bg-primary/60 flex-shrink-0" />
                         <span>MuseTalk</span>
                       </li>
                     </ul>
                   </div>
-                  <div className="glass rounded-xl p-4 border border-border/60">
+                  <div className="bg-card dark:bg-[#4a4a4a] rounded-xl p-4 border border-border dark:border-[#5a5a5a] shadow-md dark:shadow-lg">
                     <p className="font-semibold text-foreground mb-2">
                       Audio-driven image-to-video (I2V)
                     </p>
                     <ul className="list-none space-y-1 ml-0">
                       <li className="flex items-start gap-2">
-                        <span className="mt-1.5 h-1 w-1 rounded-full bg-accent/60 flex-shrink-0" />
+                        <span className="mt-1.5 h-1 w-1 rounded-full bg-primary/60 flex-shrink-0" />
                         <span>FantacyTalking</span>
                       </li>
                       <li className="flex items-start gap-2">
-                        <span className="mt-1.5 h-1 w-1 rounded-full bg-accent/60 flex-shrink-0" />
+                        <span className="mt-1.5 h-1 w-1 rounded-full bg-primary/60 flex-shrink-0" />
                         <span>Hallo3</span>
                       </li>
                       <li className="flex items-start gap-2">
-                        <span className="mt-1.5 h-1 w-1 rounded-full bg-accent/60 flex-shrink-0" />
+                        <span className="mt-1.5 h-1 w-1 rounded-full bg-primary/60 flex-shrink-0" />
                         <span>OmniAvatar</span>
                       </li>
                       <li className="flex items-start gap-2">
-                        <span className="mt-1.5 h-1 w-1 rounded-full bg-accent/60 flex-shrink-0" />
+                        <span className="mt-1.5 h-1 w-1 rounded-full bg-primary/60 flex-shrink-0" />
                         <span>MultiTalk</span>
                       </li>
                     </ul>
@@ -260,35 +260,35 @@ export default function BenchmarksPage() {
                 </p>
                 <ul className="list-none space-y-2 ml-0">
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span>
                       <strong className="text-foreground">FID</strong>{' '}
                       (↓) – per-frame visual quality.
                     </span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span>
                       <strong className="text-foreground">FVD</strong>{' '}
                       (↓) – temporal coherence across frames.
                     </span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span>
                       <strong className="text-foreground">Sync-C</strong>{' '}
                       (↑) – confidence score for lip–audio synchronization.
                     </span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span>
                       <strong className="text-foreground">Sync-D</strong>{' '}
                       (↓) – distance metric for lip sync.
                     </span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span>
                       <strong className="text-foreground">CSIM</strong>{' '}
                       (↑) – identity similarity between input and output.
@@ -318,14 +318,14 @@ export default function BenchmarksPage() {
                 </p>
                 <ul className="list-none space-y-2 ml-0">
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span>
                       Produce very strong FID/FVD scores, because most pixels
                       are copied from the original video.
                     </span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span>
                       Leave head and body motion unchanged, so the performance
                       often feels disconnected from the new audio.
@@ -343,7 +343,7 @@ export default function BenchmarksPage() {
 
                 {/* Table 1 image */}
                 <div className="mt-8">
-                  <div className="glass rounded-2xl p-4 md:p-6 border border-accent/60 overflow-hidden">
+                  <div className="bg-card dark:bg-[#4a4a4a] rounded-2xl p-4 md:p-6 border border-border dark:border-[#5a5a5a] shadow-lg dark:shadow-xl overflow-hidden">
                     <div className="relative w-full aspect-[16/9] rounded-xl overflow-hidden">
                       <Image
                         src="https://cdn.infinitetalkai.org/lib/table1.png"
@@ -386,7 +386,7 @@ export default function BenchmarksPage() {
                 </p>
                 <ul className="list-none space-y-2 ml-0">
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span>
                       Drift in <strong className="text-foreground">
                         identity
@@ -395,7 +395,7 @@ export default function BenchmarksPage() {
                     </span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span>
                       Struggle to keep motion and appearance stable over time.
                     </span>
@@ -412,13 +412,13 @@ export default function BenchmarksPage() {
                 </p>
                 <ul className="list-none space-y-2 ml-0">
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span>
                       Keeps identity and background stable over long sequences.
                     </span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span>
                       Produces strong lip and body sync that follows the dubbed
                       audio.
@@ -428,7 +428,7 @@ export default function BenchmarksPage() {
 
                 {/* Table 2 image */}
                 <div className="mt-8">
-                  <div className="glass rounded-2xl p-4 md:p-6 border border-accent/60 overflow-hidden">
+                  <div className="bg-card dark:bg-[#4a4a4a] rounded-2xl p-4 md:p-6 border border-border dark:border-[#5a5a5a] shadow-lg dark:shadow-xl overflow-hidden">
                     <div className="relative w-full aspect-[16/9] rounded-xl overflow-hidden">
                       <Image
                         src="https://cdn.infinitetalkai.org/lib/table2.png"
@@ -461,7 +461,7 @@ export default function BenchmarksPage() {
 
                 {/* Figure 6 image */}
                 <div className="mt-4">
-                  <div className="glass rounded-2xl p-4 md:p-6 border border-accent/60 overflow-hidden">
+                  <div className="bg-card dark:bg-[#4a4a4a] rounded-2xl p-4 md:p-6 border border-border dark:border-[#5a5a5a] shadow-lg dark:shadow-xl overflow-hidden">
                     <div className="relative w-full aspect-[16/9] rounded-xl overflow-hidden">
                       <Image
                         src="https://cdn.infinitetalkai.org/lib/fig6.png"
@@ -483,14 +483,14 @@ export default function BenchmarksPage() {
                 </p>
                 <ul className="list-none space-y-2 ml-0">
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span>
                       Participants ranked methods on lip sync, body sync,
                       identity consistency, and overall naturalness.
                     </span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span>
                       InfiniteTalk achieved the{' '}
                       <strong className="text-foreground">
@@ -500,7 +500,7 @@ export default function BenchmarksPage() {
                     </span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span>
                       Mouth-only baselines are limited by the fact that they
                       cannot adjust body motion at all.
@@ -532,28 +532,28 @@ export default function BenchmarksPage() {
                 </p>
                 <ul className="list-none space-y-2 ml-0">
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span>
                       <strong className="text-foreground">M0</strong> – same
                       chunk (very strong, local control).
                     </span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span>
                       <strong className="text-foreground">M1</strong> – first /
                       last frame of each chunk (hard boundary locking).
                     </span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span>
                       <strong className="text-foreground">M2</strong> – distant
                       chunks (very weak control).
                     </span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span>
                       <strong className="text-foreground">M3</strong> –
                       neighboring chunks (balanced soft control).
@@ -563,7 +563,7 @@ export default function BenchmarksPage() {
 
                 {/* Table 3 image */}
                 <div className="mt-8">
-                  <div className="glass rounded-2xl p-4 md:p-6 border border-accent/60 overflow-hidden">
+                  <div className="bg-card dark:bg-[#4a4a4a] rounded-2xl p-4 md:p-6 border border-border dark:border-[#5a5a5a] shadow-lg dark:shadow-xl overflow-hidden">
                     <div className="relative w-full aspect-[16/5] rounded-xl overflow-hidden">
                       <Image
                         src="https://cdn.infinitetalkai.org/lib/table3.png"
@@ -588,13 +588,13 @@ export default function BenchmarksPage() {
                   default soft reference control strategy in InfiniteTalk.
                 </p>
 
-                <div className="mt-6 p-4 glass rounded-xl border border-accent/60">
+                <div className="mt-6 p-4 bg-card dark:bg-[#4a4a4a] rounded-xl border border-border dark:border-[#5a5a5a] shadow-md dark:shadow-lg">
                   <p className="text-sm text-muted-foreground">
                     For a deeper conceptual explanation of soft reference
                     control and the M0–M3 strategies, see:{' '}
                     <Link
                       href="/lib/soft-reference-control"
-                      className="text-accent hover:underline font-medium"
+                      className="text-primary hover:underline font-medium"
                     >
                       /lib/soft-reference-control
                     </Link>
@@ -620,7 +620,7 @@ export default function BenchmarksPage() {
                 </p>
                 <ul className="list-none space-y-2 ml-0">
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span>
                       <strong className="text-foreground">
                         InfiniteTalk + SDEdit
@@ -631,7 +631,7 @@ export default function BenchmarksPage() {
                     </span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span>
                       <strong className="text-foreground">
                         InfiniteTalk + Uni3C
@@ -644,7 +644,7 @@ export default function BenchmarksPage() {
 
                 {/* Figure 7 image */}
                 <div className="mt-8">
-                  <div className="glass rounded-2xl p-4 md:p-6 border border-accent/60 overflow-hidden">
+                  <div className="bg-card dark:bg-[#4a4a4a] rounded-2xl p-4 md:p-6 border border-border dark:border-[#5a5a5a] shadow-lg dark:shadow-xl overflow-hidden">
                     <div className="relative w-full aspect-[16/9] rounded-xl overflow-hidden">
                       <Image
                         src="https://cdn.infinitetalkai.org/lib/fig7.png"
@@ -679,7 +679,7 @@ export default function BenchmarksPage() {
                   Putting everything together, you can read the benchmarks like
                   this:
                 </p>
-                <div className="glass rounded-2xl p-4 md:p-6 border border-border/60 overflow-x-auto">
+                <div className="bg-card dark:bg-[#4a4a4a] rounded-2xl p-4 md:p-6 border border-border dark:border-[#5a5a5a] shadow-lg dark:shadow-xl overflow-x-auto">
                   <table className="w-full border-collapse text-sm md:text-base">
                     <thead>
                       <tr className="border-b border-border/50">
@@ -763,7 +763,7 @@ export default function BenchmarksPage() {
                 </p>
                 <ul className="list-none space-y-2 ml-0">
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span>
                       If you care about{' '}
                       <strong className="text-foreground">
@@ -774,7 +774,7 @@ export default function BenchmarksPage() {
                     </span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span>
                       If you care about{' '}
                       <strong className="text-foreground">
@@ -786,7 +786,7 @@ export default function BenchmarksPage() {
                     </span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span>
                       Traditional patch-based edits are still useful when you
                       just need quick mouth fixes, but they cannot replace
@@ -795,7 +795,7 @@ export default function BenchmarksPage() {
                   </li>
                 </ul>
 
-                <div className="mt-8 p-6 glass rounded-2xl border border-accent/60">
+                <div className="mt-8 p-6 bg-card dark:bg-[#4a4a4a] rounded-2xl border border-border dark:border-[#5a5a5a] shadow-lg dark:shadow-xl">
                   <p className="text-base md:text-lg text-foreground font-semibold mb-4">
                     Want to see how these results connect to the underlying
                     architecture?
@@ -803,14 +803,14 @@ export default function BenchmarksPage() {
                   <div className="space-y-3">
                     <Link
                       href="/lib/sparse-frame-video-dubbing"
-                      className="flex items-center gap-2 text-accent hover:text-accent/80 transition-colors font-medium"
+                      className="flex items-center gap-2 text-primary hover:text-primary/80 transition-colors font-medium"
                     >
                       <ArrowRight className="w-4 h-4" />
                       <span>Learn the sparse-frame dubbing paradigm</span>
                     </Link>
                     <Link
                       href="/lib/infinite-length-streaming-architecture"
-                      className="flex items-center gap-2 text-accent hover:text-accent/80 transition-colors font-medium"
+                      className="flex items-center gap-2 text-primary hover:text-primary/80 transition-colors font-medium"
                     >
                       <ArrowRight className="w-4 h-4" />
                       <span>
@@ -819,7 +819,7 @@ export default function BenchmarksPage() {
                     </Link>
                     <Link
                       href="/lib/soft-reference-control"
-                      className="flex items-center gap-2 text-accent hover:text-accent/80 transition-colors font-medium"
+                      className="flex items-center gap-2 text-primary hover:text-primary/80 transition-colors font-medium"
                     >
                       <ArrowRight className="w-4 h-4" />
                       <span>

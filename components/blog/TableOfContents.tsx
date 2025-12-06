@@ -79,12 +79,12 @@ export function TableOfContents({ headings }: TableOfContentsProps) {
                 onClick={() => scrollToHeading(heading.id)}
                 className={cn(
                   'text-left w-full px-3 py-1.5 rounded-lg text-sm transition-colors',
-                  'hover:bg-muted/50 hover:text-foreground',
+                  'hover:bg-muted/50 dark:hover:bg-[#5a5a5a] hover:text-foreground',
                   heading.level === 2
                     ? 'font-medium text-foreground'
                     : 'font-normal text-muted-foreground ml-4',
                   activeId === heading.id
-                    ? 'bg-accent/10 text-accent border-l-2 border-accent pl-2.5'
+                    ? 'bg-primary/10 dark:bg-primary/20 text-primary border-l-2 border-primary pl-2.5'
                     : ''
                 )}
               >

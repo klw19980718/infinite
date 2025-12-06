@@ -8,7 +8,8 @@ import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import LoginDialog from "@/components/auth/LoginDialog"
 import UserMenu from "@/components/auth/UserMenu"
-import { Menu } from "lucide-react"
+import { Menu, Image as ImageIcon, Video, Mic } from "lucide-react"
+import NavDropdown from "@/components/nav-dropdown"
 import {
   Sheet,
   SheetContent,
@@ -108,6 +109,33 @@ export default function Nav() {
             >
               Home
             </Link>
+            <NavDropdown
+              trigger={<span className="text-sm font-medium">Infinite Talk AI</span>}
+              items={[
+                {
+                  title: "Talking Photo",
+                  description: "Transform photos into talking videos",
+                  href: "/infinite-talk-ai/talking-photo",
+                  icon: ImageIcon,
+                  color: "bg-gradient-to-br from-[#7A7FEE] to-[#9D7FEE]",
+                },
+                {
+                  title: "Video to Video",
+                  description: "Convert videos with AI-powered dubbing",
+                  href: "/infinite-talk-ai/video-to-video",
+                  icon: Video,
+                  color: "bg-gradient-to-br from-[#50C4ED] to-[#7A7FEE]",
+                },
+                {
+                  title: "Baby Podcast",
+                  description: "Create engaging baby podcast content",
+                  href: "/infinite-talk-ai/baby-podcast",
+                  icon: Mic,
+                  color: "bg-gradient-to-br from-[#FF6B8B] to-[#FF8E8B]",
+                },
+              ]}
+              isActive={isActive}
+            />
             {/* <Link 
               href="/infinite-talk-ai/image-to-video" 
               className="px-3.5 py-2 text-xs font-medium text-foreground/70 hover:text-foreground hover:bg-white/5 rounded-lg transition-all duration-300"
@@ -225,22 +253,22 @@ export default function Nav() {
                     </Link>
                   </SheetClose>
                   
-                  {/* Feature Links */}
+                  {/* Infinite Talk AI Links */}
                   <div className="pt-2 pb-2 border-t border-border/50">
                     <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider px-4 mb-2">
-                      Features
+                      Infinite Talk AI
                     </p>
                     <SheetClose asChild>
                       <Link 
-                        href="/" 
+                        href="/infinite-talk-ai/talking-photo" 
                         className={`block text-base font-medium py-3 px-4 rounded-xl transition-colors ${
-                          isActive("/")
+                          isActive("/infinite-talk-ai/talking-photo")
                             ? "text-primary bg-primary/5"
                             : "text-foreground hover:text-primary hover:bg-foreground/5"
                         }`}
                         onClick={() => setMobileMenuOpen(false)}
                       >
-                        infinitetalk photo
+                        Talking Photo
                       </Link>
                     </SheetClose>
                     <SheetClose asChild>
@@ -253,7 +281,7 @@ export default function Nav() {
                         }`}
                         onClick={() => setMobileMenuOpen(false)}
                       >
-                        infinitetalk video
+                        Video to Video
                       </Link>
                     </SheetClose>
                     <SheetClose asChild>
@@ -266,7 +294,7 @@ export default function Nav() {
                         }`}
                         onClick={() => setMobileMenuOpen(false)}
                       >
-                        baby podcast
+                        Baby Podcast
                       </Link>
                     </SheetClose>
                   </div>

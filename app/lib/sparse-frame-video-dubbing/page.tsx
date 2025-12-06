@@ -156,19 +156,19 @@ export default function SparseFrameDubbingPage() {
             {/* Header */}
             <header className="mb-12 md:mb-16">
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 text-balance">
-                Sparse-Frame Video Dubbing in <span className="text-accent">InfiniteTalk</span>
+                Sparse-Frame Video Dubbing in <span className="text-primary">InfiniteTalk</span>
               </h1>
-              <div className="glass rounded-2xl p-6 md:p-8 border border-accent/60">
+              <div className="bg-card dark:bg-[#4a4a4a] rounded-2xl p-6 md:p-8 border border-border dark:border-[#5a5a5a] shadow-lg dark:shadow-xl">
                 <p className="text-lg md:text-xl text-muted-foreground leading-relaxed text-pretty italic">
                   How Infinite Talk AI goes beyond mouth-only dubbing to deliver full-frame, audio-synchronized performances.
                 </p>
               </div>
-              <div className="mt-6 p-4 rounded-xl bg-muted/50 border border-border/50">
+              <div className="mt-6 p-4 rounded-xl bg-card/30 dark:bg-[#3a3a3a] border border-border/50 dark:border-[#5a5a5a]">
                 <p className="text-sm md:text-base text-muted-foreground">
                   If you just want a practical, non-technical guide for using this engine to turn a single image into a talking video, see our tutorial on{' '}
                   <Link 
                     href="/blog/how-to-make-a-photo-talk-with-ai" 
-                    className="text-accent hover:underline font-medium"
+                    className="text-primary hover:underline font-medium"
                   >
                     how to make a photo talk with AI
                   </Link>.
@@ -178,7 +178,7 @@ export default function SparseFrameDubbingPage() {
 
             {/* Main Visual - Figure 1 */}
             <div className="mb-12 md:mb-16">
-              <div className="glass rounded-2xl p-4 md:p-6 border border-accent/60 overflow-hidden">
+              <div className="bg-card dark:bg-[#4a4a4a] rounded-2xl p-4 md:p-6 border border-border dark:border-[#5a5a5a] shadow-lg dark:shadow-xl overflow-hidden">
                 <div className="relative w-full aspect-video rounded-xl overflow-hidden">
                   <Image
                     src="https://cdn.infinitetalkai.org/lib/fig1.png"
@@ -210,19 +210,19 @@ export default function SparseFrameDubbingPage() {
                 </p>
                 <ul className="list-none space-y-3 ml-0">
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span>Head barely moves.</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span>Eyebrows and micro-expressions don't react to emphasis.</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span>The body posture and hands ignore the speech rhythm.</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span>Camera motion from the original clip is kept, but the performance feels disconnected from the voice.</span>
                   </li>
                 </ul>
@@ -231,15 +231,15 @@ export default function SparseFrameDubbingPage() {
                 </p>
                 <ul className="list-none space-y-3 ml-0">
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span>The voice may sound energetic, but the face and body remain stiff.</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span>Emotional beats in the script don't line up with visible changes in expression or pose.</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span>Over longer clips, the mismatch becomes increasingly distracting and breaks immersion.</span>
                   </li>
                 </ul>
@@ -249,7 +249,7 @@ export default function SparseFrameDubbingPage() {
                 <p>
                   For dubbed interviews, explainers, learning content, or character-driven stories, it's not.
                 </p>
-                <div className="glass rounded-2xl p-6 md:p-8 border-l-4 border-accent mt-6">
+                <div className="bg-card dark:bg-[#4a4a4a] rounded-2xl p-6 md:p-8 border-l-4 border-primary mt-6 shadow-lg dark:shadow-xl">
                   <p className="text-base md:text-lg text-foreground font-medium italic">
                     Our goal with Infinite Talk AI is to make the entire frame respond to the new audio — not just the lips.
                   </p>
@@ -279,19 +279,19 @@ export default function SparseFrameDubbingPage() {
                 </p>
                 <ul className="list-none space-y-3 ml-0">
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span><strong className="text-foreground">Identity</strong> — who the person is (face structure, hairstyle, clothing).</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span><strong className="text-foreground">Emotional cadence</strong> — where the original performance speeds up, slows down, or hits strong emotional beats.</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span><strong className="text-foreground">Iconic gestures</strong> — recognisable hand movements or poses that define the scene.</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span><strong className="text-foreground">Camera trajectory</strong> — framing, zoom, and rough camera path across the shot.</span>
                   </li>
                 </ul>
@@ -300,15 +300,15 @@ export default function SparseFrameDubbingPage() {
                 </p>
                 <ul className="list-none space-y-3 ml-0">
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span>Lips, face, head, and body are <strong className="text-foreground">driven by the new speech</strong>.</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span>Keyframes ensure the actor still looks like themselves and stays consistent across time.</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span>The camera still feels like the original shot, not a completely new recording.</span>
                   </li>
                 </ul>
@@ -325,7 +325,7 @@ export default function SparseFrameDubbingPage() {
                   Sparse-frame video dubbing in Infinite Talk AI is powered by the <strong className="text-foreground">InfiniteTalk</strong> architecture — a streaming, audio-driven video generator.
                 </p>
 
-                <div className="glass rounded-2xl p-6 md:p-8 border border-accent/60">
+                <div className="bg-card dark:bg-[#4a4a4a] rounded-2xl p-6 md:p-8 border border-border dark:border-[#5a5a5a] shadow-lg dark:shadow-xl">
                   <h3 className="text-2xl md:text-3xl font-semibold text-foreground mb-4">
                     3.1 Keyframe selection
                   </h3>
@@ -338,19 +338,19 @@ export default function SparseFrameDubbingPage() {
                     </p>
                     <ul className="list-none space-y-2 ml-0">
                       <li className="flex items-start gap-3">
-                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                         <span>Facial identity and style</span>
                       </li>
                       <li className="flex items-start gap-3">
-                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                         <span>Clothing and background</span>
                       </li>
                       <li className="flex items-start gap-3">
-                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                         <span>Global camera movement</span>
                       </li>
                       <li className="flex items-start gap-3">
-                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                         <span>Emotional rhythm from the original footage</span>
                       </li>
                     </ul>
@@ -359,18 +359,18 @@ export default function SparseFrameDubbingPage() {
                     </p>
                     <ul className="list-none space-y-2 ml-0">
                       <li className="flex items-start gap-3">
-                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                         <span>The <strong className="text-foreground">new audio</strong>, and</span>
                       </li>
                       <li className="flex items-start gap-3">
-                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                         <span>The <strong className="text-foreground">constraints implied by the keyframes</strong>.</span>
                       </li>
                     </ul>
                   </div>
                 </div>
 
-                <div className="glass rounded-2xl p-6 md:p-8 border border-accent/60">
+                <div className="bg-card dark:bg-[#4a4a4a] rounded-2xl p-6 md:p-8 border border-border dark:border-[#5a5a5a] shadow-lg dark:shadow-xl">
                   <h3 className="text-2xl md:text-3xl font-semibold text-foreground mb-4">
                     3.2 Audio-driven full-frame generation
                   </h3>
@@ -380,15 +380,15 @@ export default function SparseFrameDubbingPage() {
                     </p>
                     <ul className="list-none space-y-2 ml-0">
                       <li className="flex items-start gap-3">
-                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                         <span>The <strong className="text-foreground">dubbed audio track</strong></span>
                       </li>
                       <li className="flex items-start gap-3">
-                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                         <span>The <strong className="text-foreground">selected keyframes</strong> (image references)</span>
                       </li>
                       <li className="flex items-start gap-3">
-                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                         <span>A <strong className="text-foreground">context window</strong> of recent frames (for motion continuity)</span>
                       </li>
                     </ul>
@@ -400,26 +400,26 @@ export default function SparseFrameDubbingPage() {
                     </p>
                     <ul className="list-none space-y-2 ml-0">
                       <li className="flex items-start gap-3">
-                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                         <span>Lips form correct visemes for the spoken phonemes.</span>
                       </li>
                       <li className="flex items-start gap-3">
-                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                         <span>Jaw, cheeks, and eyes move in sync with emphasis.</span>
                       </li>
                       <li className="flex items-start gap-3">
-                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                         <span>Head turns, tilts, and nods follow the speech rhythm.</span>
                       </li>
                       <li className="flex items-start gap-3">
-                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                         <span>Shoulders, torso, and upper-body posture react naturally over time.</span>
                       </li>
                     </ul>
                   </div>
                 </div>
 
-                <div className="glass rounded-2xl p-6 md:p-8 border border-accent/60">
+                <div className="bg-card dark:bg-[#4a4a4a] rounded-2xl p-6 md:p-8 border border-border dark:border-[#5a5a5a] shadow-lg dark:shadow-xl">
                   <h3 className="text-2xl md:text-3xl font-semibold text-foreground mb-4">
                     3.3 Context frames for long sequences
                   </h3>
@@ -429,25 +429,25 @@ export default function SparseFrameDubbingPage() {
                     </p>
                     <ul className="list-none space-y-2 ml-0">
                       <li className="flex items-start gap-3">
-                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                         <span>Each new chunk sees a short history of frames from the previous chunk.</span>
                       </li>
                       <li className="flex items-start gap-3">
-                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                         <span>This transfers <strong className="text-foreground">motion momentum</strong> forward, so gestures and head movement continue smoothly.</span>
                       </li>
                       <li className="flex items-start gap-3">
-                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                         <span>Combined with keyframes, this lets the model maintain both:</span>
                       </li>
                     </ul>
                     <ul className="list-none space-y-2 ml-6">
                       <li className="flex items-start gap-3">
-                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                         <span>Long-term identity and camera consistency.</span>
                       </li>
                       <li className="flex items-start gap-3">
-                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                         <span>Short-term motion coherence and audio alignment.</span>
                       </li>
                     </ul>
@@ -465,7 +465,7 @@ export default function SparseFrameDubbingPage() {
                 <p>
                   A natural question:
                 </p>
-                <div className="glass rounded-2xl p-6 md:p-8 border-l-4 border-accent">
+                <div className="bg-card dark:bg-[#4a4a4a] rounded-2xl p-6 md:p-8 border-l-4 border-primary shadow-lg dark:shadow-xl">
                   <p className="text-base md:text-lg text-foreground font-medium italic">
                     "Can't we just plug the audio into a generic image-to-video (I2V) model and call it dubbing?"
                   </p>
@@ -474,41 +474,41 @@ export default function SparseFrameDubbingPage() {
                   The InfiniteTalk paper shows why this fails in practice:
                 </p>
 
-                <div className="glass rounded-2xl p-6 md:p-8 border border-accent/60 mt-6">
+                <div className="bg-card dark:bg-[#4a4a4a] rounded-2xl p-6 md:p-8 border border-border dark:border-[#5a5a5a] shadow-lg dark:shadow-xl mt-6">
                   <h3 className="text-xl md:text-2xl font-semibold text-foreground mb-4">
                     Plain I2V with audio
                   </h3>
                   <ul className="list-none space-y-2 ml-0">
                     <li className="flex items-start gap-3">
-                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                       <span>Starts from a single reference frame and rolls forward.</span>
                     </li>
                     <li className="flex items-start gap-3">
-                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                       <span>Over long sequences, identity drifts: the face subtly changes, colors shift, backgrounds morph.</span>
                     </li>
                     <li className="flex items-start gap-3">
-                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                       <span>Motion can become unstable and jittery.</span>
                     </li>
                   </ul>
                 </div>
 
-                <div className="glass rounded-2xl p-6 md:p-8 border border-accent/60 mt-6">
+                <div className="bg-card dark:bg-[#4a4a4a] rounded-2xl p-6 md:p-8 border border-border dark:border-[#5a5a5a] shadow-lg dark:shadow-xl mt-6">
                   <h3 className="text-xl md:text-2xl font-semibold text-foreground mb-4">
                     First–Last-frame-constrained I2V
                   </h3>
                   <ul className="list-none space-y-2 ml-0">
                     <li className="flex items-start gap-3">
-                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                       <span>Forces the model to strictly match both the first and last frame of each chunk.</span>
                     </li>
                     <li className="flex items-start gap-3">
-                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                       <span>Prevents identity drift, but makes motion rigid.</span>
                     </li>
                     <li className="flex items-start gap-3">
-                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                       <span>The model simply "copies poses" from the constraints instead of acting out the audio.</span>
                     </li>
                   </ul>
@@ -519,18 +519,18 @@ export default function SparseFrameDubbingPage() {
                 </p>
                 <ul className="list-none space-y-3 ml-0">
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span>Keyframes are <strong className="text-foreground">soft constraints</strong>: they keep identity and scene style stable…</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span>…while the generator <strong className="text-foreground">remains free</strong> to animate the full body in sync with the new speech.</span>
                   </li>
                 </ul>
 
                 {/* Figure 2 */}
                 <div className="mt-8">
-                  <div className="glass rounded-2xl p-4 md:p-6 border border-accent/60 overflow-hidden">
+                  <div className="bg-card dark:bg-[#4a4a4a] rounded-2xl p-4 md:p-6 border border-border dark:border-[#5a5a5a] shadow-lg dark:shadow-xl overflow-hidden">
                     <div className="relative w-full aspect-video rounded-xl overflow-hidden">
                       <Image
                         src="https://cdn.infinitetalkai.org/lib/fig2.png"
@@ -557,41 +557,41 @@ export default function SparseFrameDubbingPage() {
                   From a creator's perspective, sparse-frame video dubbing translates to a few concrete benefits.
                 </p>
 
-                <div className="glass rounded-2xl p-6 md:p-8 border border-accent/60">
+                <div className="bg-card dark:bg-[#4a4a4a] rounded-2xl p-6 md:p-8 border border-border dark:border-[#5a5a5a] shadow-lg dark:shadow-xl">
                   <h3 className="text-2xl md:text-3xl font-semibold text-foreground mb-4">
                     5.1 Natural, full-frame performances
                   </h3>
                   <ul className="list-none space-y-3 ml-0">
                     <li className="flex items-start gap-3">
-                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                       <span>Actors don't just "open and close their mouths" — their <strong className="text-foreground">whole body</strong> participates in the performance.</span>
                     </li>
                     <li className="flex items-start gap-3">
-                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                       <span>Emotional beats in the script are visible as:</span>
                     </li>
                     <ul className="list-none space-y-2 ml-6 mt-2">
                       <li className="flex items-start gap-3">
-                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                         <span>Stronger head movements</span>
                       </li>
                       <li className="flex items-start gap-3">
-                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                         <span>Shifts in posture</span>
                       </li>
                       <li className="flex items-start gap-3">
-                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                         <span>Changes in facial expression</span>
                       </li>
                     </ul>
                     <li className="flex items-start gap-3 mt-3">
-                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                       <span>Result: dubbed content feels <strong className="text-foreground">acted</strong>, not just <strong className="text-foreground">lip-edited</strong>.</span>
                     </li>
                   </ul>
                 </div>
 
-                <div className="glass rounded-2xl p-6 md:p-8 border border-accent/60">
+                <div className="bg-card dark:bg-[#4a4a4a] rounded-2xl p-6 md:p-8 border border-border dark:border-[#5a5a5a] shadow-lg dark:shadow-xl">
                   <h3 className="text-2xl md:text-3xl font-semibold text-foreground mb-4">
                     5.2 Identity-stable across long videos
                   </h3>
@@ -600,21 +600,21 @@ export default function SparseFrameDubbingPage() {
                   </p>
                   <ul className="list-none space-y-2 ml-0">
                     <li className="flex items-start gap-3">
-                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                       <span>The same character stays consistent across minutes, not just a couple of seconds.</span>
                     </li>
                     <li className="flex items-start gap-3">
-                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                       <span>Clothing, hair, and lighting match the source footage.</span>
                     </li>
                     <li className="flex items-start gap-3">
-                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                       <span>Camera framing and motion feel like the original shoot, even when the audio is completely different.</span>
                     </li>
                   </ul>
                 </div>
 
-                <div className="glass rounded-2xl p-6 md:p-8 border border-accent/60">
+                <div className="bg-card dark:bg-[#4a4a4a] rounded-2xl p-6 md:p-8 border border-border dark:border-[#5a5a5a] shadow-lg dark:shadow-xl">
                   <h3 className="text-2xl md:text-3xl font-semibold text-foreground mb-4">
                     5.3 Scales to episodes and series
                   </h3>
@@ -623,15 +623,15 @@ export default function SparseFrameDubbingPage() {
                   </p>
                   <ul className="list-none space-y-2 ml-0">
                     <li className="flex items-start gap-3">
-                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                       <span>You can process long segments (e.g. up to 600 seconds per pass) and stitch them seamlessly.</span>
                     </li>
                     <li className="flex items-start gap-3">
-                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                       <span>Overlapping context windows ensure motion continuity between chunks.</span>
                     </li>
                     <li className="flex items-start gap-3">
-                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                       <span>Sparse keyframes keep identity locked even when you generate chapter-length or episode-length content.</span>
                     </li>
                   </ul>
@@ -640,15 +640,15 @@ export default function SparseFrameDubbingPage() {
                   </p>
                   <ul className="list-none space-y-2 ml-0">
                     <li className="flex items-start gap-3">
-                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                       <span>Multi-language localization of series and interviews</span>
                     </li>
                     <li className="flex items-start gap-3">
-                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                       <span>Long-form educational and training content</span>
                     </li>
                     <li className="flex items-start gap-3">
-                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                       <span>Serialized storytelling and character-driven channels</span>
                     </li>
                   </ul>
@@ -667,15 +667,15 @@ export default function SparseFrameDubbingPage() {
                 </p>
                 <ul className="list-none space-y-3 ml-0">
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span>The <strong className="text-foreground">performance matters more than just "the lips match"</strong></span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span>Viewers need to stay immersed for more than a few seconds</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span>Characters or hosts appear repeatedly across episodes</span>
                   </li>
                 </ul>
@@ -684,19 +684,19 @@ export default function SparseFrameDubbingPage() {
                 </p>
                 <ul className="list-none space-y-3 ml-0">
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span>Dubbing YouTube explainers and talking-head channels into multiple languages</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span>Revoicing corporate trainings, lectures, and webinars</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span>Turning static studio interviews into multilingual, globally localised content</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span>Creating character-consistent avatars that appear across many scenes and scripts</span>
                   </li>
                 </ul>
@@ -717,24 +717,24 @@ export default function SparseFrameDubbingPage() {
               <div className="space-y-4 text-base md:text-lg text-muted-foreground leading-relaxed">
                 <ul className="list-none space-y-4 ml-0">
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span><strong className="text-foreground">Mouth-only dubbing</strong> edits a small patch around the lips and leaves the rest of the frame frozen.</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span><strong className="text-foreground">Sparse-frame video dubbing</strong> instead:</span>
                   </li>
                   <ul className="list-none space-y-2 ml-6 mt-2">
                     <li className="flex items-start gap-3">
-                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                       <span>Keeps a <strong className="text-foreground">small set of keyframes</strong> from the original video,</span>
                     </li>
                     <li className="flex items-start gap-3">
-                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                       <span>Uses them to anchor <strong className="text-foreground">identity, emotion, gestures, and camera</strong>, and</span>
                     </li>
                     <li className="flex items-start gap-3">
-                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                       <span>Lets InfiniteTalk <strong className="text-foreground">generate the full frame</strong> in sync with the new audio.</span>
                     </li>
                   </ul>
@@ -744,15 +744,15 @@ export default function SparseFrameDubbingPage() {
                 </p>
                 <ul className="list-none space-y-2 ml-0">
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span>Dub long videos while keeping characters stable,</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span>Make the whole frame react to speech,</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span>And deliver performances that feel natural rather than mechanical.</span>
                   </li>
                 </ul>

@@ -154,9 +154,9 @@ export default function SoftReferenceControlPage() {
             {/* Header */}
             <header className="mb-12 md:mb-16">
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 text-balance">
-                Soft Reference Control and Keyframe Sampling in <span className="text-accent">InfiniteTalk</span>
+                Soft Reference Control and Keyframe Sampling in <span className="text-primary">InfiniteTalk</span>
               </h1>
-              <div className="glass rounded-2xl p-6 md:p-8 border border-accent/60">
+              <div className="bg-card dark:bg-[#4a4a4a] rounded-2xl p-6 md:p-8 border border-border dark:border-[#5a5a5a] shadow-lg dark:shadow-xl">
                 <p className="text-lg md:text-xl text-muted-foreground leading-relaxed text-pretty italic">
                   How Infinite Talk AI keeps faces stable without freezing motion.
                 </p>
@@ -177,36 +177,36 @@ export default function SoftReferenceControlPage() {
                 </p>
                 <ul className="list-none space-y-4 ml-0">
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <div>
                       <p className="font-semibold text-foreground mb-2">Too weak control</p>
                       <ul className="list-none space-y-2 ml-0">
                         <li className="flex items-start gap-2">
-                          <span className="mt-1.5 h-1 w-1 rounded-full bg-accent/60 flex-shrink-0" />
+                          <span className="mt-1.5 h-1 w-1 rounded-full bg-primary/60 flex-shrink-0" />
                           <span>The model ignores the reference over time.</span>
                         </li>
                         <li className="flex items-start gap-2">
-                          <span className="mt-1.5 h-1 w-1 rounded-full bg-accent/60 flex-shrink-0" />
+                          <span className="mt-1.5 h-1 w-1 rounded-full bg-primary/60 flex-shrink-0" />
                           <span>Identity drifts, backgrounds morph, and the character stops looking like the source actor.</span>
                         </li>
                       </ul>
                     </div>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <div>
                       <p className="font-semibold text-foreground mb-2">Too strong control</p>
                       <ul className="list-none space-y-2 ml-0">
                         <li className="flex items-start gap-2">
-                          <span className="mt-1.5 h-1 w-1 rounded-full bg-accent/60 flex-shrink-0" />
+                          <span className="mt-1.5 h-1 w-1 rounded-full bg-primary/60 flex-shrink-0" />
                           <span>The model copies the reference pose literally.</span>
                         </li>
                         <li className="flex items-start gap-2">
-                          <span className="mt-1.5 h-1 w-1 rounded-full bg-accent/60 flex-shrink-0" />
+                          <span className="mt-1.5 h-1 w-1 rounded-full bg-primary/60 flex-shrink-0" />
                           <span>Head and body movements are locked to the reference frame instead of following the audio.</span>
                         </li>
                         <li className="flex items-start gap-2">
-                          <span className="mt-1.5 h-1 w-1 rounded-full bg-accent/60 flex-shrink-0" />
+                          <span className="mt-1.5 h-1 w-1 rounded-full bg-primary/60 flex-shrink-0" />
                           <span>Performances look stiff and out of sync with speech.</span>
                         </li>
                       </ul>
@@ -218,18 +218,18 @@ export default function SoftReferenceControlPage() {
                 </p>
                 <ul className="list-none space-y-2 ml-0">
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span><strong className="text-foreground">Plain audio-driven I2V</strong>: weak control → free motion, but identity drift.</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span><strong className="text-foreground">First–Last-frame-constrained video</strong>: hard control → stable identity, but rigid, pose-copying motion.</span>
                   </li>
                 </ul>
                 <p className="mt-6">
                   Sparse-frame video dubbing demands something more subtle:
                 </p>
-                <div className="glass rounded-2xl p-6 md:p-8 border-l-4 border-accent mt-6">
+                <div className="bg-card dark:bg-[#4a4a4a] rounded-2xl p-6 md:p-8 border-l-4 border-primary mt-6 shadow-lg dark:shadow-xl">
                   <p className="text-base md:text-lg text-foreground font-semibold italic">
                     We want references to <strong>lock identity and style</strong>,
                     but still let the model <strong>move the whole body in sync with the dubbed audio</strong>.
@@ -252,11 +252,11 @@ export default function SoftReferenceControlPage() {
                 </p>
                 <ul className="list-none space-y-3 ml-0">
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span>Reference frames are used as <strong className="text-foreground">soft anchors</strong>, not hard templates.</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span>The model learns to <strong className="text-foreground">adapt control strength</strong> based on:</span>
                   </li>
                 </ul>
@@ -275,21 +275,21 @@ export default function SoftReferenceControlPage() {
                 </p>
                 <ul className="list-none space-y-3 ml-0">
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <div>
                       <p className="font-semibold text-foreground mb-1">High identity and background consistency</p>
                       <p>The actor keeps looking like themselves, even over long sequences.</p>
                     </div>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <div>
                       <p className="font-semibold text-foreground mb-1">Flexible head and body motion</p>
                       <p>Head turns, gestures, and posture are free to follow the audio.</p>
                     </div>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <div>
                       <p className="font-semibold text-foreground mb-1">Fewer "pose copy" artifacts</p>
                       <p>The model doesn't just freeze the user at the exact reference pose.</p>
@@ -314,7 +314,7 @@ export default function SoftReferenceControlPage() {
 
                 {/* Figure 3 */}
                 <div className="mt-8">
-                  <div className="glass rounded-2xl p-4 md:p-6 border border-accent/60 overflow-hidden">
+                  <div className="bg-card dark:bg-[#4a4a4a] rounded-2xl p-4 md:p-6 border border-border dark:border-[#5a5a5a] shadow-lg dark:shadow-xl overflow-hidden">
                     <div className="relative w-full aspect-video rounded-xl overflow-hidden">
                       <Image
                         src="https://cdn.infinitetalkai.org/lib/fig3.png"
@@ -338,7 +338,7 @@ export default function SoftReferenceControlPage() {
                       In <strong className="text-foreground">M0</strong>, the reference frame is sampled uniformly from within the <strong className="text-foreground">same chunk</strong> that the model is trying to generate.
                     </p>
                     <div className="grid md:grid-cols-2 gap-4">
-                      <div className="glass rounded-xl p-4 border border-green-500/30">
+                      <div className="bg-card dark:bg-[#4a4a4a] rounded-xl p-4 border border-primary/30 dark:border-primary/40 shadow-md dark:shadow-lg">
                         <p className="font-semibold text-foreground mb-2 text-green-600 dark:text-green-400">Pros:</p>
                         <ul className="list-none space-y-1 ml-0">
                           <li className="flex items-start gap-2">
@@ -347,7 +347,7 @@ export default function SoftReferenceControlPage() {
                           </li>
                         </ul>
                       </div>
-                      <div className="glass rounded-xl p-4 border border-red-500/30">
+                      <div className="bg-card dark:bg-[#4a4a4a] rounded-xl p-4 border border-destructive/30 dark:border-destructive/40 shadow-md dark:shadow-lg">
                         <p className="font-semibold text-foreground mb-2 text-red-600 dark:text-red-400">Cons:</p>
                         <ul className="list-none space-y-1 ml-0">
                           <li className="flex items-start gap-2">
@@ -380,7 +380,7 @@ export default function SoftReferenceControlPage() {
                       In <strong className="text-foreground">M1</strong>, the reference is always taken from the <strong className="text-foreground">first or last frame</strong> of each chunk.
                     </p>
                     <div className="grid md:grid-cols-2 gap-4">
-                      <div className="glass rounded-xl p-4 border border-green-500/30">
+                      <div className="bg-card dark:bg-[#4a4a4a] rounded-xl p-4 border border-primary/30 dark:border-primary/40 shadow-md dark:shadow-lg">
                         <p className="font-semibold text-foreground mb-2 text-green-600 dark:text-green-400">Pros:</p>
                         <ul className="list-none space-y-1 ml-0">
                           <li className="flex items-start gap-2">
@@ -393,7 +393,7 @@ export default function SoftReferenceControlPage() {
                           </li>
                         </ul>
                       </div>
-                      <div className="glass rounded-xl p-4 border border-red-500/30">
+                      <div className="bg-card dark:bg-[#4a4a4a] rounded-xl p-4 border border-destructive/30 dark:border-destructive/40 shadow-md dark:shadow-lg">
                         <p className="font-semibold text-foreground mb-2 text-red-600 dark:text-red-400">Cons:</p>
                         <ul className="list-none space-y-1 ml-0">
                           <li className="flex items-start gap-2">
@@ -426,7 +426,7 @@ export default function SoftReferenceControlPage() {
                       In <strong className="text-foreground">M2</strong>, reference frames are sampled from <strong className="text-foreground">chunks that are far away in time</strong> (e.g., several seconds apart).
                     </p>
                     <div className="grid md:grid-cols-2 gap-4">
-                      <div className="glass rounded-xl p-4 border border-green-500/30">
+                      <div className="bg-card dark:bg-[#4a4a4a] rounded-xl p-4 border border-primary/30 dark:border-primary/40 shadow-md dark:shadow-lg">
                         <p className="font-semibold text-foreground mb-2 text-green-600 dark:text-green-400">Pros:</p>
                         <ul className="list-none space-y-1 ml-0">
                           <li className="flex items-start gap-2">
@@ -435,7 +435,7 @@ export default function SoftReferenceControlPage() {
                           </li>
                         </ul>
                       </div>
-                      <div className="glass rounded-xl p-4 border border-red-500/30">
+                      <div className="bg-card dark:bg-[#4a4a4a] rounded-xl p-4 border border-destructive/30 dark:border-destructive/40 shadow-md dark:shadow-lg">
                         <p className="font-semibold text-foreground mb-2 text-red-600 dark:text-red-400">Cons:</p>
                         <ul className="list-none space-y-1 ml-0">
                           <li className="flex items-start gap-2">
@@ -470,25 +470,25 @@ export default function SoftReferenceControlPage() {
                     </p>
                     <ul className="list-none space-y-3 ml-0">
                       <li className="flex items-start gap-3">
-                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                         <span>The reference remains <strong className="text-foreground">visually similar</strong> to the current context.</span>
                       </li>
                       <li className="flex items-start gap-3">
-                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                         <span>It is <strong className="text-foreground">not fixed to the exact boundary frame</strong>, so the model isn't forced to copy a specific pose.</span>
                       </li>
                       <li className="flex items-start gap-3">
-                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                         <span>Control strength becomes <strong className="text-foreground">adaptive</strong>:</span>
                       </li>
                     </ul>
                     <ul className="list-none space-y-2 ml-6">
                       <li className="flex items-start gap-3">
-                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent/60 flex-shrink-0" />
+                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary/60 flex-shrink-0" />
                         <span>Strong enough to prevent drift.</span>
                       </li>
                       <li className="flex items-start gap-3">
-                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent/60 flex-shrink-0" />
+                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary/60 flex-shrink-0" />
                         <span>Soft enough to let head and body motion follow the audio naturally.</span>
                       </li>
                     </ul>
@@ -497,15 +497,15 @@ export default function SoftReferenceControlPage() {
                     </p>
                     <ul className="list-none space-y-2 ml-0">
                       <li className="flex items-start gap-3">
-                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                         <span>Lip-sync metrics (e.g., Sync-C / Sync-D).</span>
                       </li>
                       <li className="flex items-start gap-3">
-                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                         <span>Temporal consistency (FVD).</span>
                       </li>
                       <li className="flex items-start gap-3">
-                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                         <span>Identity similarity (CSIM).</span>
                       </li>
                     </ul>
@@ -531,19 +531,19 @@ export default function SoftReferenceControlPage() {
                     <p className="mb-2">For each training video:</p>
                     <ul className="list-none space-y-2 ml-0 mt-2">
                       <li className="flex items-start gap-2">
-                        <span className="mt-1.5 h-1 w-1 rounded-full bg-accent/60 flex-shrink-0" />
+                        <span className="mt-1.5 h-1 w-1 rounded-full bg-primary/60 flex-shrink-0" />
                         <span>A target chunk is selected.</span>
                       </li>
                       <li className="flex items-start gap-2">
-                        <span className="mt-1.5 h-1 w-1 rounded-full bg-accent/60 flex-shrink-0" />
+                        <span className="mt-1.5 h-1 w-1 rounded-full bg-primary/60 flex-shrink-0" />
                         <span>Context frames (recent history) are selected.</span>
                       </li>
                       <li className="flex items-start gap-2">
-                        <span className="mt-1.5 h-1 w-1 rounded-full bg-accent/60 flex-shrink-0" />
+                        <span className="mt-1.5 h-1 w-1 rounded-full bg-primary/60 flex-shrink-0" />
                         <span>A reference frame is sampled using one of the M0–M3 strategies.</span>
                       </li>
                       <li className="flex items-start gap-2">
-                        <span className="mt-1.5 h-1 w-1 rounded-full bg-accent/60 flex-shrink-0" />
+                        <span className="mt-1.5 h-1 w-1 rounded-full bg-primary/60 flex-shrink-0" />
                         <span>Audio features for the current time span are extracted.</span>
                       </li>
                     </ul>
@@ -552,15 +552,15 @@ export default function SoftReferenceControlPage() {
                     <p className="mb-2">The model is trained to reconstruct the target chunk:</p>
                     <ul className="list-none space-y-2 ml-0 mt-2">
                       <li className="flex items-start gap-2">
-                        <span className="mt-1.5 h-1 w-1 rounded-full bg-accent/60 flex-shrink-0" />
+                        <span className="mt-1.5 h-1 w-1 rounded-full bg-primary/60 flex-shrink-0" />
                         <span>Using the <strong className="text-foreground">audio</strong> to drive lips, face, head, and body.</span>
                       </li>
                       <li className="flex items-start gap-2">
-                        <span className="mt-1.5 h-1 w-1 rounded-full bg-accent/60 flex-shrink-0" />
+                        <span className="mt-1.5 h-1 w-1 rounded-full bg-primary/60 flex-shrink-0" />
                         <span>Using <strong className="text-foreground">context frames</strong> to maintain motion continuity.</span>
                       </li>
                       <li className="flex items-start gap-2">
-                        <span className="mt-1.5 h-1 w-1 rounded-full bg-accent/60 flex-shrink-0" />
+                        <span className="mt-1.5 h-1 w-1 rounded-full bg-primary/60 flex-shrink-0" />
                         <span>Using the <strong className="text-foreground">reference frame</strong> as a soft constraint on appearance and camera.</span>
                       </li>
                     </ul>
@@ -569,11 +569,11 @@ export default function SoftReferenceControlPage() {
                     <p className="mb-2">Because M3 tends to produce the best performance:</p>
                     <ul className="list-none space-y-2 ml-0 mt-2">
                       <li className="flex items-start gap-2">
-                        <span className="mt-1.5 h-1 w-1 rounded-full bg-accent/60 flex-shrink-0" />
+                        <span className="mt-1.5 h-1 w-1 rounded-full bg-primary/60 flex-shrink-0" />
                         <span>The model learns that references from neighboring chunks usually provide a good "anchor" without over-constraining the pose.</span>
                       </li>
                       <li className="flex items-start gap-2">
-                        <span className="mt-1.5 h-1 w-1 rounded-full bg-accent/60 flex-shrink-0" />
+                        <span className="mt-1.5 h-1 w-1 rounded-full bg-primary/60 flex-shrink-0" />
                         <span>Over many examples, it discovers how to balance audio-driven motion with reference-driven stability.</span>
                       </li>
                     </ul>
@@ -597,28 +597,28 @@ export default function SoftReferenceControlPage() {
                 </p>
                 <ul className="list-none space-y-4 ml-0">
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <div>
                       <p className="font-semibold text-foreground mb-1">M0 (same-chunk reference)</p>
                       <p>Over-constrained → good identity stability, but more pose-copy artifacts and worse sync metrics.</p>
                     </div>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <div>
                       <p className="font-semibold text-foreground mb-1">M1 (first/last-frame reference)</p>
                       <p>Strong boundary locking → less drift, but visible stiffness at chunk edges.</p>
                     </div>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <div>
                       <p className="font-semibold text-foreground mb-1">M2 (distant reference)</p>
                       <p>Under-constrained → freer motion, but identity and background stability degrade over time.</p>
                     </div>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <div>
                       <p className="font-semibold text-foreground mb-1">M3 (neighboring-chunk reference)</p>
                       <p>Best overall balance → strong identity & background stability, good lip and body sync, smooth motion across chunks.</p>
@@ -628,7 +628,7 @@ export default function SoftReferenceControlPage() {
 
                 {/* Comparison Table */}
                 <div className="mt-8">
-                  <div className="glass rounded-2xl p-4 md:p-6 border border-accent/60 overflow-x-auto">
+                  <div className="bg-card dark:bg-[#4a4a4a] rounded-2xl p-4 md:p-6 border border-border dark:border-[#5a5a5a] shadow-lg dark:shadow-xl overflow-x-auto">
                     <table className="w-full border-collapse">
                       <thead>
                         <tr className="border-b border-border/50">
@@ -657,7 +657,7 @@ export default function SoftReferenceControlPage() {
                           <td className="py-3 px-4">Too weak</td>
                           <td className="py-3 px-4">Identity / background drift</td>
                         </tr>
-                        <tr className="border-b border-border/30 bg-accent/5">
+                        <tr className="border-b border-border/30 bg-primary/5 dark:bg-primary/10">
                           <td className="py-3 px-4 font-mono font-semibold text-foreground">M3</td>
                           <td className="py-3 px-4 font-semibold text-foreground">Neighboring chunks</td>
                           <td className="py-3 px-4 font-semibold text-foreground">Balanced (soft)</td>
@@ -668,10 +668,10 @@ export default function SoftReferenceControlPage() {
                   </div>
                 </div>
 
-                <div className="mt-6 p-4 glass rounded-xl border border-accent/60">
+                <div className="mt-6 p-4 bg-card dark:bg-[#4a4a4a] rounded-xl border border-border dark:border-[#5a5a5a] shadow-md dark:shadow-lg">
                   <p className="text-sm text-muted-foreground">
                     For detailed numerical scores (FID, FVD, Sync-C/D, CSIM), see:{' '}
-                    <Link href="/lib/benchmarks" className="text-accent hover:underline font-medium">
+                    <Link href="/lib/benchmarks" className="text-primary hover:underline font-medium">
                       /lib/benchmarks
                     </Link>
                   </p>
@@ -690,32 +690,32 @@ export default function SoftReferenceControlPage() {
                 </p>
                 <ul className="list-none space-y-3 ml-0">
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span><strong className="text-foreground">Your character stays recognizable</strong>, even in long videos.</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <div>
                       <p><strong className="text-foreground">Their body and head can still act</strong>:</p>
                       <ul className="list-none space-y-1 ml-4 mt-2">
                         <li className="flex items-start gap-2">
-                          <span className="mt-1.5 h-0.5 w-0.5 rounded-full bg-accent/40 flex-shrink-0" />
+                          <span className="mt-1.5 h-0.5 w-0.5 rounded-full bg-primary/40 flex-shrink-0" />
                           <span>Leaning in, looking away, nodding, gesturing</span>
                         </li>
                         <li className="flex items-start gap-2">
-                          <span className="mt-1.5 h-0.5 w-0.5 rounded-full bg-accent/40 flex-shrink-0" />
+                          <span className="mt-1.5 h-0.5 w-0.5 rounded-full bg-primary/40 flex-shrink-0" />
                           <span>Without being locked into whatever pose was in the reference image.</span>
                         </li>
                       </ul>
                     </div>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <div>
                       <p><strong className="text-foreground">Chunk boundaries disappear</strong>:</p>
                       <ul className="list-none space-y-1 ml-4 mt-2">
                         <li className="flex items-start gap-2">
-                          <span className="mt-1.5 h-0.5 w-0.5 rounded-full bg-accent/40 flex-shrink-0" />
+                          <span className="mt-1.5 h-0.5 w-0.5 rounded-full bg-primary/40 flex-shrink-0" />
                           <span>You can render long clips in segments without obvious seams at the joins.</span>
                         </li>
                       </ul>
@@ -727,15 +727,15 @@ export default function SoftReferenceControlPage() {
                 </p>
                 <ul className="list-none space-y-2 ml-0">
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span>You dub entire episodes, courses, or multi-part interviews.</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span>The same character appears across dozens of clips and languages.</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span>You want performances that feel alive, not like rigid puppets.</span>
                   </li>
                 </ul>
@@ -750,11 +750,11 @@ export default function SoftReferenceControlPage() {
               <div className="space-y-6 text-base md:text-lg text-muted-foreground leading-relaxed">
                 <ul className="list-none space-y-3 ml-0">
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span>Hard reference control either drifts (too weak) or freezes motion (too strong).</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span>InfiniteTalk uses <strong className="text-foreground">soft reference control</strong>:</span>
                   </li>
                 </ul>
@@ -777,29 +777,29 @@ export default function SoftReferenceControlPage() {
                 </p>
                 <ul className="list-none space-y-2 ml-0">
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span>Maintain identity and scene consistency over long sequences.</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                     <span>Still let full-frame motion follow the dubbed audio.</span>
                   </li>
                 </ul>
-                <div className="mt-8 p-6 glass rounded-2xl border border-accent/60">
+                <div className="mt-8 p-6 bg-card dark:bg-[#4a4a4a] rounded-2xl border border-border dark:border-[#5a5a5a] shadow-lg dark:shadow-xl">
                   <p className="text-base md:text-lg text-foreground font-semibold mb-4">
                     To see how soft reference control fits into the overall system:
                   </p>
                   <div className="space-y-3">
                     <Link
                       href="/lib/sparse-frame-video-dubbing"
-                      className="flex items-center gap-2 text-accent hover:text-accent/80 transition-colors font-medium"
+                      className="flex items-center gap-2 text-primary hover:text-primary/80 transition-colors font-medium"
                     >
                       <ArrowRight className="w-4 h-4" />
                       <span>Read about the sparse-frame dubbing paradigm</span>
                     </Link>
                     <Link
                       href="/lib/infinite-length-streaming-architecture"
-                      className="flex items-center gap-2 text-accent hover:text-accent/80 transition-colors font-medium"
+                      className="flex items-center gap-2 text-primary hover:text-primary/80 transition-colors font-medium"
                     >
                       <ArrowRight className="w-4 h-4" />
                       <span>Learn how InfiniteTalk handles long sequences with context frames and chunking</span>

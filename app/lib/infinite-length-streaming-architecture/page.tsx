@@ -154,9 +154,9 @@ export default function InfiniteLengthStreamingArchitecturePage() {
                         {/* Header */}
                         <header className="mb-12 md:mb-16">
                             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 text-balance">
-                                Infinite-Length Streaming Architecture in <span className="text-accent">InfiniteTalk</span>
+                                Infinite-Length Streaming Architecture in <span className="text-primary">InfiniteTalk</span>
                             </h1>
-                            <div className="glass rounded-2xl p-6 md:p-8 border border-accent/60">
+                            <div className="bg-card dark:bg-[#4a4a4a] rounded-2xl p-6 md:p-8 border border-border dark:border-[#5a5a5a] shadow-lg dark:shadow-xl">
                                 <p className="text-lg md:text-xl text-muted-foreground leading-relaxed text-pretty italic">
                                     How Infinite Talk AI scales sparse-frame video dubbing to practically infinite sequences.
                                 </p>
@@ -174,15 +174,15 @@ export default function InfiniteLengthStreamingArchitecturePage() {
                                 </p>
                                 <ul className="list-none space-y-3 ml-0">
                                     <li className="flex items-start gap-3">
-                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                                         <span><strong className="text-foreground">Identity drift</strong> — Faces slowly change shape, skin tone shifts, and backgrounds morph over time.</span>
                                     </li>
                                     <li className="flex items-start gap-3">
-                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                                         <span><strong className="text-foreground">Style and color drift</strong> — Each segment drifts in color and contrast, making the video look like it was shot on different cameras.</span>
                                     </li>
                                     <li className="flex items-start gap-3">
-                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                                         <span><strong className="text-foreground">Visible seams between segments</strong> — Models that generate in fixed-length chunks often produce hard cuts in motion: head pose snaps, gestures reset, and continuity is lost.</span>
                                     </li>
                                 </ul>
@@ -191,39 +191,39 @@ export default function InfiniteLengthStreamingArchitecturePage() {
                                 </p>
                                 <ul className="list-none space-y-4 ml-0">
                                     <li className="flex items-start gap-3">
-                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                                         <div>
                                             <p className="font-semibold text-foreground mb-2">Plain audio-driven I2V</p>
                                             <ul className="list-none space-y-2 ml-0">
                                                 <li className="flex items-start gap-2">
-                                                    <span className="mt-1.5 h-1 w-1 rounded-full bg-accent/60 flex-shrink-0" />
+                                                    <span className="mt-1.5 h-1 w-1 rounded-full bg-primary/60 flex-shrink-0" />
                                                     <span>Starts from a single reference frame and repeatedly rolls forward.</span>
                                                 </li>
                                                 <li className="flex items-start gap-2">
-                                                    <span className="mt-1.5 h-1 w-1 rounded-full bg-accent/60 flex-shrink-0" />
+                                                    <span className="mt-1.5 h-1 w-1 rounded-full bg-primary/60 flex-shrink-0" />
                                                     <span>Motion is free, but identity and scene drift accumulate.</span>
                                                 </li>
                                             </ul>
                                         </div>
                                     </li>
                                     <li className="flex items-start gap-3">
-                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                                         <div>
                                             <p className="font-semibold text-foreground mb-2">First–Last-frame-constrained I2V (FL2V)</p>
                                             <ul className="list-none space-y-2 ml-0">
                                                 <li className="flex items-start gap-2">
-                                                    <span className="mt-1.5 h-1 w-1 rounded-full bg-accent/60 flex-shrink-0" />
+                                                    <span className="mt-1.5 h-1 w-1 rounded-full bg-primary/60 flex-shrink-0" />
                                                     <span>Forces each chunk to match a fixed first and last frame.</span>
                                                 </li>
                                                 <li className="flex items-start gap-2">
-                                                    <span className="mt-1.5 h-1 w-1 rounded-full bg-accent/60 flex-shrink-0" />
+                                                    <span className="mt-1.5 h-1 w-1 rounded-full bg-primary/60 flex-shrink-0" />
                                                     <span>Prevents drift, but motion becomes stiff: the model copies poses instead of acting out the audio.</span>
                                                 </li>
                                             </ul>
                                         </div>
                                     </li>
                                 </ul>
-                                <div className="glass rounded-2xl p-6 md:p-8 border-l-4 border-accent mt-6">
+                                <div className="bg-card dark:bg-[#4a4a4a] rounded-2xl p-6 md:p-8 border-l-4 border-primary mt-6 shadow-lg dark:shadow-xl">
                                     <p className="text-base md:text-lg text-foreground font-medium mb-2">
                                         The core challenge:
                                     </p>
@@ -235,7 +235,7 @@ export default function InfiniteLengthStreamingArchitecturePage() {
 
                             {/* Figure 2 */}
                             <div className="mt-8">
-                                <div className="glass rounded-2xl p-4 md:p-6 border border-accent/60 overflow-hidden">
+                                <div className="bg-card dark:bg-[#4a4a4a] rounded-2xl p-4 md:p-6 border border-border dark:border-[#5a5a5a] shadow-lg dark:shadow-xl overflow-hidden">
                                     <div className="relative w-full aspect-video rounded-xl overflow-hidden">
                                         <Image
                                             src="https://cdn.infinitetalkai.org/lib/fig2.png"
@@ -265,11 +265,11 @@ export default function InfiniteLengthStreamingArchitecturePage() {
                                         <strong className="text-foreground">Chunked generation</strong>
                                         <ul className="list-none space-y-2 ml-0 mt-2">
                                             <li className="flex items-start gap-2">
-                                                <span className="mt-1.5 h-1 w-1 rounded-full bg-accent/60 flex-shrink-0" />
+                                                <span className="mt-1.5 h-1 w-1 rounded-full bg-primary/60 flex-shrink-0" />
                                                 <span>The video is divided into fixed-length chunks (e.g., 81 frames per block).</span>
                                             </li>
                                             <li className="flex items-start gap-2">
-                                                <span className="mt-1.5 h-1 w-1 rounded-full bg-accent/60 flex-shrink-0" />
+                                                <span className="mt-1.5 h-1 w-1 rounded-full bg-primary/60 flex-shrink-0" />
                                                 <span>The model generates each chunk in sequence.</span>
                                             </li>
                                         </ul>
@@ -278,11 +278,11 @@ export default function InfiniteLengthStreamingArchitecturePage() {
                                         <strong className="text-foreground">Context frames + reference frames</strong>
                                         <ul className="list-none space-y-2 ml-0 mt-2">
                                             <li className="flex items-start gap-2">
-                                                <span className="mt-1.5 h-1 w-1 rounded-full bg-accent/60 flex-shrink-0" />
+                                                <span className="mt-1.5 h-1 w-1 rounded-full bg-primary/60 flex-shrink-0" />
                                                 <span><strong className="text-foreground">Context frames</strong>: a short history of previously generated frames that carries motion momentum forward.</span>
                                             </li>
                                             <li className="flex items-start gap-2">
-                                                <span className="mt-1.5 h-1 w-1 rounded-full bg-accent/60 flex-shrink-0" />
+                                                <span className="mt-1.5 h-1 w-1 rounded-full bg-primary/60 flex-shrink-0" />
                                                 <span><strong className="text-foreground">Reference frames</strong>: sparsely sampled keyframes from the original video that anchor identity, background, and camera trajectory.</span>
                                             </li>
                                         </ul>
@@ -293,11 +293,11 @@ export default function InfiniteLengthStreamingArchitecturePage() {
                                 </p>
                                 <ul className="list-none space-y-3 ml-0">
                                     <li className="flex items-start gap-3">
-                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                                         <span>Use context frames to keep <strong className="text-foreground">motion continuous</strong> across chunks.</span>
                                     </li>
                                     <li className="flex items-start gap-3">
-                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                                         <span>Use reference frames to prevent <strong className="text-foreground">identity and style drift</strong> over long durations.</span>
                                     </li>
                                 </ul>
@@ -305,7 +305,7 @@ export default function InfiniteLengthStreamingArchitecturePage() {
 
                             {/* Figure 4 */}
                             <div className="mt-8">
-                                <div className="glass rounded-2xl p-4 md:p-6 border border-accent/60 overflow-hidden">
+                                <div className="bg-card dark:bg-[#4a4a4a] rounded-2xl p-4 md:p-6 border border-border dark:border-[#5a5a5a] shadow-lg dark:shadow-xl overflow-hidden">
                                     <div className="relative w-full aspect-video rounded-xl overflow-hidden">
                                         <Image
                                             src="https://cdn.infinitetalkai.org/lib/fig4.png"
@@ -338,19 +338,19 @@ export default function InfiniteLengthStreamingArchitecturePage() {
                                         </p>
                                         <ul className="list-none space-y-2 ml-0">
                                             <li className="flex items-start gap-3">
-                                                <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                                                <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                                                 <span>They are taken from already generated video.</span>
                                             </li>
                                             <li className="flex items-start gap-3">
-                                                <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                                                <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                                                 <span>They are re-encoded by the video VAE into latent space.</span>
                                             </li>
                                             <li className="flex items-start gap-3">
-                                                <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                                                <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                                                 <span>They are fed into the diffusion Transformer together with the new audio and reference frames.</span>
                                             </li>
                                         </ul>
-                                        <div className="glass rounded-2xl p-6 md:p-8 border-l-4 border-accent mt-4">
+                                        <div className="bg-card dark:bg-[#4a4a4a] rounded-2xl p-6 md:p-8 border-l-4 border-primary mt-4 shadow-lg dark:shadow-xl">
                                             <p className="text-base md:text-lg text-foreground font-medium italic">
                                                 Intuition:
                                             </p>
@@ -373,30 +373,30 @@ export default function InfiniteLengthStreamingArchitecturePage() {
                                         </p>
                                         <ul className="list-none space-y-2 ml-0">
                                             <li className="flex items-start gap-3">
-                                                <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                                                <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                                                 <span>A video is encoded into a latent sequence by a <strong className="text-foreground">video VAE</strong>.</span>
                                             </li>
                                             <li className="flex items-start gap-3">
-                                                <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                                                <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                                                 <span>Each chunk covers <strong className="text-foreground">81 frames</strong> total.</span>
                                             </li>
                                             <li className="flex items-start gap-3">
-                                                <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                                                <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                                                 <span>The model keeps a latent context length <code className="px-1.5 py-0.5 bg-muted rounded text-sm font-mono">tc</code> (for example, 3 latent frames derived from 9 context images).</span>
                                             </li>
                                             <li className="flex items-start gap-3">
-                                                <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                                                <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                                                 <span>For each step, InfiniteTalk generates <strong className="text-foreground">72 new frames</strong>, which are appended after the context frames.</span>
                                             </li>
                                         </ul>
                                         <p className="mt-4">
                                             Visually, you can imagine:
                                         </p>
-                                        <div className="glass rounded-2xl p-6 md:p-8 border border-accent/60 font-mono text-sm md:text-base">
+                                        <div className="bg-card dark:bg-[#4a4a4a] rounded-2xl p-6 md:p-8 border border-border dark:border-[#5a5a5a] shadow-lg dark:shadow-xl font-mono text-sm md:text-base">
                                             <div className="space-y-2">
-                                                <div>Chunk 1: <code className="text-accent">[Frames 1–81]</code></div>
-                                                <div>Chunk 2: <code className="text-accent">[Context (Frames 73–81)] + [New Frames 82–153]</code></div>
-                                                <div>Chunk 3: <code className="text-accent">[Context (Frames 145–153)] + [New Frames 154–225]</code></div>
+                                                <div>Chunk 1: <code className="text-primary">[Frames 1–81]</code></div>
+                                                <div>Chunk 2: <code className="text-primary">[Context (Frames 73–81)] + [New Frames 82–153]</code></div>
+                                                <div>Chunk 3: <code className="text-primary">[Context (Frames 145–153)] + [New Frames 154–225]</code></div>
                                                 <div className="text-muted-foreground mt-2">…and so on.</div>
                                             </div>
                                         </div>
@@ -419,11 +419,11 @@ export default function InfiniteLengthStreamingArchitecturePage() {
                                 </p>
                                 <ul className="list-none space-y-2 ml-0">
                                     <li className="flex items-start gap-3">
-                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                                         <span>The actor still looks like themselves.</span>
                                     </li>
                                     <li className="flex items-start gap-3">
-                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                                         <span>The background and camera style match the original footage.</span>
                                     </li>
                                 </ul>
@@ -432,33 +432,33 @@ export default function InfiniteLengthStreamingArchitecturePage() {
                                 </p>
                                 <ul className="list-none space-y-2 ml-0">
                                     <li className="flex items-start gap-3">
-                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                                         <span>These are sparse keyframes selected from the original clip.</span>
                                     </li>
                                     <li className="flex items-start gap-3">
-                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                                         <span>They are encoded into latent features and fed to the diffusion Transformer.</span>
                                     </li>
                                     <li className="flex items-start gap-3">
-                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                                         <span>They act as soft anchors for:</span>
                                     </li>
                                 </ul>
                                 <ul className="list-none space-y-2 ml-6">
                                     <li className="flex items-start gap-3">
-                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent/60 flex-shrink-0" />
+                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary/60 flex-shrink-0" />
                                         <span>Face identity</span>
                                     </li>
                                     <li className="flex items-start gap-3">
-                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent/60 flex-shrink-0" />
+                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary/60 flex-shrink-0" />
                                         <span>Clothing and lighting</span>
                                     </li>
                                     <li className="flex items-start gap-3">
-                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent/60 flex-shrink-0" />
+                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary/60 flex-shrink-0" />
                                         <span>Background layout</span>
                                     </li>
                                     <li className="flex items-start gap-3">
-                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent/60 flex-shrink-0" />
+                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary/60 flex-shrink-0" />
                                         <span>Global camera trajectory</span>
                                     </li>
                                 </ul>
@@ -467,15 +467,15 @@ export default function InfiniteLengthStreamingArchitecturePage() {
                                 </p>
                                 <ul className="list-none space-y-2 ml-0">
                                     <li className="flex items-start gap-3">
-                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                                         <span>The <strong className="text-foreground">dubbed audio</strong> for that time range</span>
                                     </li>
                                     <li className="flex items-start gap-3">
-                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                                         <span>The <strong className="text-foreground">context frames</strong> from previous output</span>
                                     </li>
                                     <li className="flex items-start gap-3">
-                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                                         <span>One or more <strong className="text-foreground">reference frames</strong> sampled according to a keyframe strategy</span>
                                     </li>
                                 </ul>
@@ -484,15 +484,15 @@ export default function InfiniteLengthStreamingArchitecturePage() {
                                 </p>
                                 <ul className="list-none space-y-2 ml-0">
                                     <li className="flex items-start gap-3">
-                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                                         <span>Consistent characters across minutes of video</span>
                                     </li>
                                     <li className="flex items-start gap-3">
-                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                                         <span>Stable backgrounds and camera motion</span>
                                     </li>
                                     <li className="flex items-start gap-3">
-                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                                         <span>A coherent visual style, even as the audio and body motion evolve</span>
                                     </li>
                                 </ul>
@@ -500,7 +500,7 @@ export default function InfiniteLengthStreamingArchitecturePage() {
 
                             {/* Figure 5 */}
                             <div className="mt-8">
-                                <div className="glass rounded-2xl p-4 md:p-6 border border-accent/60 overflow-hidden">
+                                <div className="bg-card dark:bg-[#4a4a4a] rounded-2xl p-4 md:p-6 border border-border dark:border-[#5a5a5a] shadow-lg dark:shadow-xl overflow-hidden">
                                     <div className="relative w-full aspect-video rounded-xl overflow-hidden">
                                         <Image
                                             src="https://cdn.infinitetalkai.org/lib/fig5.png"
@@ -518,7 +518,7 @@ export default function InfiniteLengthStreamingArchitecturePage() {
                                     </p>
                                 </div>
                                 <p className="text-sm text-muted-foreground mt-4 italic">
-                                    <em>(Note: detailed strategies M0–M3 for reference placement are covered in <Link href="/lib/soft-reference-control" className="text-accent hover:underline">soft-reference-control</Link>.)</em>
+                                    <em>(Note: detailed strategies M0–M3 for reference placement are covered in <Link href="/lib/soft-reference-control" className="text-primary hover:underline">soft-reference-control</Link>.)</em>
                                 </p>
                             </div>
                         </section>
@@ -532,7 +532,7 @@ export default function InfiniteLengthStreamingArchitecturePage() {
                                 <p>
                                     To make the design trade-offs clear, here is a simple comparison:
                                 </p>
-                                <div className="glass rounded-2xl p-4 md:p-6 border border-accent/60 overflow-x-auto">
+                                <div className="bg-card dark:bg-[#4a4a4a] rounded-2xl p-4 md:p-6 border border-border dark:border-[#5a5a5a] shadow-lg dark:shadow-xl overflow-x-auto">
                                     <table className="w-full border-collapse">
                                         <thead>
                                             <tr className="border-b border-border/50">
@@ -558,7 +558,7 @@ export default function InfiniteLengthStreamingArchitecturePage() {
                                                 <td className="py-3 px-4">Pose snapping at boundaries, rigid motion</td>
                                                 <td className="py-3 px-4">Medium clips with simple motion</td>
                                             </tr>
-                                            <tr className="border-b border-border/30 bg-accent/5">
+                                            <tr className="border-b border-border/30 bg-primary/5 dark:bg-primary/10">
                                                 <td className="py-3 px-4 font-semibold text-foreground">InfiniteTalk</td>
                                                 <td className="py-3 px-4">Sparse reference frames + context + audio</td>
                                                 <td className="py-3 px-4 text-center">✅</td>
@@ -582,28 +582,28 @@ export default function InfiniteLengthStreamingArchitecturePage() {
                                 </p>
                                 <ul className="list-none space-y-4 ml-0">
                                     <li className="flex items-start gap-3">
-                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                                         <div>
                                             <p className="font-semibold text-foreground mb-2">Per-pass limit</p>
                                             <ul className="list-none space-y-2 ml-0">
                                                 <li className="flex items-start gap-2">
-                                                    <span className="mt-1.5 h-1 w-1 rounded-full bg-accent/60 flex-shrink-0" />
+                                                    <span className="mt-1.5 h-1 w-1 rounded-full bg-primary/60 flex-shrink-0" />
                                                     <span>For practical compute and UX reasons, a single render pass may be capped (for example at ~600 seconds of output).</span>
                                                 </li>
                                             </ul>
                                         </div>
                                     </li>
                                     <li className="flex items-start gap-3">
-                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                                         <div>
                                             <p className="font-semibold text-foreground mb-2">Chunking and scheduling</p>
                                             <ul className="list-none space-y-2 ml-0">
                                                 <li className="flex items-start gap-2">
-                                                    <span className="mt-1.5 h-1 w-1 rounded-full bg-accent/60 flex-shrink-0" />
+                                                    <span className="mt-1.5 h-1 w-1 rounded-full bg-primary/60 flex-shrink-0" />
                                                     <span>Long audio + source video are segmented into chunks that align with the model's preferred length.</span>
                                                 </li>
                                                 <li className="flex items-start gap-2">
-                                                    <span className="mt-1.5 h-1 w-1 rounded-full bg-accent/60 flex-shrink-0" />
+                                                    <span className="mt-1.5 h-1 w-1 rounded-full bg-primary/60 flex-shrink-0" />
                                                     <span>Each chunk:</span>
                                                 </li>
                                                 <ul className="list-none space-y-1 ml-4 mt-1">
@@ -624,16 +624,16 @@ export default function InfiniteLengthStreamingArchitecturePage() {
                                         </div>
                                     </li>
                                     <li className="flex items-start gap-3">
-                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                                         <div>
                                             <p className="font-semibold text-foreground mb-2">Stitching</p>
                                             <ul className="list-none space-y-2 ml-0">
                                                 <li className="flex items-start gap-2">
-                                                    <span className="mt-1.5 h-1 w-1 rounded-full bg-accent/60 flex-shrink-0" />
+                                                    <span className="mt-1.5 h-1 w-1 rounded-full bg-primary/60 flex-shrink-0" />
                                                     <span>Generated chunks are concatenated along the timeline.</span>
                                                 </li>
                                                 <li className="flex items-start gap-2">
-                                                    <span className="mt-1.5 h-1 w-1 rounded-full bg-accent/60 flex-shrink-0" />
+                                                    <span className="mt-1.5 h-1 w-1 rounded-full bg-primary/60 flex-shrink-0" />
                                                     <span>Because of overlapping context and soft reference control, seams at chunk boundaries are visually minimal.</span>
                                                 </li>
                                             </ul>
@@ -645,15 +645,15 @@ export default function InfiniteLengthStreamingArchitecturePage() {
                                 </p>
                                 <ul className="list-none space-y-2 ml-0">
                                     <li className="flex items-start gap-3">
-                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                                         <span>Chapter-based workflows (e.g., segmenting a training course or a talk into natural sections).</span>
                                     </li>
                                     <li className="flex items-start gap-3">
-                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                                         <span>Hour-scale programs composed of multiple passes.</span>
                                     </li>
                                     <li className="flex items-start gap-3">
-                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                                         <span>Streaming-style pipelines where content is dubbed in batches but feels like one continuous performance.</span>
                                     </li>
                                 </ul>
@@ -671,12 +671,12 @@ export default function InfiniteLengthStreamingArchitecturePage() {
                                 </p>
                                 <ul className="list-none space-y-4 ml-0">
                                     <li className="flex items-start gap-3">
-                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                                         <div>
                                             <p className="font-semibold text-foreground mb-2">Naive audio-driven I2V</p>
                                             <ul className="list-none space-y-2 ml-0">
                                                 <li className="flex items-start gap-2">
-                                                    <span className="mt-1.5 h-1 w-1 rounded-full bg-green-500/60 flex-shrink-0" />
+                                                    <span className="mt-1.5 h-1 w-1 rounded-full bg-primary/60 flex-shrink-0" />
                                                     <span><strong className="text-foreground">Pros:</strong> free motion.</span>
                                                 </li>
                                                 <li className="flex items-start gap-2">
@@ -687,12 +687,12 @@ export default function InfiniteLengthStreamingArchitecturePage() {
                                         </div>
                                     </li>
                                     <li className="flex items-start gap-3">
-                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                                         <div>
                                             <p className="font-semibold text-foreground mb-2">FL2V with hard frame constraints</p>
                                             <ul className="list-none space-y-2 ml-0">
                                                 <li className="flex items-start gap-2">
-                                                    <span className="mt-1.5 h-1 w-1 rounded-full bg-green-500/60 flex-shrink-0" />
+                                                    <span className="mt-1.5 h-1 w-1 rounded-full bg-primary/60 flex-shrink-0" />
                                                     <span><strong className="text-foreground">Pros:</strong> fixes identity drift.</span>
                                                 </li>
                                                 <li className="flex items-start gap-2">
@@ -703,27 +703,27 @@ export default function InfiniteLengthStreamingArchitecturePage() {
                                         </div>
                                     </li>
                                 </ul>
-                                <div className="glass rounded-2xl p-6 md:p-8 border-l-4 border-accent mt-6">
+                                <div className="bg-card dark:bg-[#4a4a4a] rounded-2xl p-6 md:p-8 border-l-4 border-primary mt-6 shadow-lg dark:shadow-xl">
                                     <p className="text-base md:text-lg text-foreground font-semibold mb-4">
                                         InfiniteTalk's streaming architecture combines the strengths without inheriting the weaknesses:
                                     </p>
                                     <ul className="list-none space-y-3 ml-0">
                                         <li className="flex items-start gap-3">
-                                            <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                                            <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                                             <div>
                                                 <p className="font-semibold text-foreground mb-1">Context frames</p>
                                                 <p>Carry motion momentum forward, keeping gestures and head motion continuous across chunks.</p>
                                             </div>
                                         </li>
                                         <li className="flex items-start gap-3">
-                                            <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                                            <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                                             <div>
                                                 <p className="font-semibold text-foreground mb-1">Sparse reference frames</p>
                                                 <p>Anchor identity, background, and camera trajectory throughout the sequence.</p>
                                             </div>
                                         </li>
                                         <li className="flex items-start gap-3">
-                                            <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                                            <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                                             <div>
                                                 <p className="font-semibold text-foreground mb-1">Chunked, audio-driven generation</p>
                                                 <p>Scales to virtually unlimited length, while still letting the model act out the dubbed audio naturally.</p>
@@ -736,25 +736,25 @@ export default function InfiniteLengthStreamingArchitecturePage() {
                                 </p>
                                 <ul className="list-none space-y-3 ml-0">
                                     <li className="flex items-start gap-3">
-                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                                         <span>Dub long videos and episodic content without characters "melting" or "resetting" between segments.</span>
                                     </li>
                                     <li className="flex items-start gap-3">
-                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                                         <span>Maintain a consistent visual identity and camera style across an entire series.</span>
                                     </li>
                                     <li className="flex items-start gap-3">
-                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                                         <span>Deliver dubbing that feels like a single take, not a patchwork of disconnected clips.</span>
                                     </li>
                                 </ul>
-                                <div className="mt-8 p-6 glass rounded-2xl border border-accent/60">
+                                <div className="mt-8 p-6 bg-card dark:bg-[#4a4a4a] rounded-2xl border border-border dark:border-[#5a5a5a] shadow-lg dark:shadow-xl">
                                     <p className="text-base md:text-lg text-muted-foreground mb-3">
                                         If you'd like to understand how reference placement and control strength are tuned in InfiniteTalk, continue with:
                                     </p>
                                     <Link
                                         href="/lib/soft-reference-control"
-                                        className="inline-flex items-center gap-2 text-accent hover:text-accent/80 transition-colors font-medium"
+                                        className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors font-medium"
                                     >
                                         <span>Soft Reference Control</span>
                                         <ArrowRight className="w-4 h-4" />

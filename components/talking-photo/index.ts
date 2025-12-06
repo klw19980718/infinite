@@ -1,0 +1,2 @@
+export { TalkingPhotoHero } from './hero'
+

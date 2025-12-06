@@ -17,7 +17,7 @@ export const BabyPodcastHero = () => {
           <div className="flex flex-col items-center text-center space-y-10 md:space-y-12">
             {/* Title - Apple-style large and bold */}
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-balance px-4">
-              <span className="text-accent">
+              <span className="text-primary">
                 Baby Podcast with Infinite Talk AI
               </span>
               
@@ -30,13 +30,13 @@ export const BabyPodcastHero = () => {
 
             {/* Anchor Tab Links */}
             <div className="pt-4">
-              <div className="inline-flex h-14 items-center px-2 gap-2 bg-muted/50 border border-border/50 rounded-lg">
+              <div className="inline-flex h-14 items-center px-2 gap-2 bg-card dark:bg-[#4a4a4a] border border-border dark:border-[#5a5a5a] rounded-lg shadow-md dark:shadow-lg">
                 <Link
-                  href="/"
+                  href="/infinite-talk-ai/talking-photo"
                   className={`px-6 py-3 flex items-center text-base font-semibold rounded-md transition-all ${
-                    pathname === "/"
-                      ? "bg-accent text-accent-foreground shadow-lg hover:bg-accent/90"
-                      : "text-foreground hover:text-accent"
+                    pathname === "/infinite-talk-ai/talking-photo"
+                      ? "bg-primary text-primary-foreground shadow-lg dark:shadow-xl hover:bg-primary/90"
+                      : "text-foreground hover:text-primary hover:bg-primary/5 dark:hover:bg-primary/10"
                   }`}
                 >
                   infinitetalk photo
@@ -45,8 +45,8 @@ export const BabyPodcastHero = () => {
                   href="/infinite-talk-ai/video-to-video"
                   className={`px-6 py-3 flex items-center text-base font-semibold rounded-md transition-all ${
                     pathname === "/infinite-talk-ai/video-to-video"
-                      ? "bg-accent text-accent-foreground shadow-lg hover:bg-accent/90"
-                      : "text-foreground hover:text-accent"
+                      ? "bg-primary text-primary-foreground shadow-lg dark:shadow-xl hover:bg-primary/90"
+                      : "text-foreground hover:text-primary hover:bg-primary/5 dark:hover:bg-primary/10"
                   }`}
                 >
                   infinitetalk video
@@ -55,8 +55,8 @@ export const BabyPodcastHero = () => {
                   href="/infinite-talk-ai/baby-podcast"
                   className={`px-6 py-3 flex items-center text-base font-semibold rounded-md transition-all ${
                     pathname === "/infinite-talk-ai/baby-podcast"
-                      ? "bg-accent text-accent-foreground shadow-lg hover:bg-accent/90"
-                      : "text-foreground hover:text-accent"
+                      ? "bg-primary text-primary-foreground shadow-lg dark:shadow-xl hover:bg-primary/90"
+                      : "text-foreground hover:text-primary hover:bg-primary/5 dark:hover:bg-primary/10"
                   }`}
                 >
                   baby podcast
@@ -74,9 +74,9 @@ export const BabyPodcastHero = () => {
                 // Show success message and guide to profile
                 toast.custom(
                   (t) => (
-                    <div className="bg-background border border-border rounded-xl shadow-lg p-4 w-[350px] flex items-start gap-3 relative pointer-events-auto">
-                      <div className="flex-shrink-0 w-6 h-6 rounded-full bg-green-500 flex items-center justify-center mt-0.5">
-                        <FiCheck className="w-4 h-4 text-white" />
+                    <div className="bg-card dark:bg-[#4a4a4a] border border-border dark:border-[#5a5a5a] rounded-xl shadow-lg dark:shadow-xl p-4 w-[350px] flex items-start gap-3 relative pointer-events-auto">
+                      <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary flex items-center justify-center mt-0.5">
+                        <FiCheck className="w-4 h-4 text-primary-foreground" />
                       </div>
                       <div className="flex-1 min-w-0">
                         <h3 className="font-semibold text-foreground text-[15px] leading-none mb-1.5">
@@ -89,7 +89,7 @@ export const BabyPodcastHero = () => {
                             onClick={() => {
                               window.location.href = "/profile"
                             }}
-                            className="text-blue-500 hover:text-blue-600 font-medium hover:underline"
+                            className="text-primary hover:text-primary/80 font-medium hover:underline"
                           >
                             My Creations
                           </button>

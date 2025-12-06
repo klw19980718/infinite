@@ -90,18 +90,19 @@ export default function RefundPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <div className="min-h-screen bg-background pt-30">
-        <div className="container mx-auto px-4 py-8 max-w-4xl">
-          <h1 className="text-4xl font-bold mb-8 text-foreground">Refund Policy — Infinite Talk AI</h1>
-          
-          <div className="prose prose-neutral max-w-none">
-            <p className="text-muted-foreground mb-8">
-              <strong>Last updated:</strong> January 27, 2025<br />
-              <strong>Owner:</strong> Infinitetalk ai ("we", "us", "our")<br />
-              <strong>Contact:</strong> support@infinitetalkai.org
-            </p>
+      <div className="min-h-screen bg-background pt-20 pb-20">
+        <div className="container mx-auto px-4 sm:px-6 py-8 max-w-4xl">
+          <div className="bg-card dark:bg-[#4a4a4a] border border-border dark:border-[#5a5a5a] rounded-2xl p-8 md:p-12 shadow-lg dark:shadow-xl">
+            <h1 className="text-4xl md:text-5xl font-bold mb-8 text-foreground">Refund Policy — Infinite Talk AI</h1>
+            
+            <div className="prose prose-neutral max-w-none">
+              <p className="text-muted-foreground mb-8 p-4 rounded-xl bg-card/50 dark:bg-[#3a3a3a] border border-border/50 dark:border-[#5a5a5a]">
+                <strong className="text-foreground">Last updated:</strong> January 27, 2025<br />
+                <strong className="text-foreground">Owner:</strong> Infinitetalk ai ("we", "us", "our")<br />
+                <strong className="text-foreground">Contact:</strong> support@infinitetalkai.org
+              </p>
 
-            <section className="mb-8">
+              <section className="mb-8 p-6 rounded-xl bg-card/30 dark:bg-[#3a3a3a] border border-border/50 dark:border-[#5a5a5a]">
               <h2 className="text-2xl font-semibold mb-4 text-foreground">1) General Refund Policy</h2>
               <p className="text-muted-foreground leading-relaxed mb-4">
                 Credits purchased through Infinite Talk AI are generally <strong>non-refundable</strong> once purchased and added to your account. Credits are digital goods that are immediately available for use upon purchase.
@@ -118,7 +119,7 @@ export default function RefundPage() {
               </ul>
             </section>
 
-            <section className="mb-8">
+              <section className="mb-8 p-6 rounded-xl bg-card/30 dark:bg-[#3a3a3a] border border-border/50 dark:border-[#5a5a5a]">
               <h2 className="text-2xl font-semibold mb-4 text-foreground">2) How to Request a Refund</h2>
               <p className="text-muted-foreground leading-relaxed mb-4">
                 To request a refund, please contact our support team:
@@ -143,7 +144,7 @@ export default function RefundPage() {
               </p>
             </section>
 
-            <section className="mb-8">
+              <section className="mb-8 p-6 rounded-xl bg-card/30 dark:bg-[#3a3a3a] border border-border/50 dark:border-[#5a5a5a]">
               <h2 className="text-2xl font-semibold mb-4 text-foreground">3) Refund Processing</h2>
               <p className="text-muted-foreground leading-relaxed mb-4">
                 If your refund request is approved:
@@ -159,7 +160,7 @@ export default function RefundPage() {
               </p>
             </section>
 
-            <section className="mb-8">
+              <section className="mb-8 p-6 rounded-xl bg-card/30 dark:bg-[#3a3a3a] border border-border/50 dark:border-[#5a5a5a]">
               <h2 className="text-2xl font-semibold mb-4 text-foreground">4) Non-Refundable Items</h2>
               <p className="text-muted-foreground leading-relaxed mb-4">
                 The following are generally <strong>not eligible</strong> for refunds:
@@ -173,21 +174,21 @@ export default function RefundPage() {
               </ul>
             </section>
 
-            <section className="mb-8">
+              <section className="mb-8 p-6 rounded-xl bg-card/30 dark:bg-[#3a3a3a] border border-border/50 dark:border-[#5a5a5a]">
               <h2 className="text-2xl font-semibold mb-4 text-foreground">5) Chargebacks</h2>
               <p className="text-muted-foreground leading-relaxed">
                 If you initiate a chargeback or dispute through your payment provider without first contacting our support team, we reserve the right to suspend or terminate your account. We encourage you to contact us directly at <a href="mailto:support@infinitetalkai.org" className="text-primary hover:underline">support@infinitetalkai.org</a> to resolve any billing issues before initiating a chargeback.
               </p>
             </section>
 
-            <section className="mb-8">
+              <section className="mb-8 p-6 rounded-xl bg-card/30 dark:bg-[#3a3a3a] border border-border/50 dark:border-[#5a5a5a]">
               <h2 className="text-2xl font-semibold mb-4 text-foreground">6) Changes to This Policy</h2>
               <p className="text-muted-foreground leading-relaxed">
                 We reserve the right to modify this Refund Policy at any time. Material changes will be communicated via email or through in-app notifications. Continued use of the service after changes become effective constitutes acceptance of the updated policy.
               </p>
             </section>
 
-            <section className="mb-8">
+              <section className="mb-8 p-6 rounded-xl bg-card/30 dark:bg-[#3a3a3a] border border-border/50 dark:border-[#5a5a5a]">
               <h2 className="text-2xl font-semibold mb-4 text-foreground">7) Contact Us</h2>
               <div className="text-muted-foreground leading-relaxed">
                 <p>If you have questions about this Refund Policy or need assistance with a refund request, please contact us:</p>
@@ -196,16 +197,17 @@ export default function RefundPage() {
                   <p className="mt-2"><strong>Website:</strong> <Link href="/" className="text-primary hover:underline">www.infinitetalkai.org</Link></p>
                 </div>
               </div>
-            </section>
+              </section>
 
-            <section className="mb-8">
-              <h2 className="text-2xl font-semibold mb-4 text-foreground">8) Related Policies</h2>
-              <p className="text-muted-foreground leading-relaxed">
-                This Refund Policy should be read in conjunction with our{' '}
-                <Link href="/terms" className="text-primary hover:underline">Terms of Service</Link> and{' '}
-                <Link href="/privacy" className="text-primary hover:underline">Privacy Policy</Link>.
-              </p>
-            </section>
+              <section className="mb-8 p-6 rounded-xl bg-card/30 dark:bg-[#3a3a3a] border border-border/50 dark:border-[#5a5a5a]">
+                <h2 className="text-2xl font-semibold mb-4 text-foreground">8) Related Policies</h2>
+                <p className="text-muted-foreground leading-relaxed">
+                  This Refund Policy should be read in conjunction with our{' '}
+                  <Link href="/terms" className="text-primary hover:underline">Terms of Service</Link> and{' '}
+                  <Link href="/privacy" className="text-primary hover:underline">Privacy Policy</Link>.
+                </p>
+              </section>
+            </div>
           </div>
         </div>
       </div>
