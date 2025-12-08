@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { FiLoader, FiMusic, FiPause, FiPlay, FiSettings, FiClock, FiMinus, FiPlus, FiChevronRight, FiDownload } from "react-icons/fi"
 import { toast } from "sonner"
@@ -17,6 +17,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import LoginDialog from "@/components/auth/LoginDialog"
+import { getSupabaseClient } from "@/lib/supabase"
 
 type TtsUsage = {
   characters_used: number
@@ -55,6 +57,9 @@ export function TextToSpeechGenerator({ voiceId }: TextToSpeechGeneratorProps) {
   const [pausePopoverOpen, setPausePopoverOpen] = useState(false)
   const editableDivRef = useRef<HTMLDivElement | null>(null)
 
+  // Login dialog state
+  const [loginDialogOpen, setLoginDialogOpen] = useState(false)
+
   // Load TTS usage on mount
   useEffect(() => {
     const fetchUsage = async () => {
@@ -72,6 +77,18 @@ export function TextToSpeechGenerator({ voiceId }: TextToSpeechGeneratorProps) {
     }
 
     fetchUsage()
+  }, [])
+
+  // Check if user is logged in (same pattern as TalkingPhotoLayout)
+  const checkUserLoggedIn = useCallback(async (): Promise<boolean> => {
+    try {
+      const supabase = getSupabaseClient()
+      const { data: { session } } = await supabase.auth.getSession()
+      return !!session
+    } catch (error) {
+      console.error("Error checking user session:", error)
+      return false
+    }
   }, [])
 
   // Get plain text from editable div, converting pause elements to <#x.x#> format
@@ -285,6 +302,13 @@ export function TextToSpeechGenerator({ voiceId }: TextToSpeechGeneratorProps) {
   }
 
   const handleGenerate = async () => {
+    // Require login before generating TTS
+    const isLoggedIn = await checkUserLoggedIn()
+    if (!isLoggedIn) {
+      setLoginDialogOpen(true)
+      return
+    }
+
     const textToSend = (editableDivRef.current
       ? getTextFromEditableDiv()
       : text
@@ -725,6 +749,11 @@ export function TextToSpeechGenerator({ voiceId }: TextToSpeechGeneratorProps) {
           </Button>
         </div>
       </div>
+      {/* Login Dialog */}
+      <LoginDialog
+        open={loginDialogOpen}
+        onOpenChange={setLoginDialogOpen}
+      />
     </div>
   )
 }
