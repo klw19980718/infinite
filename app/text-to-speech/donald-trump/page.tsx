@@ -157,12 +157,14 @@ export default function DonaldTrumpTtsPage() {
         }}
       />
 
-      <div className="min-h-screen bg-background">
-        <DonaldTrumpTtsHero />
-        <DonaldTrumpTtsWorkflow />
-        <DonaldTrumpTtsSafety />
-        <DonaldTrumpTtsFAQ />
-      </div>
+      <main className="bg-background relative min-h-screen">
+        <div className="relative z-10">
+          <DonaldTrumpTtsHero />
+          <DonaldTrumpTtsWorkflow />
+          <DonaldTrumpTtsSafety />
+          <DonaldTrumpTtsFAQ />
+        </div>
+      </main>
     </>
   )
 }

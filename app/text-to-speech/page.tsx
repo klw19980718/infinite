@@ -43,6 +43,7 @@ type NavigationItem = {
   description?: string
   href: string
   icon?: React.ReactNode
+  image?: string
 }
 
 export default function TextToSpeechPage() {
@@ -53,7 +54,8 @@ export default function TextToSpeechPage() {
       title: 'Donald Trump Text to Speech',
       description: 'Learn about creating presidential-style AI voices and how to use them safely in talking videos with Infinite Talk AI.',
       href: '/text-to-speech/donald-trump',
-      icon: <Users className="w-5 h-5" />
+      icon: <Users className="w-5 h-5" />,
+      image: '/svg/Donald_Trump_cartoon_hero .svg'
     }
   ]
 
@@ -153,31 +155,43 @@ export default function TextToSpeechPage() {
 
         {/* Navigation List */}
         <section className="py-16 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-7xl mx-auto">
             {navigationItems.length > 0 ? (
-              <div className="space-y-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 {navigationItems.map((item) => (
                   <Link
                     key={item.id}
                     href={item.href}
-                    className="flex items-center gap-4 p-6 rounded-2xl border border-border dark:border-[#5a5a5a] bg-card dark:bg-[#4a4a4a] hover:border-primary/50 dark:hover:border-primary/50 hover:bg-accent/5 dark:hover:bg-[#5a5a5a] transition-all duration-200 shadow-md dark:shadow-lg hover:shadow-lg dark:hover:shadow-xl group"
+                    className="flex flex-col gap-4 p-6 rounded-2xl border border-border dark:border-[#5a5a5a] bg-card dark:bg-[#4a4a4a] hover:border-primary/50 dark:hover:border-primary/50 hover:bg-accent/5 dark:hover:bg-[#5a5a5a] transition-all duration-200 shadow-md dark:shadow-lg hover:shadow-lg dark:hover:shadow-xl group h-full"
                   >
-                    {item.icon && (
-                      <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-primary/10 dark:bg-primary/20 flex items-center justify-center text-primary">
+                    {item.image ? (
+                      <div className="w-full aspect-video rounded-xl overflow-hidden bg-primary/5 dark:bg-primary/10 flex items-center justify-center">
+                        <Image
+                          src={item.image}
+                          alt={item.title}
+                          width={400}
+                          height={300}
+                          className="w-full h-full object-contain"
+                        />
+                      </div>
+                    ) : item.icon ? (
+                      <div className="flex-shrink-0 w-16 h-16 rounded-xl bg-primary/10 dark:bg-primary/20 flex items-center justify-center text-primary mx-auto">
                         {item.icon}
                       </div>
-                    )}
-                    <div className="flex-1 min-w-0">
+                    ) : null}
+                    <div className="flex-1 flex flex-col gap-2">
                       <h3 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
                         {item.title}
                       </h3>
                       {item.description && (
-                        <p className="text-sm text-muted-foreground mt-1 line-clamp-2">
+                        <p className="text-sm text-muted-foreground line-clamp-3 flex-1">
                           {item.description}
                         </p>
                       )}
                     </div>
-                    <ArrowRight className="w-5 h-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all flex-shrink-0" />
+                    <div className="flex items-center justify-end pt-2">
+                      <ArrowRight className="w-5 h-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
+                    </div>
                   </Link>
                 ))}
               </div>

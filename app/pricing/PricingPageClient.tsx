@@ -16,6 +16,7 @@ import {
   FiLoader,
 } from "react-icons/fi"
 import Link from "next/link"
+import Image from "next/image"
 
 export function PricingPageClient() {
   const router = useRouter()
@@ -169,54 +170,76 @@ export function PricingPageClient() {
       </div>
 
       {/* Hero Section */}
-      <section className="relative py-32 px-4">
-        <div className="max-w-4xl mx-auto text-center relative z-10">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-card dark:bg-[#4a4a4a] border border-primary dark:border-primary/50 shadow-md dark:shadow-lg mb-8">
-            <FiZap className="w-4 h-4 text-primary" />
-            <span className="text-sm text-primary font-medium">Simple & Transparent Pricing</span>
-          </div>
-
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-foreground mb-6 text-balance tracking-tight">
-            Simple Pricing — Credits Never Expire
-          </h1>
-          <p className="text-lg md:text-xl text-muted-foreground mb-12 max-w-2xl mx-auto text-balance font-light">
-            Pay once in USD. Use credits anytime for Standard or HD generation. <span className="text-primary font-medium">3,000 characters of text-to-speech free daily!</span>
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
-            <Link
-              href="#plans"
-              className="px-8 py-4 bg-primary text-primary-foreground rounded-full font-semibold hover:bg-primary/90 hover:scale-105 transition-all duration-300 shadow-lg dark:shadow-xl text-center"
-            >
-              Choose a Plan
-            </Link>
-            <Link
-              href="#how-credits-work"
-              className="px-8 py-4 bg-card dark:bg-[#4a4a4a] border border-primary dark:border-primary/50 rounded-full font-semibold hover:bg-primary/10 dark:hover:bg-primary/20 transition-all duration-300 text-center shadow-md dark:shadow-lg"
-            >
-              How Credits Work
-            </Link>
-          </div>
-
-          {/* Trust mini-row */}
-          <div className="flex flex-wrap justify-center items-center gap-8 text-sm text-muted-foreground">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-primary/10 dark:bg-primary/20 flex items-center justify-center">
-                <FiShield className="w-4 h-4 text-primary" />
+      <section className="relative overflow-hidden pt-24 md:pt-28 pb-20 md:pb-28">
+        <div className="relative z-10 container mx-auto px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            {/* Left Column - Content */}
+            <div className="flex flex-col items-center lg:items-start text-center lg:text-left space-y-6">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-card dark:bg-[#4a4a4a] border border-primary dark:border-primary/50 shadow-md dark:shadow-lg">
+                <FiZap className="w-4 h-4 text-primary" />
+                <span className="text-sm text-primary font-medium">Simple & Transparent Pricing</span>
               </div>
-              <span>Commercial use</span>
+
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium text-foreground leading-tight tracking-tight">
+                Simple Pricing
+                <span className="block text-primary">
+                  Credits Never Expire
+                </span>
+              </h1>
+              <p className="text-sm sm:text-base md:text-lg text-muted-foreground leading-relaxed max-w-2xl font-normal">
+                Pay once in USD. Use credits anytime for Standard or HD generation. <span className="text-primary font-medium">3,000 characters of text-to-speech free daily!</span>
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start w-full sm:w-auto">
+                <Link
+                  href="#plans"
+                  className="px-8 py-4 bg-primary text-primary-foreground rounded-full font-semibold hover:bg-primary/90 hover:scale-105 transition-all duration-300 shadow-lg dark:shadow-xl text-center"
+                >
+                  Choose a Plan
+                </Link>
+                <Link
+                  href="#how-credits-work"
+                  className="px-8 py-4 bg-card dark:bg-[#4a4a4a] border border-primary dark:border-primary/50 rounded-full font-semibold hover:bg-primary/10 dark:hover:bg-primary/20 transition-all duration-300 text-center shadow-md dark:shadow-lg"
+                >
+                  How Credits Work
+                </Link>
+              </div>
+
+              {/* Trust mini-row */}
+              <div className="flex flex-wrap justify-center lg:justify-start items-center gap-6 text-sm text-muted-foreground pt-4">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-lg bg-primary/10 dark:bg-primary/20 flex items-center justify-center">
+                    <FiShield className="w-4 h-4 text-primary" />
+                  </div>
+                  <span>Commercial use</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-lg bg-primary/10 dark:bg-primary/20 flex items-center justify-center">
+                    <FiCheck className="w-4 h-4 text-primary" />
+                  </div>
+                  <span>Secure checkout</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-lg bg-primary/10 dark:bg-primary/20 flex items-center justify-center">
+                    <FiHeadphones className="w-4 h-4 text-primary" />
+                  </div>
+                  <span>Priority support</span>
+                </div>
+              </div>
             </div>
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-primary/10 dark:bg-primary/20 flex items-center justify-center">
-                <FiCheck className="w-4 h-4 text-primary" />
+
+            {/* Right Column - SVG Image */}
+            <div className="flex items-center justify-center lg:justify-end order-first lg:order-last">
+              <div className="w-full max-w-xs sm:max-w-sm lg:max-w-md">
+                <Image
+                  src="/svg/price.svg"
+                  alt="Pricing illustration"
+                  width={870}
+                  height={633}
+                  className="w-full h-auto"
+                  priority
+                />
               </div>
-              <span>Secure checkout</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-primary/10 dark:bg-primary/20 flex items-center justify-center">
-                <FiHeadphones className="w-4 h-4 text-primary" />
-              </div>
-              <span>Priority support</span>
             </div>
           </div>
         </div>
