@@ -1,9 +1,8 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { Button } from '@/components/ui/button'
 import { TextToSpeechGenerator } from '@/components/text-to-speech/TextToSpeechGenerator'
 
-export function DonaldTrumpTtsHero() {
+export function SakuraKasuganoTtsHero() {
   return (
     <section className="relative overflow-hidden pt-24 md:pt-28 pb-20 md:pb-28">
       <div className="relative z-10 container mx-auto px-6">
@@ -24,7 +23,7 @@ export function DonaldTrumpTtsHero() {
               </Link>
             </li>
             <li>/</li>
-            <li className="text-foreground">Donald Trump</li>
+            <li className="text-foreground">Sakura Kasugano</li>
           </ol>
         </nav>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
@@ -34,16 +33,16 @@ export function DonaldTrumpTtsHero() {
               Text to Speech Tool
             </div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium text-foreground leading-tight tracking-tight">
-              Best Donald Trump
+              Sakura Kasugano
               <span className="block text-primary">
-                Text to Speech Style
+                Text to Speech
               </span>
             </h1>
             <p className="text-sm sm:text-base md:text-lg text-muted-foreground leading-relaxed max-w-2xl font-normal">
-              Online tool for creating Donald Trump-style text to speech AI voices and talking videos for parody and commentary with Infinite Talk AI.
+              Generate Sakura Kasugano–style anime voice lines for fan dubs, clips, and talking videos with Infinite Talk AI&apos;s text to speech engine.
             </p>
             <p className="text-xs sm:text-sm text-muted-foreground max-w-2xl">
-              Infinite Talk AI does not provide or endorse exact replicas of any real person&apos;s voice.
+              This tool is for parody and fan content only. Infinite Talk AI is not affiliated with or endorsed by Capcom or any rights holder, and does not provide exact replicas of copyrighted characters.
             </p>
           </div>
 
@@ -51,8 +50,8 @@ export function DonaldTrumpTtsHero() {
           <div className="flex items-center justify-center lg:justify-end order-first lg:order-last">
             <div className="w-full max-w-xs sm:max-w-sm lg:max-w-md">
               <Image
-                src="/svg/donald.png"
-                alt="Donald Trump Text to Speech illustration"
+                src="/svg/sakura kasugano.png"
+                alt="Sakura Kasugano Text to Speech illustration"
                 width={1184}
                 height={864}
                 className="w-full h-auto"
@@ -64,11 +63,12 @@ export function DonaldTrumpTtsHero() {
 
         {/* Text to Speech Generator */}
         <div className="mt-10 lg:mt-12">
-          {/* donald_trump_my */}
-          <TextToSpeechGenerator voiceId="donald_trump_my_2" />
+          {/* 使用一个适合作为 Sakura 风格的 voice_id，后续可在 voices.json 中调整为实际 ID */}
+          <TextToSpeechGenerator voiceId="sakura123132456" />
         </div>
       </div>
     </section>
   )
 }
+
 

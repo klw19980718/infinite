@@ -12,8 +12,14 @@ alwaysApply: true
 - 通用组件：放 /components/ui（shadcn 风格），复用优先。
 - 页面专用块：放 /components/home 等子目录；不要混入 ui。
 - 命名：PascalCase 文件名；导出默认组件名与文件名一致。
-- **首页结构**：`components/home/hero.tsx` 包含完整的 TalkingPhotoLayout 和 Tabs，图片转视频功能已整合到首页，不再使用独立的 `/infinite-talk-ai/image-to-video` 页面。
-- **视频转视频页面结构**：`components/video-to-video/hero.tsx` 包含标题、subtitle 和 `TalkingPhotoLayout` 组件（从 `@/components/talking-conponents-video/TalkingPhotoLayout` 导入），用于视频转视频功能。
+- **首页结构**：`components/home/hero.tsx` 导出 `AuroraHero`，作为首页营销 Hero，左侧为文案和 CTA，右侧为 SVG 插画，入口链接到 `/infinite-talk-ai/talking-photo`。
+- **视频转视频页面结构**：`components/video-to-video/hero.tsx` 包含标题、副标题和 `TalkingPhotoLayout` 组件（从 `@/components/talking-conponents-video/TalkingPhotoLayout` 导入），用于视频转视频功能。
+- **Text to Speech Hub**：`app/text-to-speech/page.tsx` 是 TTS 聚合页，通过网格卡片跳转到具体的角色 / 风格页（例如 `/text-to-speech/donald-trump`、`/text-to-speech/sakura-kasugano`）。
+- **TTS 角色页结构**：`app/text-to-speech/[slug]/page.tsx` 下使用 `components` 子目录中的 `Hero`、`Workflow`、`Safety`、`FAQ` 四个块组件组合页面结构（如 `donald-trump/components/Hero.tsx`、`sakura-kasugano/components/Hero.tsx`）。
+- **通用 TTS 组件**：`components/text-to-speech/TextToSpeechGenerator.tsx` 是通用文本转语音组件，接收 `voiceId`（字符串）来固定使用的音色：
+  - 使用与 `TalkingPhotoLayout` 相同的 `/api/speech/text-to-speech` 与 `/api/speech/result` 接口，并复用 `AudioWaveform` 渲染波形。
+  - 支持情绪、语速、音量、音调调节；通过 `<#x.x#>` 语法插入停顿；最大输入长度 2000 字符（超过会阻止调用接口）。
+  - 生成后提供播放 / 暂停与音频下载按钮，命名为 `tts-audio.mp3`。
 
 ## Tailwind v4
 - 使用 `@tailwind base; components; utilities;`；样式只写在组件中。

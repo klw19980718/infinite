@@ -55,7 +55,15 @@ export default function TextToSpeechPage() {
       description: 'Learn about creating presidential-style AI voices and how to use them safely in talking videos with Infinite Talk AI.',
       href: '/text-to-speech/donald-trump',
       icon: <Users className="w-5 h-5" />,
-      image: '/svg/Donald_Trump_cartoon_hero .svg'
+      image: '/svg/donald.png'
+    },
+    {
+      id: 'sakura-kasugano',
+      title: 'Sakura Kasugano Text to Speech',
+      description: 'Generate Sakura Kasugano–style anime voices for fan dubs, clips, and talking videos with Infinite Talk AI.',
+      href: '/text-to-speech/sakura-kasugano',
+      icon: <Users className="w-5 h-5" />,
+      image: '/svg/sakura kasugano.png'
     }
   ]
 
