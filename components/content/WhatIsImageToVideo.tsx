@@ -2,7 +2,7 @@ export function WhatIsImageToVideo() {
   return (
     <section className="py-24 md:py-32 relative overflow-hidden">
       <div className="container mx-auto px-6 relative z-10">
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-7xl mx-auto">
           <div className="rounded-3xl border border-border bg-card dark:bg-[#4a4a4a] p-8 md:p-10 lg:p-12 shadow-lg dark:shadow-xl">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6">
               What is Infinite Talk AI?

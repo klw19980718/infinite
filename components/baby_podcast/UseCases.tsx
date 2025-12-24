@@ -56,7 +56,7 @@ export function BabyPodcastUseCases() {
           </p>
         </div>
 
-        <div className="max-w-6xl mx-auto space-y-6 md:space-y-8">
+        <div className="max-w-7xl mx-auto space-y-6 md:space-y-8">
           {useCases.map((item, index) => {
             const Icon = item.icon
 

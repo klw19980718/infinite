@@ -571,16 +571,16 @@ export function ProfilePageClient() {
                               key={w.id}
                               className="rounded-2xl border border-border/70 bg-card/40 hover:bg-card/70 transition-all duration-200 overflow-hidden group flex flex-col shadow-sm hover:shadow-md"
                             >
-                              <div className="aspect-video bg-black/40 flex items-center justify-center relative overflow-hidden border-b border-border/50">
+                              <div className="aspect-video bg-muted/30 dark:bg-black/40 flex items-center justify-center relative overflow-hidden border-b border-border/50">
                                 {(w.status === "processing" || w.status === "pending") && (
-                                  <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/60 backdrop-blur-sm z-10">
+                                  <div className="absolute inset-0 flex flex-col items-center justify-center bg-background/90 dark:bg-black/80 backdrop-blur-md z-10">
                                     <div className="relative">
-                                      <div className="absolute inset-0 animate-ping rounded-full bg-accent/20"></div>
-                                      <div className="relative bg-card rounded-full p-3 border border-accent/20">
-                                        <FiLoader className="w-6 h-6 text-accent animate-spin" />
+                                      <div className="absolute inset-0 animate-ping rounded-full bg-accent/30 dark:bg-accent/40"></div>
+                                      <div className="relative bg-card dark:bg-card/90 rounded-full p-3 border border-accent/30 dark:border-accent/40 shadow-lg dark:shadow-accent/20">
+                                        <FiLoader className="w-6 h-6 text-accent dark:text-accent animate-spin" />
                                       </div>
                                     </div>
-                                    <p className="text-accent text-xs font-medium mt-3 animate-pulse">Generating...</p>
+                                    <p className="text-foreground dark:text-accent text-xs font-medium mt-3 animate-pulse">Generating...</p>
                                   </div>
                                 )}
                                 

@@ -8,7 +8,7 @@ export function TalkingPhotoCTA() {
   return (
     <section className="py-24 md:py-32 relative overflow-hidden">
       <div className="container mx-auto px-6 relative z-10">
-        <div className="max-w-6xl mx-auto rounded-3xl border border-border bg-card/50 backdrop-blur-xl shadow-2xl overflow-hidden">
+        <div className="max-w-7xl mx-auto rounded-3xl border border-border bg-card/50 backdrop-blur-xl shadow-2xl overflow-hidden">
           <div className="flex flex-col lg:flex-row">
             {/* SVG 图片区域 */}
             <div className="w-full lg:w-1/2 flex items-center justify-center p-8 md:p-12 lg:p-16 bg-primary dark:bg-white/50 order-first lg:order-none">

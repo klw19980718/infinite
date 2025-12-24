@@ -85,7 +85,7 @@ export const BabyPodcastHero = () => {
           </div>
 
           {/* Main Content: Talking Photo generator layout */}
-          <div className="w-full max-w-6xl mx-auto mt-12">
+          <div className="w-full max-w-7xl mx-auto mt-12">
             <div id="baby-podcast-talking">
               <TalkingPhotoLayout
                 onTaskCreated={() => {

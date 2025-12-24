@@ -55,7 +55,7 @@ export function BabyPodcastFaq() {
 
   return (
     <section className="py-20 md:py-28 relative overflow-hidden">
-      <div className="container mx-auto px-6 relative z-10 max-w-5xl">
+      <div className="container mx-auto px-6 relative z-10 max-w-7xl">
         <div className="text-center mb-12 md:mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3 text-balance">
             FAQ — InfiniteTalk Baby Podcast

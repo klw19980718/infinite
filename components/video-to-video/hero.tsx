@@ -85,7 +85,7 @@ export const VideoToVideoHero = () => {
           </div>
 
           {/* Main Content: Video-to-Video generator layout */}
-          <div className="w-full max-w-6xl mx-auto mt-12">
+          <div className="w-full max-w-7xl mx-auto mt-12">
             <div id="video-talking">
               <TalkingPhotoLayout
                 onTaskCreated={() => {
