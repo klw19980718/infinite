@@ -192,7 +192,9 @@ export default function Nav() {
             <div className="ml-2 flex items-center gap-2">
               <ThemeToggle />
               {profile?.email ? (
-                <UserMenu email={profile.email} />
+                <div className="flex items-center gap-2">
+                  <UserMenu email={profile.email} />
+                </div>
               ) : (
                 <Button
                   onClick={() => setLoginDialogOpen(true)}

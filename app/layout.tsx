@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import Script from 'next/script';
 import Nav from '@/components/nav'
 import Footer from '@/components/Footer'
+import WelcomeDialog from '@/components/WelcomeDialog'
 import { Toaster } from '@/components/ui/sonner'
 import { Outfit } from 'next/font/google'
 
@@ -53,6 +54,7 @@ export default function RootLayout({
             {children}
           </main>
           <Footer />
+          <WelcomeDialog />
           <Toaster />
         </>
       </body>

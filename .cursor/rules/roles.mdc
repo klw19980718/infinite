@@ -57,12 +57,25 @@ infinite-talk/
 │   │   │   │   └── route.ts
 │   │   │   └── webhook/      - 处理支付 webhook
 │   │   │       └── route.ts
+│   │   ├── proxy-file/      - 文件代理（解决 CORS 问题）
+│   │   │   └── route.ts
+│   │   ├── speech/          - 文本转语音 API
+│   │   │   ├── text-to-speech/ - 提交 TTS 任务
+│   │   │   │   └── route.ts
+│   │   │   ├── result/      - 查询 TTS 任务结果
+│   │   │   │   └── route.ts
+│   │   │   └── usage/       - 获取 TTS 使用情况
+│   │   │       └── route.ts
 │   │   └── video/           - WaveSpeedAI 视频生成集成
 │   │       ├── image-to-video/ - 图片转视频任务提交
 │   │       │   └── route.ts
 │   │       ├── video-to-video/ - 视频转视频任务提交
 │   │       │   └── route.ts
-│   │       └── result/       - 查询任务结果
+│   │       ├── result/       - 查询任务结果
+│   │       │   └── route.ts
+│   │       ├── webhook/      - 处理视频生成 webhook
+│   │       │   └── route.ts
+│   │       └── delete/       - 删除视频任务
 │   │           └── route.ts
 │   ├── auth/                - 认证相关页面
 │   │   ├── page.tsx         - 登录/注册整合页面（Email OTP）
@@ -70,8 +83,12 @@ infinite-talk/
 │   ├── infinite-talk-ai/    - AI 功能相关页面
 │   │   ├── image-to-video/  - 图片转视频功能（已废弃，重定向到首页）
 │   │   │   └── page.tsx     - 重定向到首页
-│   │   └── video-to-video/  - 视频转视频功能
-│   │       └── page.tsx     - 视频转视频页面
+│   │   ├── talking-photo/    - 图片说话功能
+│   │   │   └── page.tsx
+│   │   ├── video-to-video/  - 视频转视频功能
+│   │   │   └── page.tsx     - 视频转视频页面
+│   │   └── baby-podcast/     - 婴儿播客功能
+│   │       └── page.tsx
 │   ├── pricing/             - 定价页面
 │   │   ├── page.tsx         - 定价页面服务端组件
 │   │   └── PricingPageClient.tsx - 定价页面客户端组件
@@ -80,8 +97,35 @@ infinite-talk/
 │   │   └── ProfilePageClient.tsx - 个人资料页面客户端组件
 │   ├── privacy/             - 隐私政策页面
 │   │   └── page.tsx         - 隐私政策页面
+│   ├── refund/              - 退款政策页面
+│   │   └── page.tsx         - 退款政策页面
 │   ├── terms/               - 服务条款页面
 │   │   └── page.tsx         - 服务条款页面
+│   ├── blog/                - 博客相关页面
+│   │   ├── page.tsx         - 博客列表页
+│   │   └── how-to-make-a-photo-talk-with-ai/ - 博客文章
+│   │       └── page.tsx
+│   ├── lib/                 - 技术文档页面
+│   │   ├── page.tsx         - 文档首页
+│   │   ├── page.md          - 文档内容
+│   │   ├── benchmarks/      - 性能基准测试文档
+│   │   │   └── page.tsx
+│   │   ├── infinite-length-streaming-architecture/ - 无限长度流式架构文档
+│   │   │   └── page.tsx
+│   │   ├── soft-reference-control/ - 软引用控制文档
+│   │   │   └── page.tsx
+│   │   └── sparse-frame-video-dubbing/ - 稀疏帧视频配音文档
+│   │       └── page.tsx
+│   ├── text-to-speech/      - 文本转语音相关页面
+│   │   ├── page.tsx         - TTS 聚合页
+│   │   ├── donald-trump/     - 特朗普音色页面
+│   │   │   ├── page.tsx
+│   │   │   └── components/  - 页面组件（Hero, Workflow, Safety, FAQ）
+│   │   └── sakura-kasugano/  - 樱花音色页面
+│   │       ├── page.tsx
+│   │       └── components/   - 页面组件（Hero, Workflow, Safety, FAQ）
+│   ├── video-sitemap.xml/   - 视频站点地图
+│   │   └── route.ts
 │   ├── favicon.ico          - 网站图标
 │   ├── globals.css          - 全局样式文件
 │   ├── layout.tsx           - 根布局组件（含导航栏和页脚）
@@ -94,30 +138,66 @@ infinite-talk/
 │   │   ├── LoginDialog.tsx  - 登录弹窗组件
 │   │   ├── OtpForm.tsx      - Email OTP 表单（可复用）
 │   │   └── UserMenu.tsx     - 用户头像下拉菜单
+│   ├── baby_podcast/        - 婴儿播客相关组件
+│   │   ├── Faq.tsx          - 常见问题组件
+│   │   ├── hero.tsx         - 英雄区组件
+│   │   ├── HowToGenerate.tsx - 生成指南组件
+│   │   ├── UseCases.tsx     - 用例展示组件
+│   │   └── index.ts         - 组件统一导出
+│   ├── blog/               - 博客相关组件
+│   │   ├── BlogPostContent.tsx - 博客文章内容组件
+│   │   └── TableOfContents.tsx - 目录组件
+│   ├── content/            - 内容说明组件
+│   │   ├── WhatIsImageToVideo.tsx - 图片转视频说明
+│   │   └── WhatIsVideoToVideo.tsx - 视频转视频说明
 │   ├── home/                - 首页相关组件
+│   │   ├── ExampleVideos.tsx - 示例视频组件
 │   │   ├── FAQ.tsx          - 常见问题组件
 │   │   ├── hero.tsx         - 首屏英雄区组件（包含 TalkingPhotoLayout 和 Tabs）
 │   │   ├── Highlights.tsx   - 亮点展示组件
 │   │   ├── HowItWorks.tsx   - 工作原理说明组件
+│   │   ├── LearnMore.tsx    - 了解更多组件
 │   │   ├── Specs.tsx        - 规格参数组件
 │   │   ├── UnderTheHood.tsx - 技术细节组件
+│   │   ├── WhyItStandsOut.tsx - 特色说明组件
 │   │   └── index.ts         - 组件统一导出
-│   ├── image-to-video/      - 图片转视频相关组件
+│   ├── talking-components/ - 图片转视频功能核心组件
 │   │   ├── AudioWaveform.tsx - 音频波形可视化组件
 │   │   ├── AvatarDialog.tsx - 头像选择对话框组件
-│   │   ├── cta.tsx          - 行动号召组件
 │   │   ├── InputTextTab.tsx - 文本输入 Tab 组件
 │   │   ├── RecordAudioDialog.tsx - 录音对话框组件
 │   │   ├── RecordAudioTab.tsx - 录音 Tab 组件
 │   │   ├── TalkingPhotoLayout.tsx - 图片转视频布局组件（包含图片上传、音频处理、模型选择等）
 │   │   ├── UploadAudioTab.tsx - 音频上传 Tab 组件
-│   │   ├── VoiceSelectDialog.tsx - 声音选择对话框组件
+│   │   └── VoiceSelectDialog.tsx - 声音选择对话框组件
+│   ├── talking-components-baby/ - 婴儿播客功能核心组件
+│   │   ├── AudioWaveform.tsx - 音频波形可视化组件
+│   │   ├── AvatarDialog.tsx - 头像选择对话框组件
+│   │   ├── InputTextTab.tsx - 文本输入 Tab 组件
+│   │   ├── RecordAudioDialog.tsx - 录音对话框组件
+│   │   ├── RecordAudioTab.tsx - 录音 Tab 组件
+│   │   ├── TalkingPhotoLayout.tsx - 婴儿播客布局组件
+│   │   ├── UploadAudioTab.tsx - 音频上传 Tab 组件
+│   │   └── VoiceSelectDialog.tsx - 声音选择对话框组件
+│   ├── talking-conponents-video/ - 视频转视频功能核心组件
+│   │   ├── AudioWaveform.tsx - 音频波形可视化组件
+│   │   ├── AvatarDialog.tsx - 头像选择对话框组件
+│   │   ├── InputTextTab.tsx - 文本输入 Tab 组件
+│   │   ├── RecordAudioDialog.tsx - 录音对话框组件
+│   │   ├── RecordAudioTab.tsx - 录音 Tab 组件
+│   │   ├── TalkingPhotoLayout.tsx - 视频转视频布局组件（包含视频上传、音频处理、模型选择等）
+│   │   ├── UploadAudioTab.tsx - 音频上传 Tab 组件
+│   │   └── VoiceSelectDialog.tsx - 声音选择对话框组件
+│   ├── talking-photo/       - 图片说话相关组件
+│   │   ├── cta.tsx          - 行动号召组件
+│   │   ├── hero.tsx         - 英雄区组件
 │   │   └── index.ts         - 组件统一导出
+│   ├── text-to-speech/      - 文本转语音相关组件
+│   │   └── TextToSpeechGenerator.tsx - 通用文本转语音组件
 │   ├── video-to-video/      - 视频转视频相关组件
+│   │   ├── cta.tsx          - 行动号召组件
 │   │   ├── hero.tsx         - 视频转视频英雄区组件（包含标题、subtitle 和 TalkingPhotoLayout）
 │   │   └── index.ts         - 组件统一导出
-│   ├── talking-conponents-video/ - 视频转视频功能核心组件
-│   │   └── TalkingPhotoLayout.tsx - 视频转视频布局组件（包含视频上传、音频处理、模型选择等）
 │   ├── ui/                  - 可复用 UI 组件（shadcn/ui 风格）
 │   │   ├── avatar.tsx       - 头像组件
 │   │   ├── beams.tsx        - 光束效果组件
@@ -127,20 +207,25 @@ infinite-talk/
 │   │   ├── dropdown-menu.tsx - 下拉菜单组件
 │   │   ├── input.tsx        - 输入框组件
 │   │   ├── label.tsx        - 标签组件
+│   │   ├── popover.tsx      - 弹出框组件
+│   │   ├── scroll-to-top.tsx - 滚动到顶部组件
 │   │   ├── sheet.tsx        - 侧边栏组件
-│   │   ├── slider.tsx       - 滑块组件
+│   │   ├── slider.tsx        - 滑块组件
 │   │   ├── sonner.tsx       - Toast 通知组件
 │   │   ├── tabs.tsx         - 标签页组件
 │   │   ├── textarea.tsx     - 文本域组件
 │   │   └── theme-toggle.tsx - 主题切换组件
 │   ├── Footer.tsx           - 页脚组件（含品牌信息和链接）
-│   └── nav.tsx              - 导航栏组件（含Logo和登录/用户菜单）
+│   ├── nav.tsx              - 导航栏组件（含Logo和登录/用户菜单）
+│   ├── nav-dropdown.tsx     - 导航下拉菜单组件
+│   └── WelcomeDialog.tsx     - 欢迎弹窗组件（首次访问时显示赠送10积分信息）
 │
 ├── components.json          - shadcn/ui 组件配置文件
 │
 ├── lib/                     - 工具函数和配置
 │   ├── supabase/            - Supabase 客户端配置
 │   │   └── server.server.ts - 服务端 Supabase 客户端（从 cookie 读取 session，用于 Server Components、Server Actions、API Route Handlers）
+│   ├── audio-utils.ts       - 音频处理工具函数（getAudioDuration 等）
 │   ├── supabase.ts          - Supabase 客户端单例（客户端组件使用）
 │   ├── wavespeed.ts         - WaveSpeedAI API 工具函数
 │   └── utils.ts             - 通用工具函数（cn, clsx 等）
@@ -149,16 +234,25 @@ infinite-talk/
 │   ├── CREEM_SETUP.md       - Creem 支付集成配置文档
 │   ├── CREEM_TEST_MODE_WEBHOOK.md - Creem 测试模式 Webhook 配置
 │   ├── ENV_SETUP.md         - 环境变量配置文档
-│   └── WEBHOOK_LOCAL_SETUP.md - 本地 Webhook 测试配置文档
+│   ├── WEBHOOK_LOCAL_SETUP.md - 本地 Webhook 测试配置文档
+│   └── WAVESPEED_WEBHOOK_LOCAL_SETUP.md - WaveSpeed Webhook 本地测试配置文档
 │
 ├── public/                  - 静态资源目录
 │   ├── audio/               - 音频相关资源
 │   │   ├── voice/           - 声音样本文件目录（包含音频文件和封面图片）
 │   │   └── voices.json      - 声音数据配置文件（包含声音列表、标签、音频文件路径等）
+│   ├── babypodcast/         - 婴儿播客相关资源
+│   │   └── avatars.json     - 头像配置文件
 │   ├── google32aec5a0f4af8f9d.html - Google 验证文件
+│   ├── image-to-video/      - 图片转视频相关资源
+│   │   └── avatars.json     - 头像配置文件
 │   ├── llms.txt             - LLM 相关文档
+│   ├── logo-new.png         - 网站新 Logo
 │   ├── logo.png             - 网站 Logo
-│   └── robots.txt           - 搜索引擎爬虫配置
+│   ├── robots.txt           - 搜索引擎爬虫配置
+│   ├── svg/                 - SVG 图标资源目录
+│   └── video-to-video/      - 视频转视频相关资源
+│       └── avatar.json      - 头像配置文件
 │
 ├── .cursor/                 - Cursor IDE 配置
 │   └── rules/               - Cursor Rules 规则文件

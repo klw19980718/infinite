@@ -823,12 +823,25 @@ export const TalkingPhotoLayout = ({ onTaskCreated }: TalkingPhotoLayoutProps) =
       if (!imageFile && imagePreview && imagePreview.startsWith("http")) {
         try {
           // toast.loading("Downloading image...", { id: "download-image" })
-          const imageResponse = await fetch(imagePreview)
-          if (!imageResponse.ok) {
-            throw new Error("Failed to download image")
+          let imageBlob: Blob
+          let imageFileName = imagePreview.split("/").pop() || "image.jpg"
+          
+          // Try direct fetch first, fallback to proxy if CORS fails
+          try {
+            const directResponse = await fetch(imagePreview, { mode: "cors" })
+            if (!directResponse.ok) {
+              throw new Error("Direct fetch failed")
+            }
+            imageBlob = await directResponse.blob()
+          } catch (directError) {
+            // CORS error or other issue, use proxy API as fallback
+            const proxyResponse = await fetch(`/api/proxy-file?url=${encodeURIComponent(imagePreview)}`)
+            if (!proxyResponse.ok) {
+              throw new Error("Failed to download image via proxy")
+            }
+            imageBlob = await proxyResponse.blob()
           }
-          const imageBlob = await imageResponse.blob()
-          const imageFileName = imagePreview.split("/").pop() || "image.jpg"
+          
           finalImageFile = new File([imageBlob], imageFileName, { type: imageBlob.type })
           // toast.success("Image downloaded", { id: "download-image" })
         } catch (error) {

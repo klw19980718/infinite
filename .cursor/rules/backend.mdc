@@ -373,6 +373,38 @@ alwaysApply: true
 
 **认证方式**: 使用 cookie-based 认证，从 `NextRequest` 读取用户 session
 
+#### GET `/api/speech/result`
+**功能**: 查询 TTS 任务结果  
+**查询参数**:
+```typescript
+{
+  task_id: string (必需) - 任务 ID
+}
+```
+**返回**:
+```typescript
+{
+  ok: true,
+  task_id: string,
+  status: string,
+  outputs?: string[]  // 完成时包含音频 URL 数组
+}
+// 错误情况：
+{
+  ok: false,
+  code: 'UNAUTHORIZED' | 'MISSING_TASK_ID' | 'TASK_NOT_FOUND' | 'WAVESPEED_ERROR' | 'INTERNAL_ERROR',
+  message: string
+}
+```
+**流程**:
+1. 从 cookie 验证用户身份（使用 `createServerSupabaseClientForRouteHandler`）
+2. 从 WaveSpeedAI API 获取任务状态
+3. 返回任务状态和结果
+
+**认证方式**: 使用 cookie-based 认证，从 `NextRequest` 读取用户 session
+
+**环境变量**: `WAVESPEED_KEY`
+
 #### GET `/api/proxy-file`
 **功能**: 作为受限的文件代理，解决从 `cdn.infinitetalkai.org` 加载图片/音频时的 CORS 问题  
 **请求方式**: `GET`  
