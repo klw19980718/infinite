@@ -15,9 +15,9 @@ export const runtime = 'nodejs'
 
 // Credit mapping based on plan
 const CREDIT_MAPPING = {
-  pro: 400,
-  ultimate: 800,
-  enterprise: 1800,
+  starter: 100,
+  pro: 250,
+  ultimate: 600,
 }
 
 function verifyCreemSignature(payload: string, signature: string, timestamp?: string): boolean {

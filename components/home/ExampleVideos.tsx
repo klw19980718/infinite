@@ -255,6 +255,7 @@ export function ExampleVideos() {
                     poster={getImageSrc(video.id, video.categoryKey)}
                     style={{ display: 'block' }}
                     muted={mutedVideos[videoKey] ?? false}
+                    suppressHydrationWarning
                   >
                     <source src={getVideoSrc(video.id, video.categoryKey)} />
                   </video>

@@ -10,11 +10,11 @@ if (!CREEM_API_KEY) {
   throw new Error("CREEM_API_KEY environment variable is required")
 }
 
-// Product mapping - 这些需要在 Creem 仪表板中创建
-const PRODUCT_MAPPING = {
-  pro: process.env.CREEM_PRODUCT_PRO_ID, // 400 credits for $29.9
-  ultimate: process.env.CREEM_PRODUCT_ULTIMATE_ID, // 800 credits for $49.9
-  enterprise: process.env.CREEM_PRODUCT_ENTERPRISE_ID, // 1800 credits for $99.9
+// Plan -> credits; Creem product ID is loaded from products table by credits
+const PLAN_CREDITS: Record<string, number> = {
+  starter: 100,
+  pro: 250,
+  ultimate: 600,
 }
 
 // 开发环境使用测试 API URL
@@ -43,7 +43,8 @@ export async function POST(request: NextRequest) {
 
     const { planId } = await request.json()
 
-    if (!planId || !PRODUCT_MAPPING[planId as keyof typeof PRODUCT_MAPPING]) {
+    const credits = planId ? PLAN_CREDITS[planId] : undefined
+    if (!planId || credits == null) {
       return NextResponse.json(
         { ok: false, code: "INVALID_PLAN", message: "Invalid plan ID" },
         { status: 400 }
@@ -54,13 +55,22 @@ export async function POST(request: NextRequest) {
       console.log("✅ User authenticated via cookies:", { userId: user.id, email: user.email, planId })
     }
 
-    const productId = PRODUCT_MAPPING[planId as keyof typeof PRODUCT_MAPPING]
-    if (!productId) {
+    const { data: product, error: productError } = await supabase
+      .from("products")
+      .select("creem_product_id")
+      .eq("credits", credits)
+      .eq("active", true)
+      .maybeSingle()
+
+    if (productError || !product?.creem_product_id) {
+      if (IS_DEVELOPMENT) console.error("Product lookup error:", productError)
       return NextResponse.json(
         { ok: false, code: "PRODUCT_NOT_FOUND", message: "Product not configured" },
         { status: 400 }
       )
     }
+
+    const productId = product.creem_product_id
 
     // Generate unique request ID
     const requestId = `req_${Date.now()}_${user.id.slice(0, 8)}`

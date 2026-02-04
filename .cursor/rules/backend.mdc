@@ -34,7 +34,7 @@ alwaysApply: true
 **请求体**:
 ```typescript
 {
-  planId: 'pro' | 'ultimate' | 'enterprise'
+  planId: 'starter' | 'pro' | 'ultimate'
 }
 ```
 **返回**:
@@ -54,14 +54,14 @@ alwaysApply: true
 ```
 **流程**:
 1. 从 cookie 验证用户身份（使用 `createServerSupabaseClientForRouteHandler`）
-2. 验证 planId 并映射到 Creem 产品 ID
+2. 验证 planId，按 plan 对应 credits 从 products 表查询 creem_product_id
 3. 生成唯一 request_id（基于用户ID）
 4. 调用 Creem API 创建 checkout 会话（metadata 中自动包含服务端获取的 user.id 和 user.email）
 5. 返回支付页面 URL，前端重定向
 
 **认证方式**: 使用 cookie-based 认证，从 `NextRequest` 读取用户 session
 
-**环境变量**: `CREEM_API_KEY`, `CREEM_PRODUCT_PRO_ID`, `CREEM_PRODUCT_ULTIMATE_ID`, `CREEM_PRODUCT_ENTERPRISE_ID`, `CREEM_API_URL` (可选), `NEXT_PUBLIC_SITE_URL`
+**环境变量**: `CREEM_API_KEY`, `CREEM_API_URL` (可选), `NEXT_PUBLIC_SITE_URL`。Creem 产品 ID 从数据库 `products` 表按 `credits`（starter: 100, pro: 250, ultimate: 600）查询 `creem_product_id`，无需 env 存储。
 
 #### POST `/api/creem/webhook`
 **功能**: 处理 Creem 支付完成 webhook 事件，更新用户积分  
@@ -79,7 +79,7 @@ alwaysApply: true
     metadata: {
       user_id: string,    // UUID
       user_email: string,
-      plan_id: 'pro' | 'ultimate' | 'enterprise'
+      plan_id: 'starter' | 'pro' | 'ultimate'
     },
     order?: {
       id: string,
@@ -106,7 +106,7 @@ alwaysApply: true
 1. 验证 HMAC 签名（生产环境强制，开发环境可选）
 2. 幂等性检查（通过 `event.id` 和 `checkout.id`）
 3. 从 metadata 提取 user_id 和 plan_id
-4. 根据 plan_id 计算积分（pro: 400, ultimate: 800, enterprise: 1800）
+4. 根据 plan_id 计算积分（starter: 100, pro: 250, ultimate: 600）
 5. 调用 `add_user_credits` RPC 函数增加积分
 6. 映射 Creem 产品 ID 到本地 products 表 UUID
 7. 创建 orders 记录（status='paid'）
@@ -116,7 +116,7 @@ alwaysApply: true
 - 主锁：`payments.unique_key = event.id`，冲突则直接返回 200
 - 次锁：`orders.creem_session_id = checkout.id`，已存在则跳过
 
-**积分映射**: `{ pro: 400, ultimate: 800, enterprise: 1800 }`
+**积分映射**: `{ starter: 100, pro: 250, ultimate: 600 }`
 
 **环境变量**: `CREEM_WEBHOOK_SECRET`
 
